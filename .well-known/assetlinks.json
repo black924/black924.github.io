@@ -1,0 +1,14 @@
+[
+    {
+        "relation": [
+            "delegate_permission/common.handle_all_urls"
+        ],
+        "target": {
+            "namespace": "Children Todo",
+            "package_name": "com.menew.children_todo",
+            "sha256_cert_fingerprints": [
+                "FA:27:23:88:B3:40:B9:AE:9E:C2:49:57:08:8A:EB:2A:C1:54:94:2F:86:61:0C:81:DF:ED:48:45:5D:A2:00:34"
+            ]
+        }
+    }
+]
