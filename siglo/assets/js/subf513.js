@@ -1,36 +1,36 @@
-var gallerySlide = function() {
-	 var $slick_gallery_ele = $('.gallery-slide')
-	 var $slick_nav_ele = $('.gallery-slide-nav')
+var gallerySlide = function () {
+	var $slick_gallery_ele = $('.gallery-slide')
+	var $slick_nav_ele = $('.gallery-slide-nav')
 
-		 $slick_gallery_ele.slick({
-			slidesToShow: 1,
-			slidesToScroll: 1,
-			fade: true,
-			arrows: false,
-			autoplay: true,
-			autoplaySpeed: 4000,
-			asNavFor: '.gallery-slide-nav',
-			draggable: true
-		 });
+	$slick_gallery_ele.slick({
+		slidesToShow: 1,
+		slidesToScroll: 1,
+		fade: true,
+		arrows: false,
+		autoplay: true,
+		autoplaySpeed: 4000,
+		asNavFor: '.gallery-slide-nav',
+		draggable: true
+	});
 
-		 $slick_nav_ele.slick({
-			slidesToScroll: 1,
-			asNavFor: '.gallery-slide',
-			arrows: true,
-			autoplay: true,
-			autoplaySpeed: 4000,
-			variableWidth: true,
-			focusOnSelect: true
-		 });
-	}
+	$slick_nav_ele.slick({
+		slidesToScroll: 1,
+		asNavFor: '.gallery-slide',
+		arrows: true,
+		autoplay: true,
+		autoplaySpeed: 4000,
+		variableWidth: true,
+		focusOnSelect: true
+	});
+}
 
 $(function () {
-  gallerySlide()
+	gallerySlide()
 
-  $('.sub-top__description').addClass('is--active');
-  AOS.init({
-    duration: 1000
-  });
+	$('.sub-top__description').addClass('is--active');
+	AOS.init({
+		duration: 1000
+	});
 
 
 
@@ -51,74 +51,74 @@ $(function () {
 	});
 
 
-	$('.vr-link84b').click(function (e) {  
-		location.href='/household/e_modelhouse.html';
+	$('.vr-link84b').click(function (e) {
+		location.href = '/siglo/household/e_modelhouse.html';
 		e.stopImmediatePropagation();
 	});
-	$('.vr-link84c').click(function (e) {  
-		location.href='/household/e_modelhouse2.html';
-		e.stopImmediatePropagation();
-	});
-
-	$('.display-link84b').click(function (e) {  
-		location.href='/household/display.html?n=1';
-		e.stopImmediatePropagation();
-	});
-	$('.display-link84c').click(function (e) {  
-		location.href='/household/display.html?n=2';
+	$('.vr-link84c').click(function (e) {
+		location.href = '/siglo/household/e_modelhouse2.html';
 		e.stopImmediatePropagation();
 	});
 
-	$('.element-link84a').click(function (e) {  
+	$('.display-link84b').click(function (e) {
+		location.href = '/household/display.html?n=1';
+		e.stopImmediatePropagation();
+	});
+	$('.display-link84c').click(function (e) {
+		location.href = '/household/display.html?n=2';
+		e.stopImmediatePropagation();
+	});
+
+	$('.element-link84a').click(function (e) {
 		location.href = '/household/element.html?n=2';
-		e.stopImmediatePropagation();  
-	});
-	$('.element-link84b').click(function (e) {  
-		location.href = '/household/element.html?n=3'; 
-		e.stopImmediatePropagation();  
-	});
-	$('.element-link84c').click(function (e) {  
-		location.href = '/household/element.html?n=4'; 
 		e.stopImmediatePropagation();
 	});
-	$('.element-link84d').click(function (e) {  
-		location.href = '/household/element.html?n=5'; 
+	$('.element-link84b').click(function (e) {
+		location.href = '/household/element.html?n=3';
+		e.stopImmediatePropagation();
+	});
+	$('.element-link84c').click(function (e) {
+		location.href = '/household/element.html?n=4';
+		e.stopImmediatePropagation();
+	});
+	$('.element-link84d').click(function (e) {
+		location.href = '/household/element.html?n=5';
 		e.stopImmediatePropagation();
 	});
 
-	$('.vr-link39ob').click(function (e) {  
+	$('.vr-link39ob').click(function (e) {
 		alert('준비중입니다.');
-		e.stopImmediatePropagation();  
+		e.stopImmediatePropagation();
 		//window.location.href = '/media/e_modelhouse2.html'; 
 	});
-	$('.vr-link39oa').click(function (e) {  
+	$('.vr-link39oa').click(function (e) {
 		alert('준비중입니다.');
-		e.stopImmediatePropagation();  
+		e.stopImmediatePropagation();
 		//window.location.href = '/media/e_modelhouse3.html';
 	});
-	$('.vr-link39oa-t').click(function (e) {  
+	$('.vr-link39oa-t').click(function (e) {
 		alert('준비중입니다.');
-		e.stopImmediatePropagation();  
+		e.stopImmediatePropagation();
 		//window.location.href = '/media/e_modelhouse3.html';
 	});
 
-	$('.display-link39ob').click(function (e) {  
+	$('.display-link39ob').click(function (e) {
 		alert('준비중입니다.');
-		e.stopImmediatePropagation();  
+		e.stopImmediatePropagation();
 		//window.location.href = '/household/display.html'; 
 	});
-	$('.display-link39oa').click(function (e) {  
+	$('.display-link39oa').click(function (e) {
 		alert('준비중입니다.');
-		e.stopImmediatePropagation();  
+		e.stopImmediatePropagation();
 		//window.location.href = '/household/display.html';
 	});
-	$('.display-link39oa-t').click(function (e) {  
+	$('.display-link39oa-t').click(function (e) {
 		alert('준비중입니다.');
-		e.stopImmediatePropagation();  
+		e.stopImmediatePropagation();
 		//window.location.href = '/household/display.html';
 	});
 
-	$('.element-link39ob-t').click(function (e) {  
+	$('.element-link39ob-t').click(function (e) {
 		location.href = '/household/element.html';
 		e.stopImmediatePropagation();
 	});
@@ -130,7 +130,7 @@ $(function () {
 		location.href = '/household/element.html';
 		e.stopImmediatePropagation();
 	});
-	$('.element-link39oa-t').click(function (e) { 
+	$('.element-link39oa-t').click(function (e) {
 		location.href = '/household/element.html';
 		e.stopImmediatePropagation();
 	});
