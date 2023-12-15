@@ -61,28 +61,28 @@ $(function () {
 	});
 
 	$('.display-link84b').click(function (e) {
-		location.href = '/household/display.html?n=1';
+		location.href = '/siglo/household/display.html?n=1';
 		e.stopImmediatePropagation();
 	});
 	$('.display-link84c').click(function (e) {
-		location.href = '/household/display.html?n=2';
+		location.href = '/siglo/household/display.html?n=2';
 		e.stopImmediatePropagation();
 	});
 
 	$('.element-link84a').click(function (e) {
-		location.href = '/household/element.html?n=2';
+		location.href = '/siglo/household/element.html?n=2';
 		e.stopImmediatePropagation();
 	});
 	$('.element-link84b').click(function (e) {
-		location.href = '/household/element.html?n=3';
+		location.href = '/siglo/household/element.html?n=3';
 		e.stopImmediatePropagation();
 	});
 	$('.element-link84c').click(function (e) {
-		location.href = '/household/element.html?n=4';
+		location.href = '/siglo/household/element.html?n=4';
 		e.stopImmediatePropagation();
 	});
 	$('.element-link84d').click(function (e) {
-		location.href = '/household/element.html?n=5';
+		location.href = '/siglo/household/element.html?n=5';
 		e.stopImmediatePropagation();
 	});
 
@@ -119,19 +119,19 @@ $(function () {
 	});
 
 	$('.element-link39ob-t').click(function (e) {
-		location.href = '/household/element.html';
+		location.href = '/siglo/household/element.html';
 		e.stopImmediatePropagation();
 	});
 	$('.element-link39ob').click(function (e) {
-		location.href = '/household/element.html';
+		location.href = '/siglo/household/element.html';
 		e.stopImmediatePropagation();
 	});
 	$('.element-link39oa').click(function (e) {
-		location.href = '/household/element.html';
+		location.href = '/siglo/household/element.html';
 		e.stopImmediatePropagation();
 	});
 	$('.element-link39oa-t').click(function (e) {
-		location.href = '/household/element.html';
+		location.href = '/siglo/household/element.html';
 		e.stopImmediatePropagation();
 	});
 
