@@ -2234,9 +2234,9 @@ body.is--overflow-hidden {
 /*메인 3월오픈배너*/
 .main-visaul-banner {
   position: absolute;
-  color: #fff;
-  padding: 1rem 2rem;
   z-index: 11;
+  background-color: #fff;
+  padding: 1rem 2rem;
   right: 5.2vw;
   top: 135px;
 }
