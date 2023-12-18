@@ -69,20 +69,25 @@
   <script>
     window.onload = function () {
       var today = new Date();
-      var targetDate = new Date(2023, 5, 30);
+      var targetDate = new Date(2025, 5, 30);
       var dday = Math.ceil((targetDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
       if (dday == 0) {
         document.getElementById("dday").innerText = "D-DAY";
-      } else {
+      } else if (dday > 0) {
         document.getElementById("dday").innerText = "D-" + dday;
+      } else {
+        document.getElementById("dday").innerText = "D+" + Math.abs(dday);
       }
 
       var targetPreDate = new Date(2025, 4, 16);
       var preDday = Math.ceil((targetPreDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+
       if (preDday == 0) {
         document.getElementById("pre_dday").innerText = "D-DAY";
-      } else {
+      } else if (preDday > 0) {
         document.getElementById("pre_dday").innerText = "D-" + preDday;
+      } else {
+        document.getElementById("pre_dday").innerText = "D+" + Math.abs(preDday);
       }
     }
   </script>
