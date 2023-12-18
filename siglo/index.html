@@ -69,7 +69,7 @@
   <script>
     window.onload = function () {
       var today = new Date();
-      var targetDate = new Date(2023, 11, 18);
+      var targetDate = new Date(2023, 5, 30);
       var dday = Math.ceil((targetDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
       if (dday == 0) {
         document.getElementById("dday").innerText = "D-DAY";
@@ -79,7 +79,11 @@
 
       var targetPreDate = new Date(2025, 4, 16);
       var preDday = Math.ceil((targetPreDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-      document.getElementById("pre_dday").innerText = "D-" + preDday;
+      if (preDday == 0) {
+        document.getElementById("pre_dday").innerText = "D-DAY";
+      } else {
+        document.getElementById("pre_dday").innerText = "D-" + preDday;
+      }
     }
   </script>
 </head>
