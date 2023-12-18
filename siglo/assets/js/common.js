@@ -56,3 +56,18 @@ $(function () {
   })
 
 });
+
+
+function checkDday() {
+  var today = new Date();
+  var targetDate = new Date(2025, 5, 30);
+  var dday = Math.ceil((targetDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+  document.getElementById("dday").innerText = "D" + dday;
+};
+
+function checkPreDday() {
+  var today = new Date();
+  var targetDate = new Date(2025, 4, 15);
+  var dday = Math.ceil((targetDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+  document.getElementById("dday").innerText = "D" + dday;
+};
