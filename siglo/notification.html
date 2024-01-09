@@ -11,7 +11,6 @@
   <meta name="keywords" content="검단역 금강펜테리움 더 시글로 II">
   <meta name="application-name" content="검단역 금강펜테리움 더 시글로 II">
   <meta name="msapplication-tooltip" content="검단역 금강펜테리움 더 시글로 II">
-  <meta id="meta_og_title" property="og:title" content="검단역 금강펜테리움 더 시글로 II">
   <meta name="description" content="검단역 금강펜테리움 더 시글로 II">
   <meta property="og:description" content="검단역 금강펜테리움 더 시글로 II">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,16 +20,6 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta property="og:image:width" content="800">
   <meta property="og:image:height" content="627">
-  <link rel="stylesheet" href="assets/style/stylea3c4.css">
-  <script src="assets/js/vendors/jquery.min.js"></script>
-  <script src="assets/js/vendors/aos.js"></script>
-  <script src="assets/js/common.js"></script>
-  <script src="assets/js/sub.js"></script>
-  <script src="assets/js/vendors/swiper.min.js"></script>
-  <script src="assets/js/vendors/jquery.mousewheel.min.js"></script>
-  <script src="assets/js/vendors/TweenMax.min.js"></script>
-  <script src="assets/js/vendors/jquery.fullpage.js"></script>
-  <script src="assets/js/main.js"></script>
   <!-- 네이버 애널리틱스 -->
   <!--
 	<script type="text/javascript" src="../wcs.naver.net/wcslog.js"></script>
@@ -91,21 +80,23 @@
       }
       */
 
-      var canvas = document.getElementById("canvas")
-      var ctx = canvas.getContext("2d");
+      var canvas = document.getElementsByTagName("canvas")
+      var ctx = canvas[0].getContext("2d");
       ctx.font = "20px malgun gothic";
       ctx.fillStype = "rgba(255,0,255,1)";
       ctx.fillText("Hello World", 5, 30);
       var ogImg = document.createElement("meta");
       ogImg.setAttribute('property', 'og:image');
-      ogImg.content = canvas.toDataUrl("image/png");
+      var img = canvas[0].toDataURL("image/png");
+      ogImg.content = img;
+      console.log(img);
       document.getElementsByTagName('head')[0].appendChild(ogImg)
     }
   </script>
 </head>
 
 <body>
-  <canvas id="canvas" name="siglo" width="400" height="400">
+  <canvas id="ccanvas" name="siglo" width="400" height="400">
 
   </canvas>
 </body>
