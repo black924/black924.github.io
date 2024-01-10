@@ -87,9 +87,11 @@
       ctx.fillText("Hello World~~~", 5, 30);
       var ogImg = document.createElement("meta");
       ogImg.setAttribute('property', 'og:image');
-      var img = canvas[0].toDataURL("image/png");
-      ogImg.content = img;
-      console.log(img);
+      var image = new Image();
+      image.src = canvas[0].toDataURL("image/png");
+      //var img = canvas[0].toDataURL("image/png");
+      ogImg.content = image;
+      console.log(image);
       document.getElementsByTagName('head')[0].appendChild(ogImg)
     }
   </script>
