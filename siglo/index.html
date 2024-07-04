@@ -99,7 +99,9 @@
       //document.getElementsByTagName('head')[0].appendChild(ogImg)
       document.getElementById("dday").innerText = str_dday;
       document.getElementById("pre_dday").innerText = str_preDday;
+      //document.getElementById("today").innderText = today.getFullYear() + "년 " + today.getMonth() + "월 " + today.getDate() + "일";
 
+      document.getElementById("today").innerText = today.getFullYear().toString() + "년 " + (today.getMonth() + 1).toString() + "월 " + today.getDate().toString() + "일";
     }
   </script>
 </head>
@@ -232,6 +234,8 @@
   </nav>
   <div class="main-visaul-banner" style="background-color:#fff;padding:1rem 2rem;">
     <!-- <img src="assets/images/main/main-banner.jpg" alt="3월 오픈예정"> -->
+    <h1 class="sub-content__title" id="today"></h1>
+    </br>
     <h1 class="sub-content__title">입주예정</h1>
     <h2 class="interest-agreement__title">2025년 6월 30일</h2>
     <p class="sub-content__title-english" id="dday"></p>
@@ -246,13 +250,13 @@
           style='vertical-align:text-top; width:15px;height:15px;padding-top: 5px;padding-left: 5px;' />
       </p>
     </a>
-    <h2 class="interest-agreement__title">2024년 5월</h2>
+    <h2 class="interest-agreement__title">2024년 6월</h2>
     <div style="width: 200px;height: 40px; border-radius: 10px; border: 3px solid #1e2a5f; padding:2px">
       <div style="width: 100%;height: 100%;background-color:#eeeeee; border-radius: 8px; line-height: 1em;">
-        <div style="width: 65.09%;height: 100%;background-color:#1e2a5f; border-radius: 8px; line-height: 1em;">
+        <div style="width: 68.18%;height: 100%;background-color:#1e2a5f; border-radius: 8px; line-height: 1em;">
           <p class="interest-agreement__title"
             style="color:#fff;text-align: end;vertical-align: middle;font-weight: bold;font-size:medium; padding-right: 5px; padding-top: 11px;">
-            65.09%(+3.01)
+            68.18%(+3.09%)
             <!--  
           </br>
             
