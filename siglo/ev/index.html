@@ -160,6 +160,8 @@
       }
 
       let visibleCnt = 0;
+      let visibleHereCount = 0;
+      let visibleEnvCount = 0;
       // 현재 bounds 안에 있는 마커만 표시
 
       allMarkersData.forEach(info => {
@@ -181,12 +183,17 @@
             infowindow.open(map, marker);
           });
           markerObjs.push(marker);
+          if (info.type === "HERE") {
+            visibleHereCount++;
+          } else {
+            visibleEnvCount++;
+          }
           visibleCnt++;
         }
       });
 
 
-      document.getElementById("progress").textContent = `현재 bounds 내 마커: ${visibleCnt}개`;
+      document.getElementById("progress").textContent = `현재 지도 내 충전소: ${visibleCnt}개(환경부: ${visibleEnvCount}, HERE: ${visibleHereCount})`;
     }
 
     // 지도 상태가 바뀔 때마다 마커 재구성
