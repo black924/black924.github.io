@@ -8,55 +8,61 @@
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <title>간단한 지도 표시하기</title>
   <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=x84uw6z21k"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 </head>
 
 <body>
-  <div id="map" style="width:100%;height:400px;"></div>
+  <div id="map" style="width:100%;height:100%;"></div>
+  <div id="progress"></div>
 
   <script>
 
-    fetch('assets/25q3_ev.csv')
-      .then(res => res.text())
-      .then(csv => {
-        const lines = csv.split('\n').map(x => x.trim()).filter(x => x);
-        // 지도 중심: 첫 라인의 센터
-        let centerLat = 38.44893594, centerLng = 128.4598665;
-        // 라인별 마커 좌표 추출
-        const markers = [];
-        lines.forEach(line => {
-          const cells = line.split(',');
-          if (cells.length < 8) return; // 유효한 라인이 아니면 건너뜀
-          let type = cells[0];
-          if (type === '환경부') {
-            // 앞쪽의 위경도값
-            let lng = parseFloat(cells[1]);
-            let lat = parseFloat(cells[2]);
-            markers.push({ lat, lng, title: cells[3] });
-            centerLat = lat; centerLng = lng;
-          } else if (type === 'HERE') {
-            // 뒤쪽의 위경도값
-            let lat = parseFloat(cells[5]);
-            let lng = parseFloat(cells[4]);
-            markers.push({ lat, lng, title: cells[3] });
-            centerLat = lat; centerLng = lng;
-          }
+    var map = new naver.maps.Map('map', {
+      center: new naver.maps.LatLng(38.44893594, 128.4598665),
+      zoom: 13
+    });
+
+    let totalCount = 0;
+    let processedCount = 0;
+
+    Papa.parse('assets/25q3_ev.csv', {
+      download: true,
+      header: false,
+      worker: true,
+      step: function (row) {
+        const cells = row.data;
+        if (!cells || cells.length < 8) return;
+        let type = cells[0];
+        let name = cells[1];
+        let lat, lng;
+
+        if (type === "환경부") {
+          lng = parseFloat(cells[2]);
+          lat = parseFloat(cells[3]);
+        } else if (type === "HERE") {
+          lat = parseFloat(cells[4]);
+          lng = parseFloat(cells[5]);
+        } else {
+          return;
+        }
+
+        // 실제 지도에 마커 표시
+        new naver.maps.Marker({
+          position: new naver.maps.LatLng(lat, lng),
+          map: map,
+          title: name
         });
 
-        // 네이버 지도 초기화
-        var map = new naver.maps.Map('map', {
-          center: new naver.maps.LatLng(centerLat, centerLng),
-          zoom: 15
-        });
-        // 마커 표시
-        markers.forEach(mark => {
-          new naver.maps.Marker({
-            position: new naver.maps.LatLng(mark.lat, mark.lng),
-            map: map,
-            title: mark.title
-          });
-        });
-      });
-
+        // 진행률 표시
+        processedCount++;
+        if (processedCount % 500 === 0) {
+          document.getElementById("progress").textContent = `처리 중: ${processedCount}개 마커`;
+        }
+      },
+      complete: function (results) {
+        document.getElementById("progress").textContent = `마커 처리 완료: ${processedCount}개`;
+      }
+    });
   </script>
 </body>
 
