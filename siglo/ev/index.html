@@ -73,11 +73,33 @@
       background: #20c933;
       border-color: #04a824;
     }
+
+    .legend-kakao {
+      background: #ffc900;
+      border-color: #e4b100;
+    }
+
+    #search-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 30;
+      background: #3498fd;
+      color: #fff;
+      font-size: 18px;
+      padding: 12px 24px;
+      border-radius: 24px;
+      border: none;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.11);
+      cursor: pointer;
+    }
   </style>
 </head>
 
 <body>
   <div id="map">
+    <button id="search-btn">카카오 전기차충전소 검색(현재 지도 중심 기준)</button>
+
     <div id="progress">진행상황</div>
     <div id="legend">
       <span>
@@ -85,6 +107,9 @@
       </span>
       <span>
         <span class="legend-dot legend-me"></span> 환경부
+      </span>
+      <span>
+        <span class="legend-dot legend-kakao"></span> 카카오
       </span>
     </div>
   </div>
@@ -95,24 +120,23 @@
       zoom: 14
     });
 
-    // 초록색 원 SVG Base64 (환경부)
     const greenIcon = {
       url: 'data:image/svg+xml;base64,' +
-        btoa('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><circle cx="16" cy="16" r="12" fill="#20c933" stroke="#04a824" stroke-width="2"/></svg>'),
-      size: new naver.maps.Size(32, 32),
-      scaledSize: new naver.maps.Size(32, 32),
+        btoa('<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><circle cx="10" cy="10" r="8" fill="#20c933" stroke="#04a824" stroke-width="2"/></svg>'),
+      size: new naver.maps.Size(20, 20),
+      scaledSize: new naver.maps.Size(20, 20),
       origin: new naver.maps.Point(0, 0),
-      anchor: new naver.maps.Point(16, 16)
+      anchor: new naver.maps.Point(10, 10)
     };
 
     // 파란색 원 SVG Base64 (HERE)
     const blueIcon = {
       url: 'data:image/svg+xml;base64,' +
-        btoa('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><circle cx="16" cy="16" r="12" fill="#3498fd" stroke="#1464ae" stroke-width="2"/></svg>'),
-      size: new naver.maps.Size(32, 32),
-      scaledSize: new naver.maps.Size(32, 32),
+        btoa('<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><circle cx="10" cy="10" r="8" fill="#3498fd" stroke="#1464ae" stroke-width="2"/></svg>'),
+      size: new naver.maps.Size(20, 20),
+      scaledSize: new naver.maps.Size(20, 20),
       origin: new naver.maps.Point(0, 0),
-      anchor: new naver.maps.Point(16, 16)
+      anchor: new naver.maps.Point(10, 10)
     };
 
     // 모든 마커 데이터 저장
@@ -124,6 +148,7 @@
       // 현재 줌레벨과 bounds 얻기
       const curZoom = map.getZoom();
       const bounds = map.getBounds();
+
       // 기존 마커 모두 지도에서 제거
       markerObjs.forEach(mk => mk.setMap(null));
       markerObjs = [];
@@ -200,6 +225,63 @@
         updateMarkers(); // 데이터 로딩되면 최초 마커 세팅
       }
     });
+
+    let chargingMarkers = [];
+
+    function clearChargingMarkers() {
+      chargingMarkers.forEach(m => m.setMap(null));
+      chargingMarkers = [];
+    }
+
+    document.getElementById('search-btn').onclick = function () {
+      clearChargingMarkers();
+      const center = map.getCenter();
+
+      // 네이버 LatLng → Kakao 좌표(y,x)
+      const y = center.y; // 위도
+      const x = center.x; // 경도
+
+      // 카카오 Place API REST 호출 (fetch)
+      // 변경: 'YOUR_KAKAO_REST_API_KEY'를 실제 본인 키로 교체
+      fetch(
+        `https://dapi.kakao.com/v2/local/search/keyword.json?query=전기차충전소&y=${y}&x=${x}&radius=3000`,
+        {
+          headers: {
+            "Authorization": "KakaoAK 9bdb5de4f74cce81eb417e80907e2b8c"
+          }
+        }
+      )
+        .then(response => response.json())
+        .then(data => {
+          const icon = {
+            url: 'data:image/svg+xml;base64,' +
+              btoa('<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><circle cx="10" cy="10" r="8" fill="#ffc900" stroke="#e4b100" stroke-width="2"/></svg>'),
+            size: new naver.maps.Size(20, 20),
+            scaledSize: new naver.maps.Size(20, 20),
+            origin: new naver.maps.Point(0, 0),
+            anchor: new naver.maps.Point(10, 10)
+          };
+          // 검색 결과에서 각 장소의 좌표를 네이버 지도에 마커로 표시
+          data.documents.forEach(function (item) {
+            const marker = new naver.maps.Marker({
+              position: new naver.maps.LatLng(item.y, item.x),
+              map: map,
+              title: item.place_name,
+              icon: icon
+            });
+            chargingMarkers.push(marker);
+
+            const infowindow = new naver.maps.InfoWindow({
+              content: `<div style="padding:5px;font-size:14px;">${item.place_name}</div>`
+            });
+            naver.maps.Event.addListener(marker, 'click', function () {
+              infowindow.open(map, marker);
+            });
+          });
+        });
+    };
+
+
   </script>
 </body>
 
