@@ -116,6 +116,7 @@
 
   <script>
     var map = new naver.maps.Map('map', {
+      gl: true,
       center: new naver.maps.LatLng(37.487573, 126.724144),
       zoom: 14
     });
@@ -233,52 +234,72 @@
       chargingMarkers = [];
     }
 
-    document.getElementById('search-btn').onclick = function () {
+    // [카카오 45개 페이지 처리] ------------------------
+    async function fetchKakaoAllPages(center) {
+      const keyword = "전기차충전소";
+      const y = center.y; // 위도
+      const x = center.x; // 경도
+      const radius = 3000;
+      const baseUrl = "https://dapi.kakao.com/v2/local/search/keyword.json";
+      const apiKey = "9bdb5de4f74cce81eb417e80907e2b8c";
+      let allResults = [];
+
+      for (let page = 1; page <= 3; page++) {
+        const response = await fetch(
+          `${baseUrl}?query=${encodeURIComponent(keyword)}&y=${y}&x=${x}&radius=${radius}&size=15&page=${page}`,
+          {
+            headers: {
+              "Authorization": "KakaoAK " + apiKey
+            }
+          }
+        );
+        const data = await response.json();
+        if (!data.documents || data.documents.length === 0) break;
+        allResults = allResults.concat(data.documents);
+        if (data.documents.length < 15) break;
+      }
+      return allResults;
+    }
+    // --------------------------------------------------
+
+    document.getElementById('search-btn').onclick = async function () {
       clearChargingMarkers();
       const center = map.getCenter();
 
-      // 네이버 LatLng → Kakao 좌표(y,x)
-      const y = center.y; // 위도
-      const x = center.x; // 경도
+      // [카카오 45개 페이지 처리] 아래 한 줄만 주석 처리하고, 실제 45개 fetch로 교체
+      // fetch(`https://dapi.kakao.com/v2/local/search/keyword.json?query=전기차충전소&y=${y}&x=${x}&radius=3000`, { ... })
+      //   .then(response => response.json())
+      //   .then(data => { ... })
 
-      // 카카오 Place API REST 호출 (fetch)
-      // 변경: 'YOUR_KAKAO_REST_API_KEY'를 실제 본인 키로 교체
-      fetch(
-        `https://dapi.kakao.com/v2/local/search/keyword.json?query=전기차충전소&y=${y}&x=${x}&radius=3000`,
-        {
-          headers: {
-            "Authorization": "KakaoAK 9bdb5de4f74cce81eb417e80907e2b8c"
-          }
-        }
-      )
-        .then(response => response.json())
-        .then(data => {
-          const icon = {
-            url: 'data:image/svg+xml;base64,' +
-              btoa('<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><circle cx="10" cy="10" r="8" fill="#ffc900" stroke="#e4b100" stroke-width="2"/></svg>'),
-            size: new naver.maps.Size(20, 20),
-            scaledSize: new naver.maps.Size(20, 20),
-            origin: new naver.maps.Point(0, 0),
-            anchor: new naver.maps.Point(10, 10)
-          };
-          // 검색 결과에서 각 장소의 좌표를 네이버 지도에 마커로 표시
-          data.documents.forEach(function (item) {
-            const marker = new naver.maps.Marker({
-              position: new naver.maps.LatLng(item.y, item.x),
-              map: map,
-              title: item.place_name,
-              icon: icon
-            });
-            chargingMarkers.push(marker);
+      // [카카오 45개 페이지 처리] ---------
+      const results = await fetchKakaoAllPages(center);
 
-            const infowindow = new naver.maps.InfoWindow({
-              content: `<div style="padding:5px;font-size:14px;">${item.place_name}</div>`
-            });
-            naver.maps.Event.addListener(marker, 'click', function () {
-              infowindow.open(map, marker);
-            });
-          });
+      const icon = {
+        url: 'data:image/svg+xml;base64,' +
+          btoa('<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><circle cx="10" cy="10" r="8" fill="#ffc900" stroke="#e4b100" stroke-width="2"/></svg>'),
+        size: new naver.maps.Size(20, 20),
+        scaledSize: new naver.maps.Size(20, 20),
+        origin: new naver.maps.Point(0, 0),
+        anchor: new naver.maps.Point(10, 10)
+      };
+
+      results.forEach(function (item) {
+        const marker = new naver.maps.Marker({
+          position: new naver.maps.LatLng(item.y, item.x),
+          map: map,
+          title: item.place_name,
+          icon: icon
         });
+        chargingMarkers.push(marker);
+
+        const infowindow = new naver.maps.InfoWindow({
+          content: `<div style="padding:5px;font-size:14px;">${item.place_name}</div>`
+        });
+        naver.maps.Event.addListener(marker, 'click', function () {
+          infowindow.open(map, marker);
+        });
+      });
+      // [카카오 45개 페이지 처리] ---------
     };
 
 
