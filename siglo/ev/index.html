@@ -75,8 +75,8 @@
     }
 
     .legend-kakao {
-      background: #ffc900;
-      border-color: #e4b100;
+      background: #ff0000;
+      border-color: #cc0000;
     }
 
     #search-btn {
@@ -204,7 +204,6 @@
           if (!cells || cells.length < 8) return;
           let type = (cells[0] || '').trim();
           let lat, lng, title;
-          console.log("type: " + type)
           if (type === '환경부') {
             lng = parseFloat(cells[2]);
             lat = parseFloat(cells[3]);
@@ -239,7 +238,7 @@
       const keyword = "전기차충전소";
       const y = center.y; // 위도
       const x = center.x; // 경도
-      const radius = 3000;
+      const radius = 1000;
       const baseUrl = "https://dapi.kakao.com/v2/local/search/keyword.json";
       const apiKey = "9bdb5de4f74cce81eb417e80907e2b8c";
       let allResults = [];
@@ -276,7 +275,7 @@
 
       const icon = {
         url: 'data:image/svg+xml;base64,' +
-          btoa('<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><circle cx="10" cy="10" r="8" fill="#ffc900" stroke="#e4b100" stroke-width="2"/></svg>'),
+          btoa('<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><circle cx="10" cy="10" r="8" fill="#ff0000" stroke="#cc0000" stroke-width="2"/></svg>'),
         size: new naver.maps.Size(20, 20),
         scaledSize: new naver.maps.Size(20, 20),
         origin: new naver.maps.Point(0, 0),
