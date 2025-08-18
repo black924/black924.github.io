@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>GitHub Pages Naver Map Example</title>
+  <!-- YOUR_CLIENT_ID 부분을 실제 발급받은 값으로 교체하세요 -->
+  <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=x84uw6z21k"></script>
+  <style>
+    #map {
+      width: 100%;
+      height: 400px;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>Naver Map on GitHub Pages</h2>
+  <div id="map"></div>
+  <script>
+    var map = new naver.maps.Map('map', {
+      center: new naver.maps.LatLng(37.5665, 126.9780), // 서울시청 좌표
+      zoom: 14
+    });
+    var marker = new naver.maps.Marker({
+      position: new naver.maps.LatLng(37.5665, 126.9780),
+      map: map
+    });
+  </script>
+</body>
+
+</html>
