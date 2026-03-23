@@ -96,6 +96,9 @@
         min-width: 180px;
         font-size: 12px;
     }
+
+    .tmap-info { border-top: 3px solid #ff4757; padding: 10px; min-width: 220px; font-size: 13px; }
+    .tmap-badge { background: #ff4757; color: white; padding: 2px 5px; border-radius: 3px; font-size: 10px; margin-right: 5px; }
 }
     </style>
 </head>
@@ -120,6 +123,10 @@
     <div style="color:#ff4757; margin-top:5px;">-- OKAY 연결선</div>
 </div>
 
+<button id="tmap-search-btn" style="position: absolute; top: 120px; right: 20px; z-index: 1000; background: #ff4757; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+    🔍 현재 위치 TMAP 검색
+</button>
+
 <div id="map"></div>
 
 <script>
@@ -127,6 +134,15 @@ let allData = []; // 8만개 데이터를 저장할 변수
 let activeMarkers = []; // 현재 지도에 표시된 마커 관리
 let activePolylines = []; // 현재 지도에 표시된 선 관리
 let updateTimer = null;
+
+const TMAP_APP_KEY = 'dTvpdTIDEy7JCLV1V4NLc7bGiWksYpB51MOuQqPt'; // Tmap API 센터에서 발급받은 키
+let tmapMarkers = []; // TMAP 검색 마커만 따로 관리
+
+// TMAP 검색 버튼 이벤트 리스너
+document.getElementById('tmap-search-btn').addEventListener('click', function() {
+    const center = map.getCenter(); // 현재 지도 중심점
+    searchTmapNearby(center.lat(), center.lng());
+});
 
 document.getElementById('log-monitor').addEventListener('click', function() {
     if (this.style.maxHeight === '30px') {
@@ -166,6 +182,77 @@ const map = new naver.maps.Map('map', {
 });
 
 const infoWindow = new naver.maps.InfoWindow({ anchorSkew: true });
+
+async function searchTmapNearby(lat, lng) {
+    addLog(`TMAP 주변 검색 시작 (반경 2km)...`);
+    
+    // 기존 TMAP 마커 제거
+    tmapMarkers.forEach(m => m.setMap(null));
+    tmapMarkers = [];
+
+    const url = `https://apis.openapi.sk.com/tmap/poi/search/around?version=1&centerLat=${lat}&centerLon=${lng}&categories=전기차충전소&radius=2&count=30&resCoordType=WGS84GEO&reqCoordType=WGS84GEO`;
+
+    try {
+        const response = await fetch(url, {
+            headers: { 'appKey': TMAP_APP_KEY }
+        });
+        
+        if (!response.ok) throw new Error("TMAP API 응답 오류");
+
+        const data = await response.json();
+        const pois = data.searchPoiInfo?.pois?.poi;
+
+        if (!pois || pois.length === 0) {
+            addLog("주변에 TMAP 검색 결과가 없습니다.", true);
+            return;
+        }
+
+        addLog(`TMAP 결과 ${pois.length}건 발견.`);
+
+        pois.forEach(poi => {
+            const pLat = parseFloat(poi.noorLat);
+            const pLng = parseFloat(poi.noorLon);
+
+            // 1. 빨간색 마커 생성
+            const marker = new naver.maps.Marker({
+                position: new naver.maps.LatLng(pLat, pLng),
+                map: map,
+                zIndex: 150, // 기존 마커보다 위로
+                icon: {
+                    content: `<div style="width:16px; height:16px; background:#ff4757; border:2px solid #fff; border-radius:50%; box-shadow:0 0 5px rgba(0,0,0,0.5);"></div>`,
+                    anchor: new naver.maps.Point(8, 8)
+                }
+            });
+
+            // 2. 마커 클릭 시 TMAP 전용 정보창 표시
+            naver.maps.Event.addListener(marker, 'click', () => {
+                resetHighlights(); // 기존 하이라이트 초기화
+                
+                const fullAddr = `${poi.upperAddrName} ${poi.middleAddrName} ${poi.lowerAddrName} ${poi.firstDetailAddrName} ${poi.secondDetailAddrName}`.trim();
+                
+                const content = `
+                    <div class="tmap-info">
+                        <div style="font-weight:bold; font-size:15px; margin-bottom:5px;">
+                            <span class="tmap-badge">TMAP</span>${poi.name}
+                        </div>
+                        <div style="color:#666;"><strong>주소:</strong> ${fullAddr}</div>
+                        <div style="color:#666;"><strong>전화:</strong> ${poi.telNo || '정보 없음'}</div>
+                        <div style="color:#666; margin-top:5px; font-size:11px;">업종: ${poi.lowerBizName || '충전소'}</div>
+                    </div>
+                `;
+                
+                infoWindow.setContent(content);
+                infoWindow.open(map, marker);
+                infoWindow.anchorMarker = marker;
+            });
+
+            tmapMarkers.push(marker);
+        });
+
+    } catch (err) {
+        addLog(`TMAP 검색 실패: ${err.message}`, true);
+    }
+}
 
 // 화면에 로그를 찍는 함수
 function addLog(msg, isError = false) {
