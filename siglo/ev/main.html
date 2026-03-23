@@ -483,11 +483,12 @@ function autoSearchTmap() {
             "resCoordType": "EPSG3857",
             "searchType": "name",
             "searchtypCd": "A",
-            "radius": 2, // 자동 검색은 부하 방지를 위해 2km로 제한 권장
+            "radius": 5, // 자동 검색은 부하 방지를 위해 2km로 제한 권장
             "reqCoordType": "WGS84GEO",
             "centerLon": lng.toString(),
             "centerLat": lat.toString(),
-            "count": 50  // 자동 검색 시 적절한 개수
+            "evPublicType": "public",
+            "count": 150  // 자동 검색 시 적절한 개수
         },
         success: function(response) {
             if(!response.searchPoiInfo) return;
