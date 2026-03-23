@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>EV 충전소 데이터 분석 지도</title>
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=YOUR_CLIENT_ID"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; }
+        #map { width: 100%; height: 100vh; }
+        .legend { 
+            position: absolute; top: 15px; right: 15px; z-index: 1000; 
+            background: rgba(255, 255, 255, 0.9); padding: 15px; 
+            border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 13px; border: 1px solid #ddd;
+        }
+        .info-window { padding: 12px; min-width: 220px; font-size: 13px; border-radius: 5px; }
+        .info-title { font-weight: bold; font-size: 15px; margin-bottom: 5px; color: #333; }
+        .status-tag { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 11px; margin-top: 5px; color: white; }
+    </style>
+</head>
+<body>
+
+<div class="legend">
+    <strong style="font-size: 15px;">📡 충전소 데이터 범례</strong><hr>
+    <div style="margin: 8px 0;">
+        <span style="color:#28a745">●</span> 환경부 기준 (Basis)
+    </div>
+    <div style="margin: 8px 0;">
+        <span style="color:#007aff">●</span> HERE 기준 (Basis)
+    </div>
+    <div style="margin: 8px 0; color: #ff4757;">
+        <span style="border-bottom: 2px dashed #ff4757; width: 20px; display: inline-block; margin-bottom: 4px;"></span> OKAY 매칭 (연결선)
+    </div>
+</div>
+
+<div id="map"></div>
+
+<script>
+// 1. 설정 및 지도 초기화
+const EXCEL_PATH = './assets/26q1.xlsx'; // 상대 경로 설정
+const map = new naver.maps.Map('map', {
+    center: new naver.maps.LatLng(37.5665, 126.9780),
+    zoom: 11,
+    zoomControl: true,
+    zoomControlOptions: { position: naver.maps.Position.TOP_LEFT }
+});
+
+const infoWindow = new naver.maps.InfoWindow({
+    anchorSkew: true,
+    backgroundColor: "#fff",
+    borderColor: "#ccc",
+    borderWidth: 1,
+    disableAnchor: false
+});
+
+// 2. 엑셀 데이터 로드 및 처리
+async function fetchAndRenderData() {
+    try {
+        const response = await fetch(EXCEL_PATH);
+        if (!response.ok) throw new Error("파일을 찾을 수 없습니다.");
+        
+        const arrayBuffer = await response.arrayBuffer();
+        const data = new Uint8Array(arrayBuffer);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const sheetName = workbook.SheetNames[0];
+        const rows = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+
+        rows.forEach(row => createMarkerAndLine(row));
+    } catch (error) {
+        console.error("데이터 로딩 오류:", error);
+        alert("assets/26q1.xlsx 파일을 불러오는 데 실패했습니다.");
+    }
+}
+
+// 3. 마커 및 라인 생성 함수
+function createMarkerAndLine(row) {
+    // 엑셀 컬럼명 오타 대응 (longtitude vs longitude)
+    const eLat = row.env_latitude;
+    const eLng = row.env_longtitude || row.env_longitude;
+    const hLat = row.here_latitude;
+    const hLng = row.here_longtitude || row.here_longitude;
+
+    // Basis에 따른 주 좌표 결정
+    const isEnvBasis = row.basis === '환경부';
+    const mainLat = isEnvBasis ? eLat : hLat;
+    const mainLng = isEnvBasis ? eLng : hLng;
+    const color = isEnvBasis ? '#28a745' : '#007aff';
+
+    if (!mainLat || !mainLng) return;
+
+    // 마커 생성 (Custom HTML Icon)
+    const marker = new naver.maps.Marker({
+        position: new naver.maps.LatLng(mainLat, mainLng),
+        map: map,
+        icon: {
+            content: `<div style="width:14px; height:14px; background:${color}; border:2px solid #fff; border-radius:50%; cursor:pointer;"></div>`,
+            anchor: new naver.maps.Point(7, 7)
+        }
+    });
+
+    // OKAY 조건 및 선 그리기
+    const isOkay = (row.Env_Note === "환경부 기준 OKAY" || row.Here_Note === "HERE 기준 OKAY");
+    let polyline = null;
+
+    if (isOkay && eLat && hLat) {
+        polyline = new naver.maps.Polyline({
+            map: map,
+            path: [new naver.maps.LatLng(eLat, eLng), new naver.maps.LatLng(hLat, hLng)],
+            strokeColor: '#ff4757',
+            strokeOpacity: 0.5,
+            strokeWeight: 2,
+            strokeStyle: 'dash'
+        });
+    }
+
+    // 클릭 이벤트 핸들러
+    naver.maps.Event.addListener(marker, 'click', () => {
+        // 말풍선 내용 구성
+        const content = `
+            <div class="info-window">
+                <div class="info-title">${row.station_name || '명칭 미상'}</div>
+                <div style="color:#666; margin-bottom:5px;">${row.address || '주소 정보 없음'}</div>
+                <div style="font-size:11px;">기준: <strong>${row.basis}</strong></div>
+                ${isOkay ? '<span class="status-tag" style="background:#ff4757;">OKAY 하이라이트</span>' : ''}
+            </div>
+        `;
+        
+        infoWindow.setContent(content);
+        infoWindow.open(map, marker);
+
+        // 하이라이트 효과 (OKAY인 경우)
+        if (isOkay && polyline) {
+            polyline.setOptions({
+                strokeWeight: 6,
+                strokeOpacity: 1,
+                strokeStyle: 'solid'
+            });
+        }
+    });
+
+    // 팝업 닫힐 때 하이라이트 원상복구
+    naver.maps.Event.addListener(infoWindow, 'close', ()
