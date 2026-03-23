@@ -126,6 +126,7 @@
 let allData = []; // 8만개 데이터를 저장할 변수
 let activeMarkers = []; // 현재 지도에 표시된 마커 관리
 let activePolylines = []; // 현재 지도에 표시된 선 관리
+let updateTimer = null;
 
 document.getElementById('log-monitor').addEventListener('click', function() {
     if (this.style.maxHeight === '30px') {
