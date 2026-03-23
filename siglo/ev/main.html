@@ -33,12 +33,24 @@
 .hidden { display: none !important; }
 /* 프로그래스바 컨테이너 */
 #progress-container {
-    width: 300px; height: 10px; background: #444; border-radius: 5px;
-    margin: 20px 0; overflow: hidden;
+    width: 300px;
+    height: 12px;           /* 높이를 조금 더 키워 가독성 확보 */
+    background: #333;
+    border-radius: 6px;
+    margin: 20px 0;
+    overflow: hidden;       /* 내부 바가 삐져나가지 않게 함 */
+    border: 1px solid #444; /* 경계 명확화 */
+    padding: 0;             /* 내부 여백을 0으로 강제 */
 }
+
 /* 실제 진행 바 */
 #progress-bar {
-    width: 0%; height: 100%; background: #28a745; transition: width 0.2s;
+    width: 0%; 
+    height: 100%; 
+    background: linear-gradient(90deg, #28a745, #00ff88); /* 그라데이션 추가 */
+    transition: width 0.2s ease-out;
+    display: block;         /* 공백 제거를 위해 block 설정 */
+    box-sizing: border-box; /* 테두리 포함 계산 방지 */
 }
 .hidden { display: none !important; opacity: 0; }
 /* 실시간 로그 모니터 */
@@ -47,7 +59,7 @@
             width: 350px; max-height: 200px; background: rgba(0, 0, 0, 0.7);
             color: #00ff88; font-family: 'Courier New', Courier, monospace;
             font-size: 11px; padding: 10px; border-radius: 5px;
-            overflow-y: auto; pointer-events: none; border: 1px solid #444;
+            overflow-y: auto; pointer-events: auto; border: 1px solid #444, cursor: default;
         }
         .log-entry { margin-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 2px; }
         .log-error { color: #ff4757; }
@@ -118,17 +130,27 @@ async function loadLargeData() {
 
         // 1. 파일 다운로드 스트리밍 및 퍼센트 표시
         while(true) {
-            const {done, value} = await reader.read();
-            if (done) break;
-            chunks.push(value);
-            loaded += value.length;
-            
-            if (total) {
-                const percent = Math.round((loaded / total) * 100);
-                progressBar.style.width = percent + '%';
-                percentText.innerText = percent + '%';
-            }
+    const {done, value} = await reader.read();
+    if (done) break;
+    chunks.push(value);
+    loaded += value.length;
+    
+    if (total) {
+        let percent = Math.floor((loaded / total) * 100);
+        if (percent > 100) percent = 100; // 100% 초과 방지
+        
+        progressBar.style.width = percent + '%';
+        percentText.innerText = percent + '%';
+        
+        // 100%일 때 색상을 변경하거나 로그를 남김
+        if (percent === 100) {
+            progressBar.style.background = '#00ff88'; 
         }
+    }
+}
+// 루프가 끝난 직후 강제로 100% 설정 (안전장치)
+progressBar.style.width = '100%';
+percentText.innerText = '100%';
 
         // 2. 데이터 파싱 단계 (Dim 유지)
         statusText.innerText = "엑셀 파일을 로딩중입니다. 잠시만 기다려주세요...";
@@ -171,7 +193,7 @@ function updateMarkers() {
     clearMap();
 
     // 줌 레벨이 14 미만이면 안내 메시지만 띄우고 중단
-    if (zoom < 14) {
+    if (zoom < 15) {
         addLog(`줌 레벨(${zoom})이 낮음: 확대가 필요합니다.`);
         console.log("줌 레벨이 낮아 데이터를 표시하지 않습니다. (현재: " + zoom + ")");
         return;
@@ -223,9 +245,7 @@ function createMarkerAndLine(row) {
             strokeWeight: 2,
             strokeOpacity: 0.5,
             strokeStyle: 'dash'
-        });
-        activePolylines.push(polyline);
-        
+        });        
         // 클릭 이벤트 연동 (하이라이트)
         naver.maps.Event.addListener(marker, 'click', () => {
             polyline.setOptions({ strokeWeight: 6, strokeOpacity: 1, strokeStyle: 'solid' });
@@ -238,47 +258,53 @@ function createMarkerAndLine(row) {
     activeMarkers.push(marker);
 }
 
+// 말풍선(InfoWindow) 표시 함수
 function showInfoWindow(row, marker) {
     let title = "";
     let contentHtml = "";
+    let basisBadge = ""; // basis 라벨용 변수
     
-    // 거리 정보 (숫자인 경우 2소수점까지, 없는 경우 대비)
-    const dist = row.distance ? Number(row.distance).toFixed(2) + "m" : "정보 없음";
-
+    // 1. Basis에 따른 공통 뱃지(라벨) 및 타이틀 설정
     if (row.basis === '환경부') {
-        // 1. 타이틀 설정
+        // 초록색 배경, 흰 글씨 라벨
+        basisBadge = `<span style="display:inline-block; padding:2px 6px; background-color:#28a745; color:white; border-radius:4px; font-size:11px; margin-right:6px; vertical-align:middle;">환경부</span>`;
         title = row.Env_Col1 || "명칭 없음";
         
-        // 2. 환경부 기준 OKAY인 경우 상세 내용 추가
+        // 환경부 기준 OKAY 상세 내용
         if (row.Env_Note === "환경부 기준 OKAY") {
+            const dist = row.distance ? Number(row.distance).toFixed(2) + "m" : "정보 없음";
             contentHtml = `
-                <div style="margin-top:5px; color:#444;">
-                    <strong>HERE EV Station:</strong> ${row.Here_FirstCol || '데이터 없음'}<br>
-                    <strong>HERE EV와의 거리:</strong> ${dist}
+                <div style="margin-top:8px; color:#444; font-size:12px; line-height:1.5;">
+                    <strong style="color:#555;">HERE EV Station:</strong> ${row.Here_FirstCol || '데이터 없음'}<br>
+                    <strong style="color:#555;">HERE EV와의 거리:</strong> ${dist}
                 </div>`;
         }
     } 
     else if (row.basis === 'HERE') {
-        // 1. 타이틀 설정
+        // 파란색 배경, 흰 글씨 라벨
+        basisBadge = `<span style="display:inline-block; padding:2px 6px; background-color:#007aff; color:white; border-radius:4px; font-size:11px; margin-right:6px; vertical-align:middle;">HERE</span>`;
         title = row.Here_FirstCol || "명칭 없음";
         
-        // 2. HERE 기준 OKAY인 경우 상세 내용 추가
+        // HERE 기준 OKAY 상세 내용
         if (row.Here_Note === "HERE 기준 OKAY") {
+            const dist = row.distance ? Number(row.distance).toFixed(2) + "m" : "정보 없음";
             contentHtml = `
-                <div style="margin-top:5px; color:#444;">
-                    <strong>환경부 EV Station:</strong> ${row.Env_Col1 || '데이터 없음'}<br>
-                    <strong>주소:</strong> ${row.Env_Col2 || '주소 정보 없음'}<br>
-                    <strong>환경부 EV와의 거리:</strong> ${dist}
+                <div style="margin-top:8px; color:#444; font-size:12px; line-height:1.5;">
+                    <strong style="color:#555;">환경부 EV Station:</strong> ${row.Env_Col1 || '데이터 없음'}<br>
+                    <strong style="color:#555;">주소:</strong> ${row.Env_Col2 || '주소 정보 없음'}<br>
+                    <strong style="color:#555;">환경부 EV와의 거리:</strong> ${dist}
                 </div>`;
         }
     }
 
+    // 2. 최종 HTML 생성 (뱃지 + 타이틀)
     const finalContent = `
-        <div class="info-window">
-            <div class="info-title" style="font-weight:bold; font-size:14px; border-bottom:1px solid #eee; padding-bottom:5px; margin-bottom:5px;">
-                ${title}
+        <div class="info-window" style="padding:10px; min-width:240px; font-family:sans-serif;">
+            <div class="info-title" style="font-weight:bold; font-size:14px; border-bottom:1px solid #eee; padding-bottom:7px; margin-bottom:0; display:flex; align-items:center;">
+                ${basisBadge} 
+                <span style="flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${title}">${title}</span>
             </div>
-            ${contentHtml || '<div style="color:#888;">상세 매칭 정보가 없습니다.</div>'}
+            ${contentHtml || '<div style="color:#999; font-size:12px; margin-top:8px; text-align:center;">상세 매칭 정보가 없습니다.</div>'}
         </div>
     `;
 
