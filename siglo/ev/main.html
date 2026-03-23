@@ -36,89 +36,120 @@
 <div id="map"></div>
 
 <script>
-    // 1. 지도 초기화
-    const map = new naver.maps.Map('map', {
-        center: new naver.maps.LatLng(37.5665, 126.9780),
-        zoom: 10
+let allData = []; // 8만개 데이터를 저장할 변수
+let activeMarkers = []; // 현재 지도에 표시된 마커 관리
+let activePolylines = []; // 현재 지도에 표시된 선 관리
+
+const map = new naver.maps.Map('map', {
+    center: new naver.maps.LatLng(37.5665, 126.9780),
+    zoom: 10 // 초기 줌은 낮게 설정
+});
+
+const infoWindow = new naver.maps.InfoWindow({ anchorSkew: true });
+
+// 1. 데이터 로드 (최초 1회)
+async function loadLargeData() {
+    try {
+        const response = await fetch('./assets/26q1.xlsx');
+        const arrayBuffer = await response.arrayBuffer();
+        const data = new Uint8Array(arrayBuffer);
+        const workbook = XLSX.read(data, { type: 'array' });
+        allData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
+        
+        console.log("로드 완료: " + allData.length + "개");
+        
+        // 지도 이벤트 리스너 등록
+        naver.maps.Event.addListener(map, 'idle', updateMarkers); // 이동/줌 종료 시 업데이트
+    } catch (err) {
+        console.error("데이터 로딩 에러:", err);
+    }
+}
+
+// 2. 줌/영역에 따른 마커 업데이트 로직
+function updateMarkers() {
+    const zoom = map.getZoom();
+    const bounds = map.getBounds(); // 현재 지도의 가시 영역
+
+    // 기존 마커/선 제거
+    clearMap();
+
+    // 줌 레벨이 14 미만이면 안내 메시지만 띄우고 중단
+    if (zoom < 14) {
+        console.log("줌 레벨이 낮아 데이터를 표시하지 않습니다. (현재: " + zoom + ")");
+        return;
+    }
+
+    // 현재 화면 영역 내에 있는 데이터만 필터링 (8만개 루프는 JS에서 매우 빠름)
+    const visibleData = allData.filter(row => {
+        const lat = row.basis === '환경부' ? row.env_latitude : row.here_latitude;
+        const lng = row.basis === '환경부' ? (row.env_longtitude || row.env_longitude) : (row.here_longtitude || row.here_longitude);
+        
+        return lat && lng && bounds.hasLatLng(new naver.maps.LatLng(lat, lng));
     });
 
-    const infoWindow = new naver.maps.InfoWindow({ anchorSkew: true });
+    // 필터링된 데이터만 렌더링 (최대 500~1000개 정도로 제한 권장)
+    visibleData.slice(0, 1000).forEach(row => createMarkerAndLine(row));
+}
 
-    // 2. 데이터 로드 (상대 경로 확인: main.html 기준 assets 폴더)
-    async function loadData() {
-        try {
-            const response = await fetch('./assets/26q1_ev.xlsx');
-            if (!response.ok) throw new Error("파일 로드 실패");
-            
-            const arrayBuffer = await response.arrayBuffer();
-            const data = new Uint8Array(arrayBuffer);
-            const workbook = XLSX.read(data, { type: 'array' });
-            const rows = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
+function clearMap() {
+    activeMarkers.forEach(m => m.setMap(null));
+    activePolylines.forEach(p => p.setMap(null));
+    activeMarkers = [];
+    activePolylines = [];
+}
 
-            renderMarkers(rows);
-        } catch (err) {
-            console.error(err);
-            // 지도는 뜨는데 데이터만 안 나오는 경우를 대비해 알림
-            console.log("데이터를 불러올 수 없습니다. 경로를 확인하세요.");
+function createMarkerAndLine(row) {
+    const eLat = row.env_latitude, eLng = row.env_longtitude || row.env_longitude;
+    const hLat = row.here_latitude, hLng = row.here_longtitude || row.here_longitude;
+    const isEnv = row.basis === '환경부';
+    const lat = isEnv ? eLat : hLat;
+    const lng = isEnv ? eLng : hLng;
+
+    const marker = new naver.maps.Marker({
+        position: new naver.maps.LatLng(lat, lng),
+        map: map,
+        icon: {
+            content: `<div style="width:12px; height:12px; background:${isEnv ? '#28a745':'#007aff'}; border:1px solid #fff; border-radius:50%;"></div>`,
+            anchor: new naver.maps.Point(6, 6)
         }
-    }
+    });
 
-    function renderMarkers(data) {
-        data.forEach(row => {
-            const eLat = row.env_latitude, eLng = row.env_longtitude || row.env_longitude;
-            const hLat = row.here_latitude, hLng = row.here_longtitude || row.here_longitude;
-            
-            const isEnv = row.basis === '환경부';
-            const lat = isEnv ? eLat : hLat;
-            const lng = isEnv ? eLng : hLng;
-
-            if (!lat || !lng) return;
-
-            const marker = new naver.maps.Marker({
-                position: new naver.maps.LatLng(lat, lng),
-                map: map,
-                icon: {
-                    content: `<div style="width:14px; height:14px; background:${isEnv ? '#28a745':'#007aff'}; border:2px solid #fff; border-radius:50%;"></div>`,
-                    anchor: new naver.maps.Point(7, 7)
-                }
-            });
-
-            const isOkay = (row.Env_Note === "환경부 기준 OKAY" || row.Here_Note === "HERE 기준 OKAY");
-            let polyline = null;
-
-            if (isOkay && eLat && hLat) {
-                polyline = new naver.maps.Polyline({
-                    map: map,
-                    path: [new naver.maps.LatLng(eLat, eLng), new naver.maps.LatLng(hLat, hLng)],
-                    strokeColor: '#ff4757',
-                    strokeWeight: 2,
-                    strokeOpacity: 0.6,
-                    strokeStyle: 'dash'
-                });
-            }
-
-            naver.maps.Event.addListener(marker, 'click', () => {
-                infoWindow.setContent(`
-                    <div class="info-window">
-                        <strong>${row.station_name || '정보 없음'}</strong><br>
-                        ${row.address || ''}<br>
-                        <small>Basis: ${row.basis}</small>
-                    </div>
-                `);
-                infoWindow.open(map, marker);
-
-                if (polyline) {
-                    polyline.setOptions({ strokeWeight: 6, strokeOpacity: 1, strokeStyle: 'solid' });
-                }
-            });
-
-            naver.maps.Event.addListener(infoWindow, 'close', () => {
-                if (polyline) polyline.setOptions({ strokeWeight: 2, strokeOpacity: 0.6, strokeStyle: 'dash' });
-            });
+    const isOkay = (row.Env_Note === "환경부 기준 OKAY" || row.Here_Note === "HERE 기준 OKAY");
+    if (isOkay && eLat && hLat) {
+        const polyline = new naver.maps.Polyline({
+            map: map,
+            path: [new naver.maps.LatLng(eLat, eLng), new naver.maps.LatLng(hLat, hLng)],
+            strokeColor: '#ff4757',
+            strokeWeight: 2,
+            strokeOpacity: 0.5,
+            strokeStyle: 'dash'
         });
+        activePolylines.push(polyline);
+        
+        // 클릭 이벤트 연동 (하이라이트)
+        naver.maps.Event.addListener(marker, 'click', () => {
+            polyline.setOptions({ strokeWeight: 6, strokeOpacity: 1, strokeStyle: 'solid' });
+            showInfoWindow(row, marker);
+        });
+    } else {
+        naver.maps.Event.addListener(marker, 'click', () => showInfoWindow(row, marker));
     }
 
-    window.onload = loadData;
+    activeMarkers.push(marker);
+}
+
+function showInfoWindow(row, marker) {
+    infoWindow.setContent(`
+        <div class="info-window">
+            <strong>${row.station_name || '정보 없음'}</strong><br>
+            ${row.address || ''}<br>
+            <small>Basis: ${row.basis}</small>
+        </div>
+    `);
+    infoWindow.open(map, marker);
+}
+
+window.onload = loadLargeData;
 </script>
 </body>
 </html>
