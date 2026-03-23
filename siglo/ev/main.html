@@ -447,7 +447,6 @@ function getTmapPoiDetail(poiId, marker) {
             <div class="info-content">
                 <div><strong>주소:</strong> ${detail.address}</div>
                 <div><strong>전화:</strong> ${detail.tel || '정보없음'}</div>
-                <div style="margin-top:5px; color:#ff4757; font-weight:bold;">실시간 검색 데이터</div>
             </div>
         </div>
     </div>
@@ -670,15 +669,21 @@ function createMarkerAndLine(row) {
 function showInfoWindow(row, marker) {
     const isEnv = row.basis === '환경부';
     const barClass = isEnv ? 'bar-env' : 'bar-here';
+    
+    // [수정] TMAP 스타일의 배경색 배지 설정
+    // 환경부는 초록(#28a745), HERE는 파랑(#007aff)
+    const badgeStyle = isEnv 
+        ? 'background-color:#28a745; color:white; border:none;' 
+        : 'background-color:#007aff; color:white; border:none;';
+    
     const label = isEnv ? '환경부' : 'HERE';
     const title = isEnv ? (row.Env_Col1 || "명칭 없음") : (row.Here_FirstCol || "명칭 없음");
     
-    // 내용 구성 (매칭 데이터가 있는 경우)
     let detailHtml = "";
     if (isEnv && row.Env_Note === "환경부 기준 OKAY") {
-        detailHtml = `<div><strong>매칭:</strong> ${row.Here_FirstCol}</div><div><strong>거리:</strong> ${row.distance}m</div>`;
+        detailHtml = `<div><strong>근처 HERE EV:</strong> ${row.Here_FirstCol}</div><div><strong>거리:</strong> ${row.distance.toFixed(2)}m</div>`;
     } else if (!isEnv && row.Here_Note === "HERE 기준 OKAY") {
-        detailHtml = `<div><strong>매칭:</strong> ${row.Env_Col1}</div><div><strong>거리:</strong> ${row.distance}m</div>`;
+        detailHtml = `<div><strong>근처 환경부 EV:</strong> ${row.Env_Col1}</div><div><strong>거리:</strong> ${row.distance.toFixed(2)}m</div>`;
     }
 
     const content = `
@@ -686,7 +691,9 @@ function showInfoWindow(row, marker) {
             <div class="info-header-bar ${barClass}"></div>
             <div class="info-body">
                 <div class="info-title">
-                    <span style="font-size:10px; padding:2px 4px; border:1px solid #ddd; border-radius:3px;">${label}</span>
+                    <span style="font-size:10px; padding:2px 5px; border-radius:3px; font-weight:bold; ${badgeStyle}">
+                        ${label}
+                    </span>
                     ${title}
                 </div>
                 <div class="info-content">
