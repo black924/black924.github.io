@@ -180,7 +180,10 @@ function addLog(msg, isError = false) {
 
 function resetHighlights() {
     infoWindow.close();
-    activePolylines.forEach(p => p.setOptions({ strokeWeight: 2, strokeOpacity: 0.5, strokeStyle: 'dash' }));
+    infoWindow.anchorMarker = null; // 마커 참조 초기화
+    activePolylines.forEach(p => {
+        p.setOptions({ strokeWeight: 2, strokeOpacity: 0.5, strokeStyle: 'dash' });
+    });
 }
 
 // 1. 데이터 로드 (최초 1회)
@@ -324,13 +327,35 @@ function createMarkerAndLine(row) {
         }
 
         naver.maps.Event.addListener(marker, 'click', () => {
-            const isOpen = infoWindow.getMap() && infoWindow.getAnchor() === marker;
-            resetHighlights();
-            if (!isOpen) {
-                showInfoWindow(row, marker);
-                if (polyline) polyline.setOptions({ strokeWeight: 6, strokeOpacity: 1, strokeStyle: 'solid' });
-            }
-        });
+    // 1. 현재 정보창이 지도에 표시 중인지 확인
+    const isMapVisible = infoWindow.getMap();
+    
+    // 2. 현재 정보창이 이 마커에 열려 있는지 확인 (우리가 임의로 지정할 속성 이용)
+    const isCurrentMarker = infoWindow.anchorMarker === marker;
+
+    if (isMapVisible && isCurrentMarker) {
+        // 이미 같은 마커에 열려 있다면 닫고 초기화
+        resetHighlights();
+        infoWindow.anchorMarker = null; // 참조 해제
+        addLog("정보창을 닫았습니다.");
+    } else {
+        // 닫혀 있거나 다른 마커를 클릭한 경우
+        resetHighlights();
+
+        // 정보창을 열고, 현재 마커를 anchorMarker로 저장
+        showInfoWindow(row, marker);
+        infoWindow.anchorMarker = marker; 
+
+        if (isOkay && polyline) {
+            polyline.setOptions({
+                strokeWeight: 6,
+                strokeOpacity: 1,
+                strokeStyle: 'solid'
+            });
+            addLog(`'${row.station_name}' 하이라이트 활성화`);
+        }
+    }
+});
         activeMarkers.push(marker);
 }
 
