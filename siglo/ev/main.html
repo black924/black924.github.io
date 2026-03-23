@@ -95,7 +95,20 @@ let activePolylines = []; // 현재 지도에 표시된 선 관리
 
 const map = new naver.maps.Map('map', {
     center: new naver.maps.LatLng(37.5665, 126.9780),
-    zoom: 10 // 초기 줌은 낮게 설정
+    zoom: 10,
+    
+    // 지도 유형 컨트롤 활성화
+    mapTypeControl: true,
+    mapTypeControlOptions: {
+        style: naver.maps.MapTypeControlStyle.BUTTON, // 버튼 스타일
+        position: naver.maps.Position.TOP_LEFT      // 우측 상단 배치
+    },
+
+    // 줌 컨트롤 (옵션)
+    zoomControl: true,
+    zoomControlOptions: {
+        position: naver.maps.Position.RIGHT_CENTER
+    }
 });
 
 const infoWindow = new naver.maps.InfoWindow({ anchorSkew: true });
