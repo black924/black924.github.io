@@ -313,7 +313,7 @@ document.getElementById('log-monitor').addEventListener('click', function() {
 
 const map = new naver.maps.Map('map', {
     center: new naver.maps.LatLng(37.5665, 126.9780),
-    zoom: 10,
+    zoom: 15,
     
     // 지도 유형 컨트롤 활성화
     mapTypeControl: true,
@@ -473,8 +473,6 @@ function autoSearchTmap() {
 
     // 기존 TMAP 마커 제거
     clearTmapResults();
-
-    addLog(`TMAP 자동 검색 실행 (반경 2km)...`);
 
     $.ajax({
         method: "GET",
