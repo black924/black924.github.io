@@ -6,7 +6,6 @@
     <title>전기차 충전소 분석 - Main</title>
     <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=x84uw6z21k"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=dTvpdTIDEy7JCLV1V4NLc7bGiWksYpB51MOuQqPt"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <style>
         /* 중요: html과 body의 높이를 100%로 지정하고 overflow를 숨깁니다. */
@@ -25,6 +24,51 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.2); font-size: 13px; 
         }
         .info-window { padding: 10px; min-width: 200px; font-size: 13px; line-height: 1.4; }
+
+        /* 정보창 커스텀 스타일 */
+.custom-info-window {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    overflow: hidden; /* 상단 바 곡률 적용을 위해 필요 */
+    min-width: 220px;
+    font-family: 'Pretendard', sans-serif;
+}
+
+/* 상단 포인트 바 */
+.info-header-bar {
+    height: 6px;
+    width: 100%;
+}
+
+/* 데이터 소스별 헤더 색상 */
+.bar-env { background-color: #28a745; }
+.bar-here { background-color: #007aff; }
+.bar-tmap { background-color: #ff4757; }
+
+/* 내부 컨텐츠 */
+.info-body {
+    padding: 12px;
+}
+
+.info-title {
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.info-content {
+    font-size: 12px;
+    color: #666;
+    line-height: 1.6;
+}
+
+/* 네이버 기본 말풍선 컨테이너 배경 제거 (중요) */
+.iw_inner { padding: 0 !important; border: none !important; }
 
         /* 로딩 영역 (Dim) */
 #loader-wrapper {
@@ -67,6 +111,59 @@
         .log-entry { margin-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 2px; }
         .log-error { color: #ff4757; }
 
+        /* 공통 원형 마커 스타일 */
+.custom-marker {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%; /* 완전한 원 */
+    border: 2px solid #fff; /* 흰색 테두리 */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3); /* 그림자 효과 */
+    color: white; /* 글자 색상 */
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 20px; /* (height - border*2) 와 맞추어 수직 중앙 정렬 */
+    cursor: pointer;
+    box-sizing: border-box; /* 테두리 포함 크기 계산 */
+}
+
+/* 마커별 배경색 정의 */
+.marker-env { background-color: #28a745; } /* 초록 (환경부) */
+.marker-here { background-color: #007aff; } /* 파랑 (HERE) */
+.marker-tmap { background-color: #ff4757; } /* 빨강 (Tmap) */
+
+#tmap-search-btn {
+    position: absolute; 
+    bottom: 210px; /* 로그 콘솔(20px) + 콘솔높이(180px) + 여백(10px) */
+    left: 20px; 
+    z-index: 1001; 
+    background: #ff4757; 
+    color: white; 
+    border: none; 
+    padding: 10px 16px; 
+    border-radius: 20px; /* 둥근 캡슐 모양으로 변경 */
+    cursor: pointer; 
+    font-weight: bold; 
+    font-size: 13px;
+    box-shadow: 0 4px 10px rgba(255, 71, 87, 0.4); /* 버튼 강조 그림자 */
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.2s, background 0.2s;
+}
+
+#tmap-search-btn:hover {
+    background: #ff6b81;
+    transform: translateY(-2px);
+}
+
+#tmap-search-btn:active {
+    transform: translateY(0);
+}
+
+.tmap-info { border-top: 3px solid #ff4757; padding: 10px; min-width: 220px; font-size: 13px; }
+    .tmap-badge { background: #ff4757; color: white; padding: 2px 5px; border-radius: 3px; font-size: 10px; margin-right: 5px; }
+
         /* 모바일용 스타일 (화면 너비 768px 이하) */
 @media (max-width: 768px) {
     /* 로그 모니터: 하단 전체 너비로 변경하고 높이 축소 */
@@ -99,8 +196,13 @@
         font-size: 12px;
     }
 
-    .tmap-info { border-top: 3px solid #ff4757; padding: 10px; min-width: 220px; font-size: 13px; }
-    .tmap-badge { background: #ff4757; color: white; padding: 2px 5px; border-radius: 3px; font-size: 10px; margin-right: 5px; }
+    #tmap-search-btn {
+        bottom: 130px; /* 모바일 콘솔(10px) + 모바일높이(100px) + 여백(20px) */
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+
+    
 }
     </style>
 </head>
@@ -125,8 +227,8 @@
     <div style="color:#ff4757; margin-top:5px;">-- OKAY 연결선</div>
 </div>
 
-<button id="tmap-search-btn" style="position: absolute; top: 120px; right: 20px; z-index: 1000; background: #ff4757; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
-    🔍 현재 위치 TMAP 검색
+<button id="tmap-search-btn">
+    <span>🔍</span> 현재 지도 중심 TMAP 검색
 </button>
 
 <div id="map"></div>
@@ -139,12 +241,7 @@ let updateTimer = null;
 
 const TMAP_APP_KEY = 'dTvpdTIDEy7JCLV1V4NLc7bGiWksYpB51MOuQqPt'; // Tmap API 센터에서 발급받은 키
 let tmapMarkers = []; // TMAP 검색 마커만 따로 관리
-
-// TMAP 검색 버튼 이벤트 리스너
-document.getElementById('tmap-search-btn').addEventListener('click', function() {
-    const center = map.getCenter(); // 현재 지도 중심점
-    searchTmapNearby(center.lat(), center.lng());
-});
+let tmapLabels = []; // TMAP 전용 상세정보 레이블(말풍선)
 
 document.getElementById('log-monitor').addEventListener('click', function() {
     if (this.style.maxHeight === '30px') {
@@ -234,14 +331,15 @@ $("#tmap-search-btn").click(function(){
 
                 // 3. 네이버 지도 위에 빨간색 마커 생성
                 const marker = new naver.maps.Marker({
-                    position: new naver.maps.LatLng(latWGS84, lonWGS84),
-                    map: map,
-                    zIndex: 200,
-                    icon: {
-                        content: `<div style="width:18px; height:18px; background:#ff4757; border:2px solid #fff; border-radius:50%; box-shadow:0 0 5px rgba(0,0,0,0.5); cursor:pointer;"></div>`,
-                        anchor: new naver.maps.Point(9, 9)
-                    }
-                });
+        position: new naver.maps.LatLng(latWGS84, lonWGS84),
+        map: map,
+        zIndex: 200, // Tmap 마커를 가장 위로
+        icon: {
+            // HTML content 활용: Tmap 전용 클래스와 'T' 글자
+            content: '<div class="custom-marker marker-tmap">T</div>',
+            anchor: new naver.maps.Point(12, 12)
+        }
+    });
 
                 // 4. 마커 클릭 시 상세정보 가져오기 (샘플의 poiDetail 로직)
                 naver.maps.Event.addListener(marker, 'click', function() {
@@ -270,18 +368,21 @@ function getTmapPoiDetail(poiId, marker) {
             
             // 상세 정보 화면 구성 (네이버 InfoWindow 활용)
             const content = `
-                <div class="tmap-info" style="border-top:3px solid #ff4757; padding:10px; min-width:220px;">
-                    <div style="font-weight:bold; font-size:14px; margin-bottom:5px;">
-                        <span style="background:#ff4757; color:white; padding:2px 5px; border-radius:3px; font-size:10px; margin-right:5px;">TMAP</span>
-                        ${detail.name}
-                    </div>
-                    <div style="font-size:12px; color:#444;">
-                        <strong>주소:</strong> ${detail.address}<br>
-                        <strong>전화:</strong> ${detail.tel || '정보없음'}<br>
-                        <strong>분류:</strong> ${detail.bizCatName || '전기차충전소'}
-                    </div>
-                </div>
-            `;
+    <div class="custom-info-window">
+        <div class="info-header-bar bar-tmap"></div>
+        <div class="info-body">
+            <div class="info-title">
+                <span style="font-size:10px; background:#ff4757; color:white; padding:2px 4px; border-radius:3px;">TMAP</span>
+                ${detail.name}
+            </div>
+            <div class="info-content">
+                <div><strong>주소:</strong> ${detail.address}</div>
+                <div><strong>전화:</strong> ${detail.tel || '정보없음'}</div>
+                <div style="margin-top:5px; color:#ff4757; font-weight:bold;">실시간 검색 데이터</div>
+            </div>
+        </div>
+    </div>
+`;
 
             infoWindow.setContent(content);
             infoWindow.open(map, marker);
@@ -445,8 +546,12 @@ function createMarkerAndLine(row) {
         position: new naver.maps.LatLng(lat, lng),
         map: map,
         icon: {
-            content: `<div style="width:12px; height:12px; background:${isEnv ? '#28a745':'#007aff'}; border:1px solid #fff; border-radius:50%;"></div>`,
-            anchor: new naver.maps.Point(6, 6)
+            // HTML content 활용: 클래스와 글자 동적 지정
+            content: isEnv 
+                ? '<div class="custom-marker marker-env">환</div>' 
+                : '<div class="custom-marker marker-here">H</div>',
+            // 마커의 중심점이 좌표에 오도록 앵커 설정 (크기의 절반)
+            anchor: new naver.maps.Point(12, 12)
         }
     });
 
@@ -494,55 +599,35 @@ function createMarkerAndLine(row) {
 
 // 말풍선(InfoWindow) 표시 함수
 function showInfoWindow(row, marker) {
-    let title = "";
-    let contentHtml = "";
-    let basisBadge = ""; // basis 라벨용 변수
+    const isEnv = row.basis === '환경부';
+    const barClass = isEnv ? 'bar-env' : 'bar-here';
+    const label = isEnv ? '환경부' : 'HERE';
+    const title = isEnv ? (row.Env_Col1 || "명칭 없음") : (row.Here_FirstCol || "명칭 없음");
     
-    // 1. Basis에 따른 공통 뱃지(라벨) 및 타이틀 설정
-    if (row.basis === '환경부') {
-        // 초록색 배경, 흰 글씨 라벨
-        basisBadge = `<span style="display:inline-block; padding:2px 6px; background-color:#28a745; color:white; border-radius:4px; font-size:11px; margin-right:6px; vertical-align:middle;">환경부</span>`;
-        title = row.Env_Col1 || "명칭 없음";
-        
-        // 환경부 기준 OKAY 상세 내용
-        if (row.Env_Note === "환경부 기준 OKAY") {
-            const dist = row.distance ? Number(row.distance).toFixed(2) + "m" : "정보 없음";
-            contentHtml = `
-                <div style="margin-top:8px; color:#444; font-size:12px; line-height:1.5;">
-                    <strong style="color:#555;">HERE EV Station:</strong> ${row.Here_FirstCol || '데이터 없음'}<br>
-                    <strong style="color:#555;">HERE EV와의 거리:</strong> ${dist}
-                </div>`;
-        }
-    } 
-    else if (row.basis === 'HERE') {
-        // 파란색 배경, 흰 글씨 라벨
-        basisBadge = `<span style="display:inline-block; padding:2px 6px; background-color:#007aff; color:white; border-radius:4px; font-size:11px; margin-right:6px; vertical-align:middle;">HERE</span>`;
-        title = row.Here_FirstCol || "명칭 없음";
-        
-        // HERE 기준 OKAY 상세 내용
-        if (row.Here_Note === "HERE 기준 OKAY") {
-            const dist = row.distance ? Number(row.distance).toFixed(2) + "m" : "정보 없음";
-            contentHtml = `
-                <div style="margin-top:8px; color:#444; font-size:12px; line-height:1.5;">
-                    <strong style="color:#555;">환경부 EV Station:</strong> ${row.Env_Col1 || '데이터 없음'}<br>
-                    <strong style="color:#555;">주소:</strong> ${row.Env_Col2 || '주소 정보 없음'}<br>
-                    <strong style="color:#555;">환경부 EV와의 거리:</strong> ${dist}
-                </div>`;
-        }
+    // 내용 구성 (매칭 데이터가 있는 경우)
+    let detailHtml = "";
+    if (isEnv && row.Env_Note === "환경부 기준 OKAY") {
+        detailHtml = `<div><strong>매칭:</strong> ${row.Here_FirstCol}</div><div><strong>거리:</strong> ${row.distance}m</div>`;
+    } else if (!isEnv && row.Here_Note === "HERE 기준 OKAY") {
+        detailHtml = `<div><strong>매칭:</strong> ${row.Env_Col1}</div><div><strong>거리:</strong> ${row.distance}m</div>`;
     }
 
-    // 2. 최종 HTML 생성 (뱃지 + 타이틀)
-    const finalContent = `
-        <div class="info-window" style="padding:10px; min-width:240px; font-family:sans-serif;">
-            <div class="info-title" style="font-weight:bold; font-size:14px; border-bottom:1px solid #eee; padding-bottom:7px; margin-bottom:0; display:flex; align-items:center;">
-                ${basisBadge} 
-                <span style="flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${title}">${title}</span>
+    const content = `
+        <div class="custom-info-window">
+            <div class="info-header-bar ${barClass}"></div>
+            <div class="info-body">
+                <div class="info-title">
+                    <span style="font-size:10px; padding:2px 4px; border:1px solid #ddd; border-radius:3px;">${label}</span>
+                    ${title}
+                </div>
+                <div class="info-content">
+                    ${detailHtml || '<div>매칭 정보가 없는 단독 데이터입니다.</div>'}
+                </div>
             </div>
-            ${contentHtml || '<div style="color:#999; font-size:12px; margin-top:8px; text-align:center;">상세 매칭 정보가 없습니다.</div>'}
         </div>
     `;
 
-    infoWindow.setContent(finalContent);
+    infoWindow.setContent(content);
     infoWindow.open(map, marker);
 }
 
