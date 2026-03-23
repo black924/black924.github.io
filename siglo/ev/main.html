@@ -6,6 +6,7 @@
     <title>전기차 충전소 분석 - Main</title>
     <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=x84uw6z21k"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=dTvpdTIDEy7JCLV1V4NLc7bGiWksYpB51MOuQqPt"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <style>
         /* 중요: html과 body의 높이를 100%로 지정하고 overflow를 숨깁니다. */
@@ -132,25 +133,6 @@
 .marker-here { background-color: #007aff; } /* 파랑 (HERE) */
 .marker-tmap { background-color: #ff4757; } /* 빨강 (Tmap) */
 
-#tmap-search-btn {
-    position: absolute; 
-    bottom: 210px; /* 로그 콘솔(20px) + 콘솔높이(180px) + 여백(10px) */
-    left: 20px; 
-    z-index: 1001; 
-    background: #ff4757; 
-    color: white; 
-    border: none; 
-    padding: 10px 16px; 
-    border-radius: 20px; /* 둥근 캡슐 모양으로 변경 */
-    cursor: pointer; 
-    font-weight: bold; 
-    font-size: 13px;
-    box-shadow: 0 4px 10px rgba(255, 71, 87, 0.4); /* 버튼 강조 그림자 */
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: transform 0.2s, background 0.2s;
-}
 
 #tmap-search-btn:hover {
     background: #ff6b81;
@@ -164,16 +146,51 @@
 .tmap-info { border-top: 3px solid #ff4757; padding: 10px; min-width: 220px; font-size: 13px; }
     .tmap-badge { background: #ff4757; color: white; padding: 2px 5px; border-radius: 3px; font-size: 10px; margin-right: 5px; }
 
+    #tmap-search-btn {
+    position: static; /* absolute 제거 */
+    background: #ff4757; 
+    color: white; 
+    border: none; 
+    padding: 10px 16px; 
+    border-radius: 20px; 
+    cursor: pointer; 
+    font-weight: bold; 
+    font-size: 13px;
+    box-shadow: 0 4px 10px rgba(255, 71, 87, 0.4); 
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.2s;
+    width: fit-content; /* 글자 길이에 맞춤 */
+}
+
+/* 수정된 로그 모니터 스타일: 위치 고정 속성 제거 */
+#log-monitor {
+    position: static; /* absolute 제거 */
+    width: 350px; 
+    max-height: 200px; 
+    background: rgba(0, 0, 0, 0.7);
+    color: #00ff88; 
+    font-family: 'Courier New', monospace;
+    font-size: 11px; 
+    padding: 10px; 
+    border-radius: 5px;
+    overflow-y: auto; 
+    border: 1px solid #444;
+    transition: max-height 0.3s ease; /* 높이 변화 부드럽게 */
+}
+
         /* 모바일용 스타일 (화면 너비 768px 이하) */
 @media (max-width: 768px) {
     /* 로그 모니터: 하단 전체 너비로 변경하고 높이 축소 */
-    #log-monitor {
+    #left-bottom-container {
         width: calc(100% - 40px);
-        left: 20px;
         bottom: 10px;
+        left: 20px;
+    }
+    #log-monitor {
+        width: 100%;
         max-height: 120px;
-        font-size: 10px;
-        padding: 8px;
     }
 
     /* 범례: 우측 하단에서 상단으로 이동하거나 크기 축소 */
@@ -196,12 +213,6 @@
         font-size: 12px;
     }
 
-    #tmap-search-btn {
-        bottom: 130px; /* 모바일 콘솔(10px) + 모바일높이(100px) + 여백(20px) */
-        font-size: 12px;
-        padding: 8px 12px;
-    }
-
     
 }
     </style>
@@ -216,8 +227,15 @@
         <div id="loader-percent">0%</div>
     </div>
 
-    <div id="log-monitor">
-    <div class="log-entry">▼ System Log initialized...</div>
+    <div id="left-bottom-container" style="position: absolute; bottom: 20px; left: 20px; z-index: 1001; display: flex; flex-direction: column; align-items: flex-start; gap: 10px;">
+    
+    <button id="tmap-search-btn" style="position: static; margin-bottom: 0;">
+        <span>🔍</span> 현재 지도 중심 TMAP 검색
+    </button>
+
+    <div id="log-monitor" style="position: static;">
+        <div class="log-entry">▼ System Log initialized...</div>
+    </div>
 </div>
 
 <div class="legend">
@@ -226,10 +244,6 @@
     <div style="color:#007aff">● HERE Basis</div>
     <div style="color:#ff4757; margin-top:5px;">-- OKAY 연결선</div>
 </div>
-
-<button id="tmap-search-btn">
-    <span>🔍</span> 현재 지도 중심 TMAP 검색
-</button>
 
 <div id="map"></div>
 
