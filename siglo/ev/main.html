@@ -26,10 +26,11 @@
         /* 로딩 영역 (Dim) */
 #loader-wrapper {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.7); z-index: 9999;
+    background: rgba(0, 0, 0, 0.8); z-index: 9999;
     display: flex; flex-direction: column; justify-content: center; align-items: center;
-    color: white; transition: opacity 0.5s;
+    color: white; font-family: sans-serif;
 }
+.hidden { display: none !important; }
 /* 프로그래스바 컨테이너 */
 #progress-container {
     width: 300px; height: 10px; background: #444; border-radius: 5px;
@@ -43,6 +44,14 @@
     </style>
 </head>
 <body>
+
+    <div id="loader-wrapper">
+        <div id="loader-status" style="font-size: 18px; font-weight: bold;">데이터를 불러오는 중...</div>
+        <div id="progress-container" style="width: 300px; height: 10px; background: #444; border-radius: 5px; margin: 20px 0; overflow: hidden;">
+            <div id="progress-bar" style="width: 0%; height: 100%; background: #28a745; transition: width 0.2s;"></div>
+        </div>
+        <div id="loader-percent">0%</div>
+    </div>
 
 <div class="legend">
     <h4 style="margin:0 0 8px 0;">충전소 구분</h4>
@@ -96,7 +105,7 @@ async function loadLargeData() {
         }
 
         // 2. 데이터 파싱 단계 (Dim 유지)
-        statusText.innerText = "8만 개의 데이터를 분석 중입니다. 잠시만 기다려주세요...";
+        statusText.innerText = "엑셀 파일을 로딩중입니다. 잠시만 기다려주세요...";
         
         // 브라우저 렌더링을 위해 잠깐의 지연을 줍니다.
         await new Promise(resolve => setTimeout(resolve, 100));
@@ -111,13 +120,11 @@ async function loadLargeData() {
         const workbook = XLSX.read(allChunks, { type: 'array' });
         allData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
 
-        // 3. 완료 후 Dim 제거
-        loader.classList.add('hidden');
-        console.log("로드 완료: " + allData.length + " rows");
-
-        // 초기 지도 업데이트 실행
-        naver.maps.Event.addListener(map, 'idle', updateMarkers);
+        // 모든 작업 완료 후 로딩창 숨기기
+        loader.classList.add('hidden'); 
+        
         updateMarkers();
+        naver.maps.Event.addListener(map, 'idle', updateMarkers);
 
     } catch (err) {
         statusText.innerText = "데이터 로딩 실패!";
