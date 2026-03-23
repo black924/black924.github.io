@@ -278,9 +278,6 @@
 
     <div id="left-bottom-container" style="position: absolute; bottom: 20px; left: 20px; z-index: 1001; display: flex; flex-direction: column; align-items: flex-start; gap: 10px;">
     
-    <button id="tmap-search-btn" style="position: static; margin-bottom: 0;">
-        <span>🔍</span> 현재 지도 중심 TMAP 검색
-    </button>
 
     <div id="log-monitor" style="position: static;">
         <div class="log-entry">▼ System Log initialized...</div>
@@ -456,10 +453,74 @@ function getTmapPoiDetail(poiId, marker) {
             infoWindow.open(map, marker);
             infoWindow.anchorMarker = marker;
             
-            addLog(`TMAP 상세조회: ${detail.name}`);
+           // addLog(`TMAP 상세조회: ${detail.name}`);
         },
         error: function(err) {
             addLog("상세정보 로드 실패", true);
+        }
+    });
+}
+
+// --- [추가/수정] TMAP 자동 검색 로직 ---
+function autoSearchTmap() {
+    const zoom = map.getZoom();
+    const center = map.getCenter();
+    const lat = center.lat();
+    const lng = center.lng();
+
+    // 성능 및 API 쿼터 보호: 줌 레벨이 15 미만이면 TMAP 검색 안함
+    if (zoom < 15) return;
+
+    // 기존 TMAP 마커 제거
+    clearTmapResults();
+
+    addLog(`TMAP 자동 검색 실행 (반경 2km)...`);
+
+    $.ajax({
+        method: "GET",
+        headers: { "appKey": TMAP_APP_KEY },
+        url: "https://apis.openapi.sk.com/tmap/pois/search/around?version=1&format=json&callback=result",
+        data: {
+            "categories": "EV충전소",
+            "resCoordType": "EPSG3857",
+            "searchType": "name",
+            "searchtypCd": "A",
+            "radius": 2, // 자동 검색은 부하 방지를 위해 2km로 제한 권장
+            "reqCoordType": "WGS84GEO",
+            "centerLon": lng.toString(),
+            "centerLat": lat.toString(),
+            "count": 50  // 자동 검색 시 적절한 개수
+        },
+        success: function(response) {
+            if(!response.searchPoiInfo) return;
+
+            const pois = response.searchPoiInfo.pois.poi;
+            pois.forEach((poi) => {
+                const noorLat = Number(poi.noorLat);
+                const noorLon = Number(poi.noorLon);
+                const pointCng = new Tmapv2.Point(noorLon, noorLat);
+                const projectionCng = new Tmapv2.Projection.convertEPSG3857ToWGS84GEO(pointCng);
+                
+                const latWGS = projectionCng._lat;
+                const lonWGS = projectionCng._lng;
+
+                const marker = new naver.maps.Marker({
+                    position: new naver.maps.LatLng(latWGS, lonWGS),
+                    map: map,
+                    zIndex: 200,
+                    icon: {
+                        content: '<div class="custom-marker marker-tmap">T</div>',
+                        anchor: new naver.maps.Point(12, 12)
+                    }
+                });
+
+                naver.maps.Event.addListener(marker, 'click', function() {
+                    getTmapPoiDetail(poi.id, marker);
+                });
+
+                tmapMarkers.push(marker);
+            });
+            addLog(`TMAP 자동 업데이트 완료 (${pois.length}건)`);
         }
     });
 }
@@ -553,10 +614,18 @@ percentText.innerText = '100%';
         loader.classList.add('hidden'); 
         
         updateMarkers();
-        naver.maps.Event.addListener(map, 'idle', () => {
-            if (updateTimer) clearTimeout(updateTimer);
-            updateTimer = setTimeout(updateMarkers, 200);
-        });
+        // 기존의 'idle' 리스너를 아래와 같이 통합 수정하세요.
+naver.maps.Event.addListener(map, 'idle', () => {
+    if (updateTimer) clearTimeout(updateTimer);
+    
+    updateTimer = setTimeout(() => {
+        // 1. 기존 CSV 마커 업데이트
+        updateMarkers(); 
+        
+        // 2. TMAP 실시간 데이터 자동 업데이트 (추가)
+        autoSearchTmap();
+    }, 400); // 0.4초 동안 지도 이동이 멈춰있을 때 실행 (디바운싱)
+});
         naver.maps.Event.addListener(map, 'click', resetHighlights);
 
     } catch (err) {
