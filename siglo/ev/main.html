@@ -150,7 +150,19 @@ const map = new naver.maps.Map('map', {
     zoomControl: true,
     zoomControlOptions: {
         position: naver.maps.Position.RIGHT_CENTER
-    }
+    },
+    ,
+    mapTypes: new naver.maps.MapTypeRegistry({
+        'normal': naver.maps.NaverStyleMapTypeOptions.getNormalMap({
+            stylers: [{ 'poi': 'off' }, { 'poi.gas_station': 'on' }, { 'road': 'on' }, { 'label': 'on' }]
+        }),
+        'satellite': naver.maps.NaverStyleMapTypeOptions.getSatelliteMap({
+            stylers: [{ 'poi': 'off' }, { 'poi.gas_station': 'on' }, { 'road': 'on' }, { 'label': 'on' }]
+        }),
+        'hybrid': naver.maps.NaverStyleMapTypeOptions.getHybridMap({
+            stylers: [{ 'poi': 'off' }, { 'poi.gas_station': 'on' }, { 'road': 'on' }, { 'label': 'on' }]
+        })
+    })
 });
 
 const infoWindow = new naver.maps.InfoWindow({ anchorSkew: true });
@@ -164,6 +176,11 @@ function addLog(msg, isError = false) {
     entry.innerText = `[${time}] ${msg}`;
     monitor.prepend(entry); // 최신 로그가 위로 오게 함
     console.log(msg);
+}
+
+function resetHighlights() {
+    infoWindow.close();
+    activePolylines.forEach(p => p.setOptions({ strokeWeight: 2, strokeOpacity: 0.5, strokeStyle: 'dash' }));
 }
 
 // 1. 데이터 로드 (최초 1회)
@@ -229,7 +246,11 @@ percentText.innerText = '100%';
         loader.classList.add('hidden'); 
         
         updateMarkers();
-        naver.maps.Event.addListener(map, 'idle', updateMarkers);
+        naver.maps.Event.addListener(map, 'idle', () => {
+            if (updateTimer) clearTimeout(updateTimer);
+            updateTimer = setTimeout(updateMarkers, 200);
+        });
+        naver.maps.Event.addListener(map, 'click', resetHighlights);
 
     } catch (err) {
         addLog("에러 발생: " + err.message, true);
@@ -292,26 +313,25 @@ function createMarkerAndLine(row) {
     });
 
     const isOkay = (row.Env_Note === "환경부 기준 OKAY" || row.Here_Note === "HERE 기준 OKAY");
-    if (isOkay && eLat && hLat) {
-        const polyline = new naver.maps.Polyline({
-            map: map,
-            path: [new naver.maps.LatLng(eLat, eLng), new naver.maps.LatLng(hLat, hLng)],
-            strokeColor: '#ff4757',
-            strokeWeight: 2,
-            strokeOpacity: 0.5,
-            strokeStyle: 'dash'
-        });        
-        activePolylines.push(polyline);
-        // 클릭 이벤트 연동 (하이라이트)
-        naver.maps.Event.addListener(marker, 'click', () => {
-            polyline.setOptions({ strokeWeight: 6, strokeOpacity: 1, strokeStyle: 'solid' });
-            showInfoWindow(row, marker);
-        });
-    } else {
-        naver.maps.Event.addListener(marker, 'click', () => showInfoWindow(row, marker));
-    }
+    let polyline = null;
+        if (isOkay && eLat && hLat) {
+            polyline = new naver.maps.Polyline({
+                map: map,
+                path: [new naver.maps.LatLng(eLat, eLng), new naver.maps.LatLng(hLat, hLng)],
+                strokeColor: '#ff4757', strokeWeight: 2, strokeOpacity: 0.5, strokeStyle: 'dash'
+            });
+            activePolylines.push(polyline);
+        }
 
-    activeMarkers.push(marker);
+        naver.maps.Event.addListener(marker, 'click', () => {
+            const isOpen = infoWindow.getMap() && infoWindow.getAnchor() === marker;
+            resetHighlights();
+            if (!isOpen) {
+                showInfoWindow(row, marker);
+                if (polyline) polyline.setOptions({ strokeWeight: 6, strokeOpacity: 1, strokeStyle: 'solid' });
+            }
+        });
+        activeMarkers.push(marker);
 }
 
 // 말풍선(InfoWindow) 표시 함수
