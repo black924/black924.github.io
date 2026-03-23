@@ -150,25 +150,7 @@ const map = new naver.maps.Map('map', {
     zoomControl: true,
     zoomControlOptions: {
         position: naver.maps.Position.RIGHT_CENTER
-    },
-    mapTypes: new naver.maps.MapTypeRegistry({
-        'normal': naver.maps.NaverStyleMapTypeOptions.getNormalMap({
-            stylers: [
-                // 1. 일단 모든 심볼(POI)을 숨깁니다.
-                { 'poi': 'off' },
-                
-                // 2. 교통/주유소 관련 시설만 다시 켭니다 (전기차 충전소 포함)
-                { 'poi.park_and_ride': 'on' },
-                { 'poi.gas_station': 'on' }, // 네이버는 보통 전기차 충전소를 이 카테고리에 포함합니다.
-                
-                // 3. 도로나 지명은 유지하여 위치 파악이 가능하게 합니다.
-                { 'road': 'on' },
-                { 'water': 'on' },
-                { 'land': 'on' },
-                { 'label': 'on' }
-            ]
-        })
-    })
+    }
 });
 
 const infoWindow = new naver.maps.InfoWindow({ anchorSkew: true });
