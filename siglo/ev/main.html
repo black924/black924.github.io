@@ -22,6 +22,24 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.2); font-size: 13px; 
         }
         .info-window { padding: 10px; min-width: 200px; font-size: 13px; line-height: 1.4; }
+
+        /* 로딩 영역 (Dim) */
+#loader-wrapper {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7); z-index: 9999;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    color: white; transition: opacity 0.5s;
+}
+/* 프로그래스바 컨테이너 */
+#progress-container {
+    width: 300px; height: 10px; background: #444; border-radius: 5px;
+    margin: 20px 0; overflow: hidden;
+}
+/* 실제 진행 바 */
+#progress-bar {
+    width: 0%; height: 100%; background: #28a745; transition: width 0.2s;
+}
+.hidden { display: none !important; opacity: 0; }
     </style>
 </head>
 <body>
@@ -49,19 +67,62 @@ const infoWindow = new naver.maps.InfoWindow({ anchorSkew: true });
 
 // 1. 데이터 로드 (최초 1회)
 async function loadLargeData() {
+    const loader = document.getElementById('loader-wrapper');
+    const progressBar = document.getElementById('progress-bar');
+    const percentText = document.getElementById('loader-percent');
+    const statusText = document.getElementById('loader-status');
+
     try {
-        const response = await fetch('./assets/26q1.xlsx');
-        const arrayBuffer = await response.arrayBuffer();
-        const data = new Uint8Array(arrayBuffer);
-        const workbook = XLSX.read(data, { type: 'array' });
+        const response = await fetch('./assets/26q1_ev.xlsx');
+        const contentLength = response.headers.get('content-length');
+        const total = parseInt(contentLength, 10);
+        let loaded = 0;
+
+        const reader = response.body.getReader();
+        const chunks = [];
+
+        // 1. 파일 다운로드 스트리밍 및 퍼센트 표시
+        while(true) {
+            const {done, value} = await reader.read();
+            if (done) break;
+            chunks.push(value);
+            loaded += value.length;
+            
+            if (total) {
+                const percent = Math.round((loaded / total) * 100);
+                progressBar.style.width = percent + '%';
+                percentText.innerText = percent + '%';
+            }
+        }
+
+        // 2. 데이터 파싱 단계 (Dim 유지)
+        statusText.innerText = "8만 개의 데이터를 분석 중입니다. 잠시만 기다려주세요...";
+        
+        // 브라우저 렌더링을 위해 잠깐의 지연을 줍니다.
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        const allChunks = new Uint8Array(loaded);
+        let position = 0;
+        for(let chunk of chunks) {
+            allChunks.set(chunk, position);
+            position += chunk.length;
+        }
+
+        const workbook = XLSX.read(allChunks, { type: 'array' });
         allData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
-        
-        console.log("로드 완료: " + allData.length + "개");
-        
-        // 지도 이벤트 리스너 등록
-        naver.maps.Event.addListener(map, 'idle', updateMarkers); // 이동/줌 종료 시 업데이트
+
+        // 3. 완료 후 Dim 제거
+        loader.classList.add('hidden');
+        console.log("로드 완료: " + allData.length + " rows");
+
+        // 초기 지도 업데이트 실행
+        naver.maps.Event.addListener(map, 'idle', updateMarkers);
+        updateMarkers();
+
     } catch (err) {
-        console.error("데이터 로딩 에러:", err);
+        statusText.innerText = "데이터 로딩 실패!";
+        statusText.style.color = "#ff4757";
+        console.error(err);
     }
 }
 
