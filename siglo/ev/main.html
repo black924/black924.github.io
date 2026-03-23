@@ -41,6 +41,16 @@
     width: 0%; height: 100%; background: #28a745; transition: width 0.2s;
 }
 .hidden { display: none !important; opacity: 0; }
+/* 실시간 로그 모니터 */
+        #log-monitor {
+            position: absolute; bottom: 20px; left: 20px; z-index: 999;
+            width: 350px; max-height: 200px; background: rgba(0, 0, 0, 0.7);
+            color: #00ff88; font-family: 'Courier New', Courier, monospace;
+            font-size: 11px; padding: 10px; border-radius: 5px;
+            overflow-y: auto; pointer-events: none; border: 1px solid #444;
+        }
+        .log-entry { margin-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 2px; }
+        .log-error { color: #ff4757; }
     </style>
 </head>
 <body>
@@ -52,6 +62,10 @@
         </div>
         <div id="loader-percent">0%</div>
     </div>
+
+    <div id="log-monitor">
+    <div class="log-entry">▼ System Log initialized...</div>
+</div>
 
 <div class="legend">
     <h4 style="margin:0 0 8px 0;">충전소 구분</h4>
@@ -74,6 +88,17 @@ const map = new naver.maps.Map('map', {
 
 const infoWindow = new naver.maps.InfoWindow({ anchorSkew: true });
 
+// 화면에 로그를 찍는 함수
+function addLog(msg, isError = false) {
+    const monitor = document.getElementById('log-monitor');
+    const entry = document.createElement('div');
+    entry.className = isError ? 'log-entry log-error' : 'log-entry';
+    const time = new Date().toLocaleTimeString();
+    entry.innerText = `[${time}] ${msg}`;
+    monitor.prepend(entry); // 최신 로그가 위로 오게 함
+    console.log(msg);
+}
+
 // 1. 데이터 로드 (최초 1회)
 async function loadLargeData() {
     const loader = document.getElementById('loader-wrapper');
@@ -82,6 +107,7 @@ async function loadLargeData() {
     const statusText = document.getElementById('loader-status');
 
     try {
+        addLog("파일 다운로드 시작");
         const response = await fetch('./assets/26q1_ev.xlsx');
         const contentLength = response.headers.get('content-length');
         const total = parseInt(contentLength, 10);
@@ -106,6 +132,7 @@ async function loadLargeData() {
 
         // 2. 데이터 파싱 단계 (Dim 유지)
         statusText.innerText = "엑셀 파일을 로딩중입니다. 잠시만 기다려주세요...";
+        addLog("다운로드 완료. 엑셀 파싱 시작...");
         
         // 브라우저 렌더링을 위해 잠깐의 지연을 줍니다.
         await new Promise(resolve => setTimeout(resolve, 100));
@@ -121,12 +148,14 @@ async function loadLargeData() {
         allData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
 
         // 모든 작업 완료 후 로딩창 숨기기
+        addLog(`데이터 로드 성공: 총 ${allData.length.toLocaleString()}행`);
         loader.classList.add('hidden'); 
         
         updateMarkers();
         naver.maps.Event.addListener(map, 'idle', updateMarkers);
 
     } catch (err) {
+        addLog("에러 발생: " + err.message, true);
         statusText.innerText = "데이터 로딩 실패!";
         statusText.style.color = "#ff4757";
         console.error(err);
@@ -143,6 +172,7 @@ function updateMarkers() {
 
     // 줌 레벨이 14 미만이면 안내 메시지만 띄우고 중단
     if (zoom < 14) {
+        addLog(`줌 레벨(${zoom})이 낮음: 확대가 필요합니다.`);
         console.log("줌 레벨이 낮아 데이터를 표시하지 않습니다. (현재: " + zoom + ")");
         return;
     }
@@ -154,6 +184,8 @@ function updateMarkers() {
         
         return lat && lng && bounds.hasLatLng(new naver.maps.LatLng(lat, lng));
     });
+
+    addLog(`현재 가시 영역 내 충전소: ${visibleData.length}개 표시 중`);
 
     // 필터링된 데이터만 렌더링 (최대 500~1000개 정도로 제한 권장)
     visibleData.slice(0, 1000).forEach(row => createMarkerAndLine(row));
@@ -207,13 +239,50 @@ function createMarkerAndLine(row) {
 }
 
 function showInfoWindow(row, marker) {
-    infoWindow.setContent(`
+    let title = "";
+    let contentHtml = "";
+    
+    // 거리 정보 (숫자인 경우 2소수점까지, 없는 경우 대비)
+    const dist = row.distance ? Number(row.distance).toFixed(2) + "m" : "정보 없음";
+
+    if (row.basis === '환경부') {
+        // 1. 타이틀 설정
+        title = row.Env_Col1 || "명칭 없음";
+        
+        // 2. 환경부 기준 OKAY인 경우 상세 내용 추가
+        if (row.Env_Note === "환경부 기준 OKAY") {
+            contentHtml = `
+                <div style="margin-top:5px; color:#444;">
+                    <strong>HERE EV Station:</strong> ${row.Here_FirstCol || '데이터 없음'}<br>
+                    <strong>HERE EV와의 거리:</strong> ${dist}
+                </div>`;
+        }
+    } 
+    else if (row.basis === 'HERE') {
+        // 1. 타이틀 설정
+        title = row.Here_FirstCol || "명칭 없음";
+        
+        // 2. HERE 기준 OKAY인 경우 상세 내용 추가
+        if (row.Here_Note === "HERE 기준 OKAY") {
+            contentHtml = `
+                <div style="margin-top:5px; color:#444;">
+                    <strong>환경부 EV Station:</strong> ${row.Env_Col1 || '데이터 없음'}<br>
+                    <strong>주소:</strong> ${row.Env_Col2 || '주소 정보 없음'}<br>
+                    <strong>환경부 EV와의 거리:</strong> ${dist}
+                </div>`;
+        }
+    }
+
+    const finalContent = `
         <div class="info-window">
-            <strong>${row.station_name || '정보 없음'}</strong><br>
-            ${row.address || ''}<br>
-            <small>Basis: ${row.basis}</small>
+            <div class="info-title" style="font-weight:bold; font-size:14px; border-bottom:1px solid #eee; padding-bottom:5px; margin-bottom:5px;">
+                ${title}
+            </div>
+            ${contentHtml || '<div style="color:#888;">상세 매칭 정보가 없습니다.</div>'}
         </div>
-    `);
+    `;
+
+    infoWindow.setContent(finalContent);
     infoWindow.open(map, marker);
 }
 
