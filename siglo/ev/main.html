@@ -286,9 +286,9 @@
 
 <div class="legend">
     <h4 style="margin:0 0 8px 0;">26Q1 충전소 구분</h4>
-    <div style="color:#28a745">● 환경부 Basis</div>
-    <div style="color:#007aff">● HERE Basis</div>
-    <div style="color:#ff4757; margin-top:5px;">-- OKAY 연결선</div>
+    <div style="color:#28a745">● 환경부</div>
+    <div style="color:#007aff">● HERE</div>
+    <div style="color:#ff4757">● TMAP</div>
 </div>
 
 <div id="map"></div>
@@ -468,11 +468,14 @@ function autoSearchTmap() {
     const lat = center.lat();
     const lng = center.lng();
 
+    clearTmapResults();
     // 성능 및 API 쿼터 보호: 줌 레벨이 15 미만이면 TMAP 검색 안함
-    if (zoom < 15) return;
+    if (zoom < 15) {
+        return;
+    }
 
     // 기존 TMAP 마커 제거
-    clearTmapResults();
+    
 
     $.ajax({
         method: "GET",
@@ -613,6 +616,7 @@ percentText.innerText = '100%';
         loader.classList.add('hidden'); 
         
         updateMarkers();
+        autoSearchTmap();
         // 기존의 'idle' 리스너를 아래와 같이 통합 수정하세요.
 naver.maps.Event.addListener(map, 'idle', () => {
     if (updateTimer) clearTimeout(updateTimer);
