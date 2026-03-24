@@ -304,17 +304,13 @@
     <div style="margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #eee;">
         <label style="display: block; cursor: pointer; margin-bottom: 5px;">
             <input type="radio" name="filterMode" value="all" onchange="changeFilterMode('all')">
-            전체 환경부/HERE EV 충전소
+            전체 보기
         </label>
         <label style="display: block; cursor: pointer;">
             <input type="radio" name="filterMode" value="error" checked onchange="changeFilterMode('error')">
-            TMAP 기반 오류 가능성 있는 EV 충전소
+            Missing/Extra만 보기
         </label>
     </div>
-    <h4 style="margin:0 0 8px 0;">26Q1 충전소 구분</h4>
-    <div style="color:#28a745">● 환경부</div>
-    <div style="color:#007aff">● HERE</div>
-    <div style="color:#ff4757">● TMAP</div>
 </div>
 
 <div id="map"></div>
