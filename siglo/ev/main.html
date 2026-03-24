@@ -6,7 +6,7 @@
     <title>전기차 충전소 분석 - Main</title>
     <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=x84uw6z21k"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=dTvpdTIDEy7JCLV1V4NLc7bGiWksYpB51MOuQqPt"></script>
+<!--    <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=dTvpdTIDEy7JCLV1V4NLc7bGiWksYpB51MOuQqPt"></script>-->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <style>
         /* 중요: html과 body의 높이를 100%로 지정하고 overflow를 숨깁니다. */
@@ -26,259 +26,257 @@
         }
         .info-window { padding: 10px; min-width: 200px; font-size: 13px; line-height: 1.4; }
 
-        /* 정보창 커스텀 스타일 */
-/* 1. 네이버 기본 말풍선 배경 및 꼬리 공간 강제 제거 */
-.iw_inner { 
-    padding: 0 !important; 
-    border: none !important; 
-    background: transparent !important; 
-}
-/* 네이버가 자동으로 생성하는 꼬리 영역 숨기기 */
-.naver-maps-iw-anchor-content { display: none !important; }
+        /* 1. 네이버 기본 말풍선 배경 및 꼬리 공간 강제 제거 */
+        .iw_inner {
+            padding: 0 !important;
+            border: none !important;
+            background: transparent !important;
+        }
+        /* 네이버가 자동으로 생성하는 꼬리 영역 숨기기 */
+        .naver-maps-iw-anchor-content { display: none !important; }
 
-/* 2. 커스텀 정보창 본체 (콘텐츠 영역) */
-.custom-info-window {
-    background: white;
-    border: 1px solid #aaa; /* [요구사항] 테두리 유지 */
-    border-radius: 0;       /* [요구사항] 직각 */
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    min-width: 220px;
-    position: relative;     /* 화살표의 기준점 */
-    margin-bottom: 10px;    /* 화살표가 들어갈 공간 확보 */
-}
+        /* 2. 커스텀 정보창 본체 (콘텐츠 영역) */
+        .custom-info-window {
+            background: white;
+            border: 1px solid #aaa; /* [요구사항] 테두리 유지 */
+            border-radius: 0;       /* [요구사항] 직각 */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            min-width: 220px;
+            position: relative;     /* 화살표의 기준점 */
+            margin-bottom: 10px;    /* 화살표가 들어갈 공간 확보 */
+        }
 
-/* 3. 커스텀 화살표 (삼각형) */
-.custom-info-window::after {
-    content: "";
-    position: absolute;
-    bottom: -6px;           /* 콘텐츠 하단 테두리에 걸치게 설정 */
-    left: 50%;
-    transform: translateX(-50%) rotate(45deg);
-    width: 10px;
-    height: 10px;
-    background: white;
-    border-right: 1px solid #aaa; /* 본체와 동일한 테두리 */
-    border-bottom: 1px solid #aaa;
-    z-index: 1;
-}
+        /* 3. 커스텀 화살표 (삼각형) */
+        .custom-info-window::after {
+            content: "";
+            position: absolute;
+            bottom: -6px;           /* 콘텐츠 하단 테두리에 걸치게 설정 */
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-right: 1px solid #aaa; /* 본체와 동일한 테두리 */
+            border-bottom: 1px solid #aaa;
+            z-index: 1;
+        }
 
-/* 3. 화살표 (Anchor) 영역 정의 */
-/* 콘텐츠 영역과 화살표 사이의 '중간 공간'을 없애기 위해 콘텐츠 아래에 붙여줍니다. */
-.info-arrow-area {
-    width: 20px;
-    height: 10px;
-    position: absolute;
-    bottom: -10px; /* 콘텐츠 영역 바로 아래 */
-    left: 50%;
-    margin-left: -10px;
-    overflow: hidden; /* 화살표 윗부분을 가려서 테두리가 이어지게 함 */
-    z-index: 10;
-}
+        /* 3. 화살표 (Anchor) 영역 정의 */
+        /* 콘텐츠 영역과 화살표 사이의 '중간 공간'을 없애기 위해 콘텐츠 아래에 붙여줍니다. */
+        .info-arrow-area {
+            width: 20px;
+            height: 10px;
+            position: absolute;
+            bottom: -10px; /* 콘텐츠 영역 바로 아래 */
+            left: 50%;
+            margin-left: -10px;
+            overflow: hidden; /* 화살표 윗부분을 가려서 테두리가 이어지게 함 */
+            z-index: 10;
+        }
 
-/* 4. 실제 화살표 삼각형 */
-.info-arrow-triangle {
-    width: 14px;
-    height: 14px;
-    background: white;
-    transform: rotate(45deg);
-    position: absolute;
-    top: -8px; /* 위로 올려서 콘텐츠 영역과 겹치게 함 */
-    left: 3px;
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.1); /* 화살표에도 그림자 */
-}
+        /* 4. 실제 화살표 삼각형 */
+        .info-arrow-triangle {
+            width: 14px;
+            height: 14px;
+            background: white;
+            transform: rotate(45deg);
+            position: absolute;
+            top: -8px; /* 위로 올려서 콘텐츠 영역과 겹치게 함 */
+            left: 3px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1); /* 화살표에도 그림자 */
+        }
 
-/* 상단 포인트 바 */
-.info-header-bar {
-    height: 6px;
-    width: 100%;
-}
+        /* 상단 포인트 바 */
+        .info-header-bar {
+            height: 6px;
+            width: 100%;
+        }
 
-/* 데이터 소스별 헤더 색상 */
-.bar-env { background-color: #28a745; }
-.bar-here { background-color: #007aff; }
-.bar-tmap { background-color: #ff4757; }
+        /* 데이터 소스별 헤더 색상 */
+        .bar-env { background-color: #28a745; }
+        .bar-here { background-color: #007aff; }
+        .bar-tmap { background-color: #ff4757; }
 
-/* 내부 컨텐츠 */
-.info-body {
-    padding: 12px;
-}
+        /* 내부 컨텐츠 */
+        .info-body {
+            padding: 12px;
+        }
 
-.info-title {
-    font-size: 15px;
-    font-weight: bold;
-    margin-bottom: 8px;
-    color: #333;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
+        .info-title {
+            font-size: 15px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
 
-.info-content {
-    font-size: 12px;
-    color: #666;
-    line-height: 1.6;
-}
+        .info-content {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.6;
+        }
 
 
         /* 로딩 영역 (Dim) */
-#loader-wrapper {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.8); z-index: 9999;
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
-    color: white; font-family: sans-serif;
-}
-.hidden { display: none !important; }
-/* 프로그래스바 컨테이너 */
-#progress-container {
-    width: 300px;
-    height: 12px;           /* 높이를 조금 더 키워 가독성 확보 */
-    background: #333;
-    border-radius: 6px;
-    margin: 20px 0;
-    overflow: hidden;       /* 내부 바가 삐져나가지 않게 함 */
-    border: 1px solid #444; /* 경계 명확화 */
-    padding: 0;             /* 내부 여백을 0으로 강제 */
-}
-
-/* 실제 진행 바 */
-#progress-bar {
-    width: 0%; 
-    height: 100%; 
-    background: linear-gradient(90deg, #28a745, #00ff88); /* 그라데이션 추가 */
-    transition: width 0.2s ease-out;
-    display: block;         /* 공백 제거를 위해 block 설정 */
-    box-sizing: border-box; /* 테두리 포함 계산 방지 */
-}
-.hidden { display: none !important; opacity: 0; }
-/* 실시간 로그 모니터 */
-        #log-monitor {
-            position: absolute; bottom: 20px; left: 20px; z-index: 999;
-            width: 350px; max-height: 200px; background: rgba(0, 0, 0, 0.7);
-            color: #00ff88; font-family: 'Courier New', Courier, monospace;
-            font-size: 11px; padding: 10px; border-radius: 5px;
-            overflow-y: auto; pointer-events: auto; border: 1px solid #444, cursor: default;
+        #loader-wrapper {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8); z-index: 9999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            color: white; font-family: sans-serif;
         }
-        .log-entry { margin-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 2px; }
-        .log-error { color: #ff4757; }
+        .hidden { display: none !important; }
+        /* 프로그래스바 컨테이너 */
+        #progress-container {
+            width: 300px;
+            height: 12px;           /* 높이를 조금 더 키워 가독성 확보 */
+            background: #333;
+            border-radius: 6px;
+            margin: 20px 0;
+            overflow: hidden;       /* 내부 바가 삐져나가지 않게 함 */
+            border: 1px solid #444; /* 경계 명확화 */
+            padding: 0;             /* 내부 여백을 0으로 강제 */
+        }
 
-        /* 공통 원형 마커 스타일 */
-.custom-marker {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%; /* 완전한 원 */
-    border: 2px solid #fff; /* 흰색 테두리 */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3); /* 그림자 효과 */
-    color: white; /* 글자 색상 */
-    font-size: 12px;
-    font-weight: bold;
-    text-align: center;
-    line-height: 20px; /* (height - border*2) 와 맞추어 수직 중앙 정렬 */
-    cursor: pointer;
-    box-sizing: border-box; /* 테두리 포함 크기 계산 */
-}
+        /* 실제 진행 바 */
+        #progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #28a745, #00ff88); /* 그라데이션 추가 */
+            transition: width 0.2s ease-out;
+            display: block;         /* 공백 제거를 위해 block 설정 */
+            box-sizing: border-box; /* 테두리 포함 계산 방지 */
+        }
+        .hidden { display: none !important; opacity: 0; }
+        /* 실시간 로그 모니터 */
+                #log-monitor {
+                    position: absolute; bottom: 20px; left: 20px; z-index: 999;
+                    width: 350px; max-height: 200px; background: rgba(0, 0, 0, 0.7);
+                    color: #00ff88; font-family: 'Courier New', Courier, monospace;
+                    font-size: 11px; padding: 10px; border-radius: 5px;
+                    overflow-y: auto; pointer-events: auto; border: 1px solid #444, cursor: default;
+                }
+                .log-entry { margin-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 2px; }
+                .log-error { color: #ff4757; }
 
-/* 마커별 배경색 정의 */
-.marker-env { background-color: #28a745; } /* 초록 (환경부) */
-.marker-here { background-color: #007aff; } /* 파랑 (HERE) */
-.marker-tmap { background-color: #ff4757; } /* 빨강 (Tmap) */
+                /* 공통 원형 마커 스타일 */
+        .custom-marker {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%; /* 완전한 원 */
+            border: 2px solid #fff; /* 흰색 테두리 */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3); /* 그림자 효과 */
+            color: white; /* 글자 색상 */
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            line-height: 20px; /* (height - border*2) 와 맞추어 수직 중앙 정렬 */
+            cursor: pointer;
+            box-sizing: border-box; /* 테두리 포함 크기 계산 */
+        }
+
+        /* 마커별 배경색 정의 */
+        .marker-env { background-color: #28a745; } /* 초록 (환경부) */
+        .marker-here { background-color: #007aff; } /* 파랑 (HERE) */
+        .marker-tmap { background-color: #ff4757; } /* 빨강 (Tmap) */
 
 
-#tmap-search-btn:hover {
-    background: #ff6b81;
-    transform: translateY(-2px);
-}
+        #tmap-search-btn:hover {
+            background: #ff6b81;
+            transform: translateY(-2px);
+        }
 
-#tmap-search-btn:active {
-    transform: translateY(0);
-}
+        #tmap-search-btn:active {
+            transform: translateY(0);
+        }
 
-.tmap-info { border-top: 3px solid #ff4757; padding: 10px; min-width: 220px; font-size: 13px; }
-    .tmap-badge { background: #ff4757; color: white; padding: 2px 5px; border-radius: 3px; font-size: 10px; margin-right: 5px; }
+        .tmap-info { border-top: 3px solid #ff4757; padding: 10px; min-width: 220px; font-size: 13px; }
+            .tmap-badge { background: #ff4757; color: white; padding: 2px 5px; border-radius: 3px; font-size: 10px; margin-right: 5px; }
 
-    #tmap-search-btn {
-    position: static; /* absolute 제거 */
-    background: #ff4757; 
-    color: white; 
-    border: none; 
-    padding: 10px 16px; 
-    border-radius: 20px; 
-    cursor: pointer; 
-    font-weight: bold; 
-    font-size: 13px;
-    box-shadow: 0 4px 10px rgba(255, 71, 87, 0.4); 
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: transform 0.2s;
-    width: fit-content; /* 글자 길이에 맞춤 */
-}
+            #tmap-search-btn {
+            position: static; /* absolute 제거 */
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+            box-shadow: 0 4px 10px rgba(255, 71, 87, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: transform 0.2s;
+            width: fit-content; /* 글자 길이에 맞춤 */
+        }
 
-/* 수정된 로그 모니터 스타일: 위치 고정 속성 제거 */
-#log-monitor {
-    position: static; /* absolute 제거 */
-    width: 350px; 
-    max-height: 200px; 
-    background: rgba(0, 0, 0, 0.7);
-    color: #00ff88; 
-    font-family: 'Courier New', monospace;
-    font-size: 11px; 
-    padding: 10px; 
-    border-radius: 5px;
-    overflow-y: auto; 
-    border: 1px solid #444;
-    transition: max-height 0.3s ease; /* 높이 변화 부드럽게 */
-}
+        /* 수정된 로그 모니터 스타일: 위치 고정 속성 제거 */
+        #log-monitor {
+            position: static; /* absolute 제거 */
+            width: 350px;
+            max-height: 200px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #00ff88;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-y: auto;
+            border: 1px solid #444;
+            transition: max-height 0.3s ease; /* 높이 변화 부드럽게 */
+        }
 
         /* 모바일용 스타일 (화면 너비 768px 이하) */
-@media (max-width: 768px) {
-    /* 로그 모니터: 하단 전체 너비로 변경하고 높이 축소 */
-    #left-bottom-container {
-        width: calc(100% - 40px);
-        bottom: 10px;
-        left: 20px;
-    }
-    #log-monitor {
-        width: 100%;
-        max-height: 120px;
-    }
+        @media (max-width: 768px) {
+            /* 로그 모니터: 하단 전체 너비로 변경하고 높이 축소 */
+            #left-bottom-container {
+                width: calc(100% - 40px);
+                bottom: 10px;
+                left: 20px;
+            }
+            #log-monitor {
+                width: 100%;
+                max-height: 120px;
+            }
 
-    /* 범례: 우측 하단에서 상단으로 이동하거나 크기 축소 */
-    .legend {
-        top: 70px; /* 네이버 지도 컨트롤 피하기 */
-        right: 10px;
-        padding: 8px;
-        font-size: 11px;
-        max-width: 150px;
-    }
+            /* 범례: 우측 하단에서 상단으로 이동하거나 크기 축소 */
+            .legend {
+                top: 70px; /* 네이버 지도 컨트롤 피하기 */
+                right: 10px;
+                padding: 8px;
+                font-size: 11px;
+                max-width: 150px;
+            }
 
-    /* 로딩바 크기 조정 */
-    #progress-container {
-        width: 80%;
-    }
+            /* 로딩바 크기 조정 */
+            #progress-container {
+                width: 80%;
+            }
 
-    /* 정보창(말풍선) 내부 폰트 조정 */
-    .info-window {
-        min-width: 180px;
-        font-size: 12px;
-    }
-
-    
-}
+            /* 정보창(말풍선) 내부 폰트 조정 */
+            .info-window {
+                min-width: 180px;
+                font-size: 12px;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <div id="loader-wrapper">
-        <div id="loader-status" style="font-size: 18px; font-weight: bold;">데이터를 불러오는 중...</div>
-        <div id="progress-container" style="width: 300px; height: 10px; background: #444; border-radius: 5px; margin: 20px 0; overflow: hidden;">
-            <div id="progress-bar" style="width: 0%; height: 100%; background: #28a745; transition: width 0.2s;"></div>
-        </div>
-        <div id="loader-percent">0%</div>
+<div id="loader-wrapper">
+    <div id="loader-status" style="font-size: 18px; font-weight: bold;">데이터를 불러오는 중...</div>
+    <div id="progress-container" style="width: 300px; height: 10px; background: #444; border-radius: 5px; margin: 20px 0; overflow: hidden;">
+        <div id="progress-bar" style="width: 0%; height: 100%; background: #28a745; transition: width 0.2s;"></div>
     </div>
+    <div id="loader-percent">0%</div>
+</div>
 
-    <div id="left-bottom-container" style="position: absolute; bottom: 20px; left: 20px; z-index: 1001; display: flex; flex-direction: column; align-items: flex-start; gap: 10px;">
-    
-
+<div id="left-bottom-container" style="position: absolute; bottom: 20px; left: 20px; z-index: 1001; display: flex; flex-direction: column; align-items: flex-start; gap: 10px;">
+    <button id="tmap-search-btn" style="position: static; margin-bottom: 0;">
+        <span>🔍</span> 현재 지도 중심 TMAP 검색
+    </button>
     <div id="log-monitor" style="position: static;">
         <div class="log-entry">▼ System Log initialized...</div>
     </div>
@@ -294,220 +292,126 @@
 <div id="map"></div>
 
 <script>
-let allData = []; // 8만개 데이터를 저장할 변수
-let activeMarkers = []; // 현재 지도에 표시된 마커 관리
-let activePolylines = []; // 현재 지도에 표시된 선 관리
-let updateTimer = null;
+    let allData = []; // 8만개 데이터를 저장할 변수
+    let activeMarkers = []; // 현재 지도에 표시된 마커 관리
+    let activePolylines = []; // 현재 지도에 표시된 선 관리
+    let updateTimer = null;
 
-const TMAP_APP_KEY = 'dTvpdTIDEy7JCLV1V4NLc7bGiWksYpB51MOuQqPt'; // Tmap API 센터에서 발급받은 키
-let tmapMarkers = []; // TMAP 검색 마커만 따로 관리
-let tmapLabels = []; // TMAP 전용 상세정보 레이블(말풍선)
+    const TMAP_APP_KEY = 'dTvpdTIDEy7JCLV1V4NLc7bGiWksYpB51MOuQqPt'; // Tmap API 센터에서 발급받은 키
+    let tmapMarkers = []; // TMAP 검색 마커만 따로 관리
+    let tmapLabels = []; // TMAP 전용 상세정보 레이블(말풍선)
 
-document.getElementById('log-monitor').addEventListener('click', function() {
-    if (this.style.maxHeight === '30px') {
-        this.style.maxHeight = '200px';
-    } else {
-        this.style.maxHeight = '30px';
-    }
-});
+    document.getElementById('log-monitor').addEventListener('click', function() {
+        if (this.style.maxHeight === '30px') {
+            this.style.maxHeight = '200px';
+        } else {
+            this.style.maxHeight = '30px';
+        }
+    });
 
-const map = new naver.maps.Map('map', {
-    center: new naver.maps.LatLng(37.5665, 126.9780),
-    zoom: 15,
-    
-    // 지도 유형 컨트롤 활성화
-    mapTypeControl: true,
-    mapTypeControlOptions: {
-        style: naver.maps.MapTypeControlStyle.BUTTON, // 버튼 스타일
-        position: naver.maps.Position.TOP_LEFT      // 우측 상단 배치
-    },
+    const map = new naver.maps.Map('map', {
+        center: new naver.maps.LatLng(37.5665, 126.9780),
+        zoom: 15,
 
-    // 줌 컨트롤 (옵션)
-    zoomControl: true,
-    zoomControlOptions: {
-        position: naver.maps.Position.RIGHT_CENTER
-    },
-    mapTypes: new naver.maps.MapTypeRegistry({
-        'normal': naver.maps.NaverStyleMapTypeOptions.getNormalMap({
-            stylers: [{ 'poi': 'off' }, { 'poi.gas_station': 'on' }, { 'road': 'on' }, { 'label': 'on' }]
-        }),
-        'satellite': naver.maps.NaverStyleMapTypeOptions.getSatelliteMap({
-            stylers: [{ 'poi': 'off' }, { 'poi.gas_station': 'on' }, { 'road': 'on' }, { 'label': 'on' }]
-        }),
-        'hybrid': naver.maps.NaverStyleMapTypeOptions.getHybridMap({
-            stylers: [{ 'poi': 'off' }, { 'poi.gas_station': 'on' }, { 'road': 'on' }, { 'label': 'on' }]
+        // 지도 유형 컨트롤 활성화
+        mapTypeControl: true,
+        mapTypeControlOptions: {
+            style: naver.maps.MapTypeControlStyle.BUTTON, // 버튼 스타일
+            position: naver.maps.Position.TOP_LEFT      // 우측 상단 배치
+        },
+
+        // 줌 컨트롤 (옵션)
+        zoomControl: true,
+        zoomControlOptions: {
+            position: naver.maps.Position.RIGHT_CENTER
+        },
+        mapTypes: new naver.maps.MapTypeRegistry({
+            'normal': naver.maps.NaverStyleMapTypeOptions.getNormalMap({
+                stylers: [{ 'poi': 'off' }, { 'poi.gas_station': 'on' }, { 'road': 'on' }, { 'label': 'on' }]
+            }),
+            'satellite': naver.maps.NaverStyleMapTypeOptions.getSatelliteMap({
+                stylers: [{ 'poi': 'off' }, { 'poi.gas_station': 'on' }, { 'road': 'on' }, { 'label': 'on' }]
+            }),
+            'hybrid': naver.maps.NaverStyleMapTypeOptions.getHybridMap({
+                stylers: [{ 'poi': 'off' }, { 'poi.gas_station': 'on' }, { 'road': 'on' }, { 'label': 'on' }]
+            })
         })
-    })
-});
-
-// [최초 1회 설정]
-const infoWindow = new naver.maps.InfoWindow({
-    anchorSkew: true,
-    borderWidth: 0,           // 네이버 기본 테두리 제거
-    backgroundColor: "transparent", // 네이버 기본 배경 제거
-    disableAnchor: true       // 네이버 기본 꼬리표 제거
-});
-
-// --- TMAP 설정 및 변수 ---
-
-// 1. TMAP 검색 버튼 클릭 이벤트 (jQuery 방식)
-$("#tmap-search-btn").click(function(){
-    const center = map.getCenter(); // 네이버 지도 중심 좌표
-    const lat = center.lat();
-    const lng = center.lng();
-
-    addLog(`TMAP 주변 검색 시작 (중심: ${lat.toFixed(4)}, ${lng.toFixed(4)})`);
-
-    // 기존 TMAP 마커 및 레이블 제거
-    clearTmapResults();
-
-    $.ajax({
-        method: "GET",
-        headers: { "appKey": TMAP_APP_KEY },
-        url: "https://apis.openapi.sk.com/tmap/pois/search/around?version=1&format=json&callback=result",
-        data: {
-            "categories": "EV충전소",
-            "resCoordType": "EPSG3857",
-            "searchType": "name",
-            "searchtypCd": "A",
-            "radius": 5, // 2km 반경
-            "reqCoordType": "WGS84GEO",
-            "centerLon": lng.toString(),
-            "centerLat": lat.toString(),
-            "count": 150
-        },
-        success: function(response) {
-            if(!response.searchPoiInfo) {
-                addLog("주변에 TMAP 검색 결과가 없습니다.", true);
-                return;
-            }
-
-            const pois = response.searchPoiInfo.pois.poi;
-            addLog(`TMAP 결과 ${pois.length}건 발견.`);
-
-            pois.forEach((poi, k) => {
-                // 2. 좌표 변환 (EPSG3857 -> WGS84GEO)
-                const noorLat = Number(poi.noorLat);
-                const noorLon = Number(poi.noorLon);
-                const pointCng = new Tmapv2.Point(noorLon, noorLat);
-                const projectionCng = new Tmapv2.Projection.convertEPSG3857ToWGS84GEO(pointCng);
-                
-                const latWGS84 = projectionCng._lat;
-                const lonWGS84 = projectionCng._lng;
-
-                // 3. 네이버 지도 위에 빨간색 마커 생성
-                const marker = new naver.maps.Marker({
-        position: new naver.maps.LatLng(latWGS84, lonWGS84),
-        map: map,
-        zIndex: 200, // Tmap 마커를 가장 위로
-        icon: {
-            // HTML content 활용: Tmap 전용 클래스와 'T' 글자
-            content: '<div class="custom-marker marker-tmap">T</div>',
-            anchor: new naver.maps.Point(12, 12)
-        }
     });
 
-                // 4. 마커 클릭 시 상세정보 가져오기 (샘플의 poiDetail 로직)
-                naver.maps.Event.addListener(marker, 'click', function() {
-                    getTmapPoiDetail(poi.id, marker);
-                });
-
-                tmapMarkers.push(marker);
-            });
-        },
-        error: function(request, status, error) {
-            addLog("TMAP API 에러: " + error, true);
-        }
+    // [최초 1회 설정]
+    const infoWindow = new naver.maps.InfoWindow({
+        anchorSkew: true,
+        borderWidth: 0,           // 네이버 기본 테두리 제거
+        backgroundColor: "transparent", // 네이버 기본 배경 제거
+        disableAnchor: true       // 네이버 기본 꼬리표 제거
     });
-});
 
-// 5. TMAP POI 상세 정보 API 호출 함수
-function getTmapPoiDetail(poiId, marker) {
-    resetHighlights(); // 기존 네이버/엑셀 하이라이트 초기화
+    // --- TMAP 설정 및 변수 ---
 
-    $.ajax({
-        method: "GET",
-        headers: { "appKey": TMAP_APP_KEY },
-        url: `https://apis.openapi.sk.com/tmap/pois/${poiId}?version=1&resCoordType=EPSG3857&format=json&callback=result`,
-        success: function(response) {
-            const detail = response.poiDetailInfo;
-            
-            // 상세 정보 화면 구성 (네이버 InfoWindow 활용)
-            const content = `
-    <div class="custom-info-window">
-        <div class="info-header-bar bar-tmap"></div>
-        <div class="info-body">
-            <div class="info-title">
-                <span style="font-size:10px; background:#ff4757; color:white; padding:2px 4px; border-radius:3px;">TMAP</span>
-                ${detail.name}
-            </div>
-            <div class="info-content">
-                <div><strong>주소:</strong> ${detail.address}</div>
-                <div><strong>전화:</strong> ${detail.tel || '정보없음'}</div>
-            </div>
-        </div>
-    </div>
-`;
+    // 1. TMAP 검색 버튼 클릭 이벤트 (jQuery 방식)
+    $("#tmap-search-btn").click(function(){
+        const center = map.getCenter(); // 네이버 지도 중심 좌표
+        const lat = center.lat();
+        const lng = center.lng();
 
-            infoWindow.setContent(content);
-            infoWindow.open(map, marker);
-            infoWindow.anchorMarker = marker;
-            
-           // addLog(`TMAP 상세조회: ${detail.name}`);
-        },
-        error: function(err) {
-            addLog("상세정보 로드 실패", true);
-        }
-    });
-}
+        addLog(`TMAP 주변 검색 시작 (중심: ${lat.toFixed(4)}, ${lng.toFixed(4)})`);
 
-// --- [추가/수정] TMAP 자동 검색 로직 ---
-function autoSearchTmap() {
-    const zoom = map.getZoom();
-    const center = map.getCenter();
-    const lat = center.lat();
-    const lng = center.lng();
+        // 기존 TMAP 마커 및 레이블 제거
+        clearTmapResults();
 
-    clearTmapResults();
-    // 성능 및 API 쿼터 보호: 줌 레벨이 15 미만이면 TMAP 검색 안함
-    if (zoom < 15) {
-        return;
-    }
+        const typeMap = {
+        "01": "DC차데모",
+        "02": "승용차 AC완속",
+        "03": "DC차데모+AC3상",
+        "04": "DC콤보",
+        "05": "DC차데모+DC콤보",
+        "06": "DC차데모+AC3상+DC콤보",
+        "07": "AC급속3상"
+    };
 
-    // 기존 TMAP 마커 제거
-    
+        $.ajax({
+            method: "GET",
+            headers: { "appKey": TMAP_APP_KEY },
+            url: "https://apis.openapi.sk.com/tmap/pois/search/around?version=1&format=json&callback=result",
+            data: {
+                "categories": "EV충전소",
+                "resCoordType": "WGS84GEO",
+                "searchType": "name",
+                "searchtypCd": "A",
+                "radius": 5, // 2km 반경
+                "reqCoordType": "WGS84GEO",
+                "centerLon": lng.toString(),
+                "centerLat": lat.toString(),
+                "count": 150
+            },
+            success: function(response) {
+                if(!response.searchPoiInfo) {
+                    addLog("주변에 TMAP 검색 결과가 없습니다.", true);
+                    return;
+                }
 
-    $.ajax({
-        method: "GET",
-        headers: { "appKey": TMAP_APP_KEY },
-        url: "https://apis.openapi.sk.com/tmap/pois/search/around?version=1&format=json&callback=result",
-        data: {
-            "categories": "EV충전소",
-            "resCoordType": "EPSG3857",
-            "searchType": "name",
-            "searchtypCd": "A",
-            "radius": 5, // 자동 검색은 부하 방지를 위해 2km로 제한 권장
-            "reqCoordType": "WGS84GEO",
-            "centerLon": lng.toString(),
-            "centerLat": lat.toString(),
-            "evPublicType": "public",
-            "count": 150  // 자동 검색 시 적절한 개수
-        },
-        success: function(response) {
-            if(!response.searchPoiInfo) return;
+                const pois = response.searchPoiInfo.pois.poi;
+                addLog(`TMAP 결과 ${pois.length}건 발견.`);
 
-            const pois = response.searchPoiInfo.pois.poi;
-            pois.forEach((poi) => {
-                const noorLat = Number(poi.noorLat);
-                const noorLon = Number(poi.noorLon);
-                const pointCng = new Tmapv2.Point(noorLon, noorLat);
-                const projectionCng = new Tmapv2.Projection.convertEPSG3857ToWGS84GEO(pointCng);
-                
-                const latWGS = projectionCng._lat;
-                const lonWGS = projectionCng._lng;
+                pois.forEach((poi) => {
+                let types = "정보 없음";
+
+                if (poi.evChargers && Array.isArray(poi.evChargers.evCharger)) {
+                    const typeSet = new Set();
+
+                    poi.evChargers.evCharger.forEach(charger => {
+                        // [수정] 코드를 명칭으로 변환하여 저장
+                        if (charger.type) {
+                            const typeName = typeMap[charger.type] || `기타(${charger.type})`;
+                            typeSet.add(typeName);
+                        }
+                    });
+
+                    if (typeSet.size > 0) types = Array.from(typeSet).join(' / ');
+                }
 
                 const marker = new naver.maps.Marker({
-                    position: new naver.maps.LatLng(latWGS, lonWGS),
+                    position: new naver.maps.LatLng(poi.noorLat, poi.noorLon),
                     map: map,
                     zIndex: 200,
                     icon: {
@@ -517,269 +421,352 @@ function autoSearchTmap() {
                 });
 
                 naver.maps.Event.addListener(marker, 'click', function() {
-                    getTmapPoiDetail(poi.id, marker);
+                    resetHighlights();
+                    const content = `
+                        <div class="custom-info-window">
+                            <div class="info-header-bar bar-tmap"></div>
+                            <div class="info-body">
+                                <div class="info-title">
+                                    <span style="font-size:10px; background:#ff4757; color:white; padding:2px 5px; border-radius:3px; font-weight:bold;">TMAP</span>
+                                    ${poi.name}
+                                </div>
+                                <div class="info-content">
+                                    <div><strong>주소:</strong> ${poi.newAddressList?.newAddress[0]?.fullAddressName || poi.upperAddrName + " " + poi.middleAddrName + " " + poi.lowerAddrName}</div>
+                                    <div style="margin-top:2px;"><strong>타입:</strong> ${types}</div>
+                                </div>
+                            </div>
+                            <div class="info-arrow-area"><div class="info-arrow-triangle"></div></div>
+                        </div>`;
+                    infoWindow.setContent(content);
+                    infoWindow.open(map, marker);
                 });
-
                 tmapMarkers.push(marker);
             });
-            addLog(`TMAP 자동 업데이트 완료 (${pois.length}건)`);
-        }
-    });
-}
-
-function clearTmapResults() {
-    tmapMarkers.forEach(m => m.setMap(null));
-    tmapMarkers = [];
-    // 기존 라벨/정보창이 있다면 닫기
-    if(infoWindow) infoWindow.close();
-}
-
-// 화면에 로그를 찍는 함수
-function addLog(msg, isError = false) {
-    const monitor = document.getElementById('log-monitor');
-    const entry = document.createElement('div');
-    entry.className = isError ? 'log-entry log-error' : 'log-entry';
-    const time = new Date().toLocaleTimeString();
-    entry.innerText = `[${time}] ${msg}`;
-    monitor.prepend(entry); // 최신 로그가 위로 오게 함
-    console.log(msg);
-}
-
-function resetHighlights() {
-    infoWindow.close();
-    infoWindow.anchorMarker = null; // 마커 참조 초기화
-    activePolylines.forEach(p => {
-        p.setOptions({ strokeWeight: 2, strokeOpacity: 0.5, strokeStyle: 'dash' });
-    });
-}
-
-// 1. 데이터 로드 (최초 1회)
-async function loadLargeData() {
-    const loader = document.getElementById('loader-wrapper');
-    const progressBar = document.getElementById('progress-bar');
-    const percentText = document.getElementById('loader-percent');
-    const statusText = document.getElementById('loader-status');
-
-    try {
-        addLog("파일 다운로드 시작");
-        const response = await fetch('./assets/26q1_ev.xlsx');
-        const contentLength = response.headers.get('content-length');
-        const total = parseInt(contentLength, 10);
-        let loaded = 0;
-
-        const reader = response.body.getReader();
-        const chunks = [];
-
-        // 1. 파일 다운로드 스트리밍 및 퍼센트 표시
-        while(true) {
-    const {done, value} = await reader.read();
-    if (done) break;
-    chunks.push(value);
-    loaded += value.length;
-    
-    if (total) {
-        let percent = Math.floor((loaded / total) * 100);
-        if (percent > 100) percent = 100; // 100% 초과 방지
-        
-        progressBar.style.width = percent + '%';
-        percentText.innerText = percent + '%';
-        
-        // 100%일 때 색상을 변경하거나 로그를 남김
-        if (percent === 100) {
-            progressBar.style.background = '#00ff88'; 
-        }
-    }
-}
-// 루프가 끝난 직후 강제로 100% 설정 (안전장치)
-progressBar.style.width = '100%';
-percentText.innerText = '100%';
-
-        // 2. 데이터 파싱 단계 (Dim 유지)
-        statusText.innerText = "엑셀 파일을 로딩중입니다. 잠시만 기다려주세요...";
-        addLog("다운로드 완료. 엑셀 파싱 시작...");
-        
-        // 브라우저 렌더링을 위해 잠깐의 지연을 줍니다.
-        await new Promise(resolve => setTimeout(resolve, 100));
-
-        const allChunks = new Uint8Array(loaded);
-        let position = 0;
-        for(let chunk of chunks) {
-            allChunks.set(chunk, position);
-            position += chunk.length;
-        }
-
-        const workbook = XLSX.read(allChunks, { type: 'array' });
-        allData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
-
-        // 모든 작업 완료 후 로딩창 숨기기
-        addLog(`데이터 로드 성공: 총 ${allData.length.toLocaleString()}행`);
-        loader.classList.add('hidden'); 
-        
-        updateMarkers();
-        autoSearchTmap();
-        // 기존의 'idle' 리스너를 아래와 같이 통합 수정하세요.
-naver.maps.Event.addListener(map, 'idle', () => {
-    if (updateTimer) clearTimeout(updateTimer);
-    
-    updateTimer = setTimeout(() => {
-        // 1. 기존 CSV 마커 업데이트
-        updateMarkers(); 
-        
-        // 2. TMAP 실시간 데이터 자동 업데이트 (추가)
-        autoSearchTmap();
-    }, 400); // 0.4초 동안 지도 이동이 멈춰있을 때 실행 (디바운싱)
-});
-        naver.maps.Event.addListener(map, 'click', resetHighlights);
-
-    } catch (err) {
-        addLog("에러 발생: " + err.message, true);
-        statusText.innerText = "데이터 로딩 실패!";
-        statusText.style.color = "#ff4757";
-        console.error(err);
-    }
-}
-
-// 2. 줌/영역에 따른 마커 업데이트 로직
-function updateMarkers() {
-    const zoom = map.getZoom();
-    const bounds = map.getBounds(); // 현재 지도의 가시 영역
-
-    // 기존 마커/선 제거
-    clearMap();
-
-    // 줌 레벨이 14 미만이면 안내 메시지만 띄우고 중단
-    if (zoom < 15) {
-        addLog(`줌 레벨(${zoom})이 낮음: 확대가 필요합니다.`);
-        console.log("줌 레벨이 낮아 데이터를 표시하지 않습니다. (현재: " + zoom + ")");
-        return;
-    }
-
-    // 현재 화면 영역 내에 있는 데이터만 필터링 (8만개 루프는 JS에서 매우 빠름)
-    const visibleData = allData.filter(row => {
-        const lat = row.basis === '환경부' ? row.env_latitude : row.here_latitude;
-        const lng = row.basis === '환경부' ? (row.env_longtitude || row.env_longitude) : (row.here_longtitude || row.here_longitude);
-        
-        return lat && lng && bounds.hasLatLng(new naver.maps.LatLng(lat, lng));
+            },
+            error: function(request, status, error) {
+                addLog("TMAP API 에러: " + error, true);
+            }
+        });
     });
 
-    addLog(`현재 가시 영역 내 충전소: ${visibleData.length}개 표시 중`);
+    // 5. TMAP POI 상세 정보 API 호출 함수
+    function getTmapPoiDetail(poiId, marker) {
+        resetHighlights(); // 기존 네이버/엑셀 하이라이트 초기화
 
-    // 필터링된 데이터만 렌더링 (최대 500~1000개 정도로 제한 권장)
-    visibleData.slice(0, 1000).forEach(row => createMarkerAndLine(row));
-}
+        $.ajax({
+            method: "GET",
+            headers: { "appKey": TMAP_APP_KEY },
+            url: `https://apis.openapi.sk.com/tmap/pois/${poiId}?version=1&resCoordType=EPSG3857&format=json&callback=result`,
+            success: function(response) {
+                const detail = response.poiDetailInfo;
 
-function clearMap() {
-    activeMarkers.forEach(m => m.setMap(null));
-    activePolylines.forEach(p => p.setMap(null));
-    activeMarkers = [];
-    activePolylines = [];
-}
+                // 1. 안전하게 데이터 추출 (Optional Chaining 및 기본값 설정)
+                let agencies = "정보 없음";
+                let types = "정보 없음";
 
-function createMarkerAndLine(row) {
-    const eLat = row.env_latitude, eLng = row.env_longtitude || row.env_longitude;
-    const hLat = row.here_latitude, hLng = row.here_longtitude || row.here_longitude;
-    const isEnv = row.basis === '환경부';
-    const lat = isEnv ? eLat : hLat;
-    const lng = isEnv ? eLng : hLng;
+                // evChargers와 evCharger 배열이 모두 존재하는지 단계별로 확인
+                if (detail && detail.evChargers && Array.isArray(detail.evChargers.evCharger)) {
+                    const chargerList = detail.evChargers.evCharger;
 
-    const marker = new naver.maps.Marker({
-        position: new naver.maps.LatLng(lat, lng),
-        map: map,
-        icon: {
-            // HTML content 활용: 클래스와 글자 동적 지정
-            content: isEnv 
-                ? '<div class="custom-marker marker-env">환</div>' 
-                : '<div class="custom-marker marker-here">H</div>',
-            // 마커의 중심점이 좌표에 오도록 앵커 설정 (크기의 절반)
-            anchor: new naver.maps.Point(12, 12)
+                    if (chargerList.length > 0) {
+                        const agencySet = new Set();
+                        const typeSet = new Set();
+
+                        chargerList.forEach(charger => {
+                            // bid(기관)와 type(충전기타입)이 있을 때만 추가
+                            if (charger.bid) agencySet.add(charger.bid);
+                            if (charger.type) typeSet.add(charger.type);
+                        });
+
+                        if (agencySet.size > 0) agencies = Array.from(agencySet).join(' / ');
+                        if (typeSet.size > 0) types = Array.from(typeSet).join(' / ');
+                    }
+                }
+
+                // 2. 상세 정보 화면 구성
+                const content = `
+                    <div class="custom-info-window">
+                        <div class="info-header-bar bar-tmap"></div>
+                        <div class="info-body">
+                            <div class="info-title">
+                                <span style="font-size:10px; background:#ff4757; color:white; padding:2px 4px; border-radius:3px; font-weight:bold;">TMAP</span>
+                                ${detail.name || "명칭 없음"}
+                            </div>
+                            <div class="info-content">
+                                <div><strong>주소:</strong> ${detail.address || "주소 정보 없음"}</div>
+                                <div style="margin-top:4px;"><strong>기관:</strong> ${agencies}</div>
+                                <div style="margin-top:2px;"><strong>타입:</strong> ${types}</div>
+                            </div>
+                        </div>
+                        <div class="info-arrow-area">
+                            <div class="info-arrow-triangle"></div>
+                        </div>
+                    </div>
+                `;
+
+                infoWindow.setContent(content);
+                infoWindow.open(map, marker);
+                infoWindow.anchorMarker = marker;
+            },
+            error: function(err) {
+                addLog("상세정보 로드 실패", true);
+            }
+        });
+    }
+
+    function clearTmapResults() {
+        tmapMarkers.forEach(m => m.setMap(null));
+        tmapMarkers = [];
+        // 기존 라벨/정보창이 있다면 닫기
+        if(infoWindow) infoWindow.close();
+    }
+
+    // 화면에 로그를 찍는 함수
+    function addLog(msg, isError = false) {
+        const monitor = document.getElementById('log-monitor');
+        const entry = document.createElement('div');
+        entry.className = isError ? 'log-entry log-error' : 'log-entry';
+        const time = new Date().toLocaleTimeString();
+        entry.innerText = `[${time}] ${msg}`;
+        monitor.prepend(entry); // 최신 로그가 위로 오게 함
+        console.log(msg);
+    }
+
+    function resetHighlights() {
+        infoWindow.close();
+        infoWindow.anchorMarker = null; // 마커 참조 초기화
+        activePolylines.forEach(p => {
+            p.setOptions({ strokeWeight: 2, strokeOpacity: 0.5, strokeStyle: 'dash' });
+        });
+    }
+
+    // 1. 데이터 로드 (최초 1회)
+    async function loadLargeData() {
+        const loader = document.getElementById('loader-wrapper');
+        const progressBar = document.getElementById('progress-bar');
+        const percentText = document.getElementById('loader-percent');
+        const statusText = document.getElementById('loader-status');
+
+        try {
+            addLog("파일 다운로드 시작");
+            const response = await fetch('https://black924.github.io/siglo/ev/assets/26q1_ev.xlsx');
+            const contentLength = response.headers.get('content-length');
+            const total = parseInt(contentLength, 10);
+            let loaded = 0;
+
+            const reader = response.body.getReader();
+            const chunks = [];
+
+            // 1. 파일 다운로드 스트리밍 및 퍼센트 표시
+            while(true) {
+        const {done, value} = await reader.read();
+        if (done) break;
+        chunks.push(value);
+        loaded += value.length;
+
+        if (total) {
+            let percent = Math.floor((loaded / total) * 100);
+            if (percent > 100) percent = 100; // 100% 초과 방지
+
+            progressBar.style.width = percent + '%';
+            percentText.innerText = percent + '%';
+
+            // 100%일 때 색상을 변경하거나 로그를 남김
+            if (percent === 100) {
+                progressBar.style.background = '#00ff88';
+            }
+        }
+    }
+    // 루프가 끝난 직후 강제로 100% 설정 (안전장치)
+    progressBar.style.width = '100%';
+    percentText.innerText = '100%';
+
+            // 2. 데이터 파싱 단계 (Dim 유지)
+            statusText.innerText = "엑셀 파일을 로딩중입니다. 잠시만 기다려주세요...";
+            addLog("다운로드 완료. 엑셀 파싱 시작...");
+
+            // 브라우저 렌더링을 위해 잠깐의 지연을 줍니다.
+            await new Promise(resolve => setTimeout(resolve, 100));
+
+            const allChunks = new Uint8Array(loaded);
+            let position = 0;
+            for(let chunk of chunks) {
+                allChunks.set(chunk, position);
+                position += chunk.length;
+            }
+
+            const workbook = XLSX.read(allChunks, { type: 'array' });
+            allData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
+
+            // 모든 작업 완료 후 로딩창 숨기기
+            addLog(`데이터 로드 성공: 총 ${allData.length.toLocaleString()}행`);
+            loader.classList.add('hidden');
+
+            updateMarkers();
+            //autoSearchTmap();
+            // 기존의 'idle' 리스너를 아래와 같이 통합 수정하세요.
+    naver.maps.Event.addListener(map, 'idle', () => {
+        if (updateTimer) clearTimeout(updateTimer);
+
+        updateTimer = setTimeout(() => {
+            // 1. 기존 CSV 마커 업데이트
+            updateMarkers();
+
+            // 2. TMAP 실시간 데이터 자동 업데이트 (추가)
+            // autoSearchTmap();
+        }, 400); // 0.4초 동안 지도 이동이 멈춰있을 때 실행 (디바운싱)
+    });
+            naver.maps.Event.addListener(map, 'click', resetHighlights);
+
+        } catch (err) {
+            addLog("에러 발생: " + err.message, true);
+            statusText.innerText = "데이터 로딩 실패!";
+            statusText.style.color = "#ff4757";
+            console.error(err);
+        }
+    }
+
+    // 2. 줌/영역에 따른 마커 업데이트 로직
+    function updateMarkers() {
+        const zoom = map.getZoom();
+        const bounds = map.getBounds(); // 현재 지도의 가시 영역
+
+        // 기존 마커/선 제거
+        clearMap();
+
+        // 줌 레벨이 14 미만이면 안내 메시지만 띄우고 중단
+        if (zoom < 15) {
+            addLog(`줌 레벨(${zoom})이 낮음: 확대가 필요합니다.`);
+            console.log("줌 레벨이 낮아 데이터를 표시하지 않습니다. (현재: " + zoom + ")");
+            return;
+        }
+
+        // 현재 화면 영역 내에 있는 데이터만 필터링 (8만개 루프는 JS에서 매우 빠름)
+        const visibleData = allData.filter(row => {
+            const lat = row.basis === '환경부' ? row.env_latitude : row.here_latitude;
+            const lng = row.basis === '환경부' ? (row.env_longtitude || row.env_longitude) : (row.here_longtitude || row.here_longitude);
+
+            return lat && lng && bounds.hasLatLng(new naver.maps.LatLng(lat, lng));
+        });
+
+        addLog(`현재 가시 영역 내 충전소: ${visibleData.length}개 표시 중`);
+
+        // 필터링된 데이터만 렌더링 (최대 500~1000개 정도로 제한 권장)
+        visibleData.slice(0, 1000).forEach(row => createMarkerAndLine(row));
+    }
+
+    function clearMap() {
+        activeMarkers.forEach(m => m.setMap(null));
+        activePolylines.forEach(p => p.setMap(null));
+        activeMarkers = [];
+        activePolylines = [];
+    }
+
+    function createMarkerAndLine(row) {
+        const eLat = row.env_latitude, eLng = row.env_longtitude || row.env_longitude;
+        const hLat = row.here_latitude, hLng = row.here_longtitude || row.here_longitude;
+        const isEnv = row.basis === '환경부';
+        const lat = isEnv ? eLat : hLat;
+        const lng = isEnv ? eLng : hLng;
+
+        const marker = new naver.maps.Marker({
+            position: new naver.maps.LatLng(lat, lng),
+            map: map,
+            icon: {
+                // HTML content 활용: 클래스와 글자 동적 지정
+                content: isEnv
+                    ? '<div class="custom-marker marker-env">환</div>'
+                    : '<div class="custom-marker marker-here">H</div>',
+                // 마커의 중심점이 좌표에 오도록 앵커 설정 (크기의 절반)
+                anchor: new naver.maps.Point(12, 12)
+            }
+        });
+
+        const isOkay = (row.Env_Note === "환경부 기준 OKAY" || row.Here_Note === "HERE 기준 OKAY");
+        //let polyline = null;
+          //  if (isOkay && eLat && hLat) {
+            //    polyline = new naver.maps.Polyline({
+              //      map: map,
+                //    path: [new naver.maps.LatLng(eLat, eLng), new naver.maps.LatLng(hLat, hLng)],
+                  //  strokeColor: '#ff4757', strokeWeight: 2, strokeOpacity: 0.5, strokeStyle: 'dash'
+                //});
+                //activePolylines.push(polyline);
+           // }
+
+            naver.maps.Event.addListener(marker, 'click', () => {
+        // 1. 현재 정보창이 지도에 표시 중인지 확인
+        const isMapVisible = infoWindow.getMap();
+
+        // 2. 현재 정보창이 이 마커에 열려 있는지 확인 (우리가 임의로 지정할 속성 이용)
+        const isCurrentMarker = infoWindow.anchorMarker === marker;
+
+        if (isMapVisible && isCurrentMarker) {
+            // 이미 같은 마커에 열려 있다면 닫고 초기화
+            resetHighlights();
+            infoWindow.anchorMarker = null; // 참조 해제
+        } else {
+            // 닫혀 있거나 다른 마커를 클릭한 경우
+            resetHighlights();
+
+            // 정보창을 열고, 현재 마커를 anchorMarker로 저장
+            showInfoWindow(row, marker);
+            infoWindow.anchorMarker = marker;
+
+          //  if (isOkay && polyline) {
+           //     polyline.setOptions({
+            //        strokeWeight: 6,
+             //       strokeOpacity: 1,
+              //      strokeStyle: 'solid'
+               // });
+            //}
         }
     });
-
-    const isOkay = (row.Env_Note === "환경부 기준 OKAY" || row.Here_Note === "HERE 기준 OKAY");
-    //let polyline = null;
-      //  if (isOkay && eLat && hLat) {
-        //    polyline = new naver.maps.Polyline({
-          //      map: map,
-            //    path: [new naver.maps.LatLng(eLat, eLng), new naver.maps.LatLng(hLat, hLng)],
-              //  strokeColor: '#ff4757', strokeWeight: 2, strokeOpacity: 0.5, strokeStyle: 'dash'
-            //});
-            //activePolylines.push(polyline);
-       // }
-
-        naver.maps.Event.addListener(marker, 'click', () => {
-    // 1. 현재 정보창이 지도에 표시 중인지 확인
-    const isMapVisible = infoWindow.getMap();
-    
-    // 2. 현재 정보창이 이 마커에 열려 있는지 확인 (우리가 임의로 지정할 속성 이용)
-    const isCurrentMarker = infoWindow.anchorMarker === marker;
-
-    if (isMapVisible && isCurrentMarker) {
-        // 이미 같은 마커에 열려 있다면 닫고 초기화
-        resetHighlights();
-        infoWindow.anchorMarker = null; // 참조 해제
-    } else {
-        // 닫혀 있거나 다른 마커를 클릭한 경우
-        resetHighlights();
-
-        // 정보창을 열고, 현재 마커를 anchorMarker로 저장
-        showInfoWindow(row, marker);
-        infoWindow.anchorMarker = marker; 
-
-      //  if (isOkay && polyline) {
-       //     polyline.setOptions({
-        //        strokeWeight: 6,
-         //       strokeOpacity: 1,
-          //      strokeStyle: 'solid'
-           // });
-        //}
-    }
-});
-        activeMarkers.push(marker);
-}
-
-// 말풍선(InfoWindow) 표시 함수
-function showInfoWindow(row, marker) {
-    const isEnv = row.basis === '환경부';
-    const barClass = isEnv ? 'bar-env' : 'bar-here';
-    
-    // [수정] TMAP 스타일의 배경색 배지 설정
-    // 환경부는 초록(#28a745), HERE는 파랑(#007aff)
-    const badgeStyle = isEnv 
-        ? 'background-color:#28a745; color:white; border:none;' 
-        : 'background-color:#007aff; color:white; border:none;';
-    
-    const label = isEnv ? '환경부' : 'HERE';
-    const title = isEnv ? (row.Env_Col1 || "명칭 없음") : (row.Here_FirstCol || "명칭 없음");
-    
-    let detailHtml = "";
-    if (isEnv && row.Env_Note === "환경부 기준 OKAY") {
-        detailHtml = `<div><strong>근처 HERE EV:</strong> ${row.Here_FirstCol}</div><div><strong>거리:</strong> ${row.distance.toFixed(2)}m</div>`;
-    } else if (!isEnv && row.Here_Note === "HERE 기준 OKAY") {
-        detailHtml = `<div><strong>근처 환경부 EV:</strong> ${row.Env_Col1}</div><div><strong>거리:</strong> ${row.distance.toFixed(2)}m</div>`;
+            activeMarkers.push(marker);
     }
 
-    const content = `
-        <div class="custom-info-window">
-            <div class="info-header-bar ${barClass}"></div>
-            <div class="info-body">
-                <div class="info-title">
-                    <span style="font-size:10px; padding:2px 5px; border-radius:3px; font-weight:bold; ${badgeStyle}">
-                        ${label}
-                    </span>
-                    ${title}
-                </div>
-                <div class="info-content">
-                    ${detailHtml || '<div>매칭 정보가 없는 단독 데이터입니다.</div>'}
+    // 말풍선(InfoWindow) 표시 함수
+    function showInfoWindow(row, marker) {
+        const isEnv = row.basis === '환경부';
+        const barClass = isEnv ? 'bar-env' : 'bar-here';
+
+        // [수정] TMAP 스타일의 배경색 배지 설정
+        // 환경부는 초록(#28a745), HERE는 파랑(#007aff)
+        const badgeStyle = isEnv
+            ? 'background-color:#28a745; color:white; border:none;'
+            : 'background-color:#007aff; color:white; border:none;';
+
+        const label = isEnv ? '환경부' : 'HERE';
+        const title = isEnv ? (row.Env_Col1 || "명칭 없음") : (row.Here_FirstCol || "명칭 없음");
+
+        let detailHtml = "";
+        if (isEnv && row.Env_Note === "환경부 기준 OKAY") {
+            detailHtml = `<div><strong>근처 HERE EV:</strong> ${row.Here_FirstCol}</div><div><strong>거리:</strong> ${row.distance.toFixed(2)}m</div>`;
+        } else if (!isEnv && row.Here_Note === "HERE 기준 OKAY") {
+            detailHtml = `<div><strong>근처 환경부 EV:</strong> ${row.Env_Col1}</div><div><strong>거리:</strong> ${row.distance.toFixed(2)}m</div>`;
+        }
+
+        const content = `
+            <div class="custom-info-window">
+                <div class="info-header-bar ${barClass}"></div>
+                <div class="info-body">
+                    <div class="info-title">
+                        <span style="font-size:10px; padding:2px 5px; border-radius:3px; font-weight:bold; ${badgeStyle}">
+                            ${label}
+                        </span>
+                        ${title}
+                    </div>
+                    <div class="info-content">
+                        ${detailHtml || '<div>매칭 정보가 없는 단독 데이터입니다.</div>'}
+                    </div>
                 </div>
             </div>
-        </div>
-    `;
+        `;
 
-    infoWindow.setContent(content);
-    infoWindow.open(map, marker);
-}
+        infoWindow.setContent(content);
+        infoWindow.open(map, marker);
+    }
 
-window.onload = loadLargeData;
+    window.onload = loadLargeData;
 </script>
 </body>
 </html>
