@@ -46,6 +46,23 @@
             margin-bottom: 10px;    /* 화살표가 들어갈 공간 확보 */
         }
 
+        .btn-roadview {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 4px 8px;
+            background-color: #FAE100; /* 카카오 노란색 */
+            color: #3C1E1E;            /* 카카오 짙은 갈색(검정 계열) */
+            text-decoration: none;
+            font-size: 11px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .btn-roadview:hover {
+            background-color: #F7D600; /* 호버 시 약간 어두운 노란색 */
+        }
+
         /* 3. 커스텀 화살표 (삼각형) */
         .custom-info-window::after {
             content: "";
@@ -283,6 +300,17 @@
 </div>
 
 <div class="legend">
+    <h4 style="margin:0 0 8px 0;">데이터 필터</h4>
+    <div style="margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #eee;">
+        <label style="display: block; cursor: pointer; margin-bottom: 5px;">
+            <input type="radio" name="filterMode" value="all" onchange="changeFilterMode('all')">
+            전체 환경부/HERE EV 충전소
+        </label>
+        <label style="display: block; cursor: pointer;">
+            <input type="radio" name="filterMode" value="error" checked onchange="changeFilterMode('error')">
+            TMAP 기반 오류 가능성 있는 EV 충전소
+        </label>
+    </div>
     <h4 style="margin:0 0 8px 0;">26Q1 충전소 구분</h4>
     <div style="color:#28a745">● 환경부</div>
     <div style="color:#007aff">● HERE</div>
@@ -300,6 +328,14 @@
     const TMAP_APP_KEY = 'dTvpdTIDEy7JCLV1V4NLc7bGiWksYpB51MOuQqPt'; // Tmap API 센터에서 발급받은 키
     let tmapMarkers = []; // TMAP 검색 마커만 따로 관리
     let tmapLabels = []; // TMAP 전용 상세정보 레이블(말풍선)
+
+    let currentFilterMode = 'error'; // 기본값: 전체 보기
+
+    function changeFilterMode(mode) {
+        currentFilterMode = mode;
+        addLog(`필터 변경: ${mode === 'all' ? '전체 보기' : '오류 데이터 모드'}`);
+        updateMarkers(); // 즉시 마커 새로고침
+    }
 
     document.getElementById('log-monitor').addEventListener('click', function() {
         if (this.style.maxHeight === '30px') {
@@ -420,6 +456,8 @@
                     }
                 });
 
+                const roadviewUrl = `https://map.kakao.com/link/roadview/${poi.noorLat},${poi.noorLon}`;
+
                 naver.maps.Event.addListener(marker, 'click', function() {
                     resetHighlights();
                     const content = `
@@ -433,6 +471,8 @@
                                 <div class="info-content">
                                     <div><strong>주소:</strong> ${poi.newAddressList?.newAddress[0]?.fullAddressName || poi.upperAddrName + " " + poi.middleAddrName + " " + poi.lowerAddrName}</div>
                                     <div style="margin-top:2px;"><strong>타입:</strong> ${types}</div>
+                                    <div style="margin-top:2px;"><strong>좌표:</strong> ${poi.noorLat},${poi.noorLon}</div>
+                                    <a href="${roadviewUrl}" target="_blank" class="btn-roadview">Kakao 로드뷰 보기</a>
                                 </div>
                             </div>
                             <div class="info-arrow-area"><div class="info-arrow-triangle"></div></div>
@@ -483,6 +523,8 @@
                     }
                 }
 
+                const roadviewUrl = `https://map.kakao.com/link/roadview/${lat},${lng}`;
+
                 // 2. 상세 정보 화면 구성
                 const content = `
                     <div class="custom-info-window">
@@ -496,6 +538,7 @@
                                 <div><strong>주소:</strong> ${detail.address || "주소 정보 없음"}</div>
                                 <div style="margin-top:4px;"><strong>기관:</strong> ${agencies}</div>
                                 <div style="margin-top:2px;"><strong>타입:</strong> ${types}</div>
+                                <a href="${roadviewUrl}" target="_blank" class="btn-roadview">Kakao 로드뷰 보기</a>
                             </div>
                         </div>
                         <div class="info-arrow-area">
@@ -549,7 +592,7 @@
 
         try {
             addLog("파일 다운로드 시작");
-            const response = await fetch('https://black924.github.io/siglo/ev/assets/26q1_ev.xlsx');
+            const response = await fetch('https://black924.github.io/siglo/ev/assets/26q1_ev2.xlsx');
             const contentLength = response.headers.get('content-length');
             const total = parseInt(contentLength, 10);
             let loaded = 0;
@@ -629,29 +672,41 @@
     // 2. 줌/영역에 따른 마커 업데이트 로직
     function updateMarkers() {
         const zoom = map.getZoom();
-        const bounds = map.getBounds(); // 현재 지도의 가시 영역
+        const bounds = map.getBounds();
 
-        // 기존 마커/선 제거
         clearMap();
 
-        // 줌 레벨이 14 미만이면 안내 메시지만 띄우고 중단
         if (zoom < 15) {
             addLog(`줌 레벨(${zoom})이 낮음: 확대가 필요합니다.`);
-            console.log("줌 레벨이 낮아 데이터를 표시하지 않습니다. (현재: " + zoom + ")");
             return;
         }
 
-        // 현재 화면 영역 내에 있는 데이터만 필터링 (8만개 루프는 JS에서 매우 빠름)
+        // --- 필터링 로직 시작 ---
         const visibleData = allData.filter(row => {
             const lat = row.basis === '환경부' ? row.env_latitude : row.here_latitude;
-            const lng = row.basis === '환경부' ? (row.env_longtitude || row.env_longitude) : (row.here_longtitude || row.here_longitude);
+            const lng = row.basis === '환경부' ? row.env_longitude : row.here_longitude;
 
-            return lat && lng && bounds.hasLatLng(new naver.maps.LatLng(lat, lng));
+            // 1차: 지도 영역 안에 있는지 확인
+            if (!lat || !lng || !bounds.hasLatLng(new naver.maps.LatLng(lat, lng))) return false;
+
+            // 2차: 라디오 버튼 선택 모드에 따른 필터
+            if (currentFilterMode === 'all') {
+                return true; // 전체 보기 모드
+            } else if (currentFilterMode === 'error') {
+                // [요구사항] 오류 데이터 조건
+                if (row.basis === '환경부') {
+                    // 환경부 건 중 tmap_verify가 "TMAP OKAY"이고 Env_Note가 "환경부만 존재"인 건
+                    return (row.tmap_verify === "TMAP_OKAY" && row.Env_Note === "환경부만 존재");
+                } else if (row.basis === 'HERE') {
+                    // HERE 건 중 tmap_verify가 "TMAP_N"이고 Here_Note가 "HERE만 존재"인 건
+                    return (row.tmap_verify === "TMAP_N" && row.Here_Note === "HERE만 존재");
+                }
+            }
+            return false;
         });
+        // --- 필터링 로직 끝 ---
 
-        addLog(`현재 가시 영역 내 충전소: ${visibleData.length}개 표시 중`);
-
-        // 필터링된 데이터만 렌더링 (최대 500~1000개 정도로 제한 권장)
+        addLog(`현재 필터(${currentFilterMode}) 결과: ${visibleData.length}개 표시`);
         visibleData.slice(0, 1000).forEach(row => createMarkerAndLine(row));
     }
 
@@ -728,6 +783,37 @@
     function showInfoWindow(row, marker) {
         const isEnv = row.basis === '환경부';
         const barClass = isEnv ? 'bar-env' : 'bar-here';
+        let tmapStatus = "데이터 없음";
+        let issueType = 0;
+        const lat = isEnv ? row.env_latitude : row.here_latitude;
+        const lng = isEnv ? row.env_longitude : row.here_longitude;
+
+        // [추가] 네이버 로드뷰 URL 생성 (좌표 기준)
+        // https://map.naver.com/v5/?c=lng,lat,15,0,0,0,dh&p=lng,lat,pitch,yaw,fov,dh
+        // pitch: 0 (정면), yaw: 0 (북쪽), fov: 120 (화각)
+        const roadviewUrl = `https://map.kakao.com/link/roadview/${lat},${lng}`;
+        console.log("kakao road view: " + roadviewUrl);
+
+
+        if (currentFilterMode === 'error') {
+            if (row.tmap_verify === "TMAP_OKAY") {
+                tmapStatus = "TMAP/환경부에 POI 존재";
+                issueType = 1;
+            } else if (row.tmap_verify === "TMAP_N") {
+                tmapStatus = "TMAP/환경부에 없는 POI";
+                issueType = 2;
+            } else if (row.tmap_verify) {
+                tmapStatus = row.tmap_verify || "N/A"; // 그 외의 값이 있을 경우 그대로 표시
+            }
+        } else {
+            if (row.tmap_verify === "TMAP_OKAY") {
+                tmapStatus = "TMAP에 존재하는 POI";
+            } else if (row.tmap_verify === "TMAP_N") {
+                tmapStatus = "TMAP에 없는 POI";
+            } else if (row.tmap_verify) {
+                tmapStatus = row.tmap_verify || "N/A"; // 그 외의 값이 있을 경우 그대로 표시
+            }
+        }
 
         // [수정] TMAP 스타일의 배경색 배지 설정
         // 환경부는 초록(#28a745), HERE는 파랑(#007aff)
@@ -738,11 +824,27 @@
         const label = isEnv ? '환경부' : 'HERE';
         const title = isEnv ? (row.Env_Col1 || "명칭 없음") : (row.Here_FirstCol || "명칭 없음");
 
+        let issueText = ""
+        if (issueType === 1) {
+            issueText = "HERE MISSING";
+        } else {
+            issueText = "HERE EXTRA";
+        }
+
+
         let detailHtml = "";
-        if (isEnv && row.Env_Note === "환경부 기준 OKAY") {
-            detailHtml = `<div><strong>근처 HERE EV:</strong> ${row.Here_FirstCol}</div><div><strong>거리:</strong> ${row.distance.toFixed(2)}m</div>`;
-        } else if (!isEnv && row.Here_Note === "HERE 기준 OKAY") {
-            detailHtml = `<div><strong>근처 환경부 EV:</strong> ${row.Env_Col1}</div><div><strong>거리:</strong> ${row.distance.toFixed(2)}m</div>`;
+        if (currentFilterMode === 'error') {
+            detailHtml = `
+                <div style="color: #d63031; font-weight: bold;">${issueText}</div>
+                <div><strong>TMAP 검증:</strong> ${tmapStatus}</div>
+            `;
+        } else {
+            // 기존 매칭 정보 표시 로직
+            if (isEnv) {
+                detailHtml = `<div><strong>주소:</strong> ${row.Env_Col2}</div><div><strong>좌표:</strong> ${row.env_latitude}, ${row.env_longitude}</div>`;
+            } else {
+                detailHtml = `<div><strong>타입:</strong> ${row.Electric}</div><div><strong>좌표:</strong> ${row.here_latitude}, ${row.here_longitude}</div>`;
+            }
         }
 
         const content = `
@@ -756,8 +858,9 @@
                         ${title}
                     </div>
                     <div class="info-content">
-                        ${detailHtml || '<div>매칭 정보가 없는 단독 데이터입니다.</div>'}
-                    </div>
+                    ${detailHtml || '<div>매칭 정보가 없는 단독 데이터입니다.</div>'}
+                    <a href="${roadviewUrl}" target="_blank" class="btn-roadview">Kakao 로드뷰 보기</a>
+                </div>
                 </div>
             </div>
         `;
