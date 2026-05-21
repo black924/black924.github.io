@@ -1,58 +1,264 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>개인정보 처리방침 - 층소일지</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Floor Noise Log</title>
     <style>
-        body { font-family: sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; }
-        h1 { color: #FF9800; border-bottom: 2px solid #FF9800; padding-bottom: 10px; }
-        h2 { color: #444; margin-top: 30px; }
-        p { margin-bottom: 15px; }
-        .footer { margin-top: 50px; font-size: 0.9em; color: #777; border-top: 1px solid #ddd; padding-top: 20px; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        /* Tabs Styling */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+        }
+        .tab-button {
+            padding: 10px 15px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 14px;
+            font-weight: bold;
+            color: #888;
+            transition: 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+        .tab-button.active {
+            color: #FF9800;
+            border-bottom: 3px solid #FF9800;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        /* Policy Styling */
+        h1 { font-size: 22px; color: #111; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        h2 { font-size: 18px; color: #FF9800; margin-top: 25px; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 8px; }
+        .footer {
+            margin-top: 40px;
+            font-size: 0.85em;
+            color: #777;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        strong { color: #222; }
+        a { color: #FF9800; text-decoration: none; }
     </style>
 </head>
 <body>
 
-    <h1>개인정보 처리방침</h1>
-    <p><strong>시행일: 2026년 2월 11일</strong></p>
+<div class="container">
+    <div class="tabs">
+        <button class="tab-button active" onclick="showSection('ko', event)">한글</button>
+        <button class="tab-button" onclick="showSection('en', event)">English</button>
+        <button class="tab-button" onclick="showSection('ja', event)">日本語</button>
+        <button class="tab-button" onclick="showSection('de', event)">Deutsch</button>
+        <button class="tab-button" onclick="showSection('fr', event)">Français</button>
+        <button class="tab-button" onclick="showSection('es', event)">Español</button>
+    </div>
 
-    <p>'층소일지'(이하 '앱')는 사용자의 개인정보를 소중하게 생각하며, 관련 법령을 준수합니다. 본 방침은 앱이 사용자의 정보를 어떻게 관리하는지 설명합니다.</p>
+    <!-- 한국어 (ko) -->
+    <div id="section-ko" class="content-section active">
+        <h1>개인정보 처리방침</h1>
+        <p><strong>시행일: 2026년 5월 21일</strong> (최신 수정일)</p>
+        <p>'층소일지'(이하 '앱')는 사용자의 개인정보를 소중하게 생각하며, 관련 법령을 준수합니다.</p>
+        <h2>1. 개인정보의 수집 및 이용 목적</h2>
+        <ul>
+            <li><strong>사용자 식별 및 계정 연동:</strong> Google 계정을 통한 로그인 및 회원 관리, 데이터 동기화</li>
+            <li>소음 측정 및 분석 (데시벨 측정 및 시각화)</li>
+            <li>데이터 관리 (기록 저장 및 리스트 제공)</li>
+            <li>서비스 개선 (오류 분석 및 맞춤형 광고 제공)</li>
+        </ul>
+        <h2>2. 수집하는 개인정보 항목 및 권한</h2>
+        <ul>
+            <li><strong>계정 정보 (Google 로그인 시):</strong> 이메일 주소, 프로필 이름/사진, 고유 사용자 ID (UID)</li>
+            <li>마이크 접근: 소음 측정을 위한 필수 권한 (데이터 외부 전송 없음)</li>
+            <li>저장공간 접근: 데이터 로컬 저장 및 엑셀 내보내기</li>
+            <li>기기 및 광고 ID: 맞춤형 광고 및 크래시 분석용</li>
+        </ul>
+        <h2>3. 제3자 서비스 이용</h2>
+        <ul>
+            <li>Google Firebase (Firebase Auth 계정 인증, 앱 분석 및 오류 리포팅)</li>
+            <li>Google Sign-In (간편 로그인 및 계정 연동 서비스)</li>
+            <li>Google AdMob (맞춤형 광고 송출)</li>
+        </ul>
+        <div class="footer">문의: black924@gmail.com</div>
+    </div>
 
-    <h2>1. 개인정보의 수집 및 이용 목적</h2>
-    <p>앱은 다음과 같은 목적으로 최소한의 정보를 이용합니다.</p>
-    <ul>
-        <li><strong>소음 측정 및 분석:</strong> 실시간 데시벨(dB) 측정 및 시각화.</li>
-        <li><strong>데이터 관리:</strong> 사용자의 측정 기록 저장 및 리스트 제공.</li>
-        <li><strong>서비스 개선:</strong> 앱 오류 분석 및 맞춤형 광고 제공.</li>
-    </ul>
+    <!-- English (en) -->
+    <div id="section-en" class="content-section">
+        <h1>Privacy Policy</h1>
+        <p><strong>Effective Date: May 21, 2026</strong></p>
+        <p>'Floor Noise Log' (the "App") values your privacy and complies with relevant laws.</p>
+        <h2>1. Purpose of Collection and Use</h2>
+        <ul>
+            <li><strong>User Identification & Account Linking:</strong> User authentication, account management, and data synchronization via Google Sign-In.</li>
+            <li>Noise measurement and analysis (dB measurement and visualization)</li>
+            <li>Data management (storing records and providing history lists)</li>
+            <li>Service improvement (error analysis and personalized ads)</li>
+        </ul>
+        <h2>2. Permissions and Data Collection</h2>
+        <ul>
+            <li><strong>Account Information (Google Sign-In):</strong> Email address, profile name/picture, and unique User ID (UID).</li>
+            <li>Microphone: Essential for measurement (Data is NOT sent to servers)</li>
+            <li>Storage: Local data storage and Excel export</li>
+            <li>Device/Ad ID: For personalized ads and crash analysis</li>
+        </ul>
+        <h2>3. Third-Party Services</h2>
+        <ul>
+            <li>Google Firebase (Firebase Auth for authentication, Analysis & Crashlytics)</li>
+            <li>Google Sign-In (Authentication provider)</li>
+            <li>Google AdMob (Personalized ads)</li>
+        </ul>
+        <div class="footer">Contact: <a href="mailto:black924@gmail.com">black924@gmail.com</a></div>
+    </div>
 
-    <h2>2. 수집하는 개인정보 항목 및 권한</h2>
-    <p>앱은 서비스 제공을 위해 아래와 같은 권한을 요청하며 정보를 수집할 수 있습니다.</p>
-    <ul>
-        <li><strong>마이크 접근(RECORD_AUDIO):</strong> 소음 측정을 위한 필수 권한이며, 측정된 데이터는 외부 서버로 전송되지 않습니다.</li>
-        <li><strong>저장공간 접근:</strong> 측정 데이터의 로컬 저장 및 엑셀(Excel) 파일 내보내기 기능을 위해 사용됩니다.</li>
-        <li><strong>기기 및 광고 ID:</strong> 맞춤형 광고 제공 및 크래시 분석을 위해 수집될 수 있습니다.</li>
-    </ul>
+    <!-- 日本語 (ja) -->
+    <div id="section-ja" class="content-section">
+        <h1>個人情報保護方針</h1>
+        <p><strong>施行日: 2026年5月21日</strong></p>
+        <p>「騒音日記」（以下「アプリ」）は、ユーザーの個人情報を大切に考え、関連法令を遵守します。</p>
+        <h2>1. 個人情報の収集および利用目的</h2>
+        <ul>
+            <li><strong>ユーザー識別およびアカウント連携：</strong> Googleアカウントを利用したログイン、会員管理、データ同期</li>
+            <li>騒音測定および分析（デシベル測定と視覚化）</li>
+            <li>データ管理（記録の保存とリストの提供）</li>
+            <li>サービスの改善（エラー分析およびカスタマイズされた広告の提供）</li>
+        </ul>
+        <h2>2. 収集する項目および権限</h2>
+        <ul>
+            <li><strong>アカウント情報（Googleログイン時）：</strong> メールアドレス、プロフィール名・写真、固有ユーザーID（UID）</li>
+            <li>마이크액세스：騒音測定に必須（外部送信なし）</li>
+            <li>ストレージアクセス：データのローカル保存およびExcel書き出し</li>
+            <li>端末および広告ID：パーソナライズ広告およびクラッシュ分析用</li>
+        </ul>
+        <h2>3. 第三者サービス</h2>
+        <ul>
+            <li>Google Firebase（Firebase Auth 認証、分析およびエラーレポート）</li>
+            <li>Google Sign-In（ソーシャルログイン認証連携）</li>
+            <li>Google AdMob（カスタマイズ広告の配信）</li>
+        </ul>
+        <div class="footer">お問い合わせ: black924@gmail.com</div>
+    </div>
 
-    <h2>3. 개인정보의 제3자 제공 및 위탁</h2>
-    <p>앱은 사용자의 개인정보를 외부에 제공하지 않으나, 원활한 서비스 제공을 위해 아래의 외부 서비스를 이용합니다. 각 서비스는 자체적인 보안 정책을 따릅니다.</p>
-    <ul>
-        <li><strong>Google Firebase:</strong> 앱 분석 및 오류 리포팅(Crashlytics).</li>
-        <li><strong>Google AdMob:</strong> 맞춤형 광고 송출.</li>
-    </ul>
+    <!-- Deutsch (de) -->
+    <div id="section-de" class="content-section">
+        <h1>Datenschutzerklärung</h1>
+        <p><strong>In Kraft seit: 21. Mai 2026</strong></p>
+        <p>'Lärmprotokoll' (die „App“) schätzt Ihre Privatsphäre und hält sich an geltende Gesetze.</p>
+        <h2>1. Zweck der Erhebung und Nutzung</h2>
+        <ul>
+            <li><strong>Benutzeridentifikation & Kontoverknüpfung:</strong> Anmeldung über Google-Konto, Benutzerverwaltung und Datensynchronisation.</li>
+            <li>Lärmmessung und -analyse (dB-Messung und Visualisierung)</li>
+            <li>Datenverwaltung (Speichern von Protokollen)</li>
+            <li>Serviceverbesserung (Fehleranalyse und personalisierte Werbung)</li>
+        </ul>
+        <h2>2. Berechtigungen und Datenerhebung</h2>
+        <ul>
+            <li><strong>Kontoinformationen (Google Sign-In):</strong> E-Mail-Adresse, Profilname/-bild und eindeutige Benutzer-ID (UID).</li>
+            <li>Mikrofon: Erforderlich für die Messung (KEINE externe Übertragung)</li>
+            <li>Speicher: Lokale Datenspeicherung und Excel-Export</li>
+            <li>Geräte-/Werbe-ID: Für personalisierte Werbung und Fehlerberichte</li>
+        </ul>
+        <h2>3. Drittanbieter-Dienste</h2>
+        <ul>
+            <li>Google Firebase (Firebase Auth für Authentifizierung, Analyse & Crashlytics)</li>
+            <li>Google Sign-In (Authentifizierungsdienst)</li>
+            <li>Google AdMob (Personalisierte Werbung)</li>
+        </ul>
+        <div class="footer">Kontakt: black924@gmail.com</div>
+    </div>
 
-    <h2>4. 개인정보의 보유 및 파기</h2>
-    <p>모든 측정 데이터는 사용자의 기기 내부(로컬 DB)에만 저장됩니다. 사용자가 앱 내에서 기록을 삭제하거나 앱을 삭제할 경우 해당 데이터는 즉시 파기됩니다.</p>
+    <!-- Français (fr) -->
+    <div id="section-fr" class="content-section">
+        <h1>Politique de Confidentialité</h1>
+        <p><strong>Date d'effet : 21 mai 2026</strong></p>
+        <p>'Journal du Bruit' (l'« App ») respecte votre vie privée et se conforme aux lois en vigueur.</p>
+        <h2>1. Finalité de la collecte et de l'utilisation</h2>
+        <ul>
+            <li><strong>Identification de l'utilisateur & Liaison de compte :</strong> Authentification, gestion de compte et synchronisation des données via Google Sign-In.</li>
+            <li>Mesure et analyse du bruit (mesure des dB et visualisation)</li>
+            <li>Gestion des données (stockage des rapports)</li>
+            <li>Amélioration du service (analyse des erreurs et publicités personnalisées)</li>
+        </ul>
+        <h2>2. Autorisations et collecte de données</h2>
+        <ul>
+            <li><strong>Informations sur le compte (Google Sign-In) :</strong> Adresse e-mail, nom/photo de profil et identifiant d'utilisateur unique (UID).</li>
+            <li>Microphone : Essentiel pour la mesure (PAS de transmission externe)</li>
+            <li>Stockage : Stockage local des données et export Excel</li>
+            <li>ID de l'appareil/Publicité : Pour les pubs personnalisées et l'analyse des plantages</li>
+        </ul>
+        <h2>3. Services tiers</h2>
+        <ul>
+            <li>Google Firebase (Firebase Auth pour l'authentification, Analyse et rapports d'erreurs)</li>
+            <li>Google Sign-In (Service d'authentification)</li>
+            <li>Google AdMob (Diffusion de publicités personnalisées)</li>
+        </ul>
+        <div class="footer">Contact : black924@gmail.com</div>
+    </div>
 
-    <h2>5. 이용자의 권리</h2>
-    <p>사용자는 기기 설정을 통해 언제든지 앱 권한(마이크 등)을 철회할 수 있습니다. 권한 철회 시 해당 기능 이용이 제한될 수 있습니다.</p>
+    <!-- Español (es) -->
+    <div id="section-es" class="content-section">
+        <h1>Política de Privacidad</h1>
+        <p><strong>Fecha de vigencia: 21 de mayo de 2026</strong></p>
+        <p>'Registro de Ruidos' (la "App") valora su privacidad y cumple con las leyes pertinentes.</p>
+        <h2>1. Propósito de la recopilación y uso</h2>
+        <ul>
+            <li><strong>Identificación de usuarios y Vinculación de cuentas:</strong> Autenticación, administración de cuentas y sincronización de datos a través de Google Sign-In.</li>
+            <li>Medición y análisis de ruido (medición de dB y visualización)</li>
+            <li>Gestión de datos (almacenamiento de registros)</li>
+            <li>Mejora del servicio (análisis de errores y publicidad personalizada)</li>
+        </ul>
+        <h2>2. Permisos y recopilación de datos</h2>
+        <ul>
+            <li><strong>Información de la cuenta (Google Sign-In):</strong> Dirección de correo electrónico, nombre/foto de perfil e ID de usuario único (UID).</li>
+            <li>Micrófono: Esencial para la medición (SIN transmisión externa)</li>
+            <li>Almacenamiento: Guardado local de datos y exportación a Excel</li>
+            <li>ID de dispositivo/publicidad: Para anuncios personalizados y análisis de fallos</li>
+        </ul>
+        <h2>3. Servicios de terceros</h2>
+        <ul>
+            <li>Google Firebase (Firebase Auth para autenticación, Análisis e informes de errores)</li>
+            <li>Google Sign-In (Servicio de autenticación)</li>
+            <li>Google AdMob (Entrega de publicidad personalizada)</li>
+        </ul>
+        <div class="footer">Contacto: black924@gmail.com</div>
+    </div>
+</div>
 
-    <h2>6. 문의처</h2>
-    <p>본 방침에 대해 궁금한 점이 있으시면 아래로 연락해 주시기 바랍니다.</p>
-    <ul>
-        <li>이메일: black924@gmail.com</li>
-        <li>개발자명: Haram & Harang</li>
-    </ul>
+<script>
+    function showSection(lang, event) {
+        document.querySelectorAll('.content-section').forEach(section => {
+            section.classList.remove('active');
+        });
+        document.querySelectorAll('.tab-button').forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        document.getElementById('section-' + lang).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+</script>
 
 </body>
 </html>
