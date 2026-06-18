@@ -2,27 +2,45 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>전기차 충전소 분석 - Main</title>
-    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=x84uw6z21k"></script>
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=x84uw6z21k&submodules=geocoder"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <!--    <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=dTvpdTIDEy7JCLV1V4NLc7bGiWksYpB51MOuQqPt"></script>-->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <style>
         /* 중요: html과 body의 높이를 100%로 지정하고 overflow를 숨깁니다. */
-        body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; }
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            /* 모바일 Safari 주소창 높이 변화 대응 (dvh 지원 브라우저) */
+            min-height: 100vh;
+            min-height: 100dvh;
+        }
         
         /* 중요: #map의 높이가 반드시 지정되어야 지도가 보입니다. */
         #map { 
             width: 100%; 
-            height: 100vh; /* 화면 전체 높이 사용 */
+            height: 100vh;
+            height: 100dvh;
             background-color: #eee; /* 로딩 전 영역 확인용 */
         }
 
         .legend { 
-            position: absolute; top: 15px; right: 15px; z-index: 1000; 
-            background: white; padding: 15px; border-radius: 8px; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2); font-size: 13px; 
+            position: absolute;
+            top: max(15px, env(safe-area-inset-top, 0px));
+            right: max(15px, env(safe-area-inset-right, 0px));
+            z-index: 1000; 
+            background: white;
+            padding: 15px;
+            border-radius: 8px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            font-size: 13px;
+            max-width: min(280px, calc(100vw - 24px));
+            box-sizing: border-box;
         }
         .info-window { padding: 10px; min-width: 200px; font-size: 13px; line-height: 1.4; }
 
@@ -42,6 +60,8 @@
             border-radius: 0;       /* [요구사항] 직각 */
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             min-width: 220px;
+            max-width: calc(100vw - 32px);
+            box-sizing: border-box;
             position: relative;     /* 화살표의 기준점 */
             margin-bottom: 10px;    /* 화살표가 들어갈 공간 확보 */
         }
@@ -198,6 +218,99 @@
         .marker-here { background-color: #007aff; } /* 파랑 (HERE) */
         .marker-tmap { background-color: #ff4757; } /* 빨강 (Tmap) */
 
+        /* 현재 위치: 지도 위 고정 버튼 (일부 NCP maps.js 빌드에서 CustomControl이 안 보이는 경우 대비) */
+        .map-locate-floating {
+            position: fixed;
+            right: max(12px, env(safe-area-inset-right, 0px));
+            bottom: calc(100px + env(safe-area-inset-bottom, 0px));
+            z-index: 1002;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            padding: 0;
+            border: none;
+            border-radius: 4px;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .map-locate-floating:hover { background: #f5f5f5; }
+        .map-locate-floating:active { background: #eee; }
+        .map-locate-floating:focus-visible { outline: 2px solid #03c75a; outline-offset: 2px; }
+        .map-locate-icon {
+            display: block;
+            width: 22px;
+            height: 22px;
+            background: no-repeat center / contain;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3Cpath d='M12 2v3M12 19v3M2 12h3M19 12h3'/%3E%3C/svg%3E");
+        }
+        .my-loc-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #1a73e8;
+            border: 3px solid #fff;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+            box-sizing: border-box;
+        }
+
+        /* 주소 검색 → 지도 이동 (Geocoder 서브모듈) */
+        .address-search-panel {
+            position: fixed;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1003;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 8px;
+            background: #fff;
+            padding: 8px 10px;
+            padding-left: max(10px, env(safe-area-inset-left, 0px));
+            padding-right: max(10px, env(safe-area-inset-right, 0px));
+            padding-top: max(8px, env(safe-area-inset-top, 0px));
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            max-width: min(520px, calc(100vw - 24px));
+            box-sizing: border-box;
+        }
+        #address-search-input {
+            flex: 1;
+            min-width: 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 8px 10px;
+            font-size: 14px;
+        }
+        #address-search-btn {
+            flex-shrink: 0;
+            padding: 8px 14px;
+            border: none;
+            border-radius: 4px;
+            background: #03c75a;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        #address-search-btn:hover { background: #02b350; }
+        .geocode-marker-pin {
+            width: 28px;
+            height: 28px;
+            font-size: 22px;
+            line-height: 28px;
+            text-align: center;
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.35));
+        }
+
+        #left-bottom-container {
+            bottom: max(20px, env(safe-area-inset-bottom, 0px));
+            left: max(20px, env(safe-area-inset-left, 0px));
+        }
 
         #tmap-search-btn:hover {
             background: #ff6b81;
@@ -247,24 +360,49 @@
 
         /* 모바일용 스타일 (화면 너비 768px 이하) */
         @media (max-width: 768px) {
+            .address-search-panel {
+                top: max(56px, env(safe-area-inset-top, 0px));
+                padding: 6px 8px;
+                padding-left: max(8px, env(safe-area-inset-left, 0px));
+                padding-right: max(8px, env(safe-area-inset-right, 0px));
+                max-width: calc(100vw - 16px);
+            }
+            #address-search-input {
+                font-size: 16px; /* iOS 자동확대 방지(16px 이상) */
+                padding: 6px 8px;
+            }
+            #address-search-btn {
+                min-height: 44px;
+                min-width: 44px;
+                padding: 8px 12px;
+            }
             /* 로그 모니터: 하단 전체 너비로 변경하고 높이 축소 */
             #left-bottom-container {
-                width: calc(100% - 40px);
-                bottom: 10px;
-                left: 20px;
+                width: calc(100% - 24px);
+                max-width: calc(100vw - 16px);
+                bottom: max(10px, env(safe-area-inset-bottom, 0px));
+                left: max(12px, env(safe-area-inset-left, 0px));
             }
             #log-monitor {
                 width: 100%;
                 max-height: 120px;
             }
 
-            /* 범례: 우측 하단에서 상단으로 이동하거나 크기 축소 */
+            /* 범례: 네이버 컨트롤과 겹치지 않게 + 노치 여백 */
             .legend {
-                top: 70px; /* 네이버 지도 컨트롤 피하기 */
-                right: 10px;
+                top: max(70px, calc(env(safe-area-inset-top, 0px) + 56px));
+                right: max(10px, env(safe-area-inset-right, 0px));
                 padding: 8px;
                 font-size: 11px;
-                max-width: 150px;
+                max-width: min(220px, calc(100vw - 120px));
+                max-height: 45vh;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .custom-info-window {
+                min-width: 0;
+                max-width: calc(100vw - 40px);
             }
 
             /* 로딩바 크기 조정 */
@@ -290,7 +428,7 @@
     <div id="loader-percent">0%</div>
 </div>
 
-<div id="left-bottom-container" style="position: absolute; bottom: 20px; left: 20px; z-index: 1001; display: flex; flex-direction: column; align-items: flex-start; gap: 10px;">
+<div id="left-bottom-container" style="position: absolute; z-index: 1001; display: flex; flex-direction: column; align-items: flex-start; gap: 10px;">
     <button id="tmap-search-btn" style="position: static; margin-bottom: 0;">
         <span>🔍</span> 현재 지도 중심 TMAP 검색
     </button>
@@ -311,9 +449,21 @@
             Missing/Extra만 보기
         </label>
     </div>
+    <div style="margin-top:12px;padding-top:10px;border-top:1px solid #e0e0e0;font-size:12px;color:#555;line-height:1.4;">
+        <div style="font-weight:bold;color:#333;margin-bottom:4px;">데이터 파일</div>
+        <div id="data-source-filename" style="word-break:break-all;color:#111;font-family:monospace;font-size:11px;">—</div>
+    </div>
+</div>
+
+<div id="address-search-panel" class="address-search-panel">
+    <input type="text" id="address-search-input" placeholder="주소 검색 (예: 서울 중구 세종대로 110)" maxlength="200" autocomplete="street-address" enterkeyhint="search">
+    <button type="button" id="address-search-btn">이동</button>
 </div>
 
 <div id="map"></div>
+<button type="button" id="btn-my-location" class="map-locate-floating" title="현재 위치로 이동" aria-label="현재 위치로 이동">
+    <span class="map-locate-icon" aria-hidden="true"></span>
+</button>
 
 <script>
     let allData = []; // 8만개 데이터를 저장할 변수
@@ -322,10 +472,19 @@
     let updateTimer = null;
 
     const TMAP_APP_KEY = 'dTvpdTIDEy7JCLV1V4NLc7bGiWksYpB51MOuQqPt'; // Tmap API 센터에서 발급받은 키
+    /** 엑셀 데이터 URL — 버전 변경 시 이 한 곳만 수정하면 됩니다. */
+    const EV_DATA_SHEET_URL = 'https://black924.github.io/siglo/ev/assets/26q2_ev.xlsx';
+    const EV_DATA_FILENAME = EV_DATA_SHEET_URL.split('/').filter(Boolean).pop() || EV_DATA_SHEET_URL;
+
     let tmapMarkers = []; // TMAP 검색 마커만 따로 관리
     let tmapLabels = []; // TMAP 전용 상세정보 레이블(말풍선)
 
     let currentFilterMode = 'error'; // 기본값: 전체 보기
+
+    (function syncDataSourceFilenameLabel() {
+        const el = document.getElementById('data-source-filename');
+        if (el) el.textContent = EV_DATA_FILENAME;
+    })();
 
     function changeFilterMode(mode) {
         currentFilterMode = mode;
@@ -368,6 +527,134 @@
                 stylers: [{ 'poi': 'off' }, { 'poi.gas_station': 'on' }, { 'road': 'on' }, { 'label': 'on' }]
             })
         })
+    });
+
+    /** 주소 검색(Geocode) 결과 마커 */
+    let geocodeResultMarker = null;
+
+    function setGeocodeResultMarker(latlng) {
+        if (!geocodeResultMarker) {
+            geocodeResultMarker = new naver.maps.Marker({
+                position: latlng,
+                map: map,
+                zIndex: 240,
+                icon: {
+                    content: '<div class="geocode-marker-pin" title="검색 위치">📍</div>',
+                    anchor: new naver.maps.Point(14, 26)
+                }
+            });
+        } else {
+            geocodeResultMarker.setPosition(latlng);
+            geocodeResultMarker.setMap(map);
+        }
+    }
+
+    function runAddressSearch() {
+        const input = document.getElementById('address-search-input');
+        const q = (input && input.value && input.value.trim()) || '';
+        if (!q) {
+            addLog('주소를 입력한 뒤 이동을 눌러 주세요.', true);
+            return;
+        }
+        if (!naver.maps.Service || typeof naver.maps.Service.geocode !== 'function') {
+            addLog('주소 검색(Geocoder)을 불러오지 못했습니다. maps.js URL에 submodules=geocoder가 있는지 확인하세요.', true);
+            return;
+        }
+        addLog('주소 검색 요청: ' + q);
+        naver.maps.Service.geocode({ address: q }, function (status, response) {
+            if (status !== naver.maps.Service.Status.OK) {
+                addLog('주소 검색 실패: 서버 응답 오류', true);
+                return;
+            }
+            let items = response.result && response.result.items;
+            if (!items || !items.length) {
+                const v2 = response.v2 && response.v2.addresses;
+                if (v2 && v2.length) {
+                    items = v2.map(function (a) {
+                        return {
+                            address: a.roadAddress || a.jibunAddress || q,
+                            point: { x: parseFloat(a.x), y: parseFloat(a.y) }
+                        };
+                    });
+                }
+            }
+            if (!items || !items.length) {
+                addLog('검색 결과가 없습니다. 다른 표기로 입력해 보세요.', true);
+                return;
+            }
+            const item = items[0];
+            const pt = item.point;
+            if (pt == null || pt.x == null || pt.y == null) {
+                addLog('좌표를 찾을 수 없습니다.', true);
+                return;
+            }
+            const latlng = new naver.maps.LatLng(parseFloat(pt.y), parseFloat(pt.x));
+            map.setCenter(latlng);
+            if (map.getZoom() < 15) map.setZoom(15);
+            setGeocodeResultMarker(latlng);
+            addLog('이동: ' + (item.address || q));
+        });
+    }
+
+    document.getElementById('address-search-btn').addEventListener('click', function (e) {
+        e.preventDefault();
+        runAddressSearch();
+    });
+    document.getElementById('address-search-input').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            runAddressSearch();
+        }
+    });
+
+    /** 브라우저 Geolocation + 내 위치 마커 (고정 HTML 버튼 — 지도 API CustomControl 미노출 환경 대응) */
+    let myLocationMarker = null;
+
+    function setOrUpdateMyLocationMarker(latlng) {
+        if (!myLocationMarker) {
+            myLocationMarker = new naver.maps.Marker({
+                position: latlng,
+                map: map,
+                zIndex: 250,
+                icon: {
+                    content: '<div class="my-loc-dot"></div>',
+                    anchor: new naver.maps.Point(8, 8)
+                }
+            });
+        } else {
+            myLocationMarker.setPosition(latlng);
+            myLocationMarker.setMap(map);
+        }
+    }
+
+    document.getElementById('btn-my-location').addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!navigator.geolocation) {
+            addLog('이 브라우저는 위치 정보(Geolocation)를 지원하지 않습니다.', true);
+            return;
+        }
+        addLog('현재 위치 요청 중…');
+        navigator.geolocation.getCurrentPosition(
+            function (pos) {
+                const lat = pos.coords.latitude;
+                const lng = pos.coords.longitude;
+                const latlng = new naver.maps.LatLng(lat, lng);
+                map.setCenter(latlng);
+                if (map.getZoom() < 15) map.setZoom(15);
+                setOrUpdateMyLocationMarker(latlng);
+                addLog(`현재 위치로 이동: ${lat.toFixed(5)}, ${lng.toFixed(5)}`);
+            },
+            function (err) {
+                const code = err && err.code;
+                let msg = err && err.message ? err.message : '알 수 없는 오류';
+                if (code === 1) msg = '위치 권한이 거부되었습니다. 브라우저 설정에서 위치 허용 후 다시 시도해 주세요.';
+                else if (code === 2) msg = '위치를 가져올 수 없습니다.';
+                else if (code === 3) msg = '위치 요청 시간이 초과되었습니다.';
+                addLog('현재 위치 실패: ' + msg, true);
+            },
+            { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 }
+        );
     });
 
     // [최초 1회 설정]
@@ -587,8 +874,9 @@
         const statusText = document.getElementById('loader-status');
 
         try {
-            addLog("파일 다운로드 시작");
-            const response = await fetch('https://black924.github.io/siglo/ev/assets/26q2_ev.xlsx');
+            addLog('파일 다운로드 시작: ' + EV_DATA_FILENAME);
+            statusText.innerText = EV_DATA_FILENAME + ' 다운로드 중...';
+            const response = await fetch(EV_DATA_SHEET_URL);
             const contentLength = response.headers.get('content-length');
             const total = parseInt(contentLength, 10);
             let loaded = 0;
@@ -621,7 +909,7 @@
     percentText.innerText = '100%';
 
             // 2. 데이터 파싱 단계 (Dim 유지)
-            statusText.innerText = "엑셀 파일을 로딩중입니다. 잠시만 기다려주세요...";
+            statusText.innerText = EV_DATA_FILENAME + ' 파싱 중...';
             addLog("다운로드 완료. 엑셀 파싱 시작...");
 
             // 브라우저 렌더링을 위해 잠깐의 지연을 줍니다.
@@ -638,7 +926,7 @@
             allData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
 
             // 모든 작업 완료 후 로딩창 숨기기
-            addLog(`데이터 로드 성공: 총 ${allData.length.toLocaleString()}행`);
+            addLog(`데이터 로드 성공: ${EV_DATA_FILENAME} · 총 ${allData.length.toLocaleString()}행`);
             loader.classList.add('hidden');
 
             updateMarkers();
@@ -680,7 +968,10 @@
         // --- 필터링 로직 시작 ---
         const visibleData = allData.filter(row => {
             const lat = row.basis === '환경부' ? row.env_latitude : row.here_latitude;
-            const lng = row.basis === '환경부' ? row.env_longitude : row.here_longitude;
+            const lng =
+                row.basis === '환경부'
+                    ? row.env_longtitude || row.env_longitude
+                    : row.here_longtitude || row.here_longitude;
 
             // 1차: 지도 영역 안에 있는지 확인
             if (!lat || !lng || !bounds.hasLatLng(new naver.maps.LatLng(lat, lng))) return false;
@@ -689,14 +980,8 @@
             if (currentFilterMode === 'all') {
                 return true; // 전체 보기 모드
             } else if (currentFilterMode === 'error') {
-                // [요구사항] 오류 데이터 조건
-                if (row.basis === '환경부') {
-                    // 환경부 건 중 tmap_verify가 "TMAP OKAY"이고 Env_Note가 "환경부만 존재"인 건
-                    return (row.naver_verify === "" && row.Env_Note === "환경부만 존재");
-                } else if (row.basis === 'HERE') {
-                    // HERE 건 중 tmap_verify가 "TMAP_N"이고 Here_Note가 "HERE만 존재"인 건
-                    return (row.naver_verify === "네이버N" && row.Here_Note === "HERE만 존재");
-                }
+                // Missing/Extra: 환경부만 존재 또는 HERE만 존재인 모든 행 표시
+                return row.Env_Note === "환경부만 존재" || row.Here_Note === "HERE만 존재";
             }
             return false;
         });
@@ -711,6 +996,96 @@
         activePolylines.forEach(p => p.setMap(null));
         activeMarkers = [];
         activePolylines = [];
+    }
+
+    /** 두 좌표 간 거리(미터), Haversine */
+    function distanceMeters(lat1, lng1, lat2, lng2) {
+        const R = 6371000;
+        const toRad = d => (d * Math.PI) / 180;
+        const dLat = toRad(lat2 - lat1);
+        const dLng = toRad(lng2 - lng1);
+        const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
+        return 2 * R * Math.asin(Math.min(1, Math.sqrt(a)));
+    }
+
+    function formatDistanceM(m) {
+        if (m < 1000) return `${Math.round(m)}m`;
+        return `${(m / 1000).toFixed(1)}km`;
+    }
+
+    /**
+     * 마커 기준(basis)의 반대 충전소 소스에서 가까운 순 5곳.
+     * 환경부 마커 → HERE 좌표가 있는 행들 중 최근접, HERE 마커 → 환경부 좌표가 있는 행들 중 최근접.
+     */
+    function getNearestOppositeStations(row, limit = 5) {
+        const isEnv = row.basis === '환경부';
+        const eLat = row.env_latitude;
+        const eLng = row.env_longtitude || row.env_longitude;
+        const hLat = row.here_latitude;
+        const hLng = row.here_longtitude || row.here_longitude;
+        const originLat = isEnv ? eLat : hLat;
+        const originLng = isEnv ? eLng : hLng;
+        if (originLat == null || originLng == null || Number.isNaN(+originLat) || Number.isNaN(+originLng)) {
+            return [];
+        }
+
+        const scored = [];
+        for (let i = 0; i < allData.length; i++) {
+            const r = allData[i];
+            if (r === row) continue;
+            let oLat, oLng, title;
+            if (isEnv) {
+                oLat = r.here_latitude;
+                oLng = r.here_longtitude || r.here_longitude;
+                title = r.Here_FirstCol || r.Here_Col1 || 'HERE';
+            } else {
+                oLat = r.env_latitude;
+                oLng = r.env_longtitude || r.env_longitude;
+                title = r.Env_Col1 || '환경부';
+            }
+            if (oLat == null || oLng == null || Number.isNaN(+oLat) || Number.isNaN(+oLng)) continue;
+            const d = distanceMeters(+originLat, +originLng, +oLat, +oLng);
+            scored.push({ title, dist: d, lat: +oLat, lng: +oLng });
+        }
+        scored.sort((a, b) => a.dist - b.dist);
+
+        const seen = new Set();
+        const out = [];
+        for (const s of scored) {
+            const key = `${s.lat.toFixed(4)},${s.lng.toFixed(4)}`;
+            if (seen.has(key)) continue;
+            seen.add(key);
+            out.push(s);
+            if (out.length >= limit) break;
+        }
+        return out;
+    }
+
+    function escapeInfoHtml(str) {
+        if (str == null) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
+    function buildNearestOppositeHtml(row) {
+        const isEnv = row.basis === '환경부';
+        const oppositeLabel = isEnv ? 'HERE' : '환경부';
+        const nearest = getNearestOppositeStations(row, 5);
+        if (nearest.length === 0) {
+            return `<div style="margin-top:8px;padding-top:8px;border-top:1px solid #eee;"><strong>가까운 ${oppositeLabel} 충전소</strong><div style="color:#888;margin-top:4px;">표시할 좌표가 없습니다.</div></div>`;
+        }
+        const items = nearest
+            .map(
+                (s, idx) =>
+                    `<div style="margin-top:4px;"><span style="color:#999;">${idx + 1}.</span> ${escapeInfoHtml(s.title)} <span style="color:#888;">(${formatDistanceM(s.dist)})</span></div>`
+            )
+            .join('');
+        return `<div style="margin-top:8px;padding-top:8px;border-top:1px solid #eee;"><strong>가까운 ${oppositeLabel} 충전소 5곳</strong>${items}</div>`;
     }
 
     function createMarkerAndLine(row) {
@@ -782,7 +1157,7 @@
         let tmapStatus = "데이터 없음";
         let issueType = 0;
         const lat = isEnv ? row.env_latitude : row.here_latitude;
-        const lng = isEnv ? row.env_longitude : row.here_longitude;
+        const lng = isEnv ? row.env_longtitude || row.env_longitude : row.here_longtitude || row.here_longitude;
 
         // [추가] 네이버 로드뷰 URL 생성 (좌표 기준)
         // https://map.naver.com/v5/?c=lng,lat,15,0,0,0,dh&p=lng,lat,pitch,yaw,fov,dh
@@ -792,7 +1167,7 @@
 
 
         if (currentFilterMode === 'error') {
-            if (row.naver_verify === "") {
+            if (!row.naver_verify || row.naver_verify.toString().trim() === "") {
                 tmapStatus = "네이버/환경부에 POI 존재";
                 issueType = 1;
             } else if (row.naver_verify === "네이버N") {
@@ -802,7 +1177,7 @@
                 tmapStatus = row.naver_verify || "N/A"; // 그 외의 값이 있을 경우 그대로 표시
             }
         } else {
-            if (row.naver_verify === "") {
+            if (!row.naver_verify || row.naver_verify.toString().trim() === "") {
                 tmapStatus = "네이버에 존재하는 POI";
             } else if (row.naver_verify === "네이버N") {
                 tmapStatus = "네이버에 없는 POI";
@@ -820,27 +1195,35 @@
         const label = isEnv ? '환경부' : 'HERE';
         const title = isEnv ? (row.Env_Col1 || "명칭 없음") : (row.Here_FirstCol || "명칭 없음");
 
-        let issueText = ""
+        let issueText = '';
         if (issueType === 1) {
-            issueText = "HERE MISSING";
-        } else {
-            issueText = "HERE EXTRA";
+            issueText = 'HERE MISSING';
+        } else if (issueType === 2) {
+            issueText = 'HERE EXTRA';
+        } else if (row.Env_Note === '환경부만 존재') {
+            issueText = 'HERE MISSING';
+        } else if (row.Here_Note === 'HERE만 존재') {
+            issueText = 'HERE EXTRA';
         }
 
-
-        let detailHtml = "";
+        let detailHtml = '';
         if (currentFilterMode === 'error') {
+            const issueLine = issueText
+                ? `<div style="color: #d63031; font-weight: bold;">${escapeInfoHtml(issueText)}</div>`
+                : '';
             detailHtml = `
-                <div style="color: #d63031; font-weight: bold;">${issueText}</div>
-                <div><strong>네이버 검증:</strong> ${tmapStatus}</div>
+                ${issueLine}
+                <div><strong>네이버 검증:</strong> ${escapeInfoHtml(tmapStatus)}</div>
+                ${buildNearestOppositeHtml(row)}
             `;
         } else {
-            // 기존 매칭 정보 표시 로직
+            // 기존 매칭 정보 표시 + 반대 소스 가까운 5곳(정상 마커 포함)
             if (isEnv) {
                 detailHtml = `<div><strong>주소:</strong> ${row.Env_Col2}</div><div><strong>좌표:</strong> ${row.env_latitude}, ${row.env_longitude}</div>`;
             } else {
                 detailHtml = `<div><strong>타입:</strong> ${row.Electric}</div><div><strong>좌표:</strong> ${row.here_latitude}, ${row.here_longitude}</div>`;
             }
+            detailHtml += buildNearestOppositeHtml(row);
         }
 
         const content = `
