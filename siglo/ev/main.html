@@ -258,6 +258,32 @@
         }
 
         /* 주소 검색 → 지도 이동 (Geocoder 서브모듈) */
+        .address-search-toggle {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .address-search-toggle:active {
+            background: #f0f0f0;
+        }
+        .address-search-fields {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 0;
+        }
         .address-search-panel {
             position: fixed;
             top: 12px;
@@ -358,46 +384,151 @@
             transition: max-height 0.3s ease; /* 높이 변화 부드럽게 */
         }
 
+        .legend-map-slot {
+            display: none;
+        }
+
+        .legend-body {
+            min-width: 0;
+        }
+
+        @media (min-width: 769px) {
+            .address-search-toggle {
+                display: none !important;
+            }
+            .address-search-fields {
+                display: flex !important;
+            }
+        }
+
         /* 모바일용 스타일 (화면 너비 768px 이하) */
         @media (max-width: 768px) {
-            .address-search-panel {
-                top: max(56px, env(safe-area-inset-top, 0px));
-                padding: 6px 8px;
-                padding-left: max(8px, env(safe-area-inset-left, 0px));
-                padding-right: max(8px, env(safe-area-inset-right, 0px));
-                max-width: calc(100vw - 16px);
+            #log-monitor {
+                display: none !important;
             }
+
+            .legend {
+                position: fixed;
+                top: max(0px, env(safe-area-inset-top, 0px));
+                left: 0;
+                right: 0;
+                max-width: none;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                border-radius: 0;
+                z-index: 1008;
+                display: flex;
+                flex-direction: row;
+                align-items: stretch;
+                /* 전체 흰 배경이면 왼쪽 슬롯이 일반/위성 버튼을 가림 → 래퍼는 투명 */
+                background: transparent !important;
+                box-shadow: none;
+                pointer-events: none;
+                font-size: 12px;
+                max-height: none;
+                overflow: visible;
+            }
+            .legend-map-slot {
+                display: block;
+                width: 112px;
+                min-width: 112px;
+                flex-shrink: 0;
+                background: transparent;
+                pointer-events: none;
+            }
+            .legend-body {
+                flex: 1;
+                min-width: 0;
+                padding: 8px 12px 10px max(12px, env(safe-area-inset-left, 0px));
+                box-sizing: border-box;
+                background: #fff;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+                pointer-events: auto;
+            }
+            .legend-body h4 {
+                margin: 0 0 6px 0 !important;
+                font-size: 11px;
+                color: #555;
+            }
+            .legend-filters {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 6px 12px;
+                align-items: center;
+            }
+            .legend-filters label {
+                display: inline-flex !important;
+                align-items: center;
+                margin: 0 !important;
+                cursor: pointer;
+                font-size: 11px;
+                white-space: nowrap;
+            }
+            .legend-file-block {
+                margin-top: 6px !important;
+                padding-top: 6px !important;
+                border-top: 1px solid #e8e8e8 !important;
+                font-size: 10px !important;
+                line-height: 1.3;
+            }
+            .legend-file-block > div:first-child {
+                margin-bottom: 2px !important;
+            }
+            #data-source-filename {
+                font-size: 10px !important;
+            }
+
+            .address-search-panel {
+                top: var(--address-panel-top, 104px);
+                left: 10px;
+                right: auto;
+                transform: none;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+                max-width: min(320px, calc(100vw - 20px));
+                padding: 8px;
+                padding-left: max(8px, env(safe-area-inset-left, 0px));
+                border-radius: 6px;
+            }
+            .address-search-toggle {
+                display: flex;
+                width: 100%;
+                min-height: 40px;
+            }
+            .address-search-panel:not(.is-expanded) .address-search-fields {
+                display: none !important;
+            }
+            .address-search-panel.is-expanded .address-search-fields {
+                display: flex !important;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            .address-search-panel.is-expanded #address-search-btn {
+                width: 100%;
+            }
+
             #address-search-input {
-                font-size: 16px; /* iOS 자동확대 방지(16px 이상) */
-                padding: 6px 8px;
+                font-size: 16px;
+                width: 100%;
+                box-sizing: border-box;
             }
             #address-search-btn {
                 min-height: 44px;
-                min-width: 44px;
-                padding: 8px 12px;
             }
-            /* 로그 모니터: 하단 전체 너비로 변경하고 높이 축소 */
+
             #left-bottom-container {
-                width: calc(100% - 24px);
+                width: auto;
                 max-width: calc(100vw - 16px);
                 bottom: max(10px, env(safe-area-inset-bottom, 0px));
                 left: max(12px, env(safe-area-inset-left, 0px));
             }
-            #log-monitor {
-                width: 100%;
-                max-height: 120px;
-            }
-
-            /* 범례: 네이버 컨트롤과 겹치지 않게 + 노치 여백 */
-            .legend {
-                top: max(70px, calc(env(safe-area-inset-top, 0px) + 56px));
-                right: max(10px, env(safe-area-inset-right, 0px));
-                padding: 8px;
-                font-size: 11px;
-                max-width: min(220px, calc(100vw - 120px));
-                max-height: 45vh;
-                overflow-y: auto;
-                -webkit-overflow-scrolling: touch;
+            #tmap-search-btn {
+                font-size: 12px;
+                padding: 10px 12px;
             }
 
             .custom-info-window {
@@ -410,7 +541,6 @@
                 width: 80%;
             }
 
-            /* 정보창(말풍선) 내부 폰트 조정 */
             .info-window {
                 min-width: 180px;
                 font-size: 12px;
@@ -438,26 +568,32 @@
 </div>
 
 <div class="legend">
-    <h4 style="margin:0 0 8px 0;">데이터 필터</h4>
-    <div>
-        <label style="display: block; cursor: pointer; margin-bottom: 5px;">
-            <input type="radio" name="filterMode" value="all" onchange="changeFilterMode('all')">
-            전체 보기
-        </label>
-        <label style="display: block; cursor: pointer;">
-            <input type="radio" name="filterMode" value="error" checked onchange="changeFilterMode('error')">
-            Missing/Extra만 보기
-        </label>
-    </div>
-    <div style="margin-top:12px;padding-top:10px;border-top:1px solid #e0e0e0;font-size:12px;color:#555;line-height:1.4;">
-        <div style="font-weight:bold;color:#333;margin-bottom:4px;">데이터 파일</div>
-        <div id="data-source-filename" style="word-break:break-all;color:#111;font-family:monospace;font-size:11px;">—</div>
+    <div class="legend-map-slot" aria-hidden="true"></div>
+    <div class="legend-body">
+        <h4 style="margin:0 0 8px 0;">데이터 필터</h4>
+        <div class="legend-filters">
+            <label style="display: block; cursor: pointer; margin-bottom: 5px;">
+                <input type="radio" name="filterMode" value="all" onchange="changeFilterMode('all')">
+                전체 보기
+            </label>
+            <label style="display: block; cursor: pointer;">
+                <input type="radio" name="filterMode" value="error" checked onchange="changeFilterMode('error')">
+                Missing/Extra만 보기
+            </label>
+        </div>
+        <div class="legend-file-block" style="margin-top:12px;padding-top:10px;border-top:1px solid #e0e0e0;font-size:12px;color:#555;line-height:1.4;">
+            <div style="font-weight:bold;color:#333;margin-bottom:4px;">데이터 파일</div>
+            <div id="data-source-filename" style="word-break:break-all;color:#111;font-family:monospace;font-size:11px;">—</div>
+        </div>
     </div>
 </div>
 
 <div id="address-search-panel" class="address-search-panel">
-    <input type="text" id="address-search-input" placeholder="주소 검색 (예: 서울 중구 세종대로 110)" maxlength="200" autocomplete="street-address" enterkeyhint="search">
-    <button type="button" id="address-search-btn">이동</button>
+    <button type="button" id="address-search-toggle" class="address-search-toggle" aria-expanded="false" aria-controls="address-search-fields">주소 검색</button>
+    <div id="address-search-fields" class="address-search-fields">
+        <input type="text" id="address-search-input" placeholder="주소 검색 (예: 서울 중구 세종대로 110)" maxlength="200" autocomplete="street-address" enterkeyhint="search">
+        <button type="button" id="address-search-btn">이동</button>
+    </div>
 </div>
 
 <div id="map"></div>
@@ -492,14 +628,6 @@
         updateMarkers(); // 즉시 마커 새로고침
     }
 
-    document.getElementById('log-monitor').addEventListener('click', function() {
-        if (this.style.maxHeight === '30px') {
-            this.style.maxHeight = '200px';
-        } else {
-            this.style.maxHeight = '30px';
-        }
-    });
-
     const map = new naver.maps.Map('map', {
         center: new naver.maps.LatLng(37.5665, 126.9780),
         zoom: 15,
@@ -527,6 +655,80 @@
                 stylers: [{ 'poi': 'off' }, { 'poi.gas_station': 'on' }, { 'road': 'on' }, { 'label': 'on' }]
             })
         })
+    });
+
+    function isMobileLayout() {
+        return typeof window.matchMedia === 'function' && window.matchMedia('(max-width: 768px)').matches;
+    }
+
+    document.getElementById('log-monitor').addEventListener('click', function() {
+        if (isMobileLayout()) return;
+        if (this.style.maxHeight === '30px') {
+            this.style.maxHeight = '200px';
+        } else {
+            this.style.maxHeight = '30px';
+        }
+    });
+
+    function syncMobileLayoutMetrics() {
+        const legend = document.querySelector('.legend');
+        const addrPanel = document.getElementById('address-search-panel');
+        if (!legend || !addrPanel || !map) return;
+
+        if (!isMobileLayout()) {
+            document.documentElement.style.removeProperty('--address-panel-top');
+            try {
+                map.setOptions({ padding: { top: 0, right: 0, bottom: 0, left: 0 } });
+            } catch (e) { /* optional API */ }
+            return;
+        }
+
+        const legendBottom = Math.ceil(legend.getBoundingClientRect().bottom);
+        const mapTypeRow = 44;
+        const addrTop = legendBottom + mapTypeRow;
+        document.documentElement.style.setProperty('--address-panel-top', addrTop + 'px');
+
+        try {
+            map.setOptions({ padding: { top: legendBottom + 2, right: 0, bottom: 0, left: 0 } });
+        } catch (e) {
+            console.warn('map.setOptions(padding) 미지원 또는 오류:', e);
+        }
+    }
+
+    if (typeof ResizeObserver !== 'undefined') {
+        const ro = new ResizeObserver(function () {
+            requestAnimationFrame(syncMobileLayoutMetrics);
+        });
+        const leg = document.querySelector('.legend');
+        const ap = document.getElementById('address-search-panel');
+        if (leg) ro.observe(leg);
+        if (ap) ro.observe(ap);
+    }
+    window.addEventListener('resize', function () {
+        requestAnimationFrame(syncMobileLayoutMetrics);
+    });
+    window.addEventListener('orientationchange', function () {
+        setTimeout(syncMobileLayoutMetrics, 200);
+    });
+
+    document.getElementById('address-search-toggle').addEventListener('click', function () {
+        if (!isMobileLayout()) return;
+        const panel = document.getElementById('address-search-panel');
+        const next = !panel.classList.contains('is-expanded');
+        panel.classList.toggle('is-expanded', next);
+        this.setAttribute('aria-expanded', next ? 'true' : 'false');
+        this.textContent = next ? '주소 검색 닫기' : '주소 검색';
+        requestAnimationFrame(syncMobileLayoutMetrics);
+        if (next) {
+            setTimeout(function () {
+                const inp = document.getElementById('address-search-input');
+                if (inp) inp.focus();
+            }, 50);
+        }
+    });
+
+    requestAnimationFrame(function () {
+        requestAnimationFrame(syncMobileLayoutMetrics);
     });
 
     /** 주소 검색(Geocode) 결과 마커 */
@@ -593,6 +795,16 @@
             if (map.getZoom() < 15) map.setZoom(15);
             setGeocodeResultMarker(latlng);
             addLog('이동: ' + (item.address || q));
+            if (isMobileLayout()) {
+                const panel = document.getElementById('address-search-panel');
+                const tgl = document.getElementById('address-search-toggle');
+                if (panel) panel.classList.remove('is-expanded');
+                if (tgl) {
+                    tgl.setAttribute('aria-expanded', 'false');
+                    tgl.textContent = '주소 검색';
+                }
+                requestAnimationFrame(syncMobileLayoutMetrics);
+            }
         });
     }
 
@@ -930,6 +1142,9 @@
             loader.classList.add('hidden');
 
             updateMarkers();
+            requestAnimationFrame(function () {
+                requestAnimationFrame(syncMobileLayoutMetrics);
+            });
             //autoSearchTmap();
             // 기존의 'idle' 리스너를 아래와 같이 통합 수정하세요.
     naver.maps.Event.addListener(map, 'idle', () => {
@@ -1072,6 +1287,58 @@
             .replace(/"/g, '&quot;');
     }
 
+    /** [환경부] [HERE] [네이버] — 마커 기준(basis)에 따라 칩 색상 규칙 적용 */
+    function buildSourceChipsHtml(row) {
+        function hasGeo(lat, lng) {
+            if (lat == null || lng == null) return false;
+            const s1 = String(lat).trim();
+            const s2 = String(lng).trim();
+            if (s1 === '' || s2 === '') return false;
+            return !Number.isNaN(Number(lat)) && !Number.isNaN(Number(lng));
+        }
+        const isEnv = row.basis === '환경부';
+        const envNote = row.Env_Note != null ? String(row.Env_Note).trim() : '';
+        const hereNote = row.Here_Note != null ? String(row.Here_Note).trim() : '';
+        const eLng = row.env_longtitude || row.env_longitude;
+        const hLng = row.here_longtitude || row.here_longitude;
+        const hasEnvGeo = hasGeo(row.env_latitude, eLng);
+        const hasHereGeo = hasGeo(row.here_latitude, hLng);
+        // 필터(error/all)와 무관. '네이버N'(공백·전각 N 정규화)일 때만 [네이버] 회색, 그 외는 초록
+        const naverRaw = row.naver_verify != null ? row.naver_verify : row.Naver_verify;
+        const naverStr = naverRaw == null ? '' : String(naverRaw).replace(/^\ufeff/, '').replace(/\u00a0/g, ' ').trim();
+        const naverNorm = naverStr.replace(/\s+/g, '').replace(/Ｎ/g, 'N');
+        const isNaverN = naverNorm === '네이버N' || naverNorm.toLowerCase() === '네이버n';
+        const hasNaverChip = !isNaverN;
+
+        let hasEnvChip;
+        let hasHereChip;
+
+        if (isEnv) {
+            // 환경부 마커: [환경부]는 항상 색상, '환경부만 존재'면 [HERE] 회색
+            hasEnvChip = true;
+            hasHereChip = envNote === '환경부만 존재' ? false : hasHereGeo;
+        } else {
+            // HERE 마커: [HERE]는 항상 색상, 'HERE만 존재'면 [환경부] 회색
+            hasHereChip = true;
+            hasEnvChip = hereNote === 'HERE만 존재' ? false : hasEnvGeo;
+        }
+
+        function chip(label, active, colorActive) {
+            const bg = active ? colorActive : '#ced4da';
+            const fg = active ? '#fff' : '#6c757d';
+            return `<span style="display:inline-block;padding:3px 8px;margin:3px 6px 0 0;border-radius:4px;font-size:10px;font-weight:bold;background:${bg};color:${fg};">${escapeInfoHtml(
+                label
+            )}</span>`;
+        }
+        return (
+            '<div style="margin:6px 0 10px 0;line-height:1.6;">' +
+            chip('[환경부]', hasEnvChip, '#28a745') +
+            chip('[HERE]', hasHereChip, '#007aff') +
+            chip('[네이버]', hasNaverChip, '#03c75a') +
+            '</div>'
+        );
+    }
+
     function buildNearestOppositeHtml(row) {
         const isEnv = row.basis === '환경부';
         const oppositeLabel = isEnv ? 'HERE' : '환경부';
@@ -1154,77 +1421,41 @@
     function showInfoWindow(row, marker) {
         const isEnv = row.basis === '환경부';
         const barClass = isEnv ? 'bar-env' : 'bar-here';
-        let tmapStatus = "데이터 없음";
-        let issueType = 0;
         const lat = isEnv ? row.env_latitude : row.here_latitude;
         const lng = isEnv ? row.env_longtitude || row.env_longitude : row.here_longtitude || row.here_longitude;
 
-        // [추가] 네이버 로드뷰 URL 생성 (좌표 기준)
-        // https://map.naver.com/v5/?c=lng,lat,15,0,0,0,dh&p=lng,lat,pitch,yaw,fov,dh
-        // pitch: 0 (정면), yaw: 0 (북쪽), fov: 120 (화각)
         const roadviewUrl = `https://map.kakao.com/link/roadview/${lat},${lng}`;
         console.log("kakao road view: " + roadviewUrl);
 
-
-        if (currentFilterMode === 'error') {
-            if (!row.naver_verify || row.naver_verify.toString().trim() === "") {
-                tmapStatus = "네이버/환경부에 POI 존재";
-                issueType = 1;
-            } else if (row.naver_verify === "네이버N") {
-                tmapStatus = "네이버/환경부에 없는 POI";
-                issueType = 2;
-            } else if (row.naver_verify) {
-                tmapStatus = row.naver_verify || "N/A"; // 그 외의 값이 있을 경우 그대로 표시
-            }
-        } else {
-            if (!row.naver_verify || row.naver_verify.toString().trim() === "") {
-                tmapStatus = "네이버에 존재하는 POI";
-            } else if (row.naver_verify === "네이버N") {
-                tmapStatus = "네이버에 없는 POI";
-            } else if (row.naver_verify) {
-                tmapStatus = row.naver_verify || "N/A"; // 그 외의 값이 있을 경우 그대로 표시
-            }
-        }
-
-        // [수정] TMAP 스타일의 배경색 배지 설정
-        // 환경부는 초록(#28a745), HERE는 파랑(#007aff)
         const badgeStyle = isEnv
             ? 'background-color:#28a745; color:white; border:none;'
             : 'background-color:#007aff; color:white; border:none;';
 
         const label = isEnv ? '환경부' : 'HERE';
-        const title = isEnv ? (row.Env_Col1 || "명칭 없음") : (row.Here_FirstCol || "명칭 없음");
+        const title = isEnv ? (row.Env_Col1 || '명칭 없음') : (row.Here_FirstCol || '명칭 없음');
+
+        const envNote = row.Env_Note != null ? String(row.Env_Note).trim() : '';
+        const hereNote = row.Here_Note != null ? String(row.Here_Note).trim() : '';
 
         let issueText = '';
-        if (issueType === 1) {
+        if (isEnv && envNote === '환경부만 존재') {
             issueText = 'HERE MISSING';
-        } else if (issueType === 2) {
-            issueText = 'HERE EXTRA';
-        } else if (row.Env_Note === '환경부만 존재') {
-            issueText = 'HERE MISSING';
-        } else if (row.Here_Note === 'HERE만 존재') {
+        } else if (!isEnv && hereNote === 'HERE만 존재') {
             issueText = 'HERE EXTRA';
         }
 
-        let detailHtml = '';
-        if (currentFilterMode === 'error') {
-            const issueLine = issueText
-                ? `<div style="color: #d63031; font-weight: bold;">${escapeInfoHtml(issueText)}</div>`
-                : '';
-            detailHtml = `
-                ${issueLine}
-                <div><strong>네이버 검증:</strong> ${escapeInfoHtml(tmapStatus)}</div>
-                ${buildNearestOppositeHtml(row)}
-            `;
+        const issueLine = issueText
+            ? `<div style="color:#d63031;font-weight:bold;margin-bottom:6px;">${escapeInfoHtml(issueText)}</div>`
+            : '';
+
+        let metaHtml = '';
+        if (isEnv) {
+            metaHtml = `<div><strong>주소:</strong> ${escapeInfoHtml(row.Env_Col2)}</div><div><strong>좌표:</strong> ${row.env_latitude}, ${row.env_longitude}</div>`;
         } else {
-            // 기존 매칭 정보 표시 + 반대 소스 가까운 5곳(정상 마커 포함)
-            if (isEnv) {
-                detailHtml = `<div><strong>주소:</strong> ${row.Env_Col2}</div><div><strong>좌표:</strong> ${row.env_latitude}, ${row.env_longitude}</div>`;
-            } else {
-                detailHtml = `<div><strong>타입:</strong> ${row.Electric}</div><div><strong>좌표:</strong> ${row.here_latitude}, ${row.here_longitude}</div>`;
-            }
-            detailHtml += buildNearestOppositeHtml(row);
+            metaHtml = `<div><strong>타입:</strong> ${escapeInfoHtml(row.Electric)}</div><div><strong>좌표:</strong> ${row.here_latitude}, ${row.here_longitude}</div>`;
         }
+
+        const detailHtml = `${issueLine}${buildSourceChipsHtml(row)}${metaHtml}${buildNearestOppositeHtml(row)}`;
 
         const content = `
             <div class="custom-info-window">
@@ -1234,7 +1465,7 @@
                         <span style="font-size:10px; padding:2px 5px; border-radius:3px; font-weight:bold; ${badgeStyle}">
                             ${label}
                         </span>
-                        ${title}
+                        ${escapeInfoHtml(title)}
                     </div>
                     <div class="info-content">
                     ${detailHtml || '<div>매칭 정보가 없는 단독 데이터입니다.</div>'}
