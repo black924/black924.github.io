@@ -793,19 +793,19 @@
 
         if (currentFilterMode === 'error') {
             if (row.naver_verify === "") {
-                tmapStatus = "TMAP/환경부에 POI 존재";
+                tmapStatus = "네이버/환경부에 POI 존재";
                 issueType = 1;
             } else if (row.naver_verify === "네이버N") {
-                tmapStatus = "TMAP/환경부에 없는 POI";
+                tmapStatus = "네이버/환경부에 없는 POI";
                 issueType = 2;
             } else if (row.naver_verify) {
                 tmapStatus = row.naver_verify || "N/A"; // 그 외의 값이 있을 경우 그대로 표시
             }
         } else {
             if (row.naver_verify === "") {
-                tmapStatus = "TMAP에 존재하는 POI";
+                tmapStatus = "네이버에 존재하는 POI";
             } else if (row.naver_verify === "네이버N") {
-                tmapStatus = "TMAP에 없는 POI";
+                tmapStatus = "네이버에 없는 POI";
             } else if (row.naver_verify) {
                 tmapStatus = row.naver_verify || "N/A"; // 그 외의 값이 있을 경우 그대로 표시
             }
@@ -832,7 +832,7 @@
         if (currentFilterMode === 'error') {
             detailHtml = `
                 <div style="color: #d63031; font-weight: bold;">${issueText}</div>
-                <div><strong>TMAP 검증:</strong> ${tmapStatus}</div>
+                <div><strong>네이버 검증:</strong> ${tmapStatus}</div>
             `;
         } else {
             // 기존 매칭 정보 표시 로직
