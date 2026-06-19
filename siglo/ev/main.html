@@ -192,7 +192,7 @@
                     width: 350px; max-height: 200px; background: rgba(0, 0, 0, 0.7);
                     color: #00ff88; font-family: 'Courier New', Courier, monospace;
                     font-size: 11px; padding: 10px; border-radius: 5px;
-                    overflow-y: auto; pointer-events: auto; border: 1px solid #444, cursor: default;
+                    overflow-y: auto; pointer-events: auto; border: 1px solid #444; cursor: default;
                 }
                 .log-entry { margin-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 2px; }
                 .log-error { color: #ff4757; }
@@ -349,6 +349,120 @@
 
         .tmap-info { border-top: 3px solid #ff4757; padding: 10px; min-width: 220px; font-size: 13px; }
             .tmap-badge { background: #ff4757; color: white; padding: 2px 5px; border-radius: 3px; font-size: 10px; margin-right: 5px; }
+
+        /* 정보창: 가까운 충전소 탭 — HERE 파랑 / 환경부 초록 / TMAP 빨강 */
+        .iw-tab-row { display: flex; gap: 4px; margin-bottom: 0; flex-wrap: wrap; }
+        .iw-tab {
+            cursor: pointer;
+            padding: 5px 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px 6px 0 0;
+            background: #f8f9fa;
+            font-size: 11px;
+            font-weight: 600;
+            color: #495057;
+        }
+        .iw-tab.iw-tab-theme-here {
+            border-color: #74b0ff;
+            color: #0056b3;
+            background: #eef5ff;
+        }
+        .iw-tab.iw-tab-theme-here.active {
+            background: #007aff;
+            color: #fff;
+            border-color: #007aff;
+            border-bottom-color: #fff;
+            position: relative;
+            z-index: 2;
+        }
+        .iw-tab.iw-tab-theme-env {
+            border-color: #7fcd94;
+            color: #1e7e34;
+            background: #eef8f0;
+        }
+        .iw-tab.iw-tab-theme-env.active {
+            background: #28a745;
+            color: #fff;
+            border-color: #28a745;
+            border-bottom-color: #fff;
+            position: relative;
+            z-index: 2;
+        }
+        .iw-tab.iw-tab-theme-tmap {
+            border-color: #ff8a9b;
+            color: #c92a2a;
+            background: #fff0f1;
+        }
+        .iw-tab.iw-tab-theme-tmap.active {
+            background: #ff4757;
+            color: #fff;
+            border-color: #ff4757;
+            border-bottom-color: #fff;
+            position: relative;
+            z-index: 2;
+        }
+        .iw-nearest-wrap .iw-tab-row {
+            padding-bottom: 0;
+            margin-bottom: 0;
+            border-bottom: none;
+        }
+        .iw-nearest-wrap .iw-panel-a,
+        .iw-nearest-wrap .iw-panel-b {
+            border: 1px solid var(--iw-nearest-accent, #dee2e6);
+            padding: 8px 6px;
+            margin-top: -1px;
+            border-radius: 0 0 6px 6px;
+            background: #fff;
+        }
+
+        /* 정보창 가까운 5곳: 순위 = 해당 탭(HERE·환경부·TMAP) 활성 색 원형 배지 */
+        /* 본문(.info-content)과 동일 line-height + stretch 행 + 래퍼 flex로 배지·텍스트 세로 중앙 정렬 */
+        .iw-nearest-row {
+            display: flex;
+            align-items: stretch;
+            gap: 7px;
+            margin-top: 6px;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+        .iw-nearest-row:first-child {
+            margin-top: 2px;
+        }
+        .iw-nearest-rank-wrap {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .iw-nearest-rank {
+            width: 17px;
+            height: 17px;
+            min-width: 17px;
+            min-height: 17px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1;
+            box-sizing: border-box;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        .iw-nearest-rank.iw-rank-here {
+            background: #007aff;
+        }
+        .iw-nearest-rank.iw-rank-env {
+            background: #28a745;
+        }
+        .iw-nearest-rank.iw-rank-tmap {
+            background: #ff4757;
+        }
+        .iw-nearest-row-body {
+            flex: 1;
+            min-width: 0;
+            line-height: 1.6;
+        }
 
             #tmap-search-btn {
             position: static; /* absolute 제거 */
@@ -608,12 +722,25 @@
     let updateTimer = null;
 
     const TMAP_APP_KEY = 'dTvpdTIDEy7JCLV1V4NLc7bGiWksYpB51MOuQqPt'; // Tmap API 센터에서 발급받은 키
+    const TMAP_CHARGER_TYPE_MAP = {
+        '01': 'DC차데모',
+        '02': '승용차 AC완속',
+        '03': 'DC차데모+AC3상',
+        '04': 'DC콤보',
+        '05': 'DC차데모+DC콤보',
+        '06': 'DC차데모+AC3상+DC콤보',
+        '07': 'AC급속3상'
+    };
     /** 엑셀 데이터 URL — 버전 변경 시 이 한 곳만 수정하면 됩니다. */
     const EV_DATA_SHEET_URL = 'https://black924.github.io/siglo/ev/assets/26q2_ev.xlsx';
     const EV_DATA_FILENAME = EV_DATA_SHEET_URL.split('/').filter(Boolean).pop() || EV_DATA_SHEET_URL;
 
     let tmapMarkers = []; // TMAP 검색 마커만 따로 관리
+    /** 정보창 '가까운 TMAP 5곳' 탭으로만 표시하는 숫자 마커(닫으면 제거) */
+    let tmapTabNeighborMarkers = [];
     let tmapLabels = []; // TMAP 전용 상세정보 레이블(말풍선)
+    /** 정보창 '가까운 5곳' 전용 숫자 마커(반대 소스 좌표, 정보창 닫을 때까지 유지) */
+    let neighborRankMarkers = [];
 
     let currentFilterMode = 'error'; // 기본값: 전체 보기
 
@@ -877,6 +1004,27 @@
         disableAnchor: true       // 네이버 기본 꼬리표 제거
     });
 
+    /** 정보창이 열린 뒤 DOM에 탭(가까운 HERE·환경부 / TMAP) 이벤트 연결 */
+    naver.maps.Event.addListener(infoWindow, 'open', function () {
+        const ctx = infoWindow.__nearestTabCtx;
+        if (ctx && ctx.iwId) {
+            requestAnimationFrame(function () {
+                wireNearestTabs(ctx);
+            });
+        }
+    });
+
+    /** 내부 DOM만 바뀐 뒤에도 말풍선이 앵커 마커에 붙도록 위치 재계산 */
+    function reflowInfoWindowAnchor() {
+        if (!infoWindow.getMap()) return;
+        const anchor = infoWindow.anchorMarker;
+        if (!anchor) return;
+        requestAnimationFrame(function () {
+            if (!infoWindow.getMap()) return;
+            infoWindow.open(map, anchor);
+        });
+    }
+
     // --- TMAP 설정 및 변수 ---
 
     // 1. TMAP 검색 버튼 클릭 이벤트 (jQuery 방식)
@@ -887,18 +1035,9 @@
 
         addLog(`TMAP 주변 검색 시작 (중심: ${lat.toFixed(4)}, ${lng.toFixed(4)})`);
 
-        // 기존 TMAP 마커 및 레이블 제거
-        clearTmapResults();
-
-        const typeMap = {
-        "01": "DC차데모",
-        "02": "승용차 AC완속",
-        "03": "DC차데모+AC3상",
-        "04": "DC콤보",
-        "05": "DC차데모+DC콤보",
-        "06": "DC차데모+AC3상+DC콤보",
-        "07": "AC급속3상"
-    };
+        // 기존 지도 중심 TMAP 마커만 제거 (엑셀 정보창·가까운 5곳·흐림은 유지)
+        clearTmapMarkersOnly();
+        clearTmapTabNeighborMarkers();
 
         $.ajax({
             method: "GET",
@@ -916,67 +1055,16 @@
                 "count": 150
             },
             success: function(response) {
-                if(!response.searchPoiInfo) {
+                const pois = normalizeTmapPois(response);
+                if (pois.length === 0) {
                     addLog("주변에 TMAP 검색 결과가 없습니다.", true);
                     return;
                 }
 
-                const pois = response.searchPoiInfo.pois.poi;
                 addLog(`TMAP 결과 ${pois.length}건 발견.`);
 
-                pois.forEach((poi) => {
-                let types = "정보 없음";
-
-                if (poi.evChargers && Array.isArray(poi.evChargers.evCharger)) {
-                    const typeSet = new Set();
-
-                    poi.evChargers.evCharger.forEach(charger => {
-                        // [수정] 코드를 명칭으로 변환하여 저장
-                        if (charger.type) {
-                            const typeName = typeMap[charger.type] || `기타(${charger.type})`;
-                            typeSet.add(typeName);
-                        }
-                    });
-
-                    if (typeSet.size > 0) types = Array.from(typeSet).join(' / ');
-                }
-
-                const marker = new naver.maps.Marker({
-                    position: new naver.maps.LatLng(poi.noorLat, poi.noorLon),
-                    map: map,
-                    zIndex: 200,
-                    icon: {
-                        content: '<div class="custom-marker marker-tmap">T</div>',
-                        anchor: new naver.maps.Point(12, 12)
-                    }
-                });
-
-                const roadviewUrl = `https://map.kakao.com/link/roadview/${poi.noorLat},${poi.noorLon}`;
-
-                naver.maps.Event.addListener(marker, 'click', function() {
-                    resetHighlights();
-                    const content = `
-                        <div class="custom-info-window">
-                            <div class="info-header-bar bar-tmap"></div>
-                            <div class="info-body">
-                                <div class="info-title">
-                                    <span style="font-size:10px; background:#ff4757; color:white; padding:2px 5px; border-radius:3px; font-weight:bold;">TMAP</span>
-                                    ${poi.name}
-                                </div>
-                                <div class="info-content">
-                                    <div><strong>주소:</strong> ${poi.newAddressList?.newAddress[0]?.fullAddressName || poi.upperAddrName + " " + poi.middleAddrName + " " + poi.lowerAddrName}</div>
-                                    <div style="margin-top:2px;"><strong>타입:</strong> ${types}</div>
-                                    <div style="margin-top:2px;"><strong>좌표:</strong> ${poi.noorLat},${poi.noorLon}</div>
-                                    <a href="${roadviewUrl}" target="_blank" class="btn-roadview">Kakao 로드뷰 보기</a>
-                                </div>
-                            </div>
-                            <div class="info-arrow-area"><div class="info-arrow-triangle"></div></div>
-                        </div>`;
-                    infoWindow.setContent(content);
-                    infoWindow.open(map, marker);
-                });
-                tmapMarkers.push(marker);
-            });
+                addTmapResultMarkersFromPois(pois);
+                syncTmapMarkersDimWithNeighborOverlay();
             },
             error: function(request, status, error) {
                 addLog("TMAP API 에러: " + error, true);
@@ -1052,11 +1140,131 @@
         });
     }
 
-    function clearTmapResults() {
-        tmapMarkers.forEach(m => m.setMap(null));
+    function clearTmapMarkersOnly() {
+        tmapMarkers.forEach(function (m) {
+            m.setMap(null);
+        });
         tmapMarkers = [];
-        // 기존 라벨/정보창이 있다면 닫기
-        if(infoWindow) infoWindow.close();
+    }
+
+    function clearTmapTabNeighborMarkers() {
+        tmapTabNeighborMarkers.forEach(function (m) {
+            m.setMap(null);
+        });
+        tmapTabNeighborMarkers = [];
+    }
+
+    function clearTmapResults() {
+        clearNeighborMapVisuals();
+        clearTmapTabNeighborMarkers();
+        clearTmapMarkersOnly();
+        if (infoWindow) {
+            infoWindow.close();
+            infoWindow.anchorMarker = null;
+        }
+    }
+
+    function buildTmapChargerTypesLabel(poi) {
+        let types = '정보 없음';
+        if (poi.evChargers && Array.isArray(poi.evChargers.evCharger)) {
+            const typeSet = new Set();
+            poi.evChargers.evCharger.forEach(function (charger) {
+                if (charger.type) {
+                    const typeName =
+                        TMAP_CHARGER_TYPE_MAP[charger.type] || '기타(' + charger.type + ')';
+                    typeSet.add(typeName);
+                }
+            });
+            if (typeSet.size > 0) types = Array.from(typeSet).join(' / ');
+        }
+        return types;
+    }
+
+    /** TMAP 주변검색 POI 배열 → 지도에 T 마커 표시 (정보창은 닫지 않음) */
+    function addTmapResultMarkersFromPois(pois) {
+        pois.forEach(function (poi) {
+            const types = buildTmapChargerTypesLabel(poi);
+            const marker = new naver.maps.Marker({
+                position: new naver.maps.LatLng(poi.noorLat, poi.noorLon),
+                map: map,
+                zIndex: 200,
+                icon: {
+                    content: '<div class="custom-marker marker-tmap">T</div>',
+                    anchor: new naver.maps.Point(12, 12)
+                }
+            });
+            marker.__tmapDefaultIcon = {
+                content: '<div class="custom-marker marker-tmap">T</div>',
+                anchor: new naver.maps.Point(12, 12)
+            };
+
+            const roadviewUrl = `https://map.kakao.com/link/roadview/${poi.noorLat},${poi.noorLon}`;
+
+            naver.maps.Event.addListener(marker, 'click', function () {
+                resetHighlights();
+                const content = `
+                        <div class="custom-info-window">
+                            <div class="info-header-bar bar-tmap"></div>
+                            <div class="info-body">
+                                <div class="info-title">
+                                    <span style="font-size:10px; background:#ff4757; color:white; padding:2px 5px; border-radius:3px; font-weight:bold;">TMAP</span>
+                                    ${escapeInfoHtml(poi.name)}
+                                </div>
+                                <div class="info-content">
+                                    <div><strong>주소:</strong> ${escapeInfoHtml(poi.newAddressList?.newAddress[0]?.fullAddressName || poi.upperAddrName + ' ' + poi.middleAddrName + ' ' + poi.lowerAddrName)}</div>
+                                    <div style="margin-top:2px;"><strong>타입:</strong> ${escapeInfoHtml(types)}</div>
+                                    <div style="margin-top:2px;"><strong>좌표:</strong> ${poi.noorLat},${poi.noorLon}</div>
+                                    <a href="${roadviewUrl}" target="_blank" class="btn-roadview">Kakao 로드뷰 보기</a>
+                                </div>
+                            </div>
+                            <div class="info-arrow-area"><div class="info-arrow-triangle"></div></div>
+                        </div>`;
+                infoWindow.setContent(content);
+                infoWindow.__nearestTabCtx = null;
+                infoWindow.anchorMarker = marker;
+                infoWindow.open(map, marker);
+            });
+            tmapMarkers.push(marker);
+        });
+    }
+
+    /** 엑셀 정보창 + 가까운 5곳 모드일 때 지도 중심 TMAP 'T' 마커만 흐리게 */
+    function syncTmapMarkersDimWithNeighborOverlay() {
+        if (infoWindow.getMap() && infoWindow.__neighborAnchorRow) {
+            tmapMarkers.forEach(function (m) {
+                m.setIcon({
+                    content: '<div class="custom-marker marker-tmap" style="opacity:0.3;">T</div>',
+                    anchor: new naver.maps.Point(12, 12)
+                });
+            });
+        } else {
+            tmapMarkers.forEach(function (m) {
+                if (m.__tmapDefaultIcon) {
+                    m.setIcon(m.__tmapDefaultIcon);
+                }
+            });
+        }
+    }
+
+    /** 정보창 TMAP 탭 전용: 1~5 숫자 마커(빨강), 클릭 불가. 지도 중심 검색 T 마커와 별도 배열 */
+    function addTmapTabNeighborRankMarkersFromPois(pois) {
+        pois.forEach(function (poi, idx) {
+            const rank = idx + 1;
+            const marker = new naver.maps.Marker({
+                position: new naver.maps.LatLng(poi.noorLat, poi.noorLon),
+                map: map,
+                zIndex: 315 + idx,
+                clickable: false,
+                icon: {
+                    content:
+                        '<div class="custom-marker marker-tmap" style="width:22px;height:22px;line-height:20px;font-size:12px;font-weight:bold;box-shadow:0 0 0 2px rgba(255,212,59,0.9);">' +
+                        rank +
+                        '</div>',
+                    anchor: new naver.maps.Point(11, 11)
+                }
+            });
+            tmapTabNeighborMarkers.push(marker);
+        });
     }
 
     // 화면에 로그를 찍는 함수
@@ -1071,6 +1279,8 @@
     }
 
     function resetHighlights() {
+        clearNeighborMapVisuals();
+        clearTmapTabNeighborMarkers();
         infoWindow.close();
         infoWindow.anchorMarker = null; // 마커 참조 초기화
         activePolylines.forEach(p => {
@@ -1107,6 +1317,8 @@
             let percent = Math.floor((loaded / total) * 100);
             if (percent > 100) percent = 100; // 100% 초과 방지
 
+            // width transition이 있으면 퍼센트 텍스트보다 막대가 늦게 도착해 어긋남 → 100%일 때만 애니메이션 끔
+            progressBar.style.transition = percent >= 100 ? 'none' : '';
             progressBar.style.width = percent + '%';
             percentText.innerText = percent + '%';
 
@@ -1117,6 +1329,7 @@
         }
     }
     // 루프가 끝난 직후 강제로 100% 설정 (안전장치)
+    progressBar.style.transition = 'none';
     progressBar.style.width = '100%';
     percentText.innerText = '100%';
 
@@ -1177,6 +1390,7 @@
 
         if (zoom < 14) {
             addLog(`줌 레벨(${zoom})이 낮음: 확대가 필요합니다.`);
+            refreshNeighborOverlayIfInfoOpen();
             return;
         }
 
@@ -1204,6 +1418,7 @@
 
         addLog(`현재 필터(${currentFilterMode}) 결과: ${visibleData.length}개 표시`);
         visibleData.slice(0, 1000).forEach(row => createMarkerAndLine(row));
+        refreshNeighborOverlayIfInfoOpen();
     }
 
     function clearMap() {
@@ -1230,28 +1445,92 @@
         return `${(m / 1000).toFixed(1)}km`;
     }
 
+    function normalizeTmapPois(response) {
+        if (!response || !response.searchPoiInfo || !response.searchPoiInfo.pois) return [];
+        let pois = response.searchPoiInfo.pois.poi;
+        if (!pois) return [];
+        return Array.isArray(pois) ? pois : [pois];
+    }
+
     /**
-     * 마커 기준(basis)의 반대 충전소 소스에서 가까운 순 5곳.
-     * 환경부 마커 → HERE 좌표가 있는 행들 중 최근접, HERE 마커 → 환경부 좌표가 있는 행들 중 최근접.
+     * 마커 좌표 기준 TMAP 주변 POI 검색 후 거리순 상위 limit곳 (좌표 중복 제거).
      */
-    function getNearestOppositeStations(row, limit = 5) {
-        const isEnv = row.basis === '환경부';
-        const eLat = row.env_latitude;
-        const eLng = row.env_longtitude || row.env_longitude;
-        const hLat = row.here_latitude;
-        const hLng = row.here_longtitude || row.here_longitude;
-        const originLat = isEnv ? eLat : hLat;
-        const originLng = isEnv ? eLng : hLng;
-        if (originLat == null || originLng == null || Number.isNaN(+originLat) || Number.isNaN(+originLng)) {
+    function fetchTmapNearestFromCenter(centerLat, centerLng, limit, onDone, onError) {
+        $.ajax({
+            method: 'GET',
+            headers: { appKey: TMAP_APP_KEY },
+            url: 'https://apis.openapi.sk.com/tmap/pois/search/around?version=1&format=json&callback=result',
+            data: {
+                categories: 'EV충전소',
+                resCoordType: 'WGS84GEO',
+                searchType: 'name',
+                searchtypCd: 'A',
+                radius: 5,
+                reqCoordType: 'WGS84GEO',
+                centerLon: String(centerLng),
+                centerLat: String(centerLat),
+                count: 150
+            },
+            success: function (response) {
+                const pois = normalizeTmapPois(response);
+                if (pois.length === 0) {
+                    onDone([]);
+                    return;
+                }
+                const scored = [];
+                for (let i = 0; i < pois.length; i++) {
+                    const poi = pois[i];
+                    const plat = +poi.noorLat;
+                    const plng = +poi.noorLon;
+                    if (Number.isNaN(plat) || Number.isNaN(plng)) continue;
+                    scored.push({
+                        name: poi.name || '이름 없음',
+                        dist: distanceMeters(+centerLat, +centerLng, plat, plng),
+                        lat: plat,
+                        lng: plng,
+                        rawPoi: poi
+                    });
+                }
+                scored.sort(function (a, b) {
+                    return a.dist - b.dist;
+                });
+                const seen = new Set();
+                const out = [];
+                for (let j = 0; j < scored.length; j++) {
+                    const s = scored[j];
+                    const key = s.lat.toFixed(4) + ',' + s.lng.toFixed(4);
+                    if (seen.has(key)) continue;
+                    seen.add(key);
+                    out.push(s);
+                    if (out.length >= limit) break;
+                }
+                onDone(out);
+            },
+            error: onError
+        });
+    }
+
+    /**
+     * 임의 기준점에서 allData 상의 targetSource 좌표만 사용해 가까운 순.
+     * @param {'env'|'here'} targetSource
+     */
+    function getNearestStationsAt(originLat, originLng, targetSource, limit, excludeRow) {
+        if (
+            originLat == null ||
+            originLng == null ||
+            Number.isNaN(+originLat) ||
+            Number.isNaN(+originLng)
+        ) {
             return [];
         }
-
         const scored = [];
         for (let i = 0; i < allData.length; i++) {
             const r = allData[i];
-            if (r === row) continue;
-            let oLat, oLng, title;
-            if (isEnv) {
+            if (excludeRow && r === excludeRow) continue;
+            let oLat;
+            let oLng;
+            let title;
+            if (targetSource === 'here') {
                 oLat = r.here_latitude;
                 oLng = r.here_longtitude || r.here_longitude;
                 title = r.Here_FirstCol || r.Here_Col1 || 'HERE';
@@ -1262,20 +1541,39 @@
             }
             if (oLat == null || oLng == null || Number.isNaN(+oLat) || Number.isNaN(+oLng)) continue;
             const d = distanceMeters(+originLat, +originLng, +oLat, +oLng);
-            scored.push({ title, dist: d, lat: +oLat, lng: +oLng });
+            scored.push({ title: title, dist: d, lat: +oLat, lng: +oLng, row: r });
         }
-        scored.sort((a, b) => a.dist - b.dist);
-
+        scored.sort(function (a, b) {
+            return a.dist - b.dist;
+        });
         const seen = new Set();
         const out = [];
-        for (const s of scored) {
-            const key = `${s.lat.toFixed(4)},${s.lng.toFixed(4)}`;
+        for (let k = 0; k < scored.length; k++) {
+            const s = scored[k];
+            const key = s.lat.toFixed(4) + ',' + s.lng.toFixed(4);
             if (seen.has(key)) continue;
             seen.add(key);
             out.push(s);
             if (out.length >= limit) break;
         }
         return out;
+    }
+
+    /**
+     * 마커 기준(basis)의 반대 충전소 소스에서 가까운 순 5곳.
+     * 환경부 마커 → HERE 좌표가 있는 행들 중 최근접, HERE 마커 → 환경부 좌표가 있는 행들 중 최근접.
+     */
+    function getNearestOppositeStations(row, limit) {
+        if (limit == null) limit = 5;
+        const isEnv = row.basis === '환경부';
+        const eLat = row.env_latitude;
+        const eLng = row.env_longtitude || row.env_longitude;
+        const hLat = row.here_latitude;
+        const hLng = row.here_longtitude || row.here_longitude;
+        const originLat = isEnv ? eLat : hLat;
+        const originLng = isEnv ? eLng : hLng;
+        const targetSource = isEnv ? 'here' : 'env';
+        return getNearestStationsAt(+originLat, +originLng, targetSource, limit, row);
     }
 
     function escapeInfoHtml(str) {
@@ -1332,27 +1630,367 @@
         }
         return (
             '<div style="margin:6px 0 10px 0;line-height:1.6;">' +
-            chip('[환경부]', hasEnvChip, '#28a745') +
-            chip('[HERE]', hasHereChip, '#007aff') +
-            chip('[네이버]', hasNaverChip, '#03c75a') +
+            chip('환경부', hasEnvChip, '#28a745') +
+            chip('HERE', hasHereChip, '#007aff') +
+            chip('네이버', hasNaverChip, '#03c75a') +
             '</div>'
         );
     }
 
-    function buildNearestOppositeHtml(row) {
-        const isEnv = row.basis === '환경부';
-        const oppositeLabel = isEnv ? 'HERE' : '환경부';
-        const nearest = getNearestOppositeStations(row, 5);
+    function sanitizeIwRankTheme(theme) {
+        if (theme === 'env' || theme === 'tmap') return theme;
+        return 'here';
+    }
+
+    /** 가까운 N곳 정보창 한 줄(원형 순위 배지 + 이름 + 거리). rankTheme: here | env | tmap (탭 활성색과 동일) */
+    function buildNearestListRowHtml(idx, labelEscaped, distM, rankTheme) {
+        const th = sanitizeIwRankTheme(rankTheme);
+        return (
+            '<div class="iw-nearest-row">' +
+            '<span class="iw-nearest-rank-wrap">' +
+            '<span class="iw-nearest-rank iw-rank-' +
+            th +
+            '">' +
+            (idx + 1) +
+            '</span></span>' +
+            '<span class="iw-nearest-row-body">' +
+            labelEscaped +
+            ' <span style="color:#888;">(' +
+            formatDistanceM(distM) +
+            ')</span></span></div>'
+        );
+    }
+
+    function buildNearestStationListHtml(nearest, emptyMsg, rankTheme) {
         if (nearest.length === 0) {
-            return `<div style="margin-top:8px;padding-top:8px;border-top:1px solid #eee;"><strong>가까운 ${oppositeLabel} 충전소</strong><div style="color:#888;margin-top:4px;">표시할 좌표가 없습니다.</div></div>`;
+            return '<div style="color:#888;margin-top:2px;">' + escapeInfoHtml(emptyMsg) + '</div>';
         }
-        const items = nearest
-            .map(
-                (s, idx) =>
-                    `<div style="margin-top:4px;"><span style="color:#999;">${idx + 1}.</span> ${escapeInfoHtml(s.title)} <span style="color:#888;">(${formatDistanceM(s.dist)})</span></div>`
-            )
+        const th = sanitizeIwRankTheme(rankTheme);
+        return nearest
+            .map(function (s, idx) {
+                return buildNearestListRowHtml(idx, escapeInfoHtml(s.title), s.dist, th);
+            })
             .join('');
-        return `<div style="margin-top:8px;padding-top:8px;border-top:1px solid #eee;"><strong>가까운 ${oppositeLabel} 충전소 5곳</strong>${items}</div>`;
+    }
+
+    function buildNearestTabsBlock(
+        iwId,
+        centerLat,
+        centerLng,
+        tabALabel,
+        tabBLabel,
+        panelAInnerHtml,
+        tabATheme,
+        tabBTheme
+    ) {
+        return (
+            '<div class="iw-nearest-wrap" data-iw-nearest="' +
+            escapeInfoHtml(iwId) +
+            '" data-center-lat="' +
+            escapeInfoHtml(String(centerLat)) +
+            '" data-center-lon="' +
+            escapeInfoHtml(String(centerLng)) +
+            '">' +
+            '<div style="margin-top:8px;padding-top:8px;border-top:1px solid #eee;">' +
+            '<div class="iw-tab-row">' +
+            '<button type="button" class="iw-tab iw-tab-a active iw-tab-theme-' +
+            escapeInfoHtml(tabATheme) +
+            '">' +
+            escapeInfoHtml(tabALabel) +
+            '</button>' +
+            '<button type="button" class="iw-tab iw-tab-b iw-tab-theme-' +
+            escapeInfoHtml(tabBTheme) +
+            '">' +
+            escapeInfoHtml(tabBLabel) +
+            '</button>' +
+            '</div>' +
+            '<div class="iw-panel iw-panel-a">' +
+            panelAInnerHtml +
+            '</div>' +
+            '<div class="iw-panel iw-panel-b" style="display:none;">' +
+            '<div class="iw-tmap-panel-inner" style="color:#666;font-size:12px;">TMAP 탭을 선택하면 마커 기준 주변 5곳을 검색합니다.</div>' +
+            '</div>' +
+            '</div>' +
+            '</div>'
+        );
+    }
+
+    function wireNearestTabs(ctx) {
+        const el = infoWindow.getContentElement();
+        if (!el) return;
+        const wrap = el.querySelector('[data-iw-nearest="' + ctx.iwId + '"]');
+        if (!wrap || wrap.dataset.wired === '1') return;
+        wrap.dataset.wired = '1';
+
+        const btnA = wrap.querySelector('.iw-tab-a');
+        const btnB = wrap.querySelector('.iw-tab-b');
+        const panA = wrap.querySelector('.iw-panel-a');
+        const panB = wrap.querySelector('.iw-panel-b');
+        const innerB = wrap.querySelector('.iw-tmap-panel-inner');
+        if (!btnA || !btnB || !panA || !panB || !innerB) return;
+
+        const centerLat = +wrap.dataset.centerLat;
+        const centerLng = +wrap.dataset.centerLon;
+
+        function syncIwNearestAccentBorder() {
+            var c = '#007aff';
+            if (btnB.classList.contains('active')) {
+                c = '#ff4757';
+            } else if (btnA.classList.contains('iw-tab-theme-env')) {
+                c = '#28a745';
+            } else if (btnA.classList.contains('iw-tab-theme-here')) {
+                c = '#007aff';
+            }
+            wrap.style.setProperty('--iw-nearest-accent', c);
+        }
+
+        function activateA() {
+            btnA.classList.add('active');
+            btnB.classList.remove('active');
+            panA.style.display = 'block';
+            panB.style.display = 'none';
+            syncIwNearestAccentBorder();
+            reflowInfoWindowAnchor();
+        }
+
+        function activateB() {
+            btnA.classList.remove('active');
+            btnB.classList.add('active');
+            panA.style.display = 'none';
+            panB.style.display = 'block';
+            syncIwNearestAccentBorder();
+
+            if (wrap.dataset.tmapFetched === '1') {
+                reflowInfoWindowAnchor();
+                return;
+            }
+            if (wrap.dataset.tmapFetched === 'loading') {
+                reflowInfoWindowAnchor();
+                return;
+            }
+
+            if (Number.isNaN(centerLat) || Number.isNaN(centerLng)) {
+                innerB.innerHTML =
+                    '<div style="color:#888;">마커 좌표가 없어 TMAP 검색을 할 수 없습니다.</div>';
+                wrap.dataset.tmapFetched = '1';
+                reflowInfoWindowAnchor();
+                return;
+            }
+
+            wrap.dataset.tmapFetched = 'loading';
+            innerB.innerHTML = '<div style="color:#888;">TMAP 검색 중…</div>';
+            reflowInfoWindowAnchor();
+
+            fetchTmapNearestFromCenter(
+                centerLat,
+                centerLng,
+                5,
+                function (items) {
+                    wrap.dataset.tmapFetched = '1';
+                    clearTmapTabNeighborMarkers();
+                    const pois = items
+                        .map(function (it) {
+                            return it.rawPoi;
+                        })
+                        .filter(Boolean);
+                    if (pois.length > 0) {
+                        addTmapTabNeighborRankMarkersFromPois(pois);
+                    }
+                    if (items.length === 0) {
+                        innerB.innerHTML =
+                            '<div style="color:#888;">주변 TMAP 충전소 결과가 없습니다.</div>';
+                    } else {
+                        innerB.innerHTML = items
+                            .map(function (s, idx) {
+                                return buildNearestListRowHtml(
+                                    idx,
+                                    escapeInfoHtml(s.name),
+                                    s.dist,
+                                    'tmap'
+                                );
+                            })
+                            .join('');
+                    }
+                    reflowInfoWindowAnchor();
+                    syncTmapMarkersDimWithNeighborOverlay();
+                },
+                function () {
+                    wrap.dataset.tmapFetched = '';
+                    innerB.innerHTML =
+                        '<div style="color:#c00;">TMAP 요청에 실패했습니다. 탭을 다시 눌러 주세요.</div>';
+                    reflowInfoWindowAnchor();
+                }
+            );
+        }
+
+        btnA.addEventListener('click', activateA);
+        btnB.addEventListener('click', activateB);
+        syncIwNearestAccentBorder();
+    }
+
+    /** 엑셀/매칭 마커: 반대 소스 5곳 + TMAP(탭 클릭 시 요청) */
+    function buildNearestTabsForRow(iwId, row) {
+        const isEnv = row.basis === '환경부';
+        const eLat = row.env_latitude;
+        const eLng = row.env_longtitude || row.env_longitude;
+        const hLat = row.here_latitude;
+        const hLng = row.here_longtitude || row.here_longitude;
+        const centerLat = isEnv ? eLat : hLat;
+        const centerLng = isEnv ? eLng : hLng;
+
+        const oppositeLabel = isEnv ? 'HERE' : '환경부';
+        const tabALabel = isEnv ? '가까운 HERE 5곳' : '가까운 환경부 5곳';
+        const tabBLabel = '가까운 TMAP 5곳';
+        const tabATheme = isEnv ? 'here' : 'env';
+        const tabBTheme = 'tmap';
+        const nearest = getNearestOppositeStations(row, 5);
+        const panelAHtml = buildNearestStationListHtml(
+            nearest,
+            '표시할 ' + oppositeLabel + ' 좌표가 없습니다.',
+            tabATheme
+        );
+        return buildNearestTabsBlock(
+            iwId,
+            centerLat,
+            centerLng,
+            tabALabel,
+            tabBLabel,
+            panelAHtml,
+            tabATheme,
+            tabBTheme
+        );
+    }
+
+    function clearNeighborMapVisuals() {
+        neighborRankMarkers.forEach(function (pm) {
+            pm.setMap(null);
+        });
+        neighborRankMarkers = [];
+        if (infoWindow) {
+            infoWindow.__neighborAnchorRow = null;
+        }
+        activeMarkers.forEach(function (m) {
+            if (!m.__evDefaultIcon) return;
+            m.setIcon(m.__evDefaultIcon);
+            m.setZIndex(150);
+        });
+        tmapMarkers.forEach(function (m) {
+            if (m.__tmapDefaultIcon) {
+                m.setIcon(m.__tmapDefaultIcon);
+            }
+        });
+    }
+
+    function findExcelMarkerForRow(row) {
+        for (let i = 0; i < activeMarkers.length; i++) {
+            if (activeMarkers[i].__evRow === row) return activeMarkers[i];
+        }
+        return null;
+    }
+
+    function excelMarkerIconDimmed(row) {
+        const isEnv = row.basis === '환경부';
+        return {
+            content: isEnv
+                ? '<div class="custom-marker marker-env" style="opacity:0.3;">환</div>'
+                : '<div class="custom-marker marker-here" style="opacity:0.3;">H</div>',
+            anchor: new naver.maps.Point(12, 12)
+        };
+    }
+
+    /**
+     * 지도 idle 후 마커가 다시 그려졌을 때: 앵커 마커 참조·흐림만 복구. 숫자 1~5 마커는 유지.
+     */
+    function refreshNeighborOverlayIfInfoOpen() {
+        if (!infoWindow.getMap() || !infoWindow.__neighborAnchorRow) {
+            return;
+        }
+        const anchorRow = infoWindow.__neighborAnchorRow;
+        const newAnchor = findExcelMarkerForRow(anchorRow);
+        if (newAnchor) {
+            infoWindow.anchorMarker = newAnchor;
+        }
+        const nearest = getNearestOppositeStations(anchorRow, 5);
+        const highlightRows = new Set();
+        for (let n = 0; n < nearest.length; n++) {
+            if (nearest[n].row) highlightRows.add(nearest[n].row);
+        }
+        const anchor = newAnchor || infoWindow.anchorMarker;
+        for (let j = 0; j < activeMarkers.length; j++) {
+            const m = activeMarkers[j];
+            if (!m.__evRow) continue;
+            if (anchor && m === anchor) {
+                m.setIcon(m.__evDefaultIcon);
+                m.setZIndex(360);
+                continue;
+            }
+            if (highlightRows.has(m.__evRow)) {
+                m.setIcon(m.__evDefaultIcon);
+                m.setZIndex(150);
+                continue;
+            }
+            m.setIcon(excelMarkerIconDimmed(m.__evRow));
+            m.setZIndex(110);
+        }
+        syncTmapMarkersDimWithNeighborOverlay();
+    }
+
+    /**
+     * 환경부/HERE 정보창: 반대 소스 좌표에 1~5 숫자 마커, 그 외 엑셀 마커는 흐림.
+     * 숫자 마커는 정보창이 닫힐 때만 제거(clearNeighborMapVisuals).
+     */
+    function applyNeighborMapVisuals(anchorRow, anchorMarker) {
+        clearNeighborMapVisuals();
+        const nearest = getNearestOppositeStations(anchorRow, 5);
+        if (nearest.length === 0) {
+            return;
+        }
+        infoWindow.__neighborAnchorRow = anchorRow;
+        const highlightRows = new Set();
+        for (let n = 0; n < nearest.length; n++) {
+            if (nearest[n].row) highlightRows.add(nearest[n].row);
+        }
+        const rankIsHere = anchorRow.basis === '환경부';
+
+        for (let i = 0; i < nearest.length; i++) {
+            const s = nearest[i];
+            const rank = i + 1;
+            const cls = rankIsHere ? 'marker-here' : 'marker-env';
+            const pm = new naver.maps.Marker({
+                position: new naver.maps.LatLng(s.lat, s.lng),
+                map: map,
+                zIndex: 310 + i,
+                clickable: false,
+                icon: {
+                    content:
+                        '<div class="custom-marker ' +
+                        cls +
+                        '" style="width:22px;height:22px;line-height:20px;font-size:12px;font-weight:bold;box-shadow:0 0 0 2px rgba(255,212,59,0.9);">' +
+                        rank +
+                        '</div>',
+                    anchor: new naver.maps.Point(11, 11)
+                }
+            });
+            neighborRankMarkers.push(pm);
+        }
+
+        for (let j = 0; j < activeMarkers.length; j++) {
+            const m = activeMarkers[j];
+            if (!m.__evRow) continue;
+            if (m === anchorMarker) {
+                m.setIcon(m.__evDefaultIcon);
+                m.setZIndex(360);
+                continue;
+            }
+            if (highlightRows.has(m.__evRow)) {
+                m.setIcon(m.__evDefaultIcon);
+                m.setZIndex(150);
+                continue;
+            }
+            m.setIcon(excelMarkerIconDimmed(m.__evRow));
+            m.setZIndex(110);
+        }
+        syncTmapMarkersDimWithNeighborOverlay();
     }
 
     function createMarkerAndLine(row) {
@@ -1365,6 +2003,7 @@
         const marker = new naver.maps.Marker({
             position: new naver.maps.LatLng(lat, lng),
             map: map,
+            zIndex: 150,
             icon: {
                 // HTML content 활용: 클래스와 글자 동적 지정
                 content: isEnv
@@ -1374,6 +2013,13 @@
                 anchor: new naver.maps.Point(12, 12)
             }
         });
+        marker.__evRow = row;
+        marker.__evDefaultIcon = {
+            content: isEnv
+                ? '<div class="custom-marker marker-env">환</div>'
+                : '<div class="custom-marker marker-here">H</div>',
+            anchor: new naver.maps.Point(12, 12)
+        };
 
         const isOkay = (row.Env_Note === "환경부 기준 OKAY" || row.Here_Note === "HERE 기준 OKAY");
         //let polyline = null;
@@ -1401,9 +2047,8 @@
             // 닫혀 있거나 다른 마커를 클릭한 경우
             resetHighlights();
 
-            // 정보창을 열고, 현재 마커를 anchorMarker로 저장
+            // 정보창을 열고, 현재 마커를 anchorMarker로 저장(showInfoWindow 내부에서 설정)
             showInfoWindow(row, marker);
-            infoWindow.anchorMarker = marker;
 
           //  if (isOkay && polyline) {
            //     polyline.setOptions({
@@ -1455,7 +2100,10 @@
             metaHtml = `<div><strong>타입:</strong> ${escapeInfoHtml(row.Electric)}</div><div><strong>좌표:</strong> ${row.here_latitude}, ${row.here_longitude}</div>`;
         }
 
-        const detailHtml = `${issueLine}${buildSourceChipsHtml(row)}${metaHtml}${buildNearestOppositeHtml(row)}`;
+        const iwId = 'iw-near-' + Date.now() + '-' + Math.random().toString(36).slice(2, 9);
+        const nearestTabsHtml = buildNearestTabsForRow(iwId, row);
+
+        const detailHtml = `${issueLine}${buildSourceChipsHtml(row)}${metaHtml}${nearestTabsHtml}`;
 
         const content = `
             <div class="custom-info-window">
@@ -1476,7 +2124,10 @@
         `;
 
         infoWindow.setContent(content);
+        infoWindow.__nearestTabCtx = { iwId: iwId };
+        infoWindow.anchorMarker = marker;
         infoWindow.open(map, marker);
+        applyNeighborMapVisuals(row, marker);
     }
 
     window.onload = loadLargeData;
