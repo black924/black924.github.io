@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0F2A24">
+<title>셀프사전점검 개인정보 처리방침</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%230F2A24'/%3E%3Cg transform='translate(4 4)' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 11l8-7 8 7v9H4z'/%3E%3Cpath d='M9 14l2 2 4-4'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F5F7F6;--surface:#fff;--ink:#0E1B17;--ink2:#55655F;--muted:#6B7872;--line:#E4E9E6;--soft:#EDF1EF;
+  --brand:#0F2A24;--on-brand:#fff;--tint:#E2F6EE;--tint-ink:#0B5A45;--mint:#34D399;--hero-sub:#A9C9BF;
+  --warn-bg:#FFF3D6;--warn-ink:#8F5B00;--shadow:0 1px 2px rgba(15,42,36,.04),0 6px 20px rgba(15,42,36,.05)
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#0B1411;--surface:#12211C;--ink:#E8F0EC;--ink2:#A7B8B1;--muted:#8FA19A;--line:#1F332C;--soft:#182A24;
+    --brand:#1B3A31;--tint:#16332A;--tint-ink:#7FE0C0;--warn-bg:#3A2F12;--warn-ink:#F2C766;--shadow:none}
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.75 "Gothic A1","Apple SD Gothic Neo","Noto Sans KR",sans-serif;-webkit-text-size-adjust:100%;word-break:keep-all;overflow-wrap:anywhere}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px 96px}
+.top{display:flex;align-items:center;gap:10px;padding:16px 4px 12px}
+.logo{width:36px;height:36px;border-radius:12px;background:var(--brand);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.top b{font-size:18px;font-weight:700;letter-spacing:-.3px}
+.top span{margin-left:auto;font-size:13px;color:var(--ink2)}
+.hero{background:var(--brand);color:var(--on-brand);border-radius:26px;padding:26px 22px 24px;margin-top:4px}
+.hero .eyebrow{font-size:13px;font-weight:500;color:var(--hero-sub)}
+.hero h1{font-size:27px;line-height:1.3;letter-spacing:-.5px;margin:6px 0 14px;font-weight:700}
+.hero h1 em{font-style:normal;color:#3DDBA8}
+.pill{display:inline-block;background:rgba(255,255,255,.12);border-radius:999px;padding:4px 12px;font-size:13px;font-weight:600}
+.hero p{margin:16px 0 0;font-size:14.5px;line-height:1.75;color:#D5EEE8}
+.toc{position:sticky;top:0;z-index:5;margin:14px -16px 0;padding:10px 16px;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.toc::-webkit-scrollbar{display:none}
+.toc a{flex-shrink:0;height:34px;display:flex;align-items:center;padding:0 14px;border-radius:999px;background:var(--surface);border:1px solid var(--line);color:var(--ink);text-decoration:none;font-size:13.5px;font-weight:500;white-space:nowrap}
+.toc a:hover,.toc a:focus-visible{background:var(--brand);color:var(--on-brand);border-color:var(--brand)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:22px 20px;margin-top:14px;box-shadow:var(--shadow)}
+.card h2{display:flex;align-items:center;gap:10px;margin:0 0 14px;font-size:18px;line-height:1.4;letter-spacing:-.3px;font-weight:700}
+.no{flex-shrink:0;min-width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;background:var(--tint);color:var(--tint-ink);border-radius:9px;padding:0 8px;font-size:14px;font-weight:700}
+.card h3{font-size:15px;margin:22px 0 8px;font-weight:700}
+.card p{margin:10px 0}
+.card ul,.card ol{padding-left:20px;margin:10px 0}
+.card li{margin:6px 0}
+.card li::marker{color:var(--tint-ink);font-weight:700}
+.card a{color:var(--tint-ink);font-weight:600;text-decoration-thickness:1px;text-underline-offset:3px}
+.glance{background:var(--tint);border-color:transparent;box-shadow:none}
+.glance h2{color:var(--tint-ink)}
+.spark{width:26px;height:26px;border-radius:50%;background:var(--mint);color:#0E1B17;display:inline-flex;align-items:center;justify-content:center;font-size:14px}
+.glance ul{list-style:none;padding:0}
+.glance li{position:relative;padding-left:26px}
+.glance li::before{content:"";position:absolute;left:4px;top:.62em;width:10px;height:10px;border-radius:50%;background:var(--mint)}
+.tbl{margin:12px 0;border:1px solid var(--line);border-radius:16px;overflow:hidden;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14.5px;line-height:1.6}
+th,td{padding:11px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+tr:last-child td{border-bottom:0}
+th{background:var(--soft);font-weight:700;font-size:13.5px;color:var(--ink2);white-space:nowrap}
+table.kv td:first-child{font-weight:700;width:34%;background:color-mix(in srgb,var(--soft) 55%,transparent)}
+mark{background:var(--warn-bg);color:var(--warn-ink);padding:1px 6px;border-radius:6px;font-weight:600}
+strong{font-weight:700}
+.foot{margin:28px 4px 0;font-size:13px;color:var(--muted);text-align:center;line-height:1.7}
+.up{position:fixed;right:16px;bottom:18px;width:46px;height:46px;border-radius:50%;background:var(--brand);color:var(--on-brand);display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 6px 20px rgba(0,0,0,.25);font-size:20px;line-height:1}
+@media (max-width:560px){
+  .hero h1{font-size:24px}
+  .card{padding:20px 16px}
+  .tbl{border:0;border-radius:0;overflow:visible}
+  table,tbody,tr,td{display:block;width:100%}
+  thead{display:none}
+  tr{border:1px solid var(--line);border-radius:14px;margin:0 0 10px;padding:10px 14px;background:var(--surface)}
+  td{border:0;padding:5px 0}
+  table.kv td:first-child{width:100%;background:none;font-size:13px;color:var(--ink2);padding-bottom:0}
+  table.multi td::before{content:attr(data-label);display:block;font-size:12.5px;font-weight:700;color:var(--ink2)}
+}
+@media print{.toc,.up{display:none}body{background:#fff}.card{box-shadow:none;break-inside:avoid}}
+</style>
+</head>
+<body id="top">
+<div class="wrap">
+  <header class="top">
+    <div class="logo"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7v9H4z"/><path d="M9 14l2 2 4-4"/></svg></div><b>셀프사전점검</b><span>개인정보 처리방침</span>
+  </header>
+  <div class="hero">
+    <div class="eyebrow">개인정보 처리방침</div>
+    <h1>내 점검 기록은<br><em>내 기기에만</em> 저장돼요</h1>
+    <span class="pill">시행일 2026년 10월 4일</span>
+    <p><mark>Haram & Harang</mark> (이하 "운영자")은 "셀프사전점검" 앱(이하 "앱")을 제공하며, 「개인정보 보호법」에 따라 이용자의 개인정보를 보호하기 위해 이 방침을 공개합니다.</p>
+  </div>
+  <nav class="toc" aria-label="목차"><a href="#s1">수집하는 정보</a><a href="#s2">광고와 국외 이전</a><a href="#s3">보유·삭제</a><a href="#s4">이용자 권리</a><a href="#s5">아동</a><a href="#s6">문의</a><a href="#s7">방침 변경</a></nav>
+  <section class="card glance" id="glance"><h2><span class="spark">✓</span>한눈에 보기</h2><ul>
+<li>앱은 회원가입과 로그인이 없고, 운영자의 서버로 개인정보를 보내지 않습니다.</li>
+<li>점검 기록, 하자 기록, 메모, 사진은 이용자의 기기에만 저장되며 운영자는 수집하지 않습니다.</li>
+<li>앱에는 Google AdMob 광고가 표시되며, 광고를 위해 Google이 광고 식별자와 IP 주소 등을 자동으로 수집합니다.</li>
+</ul></section><section class="card" id="s1"><h2><span class="no">1</span><span class="tt">수집하는 정보</span></h2><ul>
+<li><strong>운영자</strong>: 개인정보를 수집하거나 보관하지 않고, 제3자에게 제공하거나 처리를 위탁하지 않습니다. 이용자가 입력한 단지명, 동·호수, 점검일, 점검·하자 기록, 메모와 촬영한 사진은 이용자의 기기에만 저장됩니다.</li>
+<li><strong>광고(Google AdMob)</strong>: 광고를 표시하기 위해 Google이 광고 식별자(광고 ID 등), IP 주소, 광고 상호작용·앱 이용 정보, 기기·진단 정보를 자동으로 수집합니다.</li>
+<li><strong>카메라·사진 권한(선택)</strong>: 하자 사진을 촬영하거나 고르는 데에만 사용합니다. 거부해도 다른 기능은 이용할 수 있습니다.</li>
+</ul></section><section class="card" id="s2"><h2><span class="no">2</span><span class="tt">광고 정보의 국외 이전과 거부 방법</span></h2><div class="tbl"><table class="kv">
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="항목">수집·이전받는 자</td>
+<td data-label="내용">Google LLC 및 계열사 (미국 등 Google이 서비스를 운영하는 국가)</td>
+</tr>
+<tr>
+<td data-label="항목">수집도구</td>
+<td data-label="내용">Google Mobile Ads SDK (AdMob)</td>
+</tr>
+<tr>
+<td data-label="항목">수집 항목</td>
+<td data-label="내용">광고 식별자, IP 주소, 광고 상호작용, 앱 이용·기기·진단 정보</td>
+</tr>
+<tr>
+<td data-label="항목">시기와 방법</td>
+<td data-label="내용">앱이 광고를 요청하거나 표시할 때마다 암호화 통신으로 자동 전송</td>
+</tr>
+<tr>
+<td data-label="항목">이용 목적</td>
+<td data-label="내용">광고 게재, 성과 측정, 맞춤형 광고, 부정 이용 방지</td>
+</tr>
+<tr>
+<td data-label="항목">보유 기간</td>
+<td data-label="내용">Google의 정책에 따름 (https://policies.google.com/privacy)</td>
+</tr>
+<tr>
+<td data-label="항목">거부 방법과 효과</td>
+<td data-label="내용">Android는 설정 &gt; Google &gt; 광고에서 광고 맞춤설정 해제 또는 광고 ID 삭제, iOS는 설정 &gt; 개인정보 보호 및 보안 &gt; 추적에서 앱의 추적 허용 해제, 동의가 필요한 지역(EEA, 영국 등)은 앱의 광고 동의 설정에서 변경할 수 있습니다. 거부해도 앱은 이용할 수 있으며 맞춤형이 아닌 광고가 표시될 수 있습니다.</td>
+</tr>
+</tbody>
+</table></div></section><section class="card" id="s3"><h2><span class="no">3</span><span class="tt">보유 기간과 삭제</span></h2><p>기기에 저장된 정보는 이용자가 앱에서 삭제하거나 앱을 삭제할 때까지 이용자의 기기에 보관되며, 운영자가 보관하는 정보는 없어 별도의 파기 절차도 없습니다. 이용자가 기기 백업(Google 백업, iCloud 등)을 쓰면 해당 제공자가 앱 데이터를 백업할 수 있습니다.</p></section><section class="card" id="s4"><h2><span class="no">4</span><span class="tt">이용자의 권리</span></h2><p>이용자는 앱 안에서 저장된 정보를 언제든지 확인, 수정, 삭제할 수 있습니다. Google이 수집한 광고 관련 정보는 Google 계정의 활동 제어에서 관리할 수 있으며, 그 밖의 문의는 아래 연락처로 보내 주시기 바랍니다.</p></section><section class="card" id="s5"><h2><span class="no">5</span><span class="tt">아동</span></h2><p>앱은 만 14세 미만 아동을 대상으로 하지 않으며, 아동의 개인정보를 의도적으로 수집하지 않습니다.</p></section><section class="card" id="s6"><h2><span class="no">6</span><span class="tt">개인정보 보호책임자와 문의</span></h2><div class="tbl"><table class="kv">
+<thead>
+<tr>
+<th>구분</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="구분">성명(또는 담당 부서)</td>
+<td data-label="내용">Haram & Harang</td>
+</tr>
+<tr>
+<td data-label="구분">이메일</td>
+<td data-label="내용">black924.menew@gmail.com</td>
+</tr>
+</tbody>
+</table></div>
+<p>개인정보 침해에 관한 상담과 구제는 개인정보침해신고센터(118), 개인정보분쟁조정위원회(1833-6972)에 문의하실 수 있습니다.</p></section><section class="card" id="s7"><h2><span class="no">7</span><span class="tt">방침의 변경</span></h2><p>법령이나 앱 기능(로그인, 커뮤니티, 분석 도구 추가 등)이 바뀌어 이 방침을 변경하는 경우, 시행일 7일 전(이용자 권리에 중요한 변경은 30일 전)부터 앱과 스토어 페이지를 통해 알려 드립니다.</p></section>
+  <p class="foot">셀프사전점검 · 개인정보 처리방침<br>문의는 6번 항목의 연락처로 보내 주세요.</p>
+</div>
+<a class="up" href="#top" aria-label="맨 위로">↑</a>
+</body>
+</html>
