@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terms of Service</title>
+<style>
+  :root { --bg:#f7f3ea; --paper:#fffdf8; --ink:#1a2133; --muted:#5c6475; --line:#d9d2c3; --accent:#c8231e; --todo:#fff2a8; --todo-line:#d9a400; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#1f2530; --paper:#2a3342; --ink:#f3ede0; --muted:#aab3c5; --line:#465066; --accent:#ff6b5e; --todo:#5a4a00; --todo-line:#ffcf40; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.75 -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", "Noto Sans JP", "Noto Sans TC", "Noto Sans SC", "Noto Sans Thai", "Segoe UI", "Malgun Gothic", sans-serif; }
+  main { max-width:780px; margin:0 auto; padding:16px 16px 64px; }
+  nav.tabs { position:sticky; top:0; z-index:5; background:var(--bg); padding:10px 0 8px; border-bottom:2px solid var(--line); display:flex; flex-wrap:wrap; gap:6px; }
+  nav.tabs button { font:inherit; font-size:14px; padding:6px 12px; border-radius:999px; border:1.5px solid var(--line); background:var(--paper); color:var(--ink); cursor:pointer; }
+  nav.tabs button[aria-selected="true"] { background:var(--ink); color:var(--paper); border-color:var(--ink); }
+  nav.tabs button:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+  .doclinks { margin:8px 0 0; font-size:13px; color:var(--muted); }
+  h1 { font-size:26px; line-height:1.3; margin:20px 0 4px; }
+  h2 { font-size:19px; margin:36px 0 8px; padding-top:14px; border-top:2px solid var(--line); }
+  p, li { color:var(--ink); }
+  ol.clause { padding-left:22px; }
+  .sub { color:var(--muted); font-size:14px; margin:0 0 20px; }
+  .box { background:var(--paper); border:1px solid var(--line); border-radius:10px; padding:14px 16px; margin:14px 0; }
+  .wrap { overflow-x:auto; }
+  table { border-collapse:collapse; width:100%; min-width:520px; font-size:14.5px; background:var(--paper); }
+  th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+  th { background:rgba(127,127,127,.12); }
+  a { color:var(--accent); }
+  mark.todo { background:var(--todo); color:inherit; border-bottom:2px solid var(--todo-line); padding:1px 4px; border-radius:3px; font-weight:700; }
+  .todo-list { background:var(--todo); border:2px dashed var(--todo-line); border-radius:10px; padding:12px 16px; margin:16px 0 8px; }
+  .todo-list h2 { border:0; margin:0 0 6px; padding:0; font-size:16px; }
+  .todo-list li { font-size:14.5px; }
+  footer { margin-top:40px; color:var(--muted); font-size:13px; }
+  .panel[hidden] { display:none; }
+  @media print { nav.tabs, .todo-list { display:none; } .panel[hidden] { display:block; } }
+</style>
+</head>
+<body>
+<main>
+<nav class="tabs" role="tablist" aria-label="Language"><button role="tab" id="tab-ko" aria-controls="terms-ko" aria-selected="false" lang="ko">한국어</button><button role="tab" id="tab-ja" aria-controls="terms-ja" aria-selected="false" lang="ja">日本語</button><button role="tab" id="tab-zh-tw" aria-controls="terms-zh-tw" aria-selected="false" lang="zh-Hant">繁體中文</button><button role="tab" id="tab-th" aria-controls="terms-th" aria-selected="false" lang="th">ไทย</button><button role="tab" id="tab-vi" aria-controls="terms-vi" aria-selected="false" lang="vi">Tiếng Việt</button><button role="tab" id="tab-en" aria-controls="terms-en" aria-selected="false" lang="en">English</button><button role="tab" id="tab-zh-sg" aria-controls="terms-zh-sg" aria-selected="false" lang="zh-Hans">简体中文</button><button role="tab" id="tab-ms" aria-controls="terms-ms" aria-selected="false" lang="ms">Bahasa Melayu</button></nav>
+<p class="doclinks"><a href="privacy.html">Privacy Policy · 개인정보 처리방침 · プライバシー · 隱私權 · ความเป็นส่วนตัว · Quyền riêng tư · Privasi</a></p>
+
+<section class="panel" id="terms-ko" lang="ko" role="tabpanel" hidden>
+<h1>이용약관</h1>
+<p class="sub">시행일: 2026-10-10</p>
+<h2>제1조 (목적)</h2>
+<p>이 약관은 Haram &amp; Harang(이하 "운영자")가 제공하는 모바일 앱 오늘도 반려(이하 "서비스")의 이용 조건과 절차, 운영자와 이용자의 권리·의무를 정하는 것을 목적으로 합니다.</p>
+<h2>제2조 (용어의 뜻)</h2>
+<ol class="clause"><li>"서비스"란 이용자가 적은 사유(핑계나 허락 요청)에 대해 인공지능이 가상의 결재권자 역할로 답변(결재 의견, 도장, 다음 행동 등)을 만들어 보여 주는 재미용 서비스를 말합니다.</li><li>"이용자"란 이 약관에 따라 서비스를 이용하는 사람을 말합니다.</li><li>"익명 이용자"란 로그인 없이 서비스를 이용하는 사람을, "로그인 이용자"란 Google 계정으로 로그인하거나 계정을 연결한 사람을 말합니다.</li><li>"사유"란 이용자가 서비스에 입력한 문장을, "AI 답변"이란 그 사유에 대해 인공지능이 만든 결과물을 말합니다.</li><li>"직급"과 "출석일"이란 서비스 이용에 따라 테마별로 쌓이는 진행 상황을 말하며, 재산적 가치가 없습니다.</li><li>"시장"이란 이용자가 고른 나라와 언어를 말합니다. 시장에 따라 결재권자 구성, 문구, 응답 언어가 달라질 수 있습니다.</li></ol>
+<h2>제3조 (약관의 효력과 변경)</h2>
+<ol class="clause"><li>이 약관은 앱 안이나 연결된 화면에 게시하여 이용자가 확인할 수 있게 합니다. 이용자가 서비스를 시작하면 이 약관에 동의한 것으로 봅니다.</li><li>운영자는 관련 법령을 어기지 않는 범위에서 약관을 바꿀 수 있습니다. 바꿀 때에는 시행일과 변경 내용을 시행일 7일 전(이용자에게 불리하거나 중요한 변경은 30일 전)부터 앱이나 게시 화면에서 알립니다.</li><li>이용자는 바뀐 약관에 동의하지 않으면 서비스 이용을 중단하고 계정을 삭제할 수 있습니다. 시행일 이후에도 서비스를 계속 이용하면 바뀐 약관에 동의한 것으로 봅니다.</li></ol>
+<h2>제4조 (서비스 이용과 계정)</h2>
+<ol class="clause"><li>이용자는 로그인 없이(익명) 시작하거나 Google 계정으로 로그인해 서비스를 이용할 수 있습니다.</li><li>익명 이용자의 기록은 그 기기의 익명 계정에만 연결됩니다. 앱을 삭제하거나 데이터를 지우거나 기기를 바꾸면 기록을 되찾을 수 없습니다. 기록을 유지하려면 Google 계정을 연결해야 합니다.</li><li>익명 계정을 이미 기록이 있는 Google 계정과 연결하려는 경우 두 기록은 합쳐지지 않으며, 이용자가 어느 쪽을 쓸지 선택해야 합니다.</li><li>이용자는 자신의 계정을 스스로 관리해야 하며, 다른 사람의 계정을 이용해서는 안 됩니다.</li><li>서비스는 만 14세 이상인 사람이 이용할 수 있습니다.</li></ol>
+<h2>제5조 (서비스의 내용)</h2>
+<ol class="clause"><li>운영자는 다음 기능을 제공합니다: 테마와 결재권자 선택, 사유 작성과 AI 답변 확인, 기록 보기, 테마별 직급과 결재권자 해금, 결과 이미지 저장·공유.</li><li>서비스 화면에는 광고가 표시됩니다.</li><li>운영자는 서비스의 내용, 테마, 결재권자, 직급 기준, 화면 구성을 운영상·기술상 필요에 따라 바꿀 수 있으며, 이용자에게 불리한 중요한 변경은 미리 알립니다.</li></ol>
+<h2>제6조 (이용 횟수와 광고)</h2>
+<ol class="clause"><li>서비스는 무료로 제공되며, 하루에 무료로 이용할 수 있는 횟수에 제한이 있습니다. 익명 이용자는 하루 1회, 로그인 이용자는 하루 3회 무료로 이용할 수 있습니다.</li><li>무료 횟수를 다 쓴 경우, 이용자는 보상형 광고를 끝까지 시청하면 광고 1회당 2회를 추가로 이용할 수 있습니다. 광고를 중간에 닫으면 추가되지 않습니다. 광고 시청을 통한 이용에는 하루 횟수 제한이 없으나, 부정 이용이 의심되면 이용이 제한될 수 있습니다.</li><li>이용 횟수는 매일 이용자가 고른 나라의 현지 시간 오전 4시에 초기화됩니다.</li><li>무료 횟수와 광고 조건은 운영 상황에 따라 바뀔 수 있으며, 바뀌는 경우 앱에서 알립니다.</li><li>광고는 Google AdMob 등 제3자가 제공하며, 광고의 내용과 광고주와의 거래에 대해 운영자는 책임지지 않습니다.</li><li>서비스에는 유료 결제 기능이 없으며, 운영자는 이용자에게 이용 요금을 청구하지 않습니다.</li></ol>
+<h2>제7조 (AI 답변에 대한 안내)</h2>
+<div class="box"><ol class="clause" style="margin:0"><li>AI 답변은 인공지능이 자동으로 만든 <strong>재미용 콘텐츠</strong>입니다. 등장하는 결재권자(부장, 엄마, 선생님, 분대장 등)는 가상의 인물이며 실존 인물·기관과 관계가 없습니다.</li><li>AI 답변은 의료·건강·심리·법률·재무·진로 등에 관한 <strong>전문적인 조언이 아니며</strong>, 사실과 다르거나 부적절한 내용이 포함될 수 있습니다. 이용자는 AI 답변을 근거로 중요한 결정을 내려서는 안 됩니다.</li><li>몸이 아프거나 위급한 상황에서는 서비스의 답변과 상관없이 의료 기관이나 전문 기관의 도움을 받아야 합니다.</li><li>운영자는 부적절한 답변을 줄이기 위해 필터와 고정 문구를 사용하며, 위험 신호가 감지된 입력에는 답변 대신 상담센터나 의료기관에 연락하라는 안내를 보여 줄 수 있습니다.</li><li>이용자는 부적절한 답변을 결과 화면의 "신고" 기능으로 알릴 수 있습니다.</li></ol></div>
+<h2>제8조 (이용자의 의무)</h2>
+<p>이용자는 서비스를 이용할 때 다음 행위를 해서는 안 됩니다.</p>
+<ol class="clause"><li>사유 입력란에 자신이나 다른 사람의 개인정보(이름, 연락처, 주소, 신분증 번호 등)나 민감한 정보를 적는 행위</li><li>다른 사람을 비방·모욕하거나 권리를 침해하는 내용, 불법적이거나 음란·폭력적인 내용을 입력하는 행위</li><li>서비스가 정한 이용 횟수 제한이나 광고 시청 조건을 우회하거나, 자동화된 수단으로 서비스를 호출하는 행위</li><li>앱을 변조하거나 서버에 비정상적으로 접근하는 등 서비스 운영을 방해하는 행위</li><li>AI가 부적절한 내용을 만들도록 의도적으로 유도하는 행위</li><li>AI 답변이나 공유 이미지를 실제 기관의 공문서나 실존 인물의 발언인 것처럼 속여 사용하는 행위</li><li>그 밖에 법령이나 이 약관을 어기는 행위</li></ol>
+<h2>제9조 (콘텐츠의 권리와 이용)</h2>
+<ol class="clause"><li>서비스의 화면 구성, 디자인, 캐릭터, 문구, 프로그램에 대한 권리는 운영자에게 있습니다.</li><li>이용자가 입력한 사유에 대한 권리는 이용자에게 있습니다. 운영자는 서비스를 제공하고(AI 답변 생성, 기록 표시) 안전하게 운영하는 데 필요한 범위에서만 이를 이용합니다.</li><li>이용자는 자신이 받은 AI 답변과 공유 이미지를 개인적·비상업적 목적으로 저장하고 공유할 수 있습니다. 공유할 때 이미지에 포함된 사유와 답변이 다른 사람에게 공개된다는 점에 유의해야 합니다.</li><li>이용자가 공유한 내용으로 생긴 문제의 책임은 공유한 이용자에게 있습니다.</li></ol>
+<h2>제10조 (이용 제한)</h2>
+<ol class="clause"><li>운영자는 이용자가 제8조를 어기거나 서비스의 정상적인 운영을 방해한 경우, 사전에 알리고(긴급한 경우 사후에 알리고) 서비스 이용을 제한하거나 계정을 정지·삭제할 수 있습니다.</li><li>이용 제한에 이의가 있는 이용자는 문의 이메일로 이의를 제기할 수 있으며, 운영자는 이를 검토해 결과를 알립니다.</li></ol>
+<h2>제11조 (계정 삭제와 이용 종료)</h2>
+<ol class="clause"><li>이용자는 언제든지 앱의 <strong>내 계정 &gt; 계정 삭제</strong>에서 계정을 삭제할 수 있습니다.</li><li>계정을 삭제하면 기록, 직급, 출석일 등 서버에 저장된 정보가 모두 삭제되며 되돌릴 수 없습니다.</li><li>로그아웃하면 기기에 저장된 설정이 지워지며, 익명 이용자가 로그아웃하거나 앱을 삭제하면 기록을 다시 불러올 수 없습니다.</li></ol>
+<h2>제12조 (서비스의 변경·중단)</h2>
+<ol class="clause"><li>운영자는 시스템 점검, 장애, 외부 서비스(클라우드, 인공지능 모델, 광고 등)의 변경·중단, 그 밖의 운영상 사유가 있으면 서비스의 전부 또는 일부를 일시적으로 중단하거나 바꿀 수 있습니다.</li><li>운영자가 서비스를 종료하는 경우 종료일 30일 전에 앱에서 알립니다.</li><li>서비스는 무료로 제공되므로, 운영자는 법령에 특별한 규정이 없는 한 서비스의 변경·중단·종료에 대해 이용자에게 별도로 보상하지 않습니다.</li></ol>
+<h2>제13조 (책임의 한계)</h2>
+<ol class="clause"><li>운영자는 천재지변, 통신 장애, 외부 서비스의 장애 등 운영자가 통제할 수 없는 사유로 서비스를 제공하지 못한 경우 책임을 지지 않습니다.</li><li>운영자는 AI 답변의 정확성·완전성·적합성을 보증하지 않으며, 이용자가 AI 답변을 믿고 한 행동의 결과에 대해 책임을 지지 않습니다.</li><li>운영자는 이용자의 잘못(계정 관리 소홀, 기기 분실, 앱 삭제 등)으로 생긴 기록 손실에 대해 책임을 지지 않습니다.</li><li>위 조항은 운영자의 고의나 중대한 과실로 생긴 손해에는 적용하지 않으며, 관련 법령이 정한 소비자의 권리를 제한하지 않습니다.</li></ol>
+<h2>제14조 (개인정보 보호)</h2>
+<p>운영자는 이용자의 개인정보를 관련 법령과 <a href="privacy.html">개인정보 처리방침</a>에 따라 처리합니다.</p>
+<h2>제15조 (준거법과 분쟁 해결)</h2>
+<ol class="clause"><li>이 약관은 대한민국 법에 따라 해석됩니다. 외국어 번역본은 이용자의 이해를 돕기 위한 것이며, 해석에 차이가 있으면 한국어 본문이 우선합니다.</li><li>서비스 이용과 관련해 분쟁이 생기면 운영자와 이용자는 성실하게 협의해 해결하도록 노력합니다.</li><li>협의로 해결되지 않는 분쟁의 소송은 운영자의 주소지를 관할하는 법원에 제기합니다. 다만 이용자가 거주하는 나라의 소비자 보호 법령이 정한 이용자의 권리는 제한되지 않습니다.</li></ol>
+<h2>문의</h2>
+<div class="box">운영자: Haram &amp; Harang<br>이메일: black924.menew@gmail.com</div>
+<h2>부칙</h2>
+<p>이 약관은 2026-10-10부터 시행합니다.</p>
+<footer>© 2026 Haram &amp; Harang</footer></section>
+<section class="panel" id="terms-ja" lang="ja" role="tabpanel" hidden>
+<h1>利用規約</h1>
+<p class="sub">施行日: 2026年10月10日</p>
+<h2>第1条(目的)</h2>
+<p>この規約は、Haram &amp; Harang(以下「運営者」)が提供するモバイルアプリ 今日も却下(以下「本サービス」)の利用条件と手続き、運営者と利用者の権利・義務を定めることを目的とします。</p>
+<h2>第2条(用語の意味)</h2>
+<ol class="clause"><li>「本サービス」とは、利用者が書いた理由(言い訳や許可のお願い)に対して、人工知能が架空の承認者の役で返答(決裁意見、印、次の行動など)を作って見せる娯楽サービスをいいます。</li><li>「利用者」とは、この規約に従って本サービスを利用する人をいいます。</li><li>「匿名利用者」とはログインせずに利用する人を、「ログイン利用者」とはGoogleアカウントでログインまたはアカウントを連携した人をいいます。</li><li>「理由」とは利用者が本サービスに入力した文章を、「AI返答」とはその理由に対して人工知能が作った結果物をいいます。</li><li>「階級」と「出席日数」とは、本サービスの利用に応じてテーマごとに積み上がる進行状況をいい、財産的価値はありません。</li><li>「市場」とは、利用者が選んだ国と言語をいいます。市場によって承認者の顔ぶれ、文言、返答の言語が変わることがあります。</li></ol>
+<h2>第3条(規約の効力と変更)</h2>
+<ol class="clause"><li>この規約は、アプリ内または連携された画面に掲示して利用者が確認できるようにします。利用者が本サービスを開始した時点で、この規約に同意したものとみなします。</li><li>運営者は、関連法令に反しない範囲で規約を変更できます。変更するときは、施行日と変更内容を施行日の7日前(利用者に不利または重要な変更は30日前)からアプリまたは掲示画面で知らせます。</li><li>利用者は、変更後の規約に同意しない場合、本サービスの利用をやめてアカウントを削除できます。施行日以降も本サービスを使い続けた場合、変更後の規約に同意したものとみなします。</li></ol>
+<h2>第4条(サービスの利用とアカウント)</h2>
+<ol class="clause"><li>利用者は、ログインせずに(匿名で)始めるか、Googleアカウントでログインして本サービスを利用できます。</li><li>匿名利用者の記録は、その端末の匿名アカウントにのみ結び付きます。アプリを削除したりデータを消したり端末を変えたりすると、記録は取り戻せません。記録を残すにはGoogleアカウントを連携してください。</li><li>匿名アカウントを、すでに記録のあるGoogleアカウントと連携しようとする場合、2つの記録は統合されず、利用者がどちらを使うか選ぶ必要があります。</li><li>利用者は自分のアカウントを自分で管理しなければならず、他人のアカウントを使ってはいけません。</li><li>本サービスは、満14歳以上の人が利用できます。</li></ol>
+<h2>第5条(サービスの内容)</h2>
+<ol class="clause"><li>運営者は次の機能を提供します: テーマと承認者の選択、理由の作成とAI返答の確認、記録の閲覧、テーマごとの階級と承認者の解放、結果画像の保存・シェア。</li><li>本サービスの画面には広告が表示されます。</li><li>運営者は、運営上・技術上の必要に応じて、本サービスの内容、テーマ、承認者、階級の基準、画面構成を変更でき、利用者に不利な重要な変更は事前に知らせます。</li></ol>
+<h2>第6条(利用回数と広告)</h2>
+<ol class="clause"><li>本サービスは無料で提供され、1日に無料で利用できる回数には制限があります。匿名利用者は1日1回、ログイン利用者は1日3回、無料で利用できます。</li><li>無料回数を使い切った場合、利用者はリワード広告を最後まで視聴すると、広告1回につき2回を追加で利用できます。広告を途中で閉じると追加されません。広告視聴による利用には1日の回数制限はありませんが、不正利用が疑われる場合は利用が制限されることがあります。</li><li>利用回数は、毎日、利用者が選んだ国の現地時間の午前4時にリセットされます。</li><li>無料回数と広告の条件は運営状況により変わることがあり、変わる場合はアプリで知らせます。</li><li>広告はGoogle AdMobなどの第三者が提供するもので、広告の内容や広告主との取引について運営者は責任を負いません。</li><li>本サービスには有料の決済機能はなく、運営者は利用者に利用料金を請求しません。</li></ol>
+<h2>第7条(AI返答についての案内)</h2>
+<div class="box"><ol class="clause" style="margin:0"><li>AI返答は、人工知能が自動で作った<strong>娯楽コンテンツ</strong>です。登場する承認者(部長、お母さん、先生、キャプテンなど)は架空の人物であり、実在の人物・機関とは関係ありません。</li><li>AI返答は、医療・健康・心理・法律・金融・進路などについての<strong>専門的なアドバイスではなく</strong>、事実と異なる内容や不適切な内容が含まれることがあります。利用者はAI返答を根拠に重要な決定をしてはいけません。</li><li>体調が悪いときや緊急のときは、本サービスの返答にかかわらず、医療機関や専門機関の助けを求めてください。</li><li>運営者は不適切な返答を減らすためにフィルターと定型文を使い、危険のサインが検出された入力には、返答のかわりに相談窓口や医療機関に連絡するよう案内することがあります。</li><li>利用者は、不適切な返答を結果画面の「報告」機能で知らせることができます。</li></ol></div>
+<h2>第8条(利用者の義務)</h2>
+<p>利用者は本サービスの利用にあたり、次の行為をしてはいけません。</p>
+<ol class="clause"><li>理由の入力欄に、自分や他人の個人情報(氏名、連絡先、住所、身分証の番号など)や機微な情報を書く行為</li><li>他人を中傷・侮辱したり権利を侵害したりする内容、違法・わいせつ・暴力的な内容を入力する行為</li><li>本サービスが定めた利用回数の制限や広告視聴の条件を回避したり、自動化された手段で本サービスを呼び出したりする行為</li><li>アプリを改ざんしたり、サーバーに不正にアクセスしたりして、本サービスの運営を妨げる行為</li><li>AIが不適切な内容を作るよう、わざと誘導する行為</li><li>AI返答やシェア画像を、実在の機関の公文書や実在の人物の発言であるかのように偽って使う行為</li><li>その他、法令またはこの規約に反する行為</li></ol>
+<h2>第9条(コンテンツの権利と利用)</h2>
+<ol class="clause"><li>本サービスの画面構成、デザイン、キャラクター、文言、プログラムに関する権利は運営者に帰属します。</li><li>利用者が入力した理由に関する権利は利用者に帰属します。運営者は、本サービスの提供(AI返答の生成、記録の表示)と安全な運営に必要な範囲でのみこれを利用します。</li><li>利用者は、受け取ったAI返答とシェア画像を、個人的・非営利の目的で保存・シェアできます。シェアすると、画像に含まれる理由と返答が他の人に公開されることに注意してください。</li><li>利用者がシェアした内容によって生じた問題の責任は、シェアした利用者が負います。</li></ol>
+<h2>第10条(利用制限)</h2>
+<ol class="clause"><li>運営者は、利用者が第8条に違反したり本サービスの正常な運営を妨げたりした場合、事前に知らせた上で(緊急の場合は事後に知らせて)、利用を制限したりアカウントを停止・削除したりできます。</li><li>利用制限に異議のある利用者は、問い合わせ先メールアドレスで異議を申し立てることができ、運営者はこれを検討して結果を知らせます。</li></ol>
+<h2>第11条(アカウント削除と利用の終了)</h2>
+<ol class="clause"><li>利用者は、いつでもアプリの<strong>アカウント &gt; アカウント削除</strong>からアカウントを削除できます。</li><li>アカウントを削除すると、記録、階級、出席日数などサーバーに保存された情報がすべて削除され、元に戻せません。</li><li>ログアウトすると端末に保存された設定が消えます。匿名利用者がログアウトしたりアプリを削除したりすると、記録を再び読み込めません。</li></ol>
+<h2>第12条(サービスの変更・中断)</h2>
+<ol class="clause"><li>運営者は、システム点検、障害、外部サービス(クラウド、人工知能モデル、広告など)の変更・中断、その他運営上の事由がある場合、本サービスの全部または一部を一時的に中断したり変更したりできます。</li><li>運営者が本サービスを終了する場合、終了日の30日前までにアプリで知らせます。</li><li>本サービスは無料で提供されるため、運営者は、法令に特別の定めがない限り、サービスの変更・中断・終了について利用者に別途補償しません。</li></ol>
+<h2>第13条(責任の制限)</h2>
+<ol class="clause"><li>運営者は、天災、通信障害、外部サービスの障害など、運営者が管理できない事由により本サービスを提供できなかった場合、責任を負いません。</li><li>運営者は、AI返答の正確性・完全性・適合性を保証せず、利用者がAI返答を信じて行った行動の結果について責任を負いません。</li><li>運営者は、利用者の過失(アカウント管理の不備、端末の紛失、アプリの削除など)による記録の消失について責任を負いません。</li><li>上記の規定は、運営者の故意または重大な過失による損害には適用されず、関連法令が定める消費者の権利を制限しません。</li></ol>
+<h2>第14条(個人情報の保護)</h2>
+<p>運営者は、利用者の個人情報を、関連法令と<a href="privacy.html">プライバシーポリシー</a>に従って取り扱います。</p>
+<h2>第15条(準拠法と紛争の解決)</h2>
+<ol class="clause"><li>この規約は大韓民国の法律に従って解釈されます。外国語版は利用者の理解を助けるためのもので、解釈に違いがある場合は韓国語の本文を優先します。</li><li>本サービスの利用に関して紛争が生じた場合、運営者と利用者は誠実に協議して解決するよう努めます。</li><li>協議で解決しない紛争の訴訟は、運営者の所在地を管轄する裁判所に提起します。ただし、利用者が居住する国の消費者保護法令が定める利用者の権利は制限されません。</li></ol>
+<h2>お問い合わせ</h2>
+<div class="box">運営者: Haram &amp; Harang<br>メール: black924.menew@gmail.com</div>
+<h2>附則</h2>
+<p>この規約は2026年10月10日から施行します。</p>
+<footer>© 2026 Haram &amp; Harang</footer></section>
+<section class="panel" id="terms-zh-tw" lang="zh-Hant" role="tabpanel" hidden>
+<h1>使用條款</h1>
+<p class="sub">生效日：2026 年 10 月 10 日</p>
+<h2>第1條(目的)</h2>
+<p>本條款訂定Haram &amp; Harang(以下稱「營運者」)所提供之行動 App 今天也被駁回(以下稱「本服務」)的使用條件與程序，以及營運者與使用者的權利與義務。</p>
+<h2>第2條(用語定義)</h2>
+<ol class="clause"><li>「本服務」指由人工智慧扮演虛構的簽核人，針對使用者所寫的事由(藉口或請求許可)產生回覆(簽核意見、印章、下一步等)並顯示的娛樂服務。</li><li>「使用者」指依本條款使用本服務的人。</li><li>「匿名使用者」指不登入而使用的人，「登入使用者」指以 Google 帳號登入或連結帳號的人。</li><li>「事由」指使用者輸入本服務的文字，「AI 回覆」指人工智慧針對該事由所產生的結果。</li><li>「職級」與「出席天數」指隨使用本服務而依主題累積的進度，不具財產價值。</li><li>「市場」指使用者所選擇的國家與語言。簽核人的陣容、文案與回覆語言可能依市場而不同。</li></ol>
+<h2>第3條(條款的效力與變更)</h2>
+<ol class="clause"><li>本條款公布於 App 內或所連結的畫面，供使用者查閱。使用者開始使用本服務，即視為同意本條款。</li><li>營運者得在不違反相關法令的範圍內變更本條款。變更時，將於生效日前 7 日(對使用者不利或重大的變更為 30 日前)起，於 App 或公布畫面告知生效日與變更內容。</li><li>使用者不同意變更後的條款時，得停止使用本服務並刪除帳號。生效日後繼續使用本服務，視為同意變更後的條款。</li></ol>
+<h2>第4條(服務使用與帳號)</h2>
+<ol class="clause"><li>使用者得不登入(匿名)開始，或以 Google 帳號登入使用本服務。</li><li>匿名使用者的紀錄僅與該裝置的匿名帳號連結。刪除 App、清除資料或更換裝置後，將無法找回紀錄。欲保留紀錄，請連結 Google 帳號。</li><li>若要將匿名帳號與已有紀錄的 Google 帳號連結，兩邊的紀錄不會合併，使用者須選擇使用哪一邊。</li><li>使用者應自行管理帳號，不得使用他人的帳號。</li><li>本服務得由年滿 14 歲的人使用。</li></ol>
+<h2>第5條(服務內容)</h2>
+<ol class="clause"><li>營運者提供下列功能：選擇主題與簽核人、撰寫事由與查看 AI 回覆、查看紀錄、依主題解鎖職級與簽核人、儲存與分享結果圖片。</li><li>本服務畫面會顯示廣告。</li><li>營運者得因營運或技術上的需要，變更本服務的內容、主題、簽核人、職級標準與畫面配置；對使用者不利的重大變更將事先告知。</li></ol>
+<h2>第6條(使用次數與廣告)</h2>
+<ol class="clause"><li>本服務免費提供，每天可免費使用的次數有所限制。匿名使用者每天可免費使用 1 次，登入使用者每天可免費使用 3 次。</li><li>免費次數用完後，使用者觀看完整則獎勵廣告，每看一次可額外使用2 次。中途關閉廣告則不會增加。透過觀看廣告的使用沒有每日次數上限，但若懷疑有不當使用，可能會限制使用。</li><li>使用次數於每天使用者所選擇國家的當地時間凌晨 4 點重置。</li><li>免費次數與廣告條件可能依營運狀況變更，變更時將於 App 內告知。</li><li>廣告由 Google AdMob 等第三方提供，營運者對廣告內容及與廣告主之間的交易不負責任。</li><li>本服務沒有付費功能，營運者不向使用者收取任何費用。</li></ol>
+<h2>第7條(AI 回覆說明)</h2>
+<div class="box"><ol class="clause" style="margin:0"><li>AI 回覆是人工智慧自動產生的<strong>娛樂內容</strong>。出現的簽核人(經理、媽媽、老師、班長等)皆為虛構人物，與真實人物或機構無關。</li><li>AI 回覆<strong>並非</strong>醫療、健康、心理、法律、財務、生涯規劃等方面的<strong>專業建議</strong>，可能包含與事實不符或不適當的內容。使用者不得以 AI 回覆作為重要決定的依據。</li><li>身體不適或遇緊急狀況時，無論本服務的回覆為何，請尋求醫療機構或專業機構的協助。</li><li>營運者使用過濾器與固定文案來減少不適當的回覆；對於偵測到危險訊號的輸入，可能不提供回覆，改為提示聯絡諮商中心或醫療機構。</li><li>使用者得透過結果畫面的「檢舉」功能通報不適當的回覆。</li></ol></div>
+<h2>第8條(使用者的義務)</h2>
+<p>使用者使用本服務時，不得有下列行為。</p>
+<ol class="clause"><li>在事由輸入欄填寫自己或他人的個人資料(姓名、聯絡方式、地址、身分證字號等)或敏感資訊</li><li>輸入毀謗、侮辱他人或侵害權利的內容，或違法、猥褻、暴力的內容</li><li>規避本服務所訂的使用次數限制或廣告觀看條件，或以自動化方式呼叫本服務</li><li>竄改 App 或不當存取伺服器等妨礙本服務營運的行為</li><li>故意誘導 AI 產生不適當的內容</li><li>將 AI 回覆或分享圖片偽稱為真實機構的公文或真實人物的發言來使用</li><li>其他違反法令或本條款的行為</li></ol>
+<h2>第9條(內容的權利與使用)</h2>
+<ol class="clause"><li>本服務的畫面配置、設計、角色、文案與程式的權利歸營運者所有。</li><li>使用者所輸入事由的權利歸使用者所有。營運者僅在提供服務(產生 AI 回覆、顯示紀錄)與安全營運所必要的範圍內使用。</li><li>使用者得為個人、非商業目的儲存及分享所收到的 AI 回覆與分享圖片。分享時請留意，圖片中的事由與回覆將對他人公開。</li><li>因使用者分享的內容所生之問題，由分享的使用者負責。</li></ol>
+<h2>第10條(使用限制)</h2>
+<ol class="clause"><li>使用者違反第8條或妨礙本服務正常營運時，營運者得事先告知(緊急時事後告知)後，限制使用或停權、刪除帳號。</li><li>對使用限制有異議的使用者，得以聯絡信箱提出異議，營運者將審查並告知結果。</li></ol>
+<h2>第11條(刪除帳號與終止使用)</h2>
+<ol class="clause"><li>使用者得隨時於 App 的<strong>我的帳號 &gt; 刪除帳號</strong>刪除帳號。</li><li>刪除帳號後，紀錄、職級、出席天數等儲存在伺服器上的資訊將全部刪除，且無法復原。</li><li>登出後，儲存在裝置上的設定會被清除；匿名使用者登出或刪除 App 後，無法再載入紀錄。</li></ol>
+<h2>第12條(服務的變更與中斷)</h2>
+<ol class="clause"><li>營運者因系統維護、故障、外部服務(雲端、人工智慧模型、廣告等)的變更或中斷，或其他營運上的理由，得暫時中斷或變更本服務的全部或一部分。</li><li>營運者終止本服務時，將於終止日30 日前於 App 內告知。</li><li>本服務為免費提供，除法令另有規定外，營運者對於服務的變更、中斷、終止不另行補償使用者。</li></ol>
+<h2>第13條(責任限制)</h2>
+<ol class="clause"><li>因天災、通訊故障、外部服務故障等營運者無法控制的事由而無法提供本服務時，營運者不負責任。</li><li>營運者不保證 AI 回覆的正確性、完整性與適用性，對使用者因相信 AI 回覆而採取的行動結果不負責任。</li><li>因使用者的過失(帳號管理疏失、遺失裝置、刪除 App 等)所致的紀錄遺失，營運者不負責任。</li><li>上述規定不適用於因營運者故意或重大過失所致之損害，亦不限制相關法令所定消費者的權利。</li></ol>
+<h2>第14條(個人資料保護)</h2>
+<p>營運者依相關法令及<a href="privacy.html">隱私權政策</a>處理使用者的個人資料。</p>
+<h2>第15條(準據法與爭議解決)</h2>
+<ol class="clause"><li>本條款依大韓民國法律解釋。外語版本僅為協助使用者理解，解釋上有差異時，以韓文原文為準。</li><li>因使用本服務發生爭議時，營運者與使用者應秉持誠意協商解決。</li><li>協商不成的爭議訴訟，向營運者住所地的管轄法院提起。但不限制使用者居住國消費者保護法令所定使用者的權利。</li></ol>
+<h2>聯絡方式</h2>
+<div class="box">營運者：Haram &amp; Harang<br>電子郵件：black924.menew@gmail.com</div>
+<h2>附則</h2>
+<p>本條款自2026 年 10 月 10 日起生效。</p>
+<footer>© 2026 Haram &amp; Harang</footer></section>
+<section class="panel" id="terms-th" lang="th" role="tabpanel" hidden>
+<h1>ข้อกำหนดการใช้งาน</h1>
+<p class="sub">วันที่มีผลบังคับใช้: 10 ตุลาคม 2569 (2026-10-10)</p>
+<h2>ข้อ 1 (วัตถุประสงค์)</h2>
+<p>ข้อกำหนดนี้กำหนดเงื่อนไขและขั้นตอนการใช้แอปพลิเคชันมือถือ วันนี้ก็ปัดตก (ต่อไปนี้เรียกว่า "บริการ") ที่ให้บริการโดย Haram &amp; Harang (ต่อไปนี้เรียกว่า "ผู้ให้บริการ") รวมถึงสิทธิและหน้าที่ของผู้ให้บริการและผู้ใช้</p>
+<h2>ข้อ 2 (ความหมายของถ้อยคำ)</h2>
+<ol class="clause"><li>"บริการ" หมายถึง บริการบันเทิงที่ปัญญาประดิษฐ์สวมบทเป็นผู้อนุมัติสมมุติ แล้วสร้างคำตอบ (ความเห็นการอนุมัติ ตราประทับ สิ่งที่ควรทำต่อ ฯลฯ) ให้แก่เหตุผล (ข้ออ้างหรือคำขออนุญาต) ที่ผู้ใช้เขียน</li><li>"ผู้ใช้" หมายถึง ผู้ที่ใช้บริการตามข้อกำหนดนี้</li><li>"ผู้ใช้แบบไม่ระบุตัวตน" หมายถึง ผู้ที่ใช้โดยไม่ล็อกอิน และ "ผู้ใช้ที่ล็อกอิน" หมายถึง ผู้ที่ล็อกอินหรือเชื่อมบัญชีด้วยบัญชี Google</li><li>"เหตุผล" หมายถึง ข้อความที่ผู้ใช้ป้อนในบริการ และ "คำตอบจาก AI" หมายถึง ผลลัพธ์ที่ปัญญาประดิษฐ์สร้างจากเหตุผลนั้น</li><li>"ตำแหน่ง" และ "จำนวนวันที่เข้าร่วม" หมายถึง ความคืบหน้าที่สะสมตามธีมจากการใช้บริการ และไม่มีมูลค่าทางทรัพย์สิน</li><li>"ตลาด" หมายถึง ประเทศและภาษาที่ผู้ใช้เลือก ทีมผู้อนุมัติ ข้อความ และภาษาของคำตอบอาจแตกต่างกันไปตามตลาด</li></ol>
+<h2>ข้อ 3 (ผลของข้อกำหนดและการเปลี่ยนแปลง)</h2>
+<ol class="clause"><li>ข้อกำหนดนี้เผยแพร่ในแอปหรือหน้าจอที่เชื่อมโยง เพื่อให้ผู้ใช้ตรวจสอบได้ เมื่อผู้ใช้เริ่มใช้บริการ ถือว่ายอมรับข้อกำหนดนี้</li><li>ผู้ให้บริการอาจเปลี่ยนแปลงข้อกำหนดภายในขอบเขตที่ไม่ขัดต่อกฎหมายที่เกี่ยวข้อง เมื่อเปลี่ยนแปลง จะแจ้งวันที่มีผลบังคับใช้และเนื้อหาที่เปลี่ยนในแอปหรือหน้าประกาศก่อนวันมีผล 7 วัน (30 วันสำหรับการเปลี่ยนแปลงที่ไม่เป็นคุณหรือสำคัญ)</li><li>หากผู้ใช้ไม่ยอมรับข้อกำหนดที่เปลี่ยนแปลง ผู้ใช้อาจหยุดใช้บริการและลบบัญชีได้ หากใช้บริการต่อหลังวันมีผล ถือว่ายอมรับข้อกำหนดที่เปลี่ยนแปลงแล้ว</li></ol>
+<h2>ข้อ 4 (การใช้บริการและบัญชี)</h2>
+<ol class="clause"><li>ผู้ใช้อาจเริ่มโดยไม่ล็อกอิน (แบบไม่ระบุตัวตน) หรือล็อกอินด้วยบัญชี Google เพื่อใช้บริการ</li><li>ประวัติของผู้ใช้แบบไม่ระบุตัวตนผูกกับบัญชีแบบไม่ระบุตัวตนของเครื่องนั้นเท่านั้น หากลบแอป ล้างข้อมูล หรือเปลี่ยนเครื่อง จะกู้ประวัติไม่ได้ หากต้องการเก็บประวัติ ให้เชื่อมบัญชี Google</li><li>หากจะเชื่อมบัญชีแบบไม่ระบุตัวตนกับบัญชี Google ที่มีประวัติอยู่แล้ว ประวัติทั้งสองฝั่งจะไม่ถูกรวมกัน และผู้ใช้ต้องเลือกว่าจะใช้ฝั่งใด</li><li>ผู้ใช้ต้องดูแลบัญชีของตนเอง และห้ามใช้บัญชีของผู้อื่น</li><li>บริการนี้ใช้ได้สำหรับผู้ที่มีอายุ 14 ปีขึ้นไป</li></ol>
+<h2>ข้อ 5 (เนื้อหาของบริการ)</h2>
+<ol class="clause"><li>ผู้ให้บริการมีฟังก์ชันดังนี้: เลือกธีมและผู้อนุมัติ เขียนเหตุผลและดูคำตอบจาก AI ดูประวัติ ปลดล็อกตำแหน่งและผู้อนุมัติตามธีม บันทึกและแชร์รูปผลลัพธ์</li><li>หน้าจอของบริการมีการแสดงโฆษณา</li><li>ผู้ให้บริการอาจเปลี่ยนเนื้อหา ธีม ผู้อนุมัติ เกณฑ์ตำแหน่ง และรูปแบบหน้าจอตามความจำเป็นด้านการดำเนินงานและเทคนิค และจะแจ้งล่วงหน้าหากเป็นการเปลี่ยนแปลงสำคัญที่ไม่เป็นคุณต่อผู้ใช้</li></ol>
+<h2>ข้อ 6 (จำนวนครั้งที่ใช้ได้และโฆษณา)</h2>
+<ol class="clause"><li>บริการให้ใช้ฟรี แต่มีข้อจำกัดเรื่องจำนวนครั้งที่ใช้ได้ฟรีต่อวัน ผู้ใช้ไม่ระบุตัวตนใช้ฟรีได้วันละ 1 ครั้ง ผู้ใช้ที่ล็อกอินใช้ฟรีได้วันละ 3 ครั้ง</li><li>เมื่อใช้สิทธิ์ฟรีหมดแล้ว หากผู้ใช้ดูโฆษณาแบบมีรางวัลจนจบ จะใช้ได้เพิ่มอีก2 ครั้งต่อโฆษณา 1 ครั้ง หากปิดโฆษณากลางคันจะไม่ได้สิทธิ์เพิ่ม การใช้ผ่านการดูโฆษณาไม่มีขีดจำกัดต่อวัน แต่หากสงสัยว่าใช้ในทางที่ไม่เหมาะสม อาจจำกัดการใช้งาน</li><li>จำนวนครั้งที่ใช้ได้จะรีเซ็ตทุกวันเวลา 04:00 น. ตามเวลาท้องถิ่นของประเทศที่ผู้ใช้เลือก</li><li>จำนวนครั้งฟรีและเงื่อนไขโฆษณาอาจเปลี่ยนไปตามสถานการณ์การดำเนินงาน และจะแจ้งในแอปเมื่อมีการเปลี่ยน</li><li>โฆษณาจัดทำโดยบุคคลที่สาม เช่น Google AdMob ผู้ให้บริการไม่รับผิดชอบต่อเนื้อหาของโฆษณาและธุรกรรมกับผู้ลงโฆษณา</li><li>บริการนี้ไม่มีฟังก์ชันชำระเงิน และผู้ให้บริการไม่เรียกเก็บค่าใช้จ่ายจากผู้ใช้</li></ol>
+<h2>ข้อ 7 (ข้อควรทราบเกี่ยวกับคำตอบจาก AI)</h2>
+<div class="box"><ol class="clause" style="margin:0"><li>คำตอบจาก AI เป็น<strong>เนื้อหาเพื่อความบันเทิง</strong>ที่ปัญญาประดิษฐ์สร้างโดยอัตโนมัติ ผู้อนุมัติที่ปรากฏ (ผู้จัดการ แม่ ครู จ่า ฯลฯ) เป็นตัวละครสมมุติ ไม่เกี่ยวข้องกับบุคคลหรือองค์กรจริง</li><li>คำตอบจาก AI <strong>ไม่ใช่คำแนะนำเฉพาะทาง</strong>ด้านการแพทย์ สุขภาพ จิตวิทยา กฎหมาย การเงิน หรือการวางแผนชีวิต และอาจมีเนื้อหาที่ไม่ตรงข้อเท็จจริงหรือไม่เหมาะสม ผู้ใช้ต้องไม่ใช้คำตอบจาก AI เป็นฐานในการตัดสินใจเรื่องสำคัญ</li><li>หากไม่สบายหรือเกิดเหตุฉุกเฉิน ไม่ว่าบริการจะตอบอย่างไร ให้ขอความช่วยเหลือจากสถานพยาบาลหรือหน่วยงานผู้เชี่ยวชาญ</li><li>ผู้ให้บริการใช้ตัวกรองและข้อความที่กำหนดไว้เพื่อลดคำตอบที่ไม่เหมาะสม และสำหรับข้อความที่ตรวจพบสัญญาณอันตราย อาจไม่ตอบ แต่แนะนำให้ติดต่อศูนย์ให้คำปรึกษาหรือสถานพยาบาลแทน</li><li>ผู้ใช้สามารถแจ้งคำตอบที่ไม่เหมาะสมได้ด้วยปุ่ม "รายงาน" ในหน้าผลลัพธ์</li></ol></div>
+<h2>ข้อ 8 (หน้าที่ของผู้ใช้)</h2>
+<p>ในการใช้บริการ ผู้ใช้ต้องไม่กระทำการดังต่อไปนี้</p>
+<ol class="clause"><li>เขียนข้อมูลส่วนบุคคลของตนเองหรือผู้อื่น (ชื่อ ข้อมูลติดต่อ ที่อยู่ เลขบัตรประจำตัว ฯลฯ) หรือข้อมูลอ่อนไหวในช่องกรอกเหตุผล</li><li>ป้อนเนื้อหาที่หมิ่นประมาท ดูหมิ่นผู้อื่น ละเมิดสิทธิ์ หรือผิดกฎหมาย ลามกอนาจาร หรือรุนแรง</li><li>หลีกเลี่ยงขีดจำกัดจำนวนครั้งที่ใช้ได้หรือเงื่อนไขการดูโฆษณาที่บริการกำหนด หรือเรียกใช้บริการด้วยวิธีอัตโนมัติ</li><li>ดัดแปลงแอปหรือเข้าถึงเซิร์ฟเวอร์ในทางที่ผิดปกติ อันเป็นการขัดขวางการดำเนินงานของบริการ</li><li>จงใจชักนำให้ AI สร้างเนื้อหาที่ไม่เหมาะสม</li><li>นำคำตอบจาก AI หรือรูปที่แชร์ไปหลอกลวงว่าเป็นเอกสารราชการขององค์กรจริงหรือคำพูดของบุคคลจริง</li><li>การกระทำอื่นที่ฝ่าฝืนกฎหมายหรือข้อกำหนดนี้</li></ol>
+<h2>ข้อ 9 (สิทธิ์ในเนื้อหาและการใช้)</h2>
+<ol class="clause"><li>สิทธิ์ในรูปแบบหน้าจอ การออกแบบ ตัวละคร ข้อความ และโปรแกรมของบริการเป็นของผู้ให้บริการ</li><li>สิทธิ์ในเหตุผลที่ผู้ใช้ป้อนเป็นของผู้ใช้ ผู้ให้บริการใช้เหตุผลนั้นเฉพาะในขอบเขตที่จำเป็นต่อการให้บริการ (สร้างคำตอบจาก AI แสดงประวัติ) และการดำเนินงานอย่างปลอดภัย</li><li>ผู้ใช้อาจบันทึกและแชร์คำตอบจาก AI และรูปที่แชร์ที่ได้รับ เพื่อวัตถุประสงค์ส่วนตัวและไม่ใช่เชิงพาณิชย์ เมื่อแชร์ โปรดทราบว่าเหตุผลและคำตอบในรูปจะเปิดเผยแก่ผู้อื่น</li><li>ผู้ใช้ที่แชร์เนื้อหารับผิดชอบต่อปัญหาที่เกิดจากเนื้อหาที่แชร์</li></ol>
+<h2>ข้อ 10 (การจำกัดการใช้งาน)</h2>
+<ol class="clause"><li>หากผู้ใช้ฝ่าฝืนข้อ 8 หรือขัดขวางการดำเนินงานตามปกติของบริการ ผู้ให้บริการอาจจำกัดการใช้งาน หรือระงับ/ลบบัญชี โดยแจ้งล่วงหน้า (แจ้งภายหลังในกรณีเร่งด่วน)</li><li>ผู้ใช้ที่คัดค้านการจำกัดการใช้งานอาจยื่นคัดค้านทางอีเมลติดต่อ ผู้ให้บริการจะพิจารณาและแจ้งผล</li></ol>
+<h2>ข้อ 11 (การลบบัญชีและการยุติการใช้)</h2>
+<ol class="clause"><li>ผู้ใช้อาจลบบัญชีได้ทุกเมื่อที่ <strong>บัญชีของฉัน &gt; ลบบัญชี</strong> ในแอป</li><li>เมื่อลบบัญชี ข้อมูลที่เก็บในเซิร์ฟเวอร์ เช่น ประวัติ ตำแหน่ง และจำนวนวันที่เข้าร่วม จะถูกลบทั้งหมดและกู้คืนไม่ได้</li><li>เมื่อออกจากระบบ การตั้งค่าที่เก็บในเครื่องจะถูกล้าง และหากผู้ใช้แบบไม่ระบุตัวตนออกจากระบบหรือลบแอป จะโหลดประวัติกลับมาไม่ได้</li></ol>
+<h2>ข้อ 12 (การเปลี่ยนแปลงและการระงับบริการ)</h2>
+<ol class="clause"><li>ผู้ให้บริการอาจระงับชั่วคราวหรือเปลี่ยนแปลงบริการทั้งหมดหรือบางส่วน เมื่อมีการตรวจสอบระบบ เหตุขัดข้อง การเปลี่ยนแปลงหรือหยุดให้บริการของบริการภายนอก (คลาวด์ โมเดลปัญญาประดิษฐ์ โฆษณา ฯลฯ) หรือเหตุผลอื่นด้านการดำเนินงาน</li><li>หากผู้ให้บริการยุติบริการ จะแจ้งในแอปล่วงหน้า30 วันก่อนวันยุติ</li><li>เนื่องจากบริการให้ใช้ฟรี เว้นแต่กฎหมายกำหนดไว้เป็นอย่างอื่น ผู้ให้บริการจะไม่ชดเชยผู้ใช้เป็นการเฉพาะสำหรับการเปลี่ยนแปลง ระงับ หรือยุติบริการ</li></ol>
+<h2>ข้อ 13 (ข้อจำกัดความรับผิด)</h2>
+<ol class="clause"><li>ผู้ให้บริการไม่รับผิดหากไม่สามารถให้บริการได้เนื่องจากเหตุที่ผู้ให้บริการควบคุมไม่ได้ เช่น ภัยธรรมชาติ ระบบสื่อสารขัดข้อง หรือบริการภายนอกขัดข้อง</li><li>ผู้ให้บริการไม่รับรองความถูกต้อง ความครบถ้วน และความเหมาะสมของคำตอบจาก AI และไม่รับผิดต่อผลของการกระทำที่ผู้ใช้ทำเพราะเชื่อคำตอบจาก AI</li><li>ผู้ให้บริการไม่รับผิดต่อการสูญหายของประวัติอันเกิดจากความผิดพลาดของผู้ใช้ (ดูแลบัญชีไม่ดี ทำเครื่องหาย ลบแอป ฯลฯ)</li><li>ข้อกำหนดข้างต้นไม่ใช้กับความเสียหายที่เกิดจากเจตนาหรือความประมาทเลินเล่ออย่างร้ายแรงของผู้ให้บริการ และไม่จำกัดสิทธิ์ของผู้บริโภคที่กฎหมายที่เกี่ยวข้องกำหนดไว้</li></ol>
+<h2>ข้อ 14 (การคุ้มครองข้อมูลส่วนบุคคล)</h2>
+<p>ผู้ให้บริการจัดการข้อมูลส่วนบุคคลของผู้ใช้ตามกฎหมายที่เกี่ยวข้องและ<a href="privacy.html">นโยบายความเป็นส่วนตัว</a></p>
+<h2>ข้อ 15 (กฎหมายที่ใช้บังคับและการระงับข้อพิพาท)</h2>
+<ol class="clause"><li>ข้อกำหนดนี้ตีความตามกฎหมายสาธารณรัฐเกาหลี ฉบับแปลภาษาต่างประเทศมีไว้เพื่อช่วยให้ผู้ใช้เข้าใจ หากการตีความต่างกัน ให้ถือฉบับภาษาเกาหลีเป็นหลัก</li><li>หากเกิดข้อพิพาทเกี่ยวกับการใช้บริการ ผู้ให้บริการและผู้ใช้จะพยายามเจรจาแก้ไขโดยสุจริต</li><li>ข้อพิพาทที่เจรจาไม่ได้ ให้ฟ้องต่อศาลที่มีเขตอำนาจตามที่อยู่ของผู้ให้บริการ ทั้งนี้ ไม่จำกัดสิทธิ์ของผู้ใช้ตามกฎหมายคุ้มครองผู้บริโภคของประเทศที่ผู้ใช้อาศัยอยู่</li></ol>
+<h2>ติดต่อ</h2>
+<div class="box">ผู้ให้บริการ: Haram &amp; Harang<br>อีเมล: black924.menew@gmail.com</div>
+<h2>บทเฉพาะกาล</h2>
+<p>ข้อกำหนดนี้มีผลบังคับใช้ตั้งแต่วันที่ 10 ตุลาคม 2569 (2026-10-10)</p>
+<footer>© 2026 Haram &amp; Harang</footer></section>
+<section class="panel" id="terms-vi" lang="vi" role="tabpanel" hidden>
+<h1>Điều khoản sử dụng</h1>
+<p class="sub">Ngày có hiệu lực: 10/10/2026</p>
+<h2>Điều 1 (Mục đích)</h2>
+<p>Điều khoản này quy định điều kiện và thủ tục sử dụng ứng dụng di động Hôm nay cũng bị từ chối (sau đây gọi là "Dịch vụ") do Haram &amp; Harang (sau đây gọi là "Nhà cung cấp") cung cấp, cùng quyền và nghĩa vụ của Nhà cung cấp và người dùng.</p>
+<h2>Điều 2 (Giải thích từ ngữ)</h2>
+<ol class="clause"><li>"Dịch vụ" là dịch vụ giải trí trong đó trí tuệ nhân tạo đóng vai người duyệt hư cấu và tạo câu trả lời (ý kiến phê duyệt, con dấu, việc cần làm tiếp, v.v.) cho lý do (lời viện cớ hoặc đề nghị xin phép) mà người dùng viết.</li><li>"Người dùng" là người sử dụng Dịch vụ theo Điều khoản này.</li><li>"Người dùng ẩn danh" là người dùng không đăng nhập, "người dùng đã đăng nhập" là người đăng nhập hoặc liên kết bằng tài khoản Google.</li><li>"Lý do" là câu chữ người dùng nhập vào Dịch vụ, "Câu trả lời của AI" là kết quả do trí tuệ nhân tạo tạo ra cho lý do đó.</li><li>"Cấp bậc" và "số ngày có mặt" là tiến độ tích lũy theo từng chủ đề khi sử dụng Dịch vụ và không có giá trị tài sản.</li><li>"Thị trường" là quốc gia và ngôn ngữ mà người dùng chọn. Đội hình người duyệt, nội dung và ngôn ngữ trả lời có thể khác nhau theo thị trường.</li></ol>
+<h2>Điều 3 (Hiệu lực và thay đổi của Điều khoản)</h2>
+<ol class="clause"><li>Điều khoản này được đăng trong ứng dụng hoặc màn hình liên kết để người dùng có thể xem. Khi bắt đầu sử dụng Dịch vụ, người dùng được xem là đã đồng ý với Điều khoản này.</li><li>Nhà cung cấp có thể thay đổi Điều khoản trong phạm vi không trái pháp luật liên quan. Khi thay đổi, ngày có hiệu lực và nội dung thay đổi sẽ được thông báo trong ứng dụng hoặc màn hình đăng tin trước ngày có hiệu lực 7 ngày (30 ngày với thay đổi bất lợi hoặc quan trọng đối với người dùng).</li><li>Nếu không đồng ý với Điều khoản đã thay đổi, người dùng có thể ngừng sử dụng Dịch vụ và xóa tài khoản. Nếu tiếp tục dùng Dịch vụ sau ngày có hiệu lực, người dùng được xem là đã đồng ý với Điều khoản đã thay đổi.</li></ol>
+<h2>Điều 4 (Sử dụng Dịch vụ và tài khoản)</h2>
+<ol class="clause"><li>Người dùng có thể bắt đầu mà không đăng nhập (ẩn danh) hoặc đăng nhập bằng tài khoản Google để sử dụng Dịch vụ.</li><li>Lịch sử của người dùng ẩn danh chỉ gắn với tài khoản ẩn danh của thiết bị đó. Nếu xóa ứng dụng, xóa dữ liệu hoặc đổi thiết bị, sẽ không lấy lại được lịch sử. Muốn giữ lịch sử, hãy liên kết tài khoản Google.</li><li>Nếu liên kết tài khoản ẩn danh với tài khoản Google đã có lịch sử, hai lịch sử sẽ không được gộp, và người dùng phải chọn dùng bên nào.</li><li>Người dùng phải tự quản lý tài khoản của mình và không được dùng tài khoản của người khác.</li><li>Dịch vụ dành cho người từ đủ 14 tuổi trở lên.</li></ol>
+<h2>Điều 5 (Nội dung Dịch vụ)</h2>
+<ol class="clause"><li>Nhà cung cấp cung cấp các chức năng sau: chọn chủ đề và người duyệt, viết lý do và xem câu trả lời của AI, xem lịch sử, mở khóa cấp bậc và người duyệt theo chủ đề, lưu và chia sẻ ảnh kết quả.</li><li>Màn hình Dịch vụ có hiển thị quảng cáo.</li><li>Nhà cung cấp có thể thay đổi nội dung, chủ đề, người duyệt, tiêu chuẩn cấp bậc và bố cục màn hình theo nhu cầu vận hành và kỹ thuật, và sẽ thông báo trước đối với thay đổi quan trọng bất lợi cho người dùng.</li></ol>
+<h2>Điều 6 (Số lượt sử dụng và quảng cáo)</h2>
+<ol class="clause"><li>Dịch vụ được cung cấp miễn phí, nhưng số lượt dùng miễn phí mỗi ngày có giới hạn. Người dùng ẩn danh được dùng miễn phí 1 lượt/ngày, người dùng đã đăng nhập được dùng miễn phí 3 lượt/ngày.</li><li>Khi đã dùng hết lượt miễn phí, nếu người dùng xem hết quảng cáo có thưởng, mỗi quảng cáo được dùng thêm 2 lượt. Nếu đóng quảng cáo giữa chừng thì không được cộng. Việc sử dụng thông qua xem quảng cáo không giới hạn số lượt mỗi ngày, nhưng nếu nghi ngờ sử dụng không đúng, việc sử dụng có thể bị hạn chế.</li><li>Số lượt sử dụng được đặt lại mỗi ngày vào 4 giờ sáng theo giờ địa phương của quốc gia mà người dùng chọn.</li><li>Số lượt miễn phí và điều kiện quảng cáo có thể thay đổi theo tình hình vận hành, và khi thay đổi sẽ được thông báo trong ứng dụng.</li><li>Quảng cáo do bên thứ ba như Google AdMob cung cấp; Nhà cung cấp không chịu trách nhiệm về nội dung quảng cáo và giao dịch với nhà quảng cáo.</li><li>Dịch vụ không có tính năng thanh toán trả phí, và Nhà cung cấp không thu phí sử dụng của người dùng.</li></ol>
+<h2>Điều 7 (Lưu ý về câu trả lời của AI)</h2>
+<div class="box"><ol class="clause" style="margin:0"><li>Câu trả lời của AI là <strong>nội dung giải trí</strong> do trí tuệ nhân tạo tự động tạo ra. Người duyệt xuất hiện (trưởng phòng, mẹ, thầy cô, tiểu đội trưởng, v.v.) là nhân vật hư cấu, không liên quan đến người hay tổ chức có thật.</li><li>Câu trả lời của AI <strong>không phải lời khuyên chuyên môn</strong> về y tế, sức khỏe, tâm lý, pháp lý, tài chính, định hướng nghề nghiệp, v.v., và có thể có nội dung sai sự thật hoặc không phù hợp. Người dùng không được dựa vào câu trả lời của AI để đưa ra quyết định quan trọng.</li><li>Khi không khỏe hoặc trong tình huống khẩn cấp, bất kể Dịch vụ trả lời thế nào, hãy tìm sự giúp đỡ từ cơ sở y tế hoặc cơ quan chuyên môn.</li><li>Nhà cung cấp dùng bộ lọc và câu chữ cố định để giảm câu trả lời không phù hợp; với nội dung nhập bị phát hiện có dấu hiệu nguy hiểm, có thể không trả lời mà hướng dẫn liên hệ trung tâm tư vấn hoặc cơ sở y tế.</li><li>Người dùng có thể báo câu trả lời không phù hợp bằng chức năng "Báo cáo" trên màn hình kết quả.</li></ol></div>
+<h2>Điều 8 (Nghĩa vụ của người dùng)</h2>
+<p>Khi sử dụng Dịch vụ, người dùng không được thực hiện các hành vi sau.</p>
+<ol class="clause"><li>Ghi thông tin cá nhân của mình hoặc người khác (họ tên, thông tin liên hệ, địa chỉ, số giấy tờ tùy thân, v.v.) hoặc thông tin nhạy cảm vào ô nhập lý do</li><li>Nhập nội dung phỉ báng, xúc phạm người khác, xâm phạm quyền, hoặc nội dung trái pháp luật, khiêu dâm, bạo lực</li><li>Lách giới hạn số lượt sử dụng hoặc điều kiện xem quảng cáo mà Dịch vụ đặt ra, hoặc gọi Dịch vụ bằng phương tiện tự động</li><li>Can thiệp vào ứng dụng hoặc truy cập máy chủ bất thường gây cản trở vận hành Dịch vụ</li><li>Cố ý dẫn dắt AI tạo nội dung không phù hợp</li><li>Dùng câu trả lời của AI hoặc ảnh chia sẻ để giả làm văn bản chính thức của tổ chức có thật hoặc phát ngôn của người có thật</li><li>Các hành vi khác vi phạm pháp luật hoặc Điều khoản này</li></ol>
+<h2>Điều 9 (Quyền đối với nội dung và việc sử dụng)</h2>
+<ol class="clause"><li>Quyền đối với bố cục màn hình, thiết kế, nhân vật, câu chữ và chương trình của Dịch vụ thuộc về Nhà cung cấp.</li><li>Quyền đối với lý do do người dùng nhập thuộc về người dùng. Nhà cung cấp chỉ sử dụng trong phạm vi cần thiết để cung cấp Dịch vụ (tạo câu trả lời của AI, hiển thị lịch sử) và vận hành an toàn.</li><li>Người dùng có thể lưu và chia sẻ câu trả lời của AI và ảnh chia sẻ đã nhận cho mục đích cá nhân, phi thương mại. Khi chia sẻ, hãy lưu ý lý do và câu trả lời trong ảnh sẽ được công khai cho người khác.</li><li>Vấn đề phát sinh từ nội dung do người dùng chia sẻ thuộc trách nhiệm của người dùng đã chia sẻ.</li></ol>
+<h2>Điều 10 (Hạn chế sử dụng)</h2>
+<ol class="clause"><li>Nếu người dùng vi phạm Điều 8 hoặc cản trở vận hành bình thường của Dịch vụ, Nhà cung cấp có thể hạn chế sử dụng hoặc đình chỉ, xóa tài khoản sau khi thông báo trước (thông báo sau trong trường hợp khẩn cấp).</li><li>Người dùng có khiếu nại về việc hạn chế sử dụng có thể gửi khiếu nại qua email liên hệ; Nhà cung cấp sẽ xem xét và thông báo kết quả.</li></ol>
+<h2>Điều 11 (Xóa tài khoản và chấm dứt sử dụng)</h2>
+<ol class="clause"><li>Người dùng có thể xóa tài khoản bất cứ lúc nào tại <strong>Tài khoản của tôi &gt; Xóa tài khoản</strong> trong ứng dụng.</li><li>Khi xóa tài khoản, toàn bộ thông tin lưu trên máy chủ như lịch sử, cấp bậc, số ngày có mặt sẽ bị xóa và không thể khôi phục.</li><li>Khi đăng xuất, các cài đặt lưu trên thiết bị sẽ bị xóa; nếu người dùng ẩn danh đăng xuất hoặc xóa ứng dụng, sẽ không tải lại được lịch sử.</li></ol>
+<h2>Điều 12 (Thay đổi, tạm dừng Dịch vụ)</h2>
+<ol class="clause"><li>Nhà cung cấp có thể tạm dừng hoặc thay đổi toàn bộ hay một phần Dịch vụ khi bảo trì hệ thống, sự cố, thay đổi hoặc ngừng dịch vụ bên ngoài (đám mây, mô hình trí tuệ nhân tạo, quảng cáo, v.v.), hoặc lý do vận hành khác.</li><li>Nếu Nhà cung cấp chấm dứt Dịch vụ, sẽ thông báo trong ứng dụng trước ngày chấm dứt 30 ngày.</li><li>Vì Dịch vụ được cung cấp miễn phí, trừ khi pháp luật có quy định khác, Nhà cung cấp không bồi thường riêng cho người dùng về việc thay đổi, tạm dừng, chấm dứt Dịch vụ.</li></ol>
+<h2>Điều 13 (Giới hạn trách nhiệm)</h2>
+<ol class="clause"><li>Nhà cung cấp không chịu trách nhiệm nếu không thể cung cấp Dịch vụ do những lý do ngoài tầm kiểm soát như thiên tai, sự cố viễn thông, sự cố dịch vụ bên ngoài.</li><li>Nhà cung cấp không đảm bảo tính chính xác, đầy đủ, phù hợp của câu trả lời của AI và không chịu trách nhiệm về hậu quả của hành động người dùng thực hiện do tin vào câu trả lời của AI.</li><li>Nhà cung cấp không chịu trách nhiệm về việc mất lịch sử do lỗi của người dùng (sơ suất quản lý tài khoản, mất thiết bị, xóa ứng dụng, v.v.).</li><li>Các quy định trên không áp dụng cho thiệt hại do cố ý hoặc sơ suất nghiêm trọng của Nhà cung cấp, và không hạn chế quyền của người tiêu dùng theo pháp luật liên quan.</li></ol>
+<h2>Điều 14 (Bảo vệ thông tin cá nhân)</h2>
+<p>Nhà cung cấp xử lý thông tin cá nhân của người dùng theo pháp luật liên quan và <a href="privacy.html">Chính sách quyền riêng tư</a>.</p>
+<h2>Điều 15 (Luật áp dụng và giải quyết tranh chấp)</h2>
+<ol class="clause"><li>Điều khoản này được giải thích theo pháp luật Hàn Quốc. Bản dịch tiếng nước ngoài chỉ nhằm giúp người dùng hiểu; nếu có khác biệt trong cách hiểu thì bản tiếng Hàn được ưu tiên.</li><li>Nếu phát sinh tranh chấp liên quan đến việc sử dụng Dịch vụ, Nhà cung cấp và người dùng sẽ nỗ lực thương lượng giải quyết một cách thiện chí.</li><li>Tranh chấp không thương lượng được sẽ khởi kiện tại tòa án có thẩm quyền đối với địa chỉ của Nhà cung cấp. Tuy nhiên, quyền của người dùng theo pháp luật bảo vệ người tiêu dùng của nước nơi người dùng cư trú không bị hạn chế.</li></ol>
+<h2>Liên hệ</h2>
+<div class="box">Nhà cung cấp: Haram &amp; Harang<br>Email: black924.menew@gmail.com</div>
+<h2>Điều khoản bổ sung</h2>
+<p>Điều khoản này có hiệu lực từ ngày 10/10/2026.</p>
+<footer>© 2026 Haram &amp; Harang</footer></section>
+<section class="panel" id="terms-en" lang="en" role="tabpanel" hidden>
+<h1>Terms of Service</h1>
+<p class="sub">Effective date: 10 October 2026</p>
+<h2>Article 1 (Purpose)</h2>
+<p>These Terms set out the conditions and procedures for using the mobile app Denied Again (the "Service") provided by Haram &amp; Harang (the "Operator"), and the rights and obligations of the Operator and users.</p>
+<h2>Article 2 (Definitions)</h2>
+<ol class="clause"><li>"Service" means the entertainment service in which artificial intelligence plays a fictional approver and creates a reply (remarks, a stamp, a next step, etc.) to the reason (an excuse or a request for permission) that a user writes.</li><li>"User" means a person who uses the Service under these Terms.</li><li>"Anonymous user" means a user who uses the Service without logging in; "logged-in user" means a user who logs in or links an account with a Google account.</li><li>"Reason" means the text a user enters into the Service; "AI reply" means the result the AI creates for that reason.</li><li>"Rank" and "days attended" mean the progress that builds up per theme as the Service is used, and have no monetary value.</li><li>"Market" means the country and language a user selects. The lineup of approvers, wording and reply language may differ by market.</li></ol>
+<h2>Article 3 (Effect and Changes of the Terms)</h2>
+<ol class="clause"><li>These Terms are posted in the app or on a linked screen so that users can read them. By starting to use the Service, the user is deemed to have agreed to these Terms.</li><li>The Operator may change these Terms within the limits of applicable law. When doing so, the Operator will announce the effective date and the changes in the app or on the posting screen at least 7 days before the effective date (30 days for changes that are unfavourable to users or significant).</li><li>A user who does not agree to the changed Terms may stop using the Service and delete the account. Continuing to use the Service after the effective date means the user agrees to the changed Terms.</li></ol>
+<h2>Article 4 (Use of the Service and Accounts)</h2>
+<ol class="clause"><li>A user may start without logging in (anonymously) or log in with a Google account to use the Service.</li><li>An anonymous user's records are tied only to the anonymous account on that device. If the app is deleted, data is cleared or the device is changed, the records cannot be recovered. Link a Google account to keep your records.</li><li>If you link an anonymous account to a Google account that already has records, the two sets of records are not merged and the user must choose which one to use.</li><li>Users must manage their own accounts and must not use another person's account.</li><li>The Service may be used by people who are 14 years of age or older.</li></ol>
+<h2>Article 5 (Content of the Service)</h2>
+<ol class="clause"><li>The Operator provides the following features: choosing a theme and approver, writing a reason and viewing the AI reply, viewing history, unlocking ranks and approvers per theme, and saving and sharing result images.</li><li>Advertisements are shown on the Service's screens.</li><li>The Operator may change the content, themes, approvers, rank criteria and screen layout for operational or technical reasons, and will give advance notice of significant changes that are unfavourable to users.</li></ol>
+<h2>Article 6 (Number of Uses and Advertising)</h2>
+<ol class="clause"><li>The Service is provided free of charge, but the number of free uses per day is limited. Anonymous users can use it free 1 time per day, and logged-in users free 3 times per day.</li><li>After the free uses are used up, a user who watches a rewarded ad to the end can use the Service 2 more times per ad. If the ad is closed halfway, no extra uses are added. There is no daily limit on uses gained by watching ads, but use may be restricted if misuse is suspected.</li><li>The number of uses resets every day at 4:00 a.m. local time of the country the user has selected.</li><li>The number of free uses and the ad conditions may change depending on operating conditions, and any change will be announced in the app.</li><li>Ads are provided by third parties such as Google AdMob, and the Operator is not responsible for the content of ads or transactions with advertisers.</li><li>The Service has no paid features, and the Operator does not charge users any fee.</li></ol>
+<h2>Article 7 (About AI Replies)</h2>
+<div class="box"><ol class="clause" style="margin:0"><li>AI replies are <strong>entertainment content</strong> generated automatically by artificial intelligence. The approvers who appear (managers, mums, teachers, sergeants, etc.) are fictional characters and have no connection with real people or organisations.</li><li>AI replies are <strong>not professional advice</strong> on medical, health, psychological, legal, financial or career matters, and may contain content that is untrue or inappropriate. Users must not base important decisions on AI replies.</li><li>If you are unwell or in an emergency, seek help from a medical facility or a professional organisation regardless of what the Service replies.</li><li>The Operator uses filters and fixed wording to reduce inappropriate replies, and for input in which danger signals are detected it may show guidance to contact a counselling centre or medical professional instead of a reply.</li><li>Users can report an inappropriate reply with the "Report" function on the result screen.</li></ol></div>
+<h2>Article 8 (Obligations of Users)</h2>
+<p>When using the Service, users must not do any of the following.</p>
+<ol class="clause"><li>Write personal information of themselves or others (name, contact details, address, ID numbers, etc.) or sensitive information in the reason field</li><li>Enter content that defames or insults others or infringes rights, or content that is illegal, obscene or violent</li><li>Bypass the usage limits or ad-watching conditions set by the Service, or call the Service by automated means</li><li>Tamper with the app or access the server abnormally in a way that interferes with the operation of the Service</li><li>Deliberately lead the AI to create inappropriate content</li><li>Use AI replies or shared images to pass them off as official documents of a real organisation or statements of a real person</li><li>Any other act that violates laws or these Terms</li></ol>
+<h2>Article 9 (Rights in Content and Its Use)</h2>
+<ol class="clause"><li>Rights in the screen layout, design, characters, wording and programs of the Service belong to the Operator.</li><li>Rights in the reasons a user enters belong to the user. The Operator uses them only to the extent necessary to provide the Service (generating AI replies, showing history) and to operate it safely.</li><li>Users may save and share the AI replies and share images they receive for personal, non-commercial purposes. Note that when you share, the reason and reply in the image are made visible to others.</li><li>The user who shares content is responsible for any problems arising from the shared content.</li></ol>
+<h2>Article 10 (Restriction of Use)</h2>
+<ol class="clause"><li>If a user violates Article 8 or interferes with the normal operation of the Service, the Operator may, after prior notice (or notice afterwards in urgent cases), restrict use or suspend or delete the account.</li><li>A user who objects to a restriction may raise the objection through the contact email, and the Operator will review it and inform the user of the result.</li></ol>
+<h2>Article 11 (Account Deletion and End of Use)</h2>
+<ol class="clause"><li>Users can delete their account at any time from <strong>My account &gt; Delete account</strong> in the app.</li><li>When an account is deleted, all information stored on the server, such as records, ranks and days attended, is deleted and cannot be restored.</li><li>Logging out clears the settings stored on the device, and if an anonymous user logs out or deletes the app, the records cannot be loaded again.</li></ol>
+<h2>Article 12 (Changes to and Suspension of the Service)</h2>
+<ol class="clause"><li>The Operator may temporarily suspend or change all or part of the Service for system maintenance, failures, changes to or suspension of external services (cloud, AI models, advertising, etc.), or other operational reasons.</li><li>If the Operator ends the Service, it will announce this in the app 30 days before the end date.</li><li>Because the Service is provided free of charge, unless the law provides otherwise, the Operator does not separately compensate users for changes to, suspension or termination of the Service.</li></ol>
+<h2>Article 13 (Limitation of Liability)</h2>
+<ol class="clause"><li>The Operator is not liable if it cannot provide the Service due to reasons beyond its control, such as natural disasters, communication failures or failures of external services.</li><li>The Operator does not guarantee the accuracy, completeness or suitability of AI replies and is not liable for the consequences of actions a user takes in reliance on them.</li><li>The Operator is not liable for loss of records caused by the user's own fault (poor account management, loss of the device, deleting the app, etc.).</li><li>The above provisions do not apply to damage caused by the Operator's wilful misconduct or gross negligence, and do not limit consumer rights provided by applicable law.</li></ol>
+<h2>Article 14 (Protection of Personal Information)</h2>
+<p>The Operator handles users' personal information in accordance with applicable law and the <a href="privacy.html">Privacy Policy</a>.</p>
+<h2>Article 15 (Governing Law and Dispute Resolution)</h2>
+<ol class="clause"><li>These Terms are interpreted under the laws of the Republic of Korea. Translations are provided to help users understand, and if there is any difference in interpretation, the Korean text prevails.</li><li>If a dispute arises in connection with use of the Service, the Operator and the user will make an effort to resolve it through good-faith consultation.</li><li>Lawsuits over disputes that cannot be resolved by consultation shall be filed with the court with jurisdiction over the Operator's address. However, the user's rights under the consumer protection laws of the country where the user lives are not limited.</li></ol>
+<h2>Contact</h2>
+<div class="box">Operator: Haram &amp; Harang<br>Email: black924.menew@gmail.com</div>
+<h2>Supplementary Provisions</h2>
+<p>These Terms take effect on 10 October 2026.</p>
+<footer>© 2026 Haram &amp; Harang</footer></section>
+<section class="panel" id="terms-zh-sg" lang="zh-Hans" role="tabpanel" hidden>
+<h1>使用条款</h1>
+<p class="sub">生效日：2026 年 10 月 10 日</p>
+<h2>第1条(目的)</h2>
+<p>本条款订定Haram &amp; Harang(以下称「营运者」)所提供之行动 App 今天也被驳回(以下称「本服务」)的使用条件与进程，以及营运者与用户的权利与义务。</p>
+<h2>第2条(用语定义)</h2>
+<ol class="clause"><li>「本服务」指由人工智能扮演虚构的签核人，针对用户所写的事由(借口或请求许可)产生回复(签核意见、印章、下一步等)并显示的娱乐服务。</li><li>「用户」指依本条款使用本服务的人。</li><li>「匿名用户」指不登录而使用的人，「登录用户」指以 Google 帐号登录或链接帐号的人。</li><li>「事由」指用户输入本服务的文本，「AI 回复」指人工智能针对该事由所产生的结果。</li><li>「职级」与「出席天数」指随使用本服务而依主题累积的进度，不具财产价值。</li><li>「市场」指用户所选择的国家与语言。签核人的阵容、文案与回复语言可能依市场而不同。</li></ol>
+<h2>第3条(条款的效力与变更)</h2>
+<ol class="clause"><li>本条款公布于 App 内或所链接的画面，供用户查阅。用户开始使用本服务，即视为同意本条款。</li><li>营运者得在不违反相关法令的范围内变更本条款。变更时，将于生效日前 7 日(对用户不利或重大的变更为 30 日前)起，于 App 或公布画面告知生效日与变更内容。</li><li>用户不同意变更后的条款时，得停止使用本服务并删除帐号。生效日后继续使用本服务，视为同意变更后的条款。</li></ol>
+<h2>第4条(服务使用与帐号)</h2>
+<ol class="clause"><li>用户得不登录(匿名)开始，或以 Google 帐号登录使用本服务。</li><li>匿名用户的纪录仅与该设备的匿名帐号链接。删除 App、清除数据或更换设备后，将无法找回纪录。欲保留纪录，请链接 Google 帐号。</li><li>若要将匿名帐号与已有纪录的 Google 帐号链接，两边的纪录不会合并，用户须选择使用哪一边。</li><li>用户应自行管理帐号，不得使用他人的帐号。</li><li>本服务得由年满 14 岁的人使用。</li></ol>
+<h2>第5条(服务内容)</h2>
+<ol class="clause"><li>营运者提供下列功能：选择主题与签核人、撰写事由与查看 AI 回复、查看纪录、依主题解锁职级与签核人、保存与分享结果图片。</li><li>本服务画面会显示广告。</li><li>营运者得因营运或技术上的需要，变更本服务的内容、主题、签核人、职级标准与画面配置；对用户不利的重大变更将事先告知。</li></ol>
+<h2>第6条(使用次数与广告)</h2>
+<ol class="clause"><li>本服务免费提供，每天可免费使用的次数有所限制。匿名用户每天可免费使用 1 次，登录用户每天可免费使用 3 次。</li><li>免费次数用完后，用户观看完整则奖励广告，每看一次可额外使用2 次。中途关闭广告则不会增加。通过观看广告的使用没有每日次数上限，但若怀疑有不当使用，可能会限制使用。</li><li>使用次数于每天用户所选择国家的当地时间凌晨 4 点重置。</li><li>免费次数与广告条件可能依营运状况变更，变更时将于 App 内告知。</li><li>广告由 Google AdMob 等第三方提供，营运者对广告内容及与广告主之间的交易不负责任。</li><li>本服务没有付费功能，营运者不向用户收取任何费用。</li></ol>
+<h2>第7条(AI 回复说明)</h2>
+<div class="box"><ol class="clause" style="margin:0"><li>AI 回复是人工智能自动产生的<strong>娱乐内容</strong>。出现的签核人(经理、妈妈、老师、班长等)皆为虚构人物，与真实人物或机构无关。</li><li>AI 回复<strong>并非</strong>医疗、健康、心理、法律、财务、生涯规划等方面的<strong>专业建议</strong>，可能包含与事实不符或不适当的内容。用户不得以 AI 回复作为重要决定的依据。</li><li>身体不适或遇紧急状况时，无论本服务的回复为何，请寻求医疗机构或专业机构的协助。</li><li>营运者使用过滤器与固定文案来减少不适当的回复；对于侦测到危险信号的输入，可能不提供回复，改为提示联系咨商中心或医疗机构。</li><li>用户得通过结果画面的「检举」功能通报不适当的回复。</li></ol></div>
+<h2>第8条(用户的义务)</h2>
+<p>用户使用本服务时，不得有下列行为。</p>
+<ol class="clause"><li>在事由输入栏填写自己或他人的个人数据(姓名、联系方式、地址、身分证字号等)或敏感信息</li><li>输入毁谤、侮辱他人或侵害权利的内容，或违法、猥亵、暴力的内容</li><li>规避本服务所订的使用次数限制或广告观看条件，或以自动化方式调用本服务</li><li>窜改 App 或不当访问服务器等妨碍本服务营运的行为</li><li>故意诱导 AI 产生不适当的内容</li><li>将 AI 回复或分享图片伪称为真实机构的公文或真实人物的发言来使用</li><li>其他违反法令或本条款的行为</li></ol>
+<h2>第9条(内容的权利与使用)</h2>
+<ol class="clause"><li>本服务的画面配置、设计、角色、文案与程序的权利归营运者所有。</li><li>用户所输入事由的权利归用户所有。营运者仅在提供服务(产生 AI 回复、显示纪录)与安全营运所必要的范围内使用。</li><li>用户得为个人、非商业目的保存及分享所收到的 AI 回复与分享图片。分享时请留意，图片中的事由与回复将对他人公开。</li><li>因用户分享的内容所生之问题，由分享的用户负责。</li></ol>
+<h2>第10条(使用限制)</h2>
+<ol class="clause"><li>用户违反第8条或妨碍本服务正常营运时，营运者得事先告知(紧急时事后告知)后，限制使用或停权、删除帐号。</li><li>对使用限制有异议的用户，得以联系信箱提出异议，营运者将审查并告知结果。</li></ol>
+<h2>第11条(删除帐号与终止使用)</h2>
+<ol class="clause"><li>用户得随时于 App 的<strong>我的帐号 &gt; 删除帐号</strong>删除帐号。</li><li>删除帐号后，纪录、职级、出席天数等保存在服务器上的信息将全部删除，且无法复原。</li><li>注销后，保存在设备上的设置会被清除；匿名用户注销或删除 App 后，无法再加载纪录。</li></ol>
+<h2>第12条(服务的变更与中断)</h2>
+<ol class="clause"><li>营运者因系统维护、故障、外部服务(云端、人工智能模型、广告等)的变更或中断，或其他营运上的理由，得暂时中断或变更本服务的全部或一部分。</li><li>营运者终止本服务时，将于终止日30 日前于 App 内告知。</li><li>本服务为免费提供，除法令另有规定外，营运者对于服务的变更、中断、终止不另行补偿用户。</li></ol>
+<h2>第13条(责任限制)</h2>
+<ol class="clause"><li>因天灾、通信故障、外部服务故障等营运者无法控制的事由而无法提供本服务时，营运者不负责任。</li><li>营运者不保证 AI 回复的正确性、完整性与适用性，对用户因相信 AI 回复而采取的行动结果不负责任。</li><li>因用户的过失(帐号管理疏失、遗失设备、删除 App 等)所致的纪录遗失，营运者不负责任。</li><li>上述规定不适用于因营运者故意或重大过失所致之损害，亦不限制相关法令所定消费者的权利。</li></ol>
+<h2>第14条(个人数据保护)</h2>
+<p>营运者依相关法令及<a href="privacy.html">隐私政策</a>处理用户的个人数据。</p>
+<h2>第15条(准据法与争议解决)</h2>
+<ol class="clause"><li>本条款依大韩民国法律解释。外语版本仅为协助用户理解，解释上有差异时，以韩文原文为准。</li><li>因使用本服务发生争议时，营运者与用户应秉持诚意协商解决。</li><li>协商不成的争议诉讼，向营运者住所地的管辖法院提起。但不限制用户居住国消费者保护法令所定用户的权利。</li></ol>
+<h2>联系方式</h2>
+<div class="box">营运者：Haram &amp; Harang<br>电子邮件：black924.menew@gmail.com</div>
+<h2>附则</h2>
+<p>本条款自2026 年 10 月 10 日起生效。</p>
+<footer>© 2026 Haram &amp; Harang</footer></section>
+<section class="panel" id="terms-ms" lang="ms" role="tabpanel" hidden>
+<h1>Terma Perkhidmatan</h1>
+<p class="sub">Tarikh berkuat kuasa: 10 Oktober 2026</p>
+<h2>Perkara 1 (Tujuan)</h2>
+<p>Terma ini menetapkan syarat dan prosedur penggunaan aplikasi mudah alih Hari Ini Pun Ditolak (selepas ini "Perkhidmatan") yang disediakan oleh Haram &amp; Harang (selepas ini "Pengendali"), serta hak dan kewajipan Pengendali dan pengguna.</p>
+<h2>Perkara 2 (Takrif)</h2>
+<ol class="clause"><li>"Perkhidmatan" bermaksud perkhidmatan hiburan yang mana kecerdasan buatan memainkan peranan pelulus rekaan dan menghasilkan jawapan (ulasan kelulusan, cop, langkah seterusnya, dsb.) kepada sebab (alasan atau permintaan kebenaran) yang ditulis oleh pengguna.</li><li>"Pengguna" bermaksud orang yang menggunakan Perkhidmatan menurut Terma ini.</li><li>"Pengguna tanpa nama" bermaksud pengguna yang menggunakan Perkhidmatan tanpa log masuk; "pengguna log masuk" bermaksud pengguna yang log masuk atau memautkan akaun dengan akaun Google.</li><li>"Sebab" bermaksud teks yang dimasukkan oleh pengguna ke dalam Perkhidmatan; "jawapan AI" bermaksud hasil yang dihasilkan oleh kecerdasan buatan untuk sebab itu.</li><li>"Pangkat" dan "hari kehadiran" bermaksud kemajuan yang terkumpul mengikut tema apabila Perkhidmatan digunakan, dan tidak mempunyai nilai harta.</li><li>"Pasaran" bermaksud negara dan bahasa yang dipilih pengguna. Barisan pelulus, teks dan bahasa jawapan mungkin berbeza mengikut pasaran.</li></ol>
+<h2>Perkara 3 (Kesan dan Perubahan Terma)</h2>
+<ol class="clause"><li>Terma ini disiarkan dalam aplikasi atau skrin yang dipautkan supaya pengguna dapat membacanya. Dengan mula menggunakan Perkhidmatan, pengguna dianggap bersetuju dengan Terma ini.</li><li>Pengendali boleh mengubah Terma dalam batas undang-undang yang berkaitan. Apabila berbuat demikian, tarikh berkuat kuasa dan perubahan akan diumumkan dalam aplikasi atau skrin penyiaran sekurang-kurangnya 7 hari sebelum tarikh berkuat kuasa (30 hari bagi perubahan yang tidak menguntungkan pengguna atau yang penting).</li><li>Pengguna yang tidak bersetuju dengan Terma yang diubah boleh berhenti menggunakan Perkhidmatan dan memadam akaun. Meneruskan penggunaan selepas tarikh berkuat kuasa bermakna pengguna bersetuju dengan Terma yang diubah.</li></ol>
+<h2>Perkara 4 (Penggunaan Perkhidmatan dan Akaun)</h2>
+<ol class="clause"><li>Pengguna boleh bermula tanpa log masuk (tanpa nama) atau log masuk dengan akaun Google untuk menggunakan Perkhidmatan.</li><li>Rekod pengguna tanpa nama hanya dikaitkan dengan akaun tanpa nama pada peranti itu. Jika aplikasi dipadam, data dibersihkan atau peranti ditukar, rekod tidak dapat dipulihkan. Pautkan akaun Google untuk mengekalkan rekod.</li><li>Jika akaun tanpa nama dipautkan kepada akaun Google yang sudah mempunyai rekod, kedua-dua rekod tidak digabungkan dan pengguna perlu memilih yang mana satu untuk digunakan.</li><li>Pengguna mesti menguruskan akaun sendiri dan tidak boleh menggunakan akaun orang lain.</li><li>Perkhidmatan boleh digunakan oleh orang yang berumur 14 tahun ke atas.</li></ol>
+<h2>Perkara 5 (Kandungan Perkhidmatan)</h2>
+<ol class="clause"><li>Pengendali menyediakan ciri berikut: memilih tema dan pelulus, menulis sebab dan melihat jawapan AI, melihat sejarah, membuka pangkat dan pelulus mengikut tema, serta menyimpan dan berkongsi imej keputusan.</li><li>Iklan dipaparkan pada skrin Perkhidmatan.</li><li>Pengendali boleh mengubah kandungan, tema, pelulus, kriteria pangkat dan susun atur skrin atas sebab operasi atau teknikal, dan akan memberi notis awal bagi perubahan penting yang tidak menguntungkan pengguna.</li></ol>
+<h2>Perkara 6 (Bilangan Penggunaan dan Iklan)</h2>
+<ol class="clause"><li>Perkhidmatan disediakan percuma, tetapi bilangan penggunaan percuma sehari adalah terhad. Pengguna tanpa nama boleh menggunakan percuma 1 kali sehari, dan pengguna log masuk percuma 3 kali sehari.</li><li>Selepas penggunaan percuma habis, pengguna yang menonton iklan berganjaran sehingga tamat boleh menggunakan Perkhidmatan 2 kali lagi bagi setiap iklan. Jika iklan ditutup di pertengahan, tiada penggunaan tambahan diberikan. Tiada had harian bagi penggunaan melalui tontonan iklan, tetapi penggunaan boleh dihadkan jika salah guna disyaki.</li><li>Bilangan penggunaan ditetapkan semula setiap hari pada pukul 4:00 pagi waktu tempatan negara yang dipilih pengguna.</li><li>Bilangan penggunaan percuma dan syarat iklan boleh berubah mengikut keadaan operasi, dan perubahan akan diumumkan dalam aplikasi.</li><li>Iklan disediakan oleh pihak ketiga seperti Google AdMob, dan Pengendali tidak bertanggungjawab ke atas kandungan iklan atau urus niaga dengan pengiklan.</li><li>Perkhidmatan ini tidak mempunyai ciri pembayaran berbayar, dan Pengendali tidak mengenakan sebarang bayaran kepada pengguna.</li></ol>
+<h2>Perkara 7 (Mengenai Jawapan AI)</h2>
+<div class="box"><ol class="clause" style="margin:0"><li>Jawapan AI ialah <strong>kandungan hiburan</strong> yang dijana secara automatik oleh kecerdasan buatan. Pelulus yang muncul (pengurus, mak, cikgu, sarjan, dsb.) ialah watak rekaan dan tiada kaitan dengan orang atau organisasi sebenar.</li><li>Jawapan AI <strong>bukan nasihat profesional</strong> tentang perkara perubatan, kesihatan, psikologi, undang-undang, kewangan atau kerjaya, dan mungkin mengandungi kandungan yang tidak benar atau tidak sesuai. Pengguna tidak boleh membuat keputusan penting berdasarkan jawapan AI.</li><li>Jika tidak sihat atau dalam keadaan kecemasan, dapatkan bantuan daripada kemudahan perubatan atau organisasi profesional tanpa mengira apa jawapan Perkhidmatan.</li><li>Pengendali menggunakan penapis dan teks tetap untuk mengurangkan jawapan yang tidak sesuai, dan bagi input yang mengesan isyarat bahaya, panduan untuk menghubungi pusat kaunseling atau pakar perubatan boleh dipaparkan sebagai ganti jawapan.</li><li>Pengguna boleh melaporkan jawapan yang tidak sesuai dengan fungsi "Lapor" pada skrin keputusan.</li></ol></div>
+<h2>Perkara 8 (Kewajipan Pengguna)</h2>
+<p>Semasa menggunakan Perkhidmatan, pengguna tidak boleh melakukan perkara berikut.</p>
+<ol class="clause"><li>Menulis maklumat peribadi diri sendiri atau orang lain (nama, maklumat perhubungan, alamat, nombor pengenalan, dsb.) atau maklumat sensitif dalam ruang sebab</li><li>Memasukkan kandungan yang memfitnah atau menghina orang lain atau melanggar hak, atau kandungan yang menyalahi undang-undang, lucah atau ganas</li><li>Memintas had penggunaan atau syarat menonton iklan yang ditetapkan Perkhidmatan, atau memanggil Perkhidmatan dengan cara automatik</li><li>Mengubah suai aplikasi atau mengakses pelayan secara tidak normal sehingga mengganggu operasi Perkhidmatan</li><li>Dengan sengaja mengarahkan AI menghasilkan kandungan yang tidak sesuai</li><li>Menggunakan jawapan AI atau imej kongsi untuk menyamar sebagai dokumen rasmi organisasi sebenar atau kenyataan orang sebenar</li><li>Apa-apa perbuatan lain yang melanggar undang-undang atau Terma ini</li></ol>
+<h2>Perkara 9 (Hak ke atas Kandungan dan Penggunaannya)</h2>
+<ol class="clause"><li>Hak ke atas susun atur skrin, reka bentuk, watak, teks dan program Perkhidmatan adalah milik Pengendali.</li><li>Hak ke atas sebab yang dimasukkan pengguna adalah milik pengguna. Pengendali hanya menggunakannya setakat yang perlu untuk menyediakan Perkhidmatan (menjana jawapan AI, memaparkan sejarah) dan mengendalikannya dengan selamat.</li><li>Pengguna boleh menyimpan dan berkongsi jawapan AI dan imej kongsi yang diterima untuk tujuan peribadi dan bukan komersial. Perhatikan bahawa apabila berkongsi, sebab dan jawapan dalam imej akan dapat dilihat oleh orang lain.</li><li>Pengguna yang berkongsi kandungan bertanggungjawab ke atas sebarang masalah yang timbul daripada kandungan yang dikongsi.</li></ol>
+<h2>Perkara 10 (Sekatan Penggunaan)</h2>
+<ol class="clause"><li>Jika pengguna melanggar Perkara 8 atau mengganggu operasi biasa Perkhidmatan, Pengendali boleh, selepas memberi notis awal (atau notis kemudian dalam keadaan segera), menyekat penggunaan atau menggantung atau memadam akaun.</li><li>Pengguna yang membantah sekatan boleh mengemukakan bantahan melalui e-mel perhubungan, dan Pengendali akan menyemaknya serta memaklumkan keputusan.</li></ol>
+<h2>Perkara 11 (Pemadaman Akaun dan Penamatan Penggunaan)</h2>
+<ol class="clause"><li>Pengguna boleh memadam akaun pada bila-bila masa melalui <strong>Akaun saya &gt; Padam akaun</strong> dalam aplikasi.</li><li>Apabila akaun dipadam, semua maklumat yang disimpan pada pelayan seperti rekod, pangkat dan hari kehadiran akan dipadam dan tidak boleh dipulihkan.</li><li>Log keluar akan mengosongkan tetapan yang disimpan pada peranti, dan jika pengguna tanpa nama log keluar atau memadam aplikasi, rekod tidak dapat dimuat semula.</li></ol>
+<h2>Perkara 12 (Perubahan dan Penggantungan Perkhidmatan)</h2>
+<ol class="clause"><li>Pengendali boleh menggantung sementara atau mengubah semua atau sebahagian Perkhidmatan untuk penyelenggaraan sistem, kegagalan, perubahan atau penggantungan perkhidmatan luar (awan, model AI, pengiklanan, dsb.), atau sebab operasi lain.</li><li>Jika Pengendali menamatkan Perkhidmatan, ia akan diumumkan dalam aplikasi 30 hari sebelum tarikh penamatan.</li><li>Memandangkan Perkhidmatan disediakan percuma, melainkan undang-undang memperuntukkan sebaliknya, Pengendali tidak membayar pampasan berasingan kepada pengguna atas perubahan, penggantungan atau penamatan Perkhidmatan.</li></ol>
+<h2>Perkara 13 (Had Tanggungjawab)</h2>
+<ol class="clause"><li>Pengendali tidak bertanggungjawab jika tidak dapat menyediakan Perkhidmatan atas sebab di luar kawalannya, seperti bencana alam, gangguan komunikasi atau kegagalan perkhidmatan luar.</li><li>Pengendali tidak menjamin ketepatan, kelengkapan atau kesesuaian jawapan AI dan tidak bertanggungjawab ke atas akibat tindakan yang diambil pengguna berdasarkan jawapan AI.</li><li>Pengendali tidak bertanggungjawab ke atas kehilangan rekod yang disebabkan oleh kesalahan pengguna sendiri (pengurusan akaun yang lemah, kehilangan peranti, memadam aplikasi, dsb.).</li><li>Peruntukan di atas tidak terpakai bagi kerosakan yang disebabkan oleh perbuatan sengaja atau kecuaian teruk Pengendali, dan tidak menghadkan hak pengguna yang diperuntukkan oleh undang-undang yang berkaitan.</li></ol>
+<h2>Perkara 14 (Perlindungan Maklumat Peribadi)</h2>
+<p>Pengendali mengendalikan maklumat peribadi pengguna menurut undang-undang yang berkaitan dan <a href="privacy.html">Dasar Privasi</a>.</p>
+<h2>Perkara 15 (Undang-undang yang Terpakai dan Penyelesaian Pertikaian)</h2>
+<ol class="clause"><li>Terma ini ditafsirkan mengikut undang-undang Republik Korea. Terjemahan disediakan untuk membantu pengguna memahami, dan jika terdapat perbezaan tafsiran, teks bahasa Korea diutamakan.</li><li>Jika timbul pertikaian berkaitan penggunaan Perkhidmatan, Pengendali dan pengguna akan berusaha menyelesaikannya melalui rundingan dengan niat baik.</li><li>Tindakan undang-undang bagi pertikaian yang tidak dapat diselesaikan melalui rundingan hendaklah difailkan di mahkamah yang mempunyai bidang kuasa ke atas alamat Pengendali. Walau bagaimanapun, hak pengguna di bawah undang-undang perlindungan pengguna negara tempat pengguna tinggal tidak dihadkan.</li></ol>
+<h2>Hubungi Kami</h2>
+<div class="box">Pengendali: Haram &amp; Harang<br>E-mel: black924.menew@gmail.com</div>
+<h2>Peruntukan Tambahan</h2>
+<p>Terma ini berkuat kuasa mulai 10 Oktober 2026.</p>
+<footer>© 2026 Haram &amp; Harang</footer></section>
+</main>
+<script>
+(function () {
+  var ids = ['ko', 'ja', 'zh-tw', 'th', 'vi', 'en', 'zh-sg', 'ms'];
+  var map = { ko: 'ko', ja: 'ja', th: 'th', vi: 'vi', ms: 'ms', id: 'ms', en: 'en' };
+  function pick() {
+    var h = (location.hash || '').replace('#', '');
+    if (ids.indexOf(h) >= 0) return h;
+    try { var s = localStorage.getItem('legal-lang'); if (s && ids.indexOf(s) >= 0) return s; } catch (e) {}
+    var l = (navigator.language || 'en').toLowerCase();
+    if (l.indexOf('zh') === 0) return (/hant|tw|hk|mo/.test(l)) ? 'zh-tw' : 'zh-sg';
+    return map[l.split('-')[0]] || 'en';
+  }
+  function show(id, push) {
+    ids.forEach(function (i) {
+      var p = document.getElementById('terms-' + i), b = document.getElementById('tab-' + i);
+      p.hidden = (i !== id); b.setAttribute('aria-selected', i === id ? 'true' : 'false'); b.tabIndex = (i === id) ? 0 : -1;
+    });
+    document.documentElement.lang = document.getElementById('terms-' + id).getAttribute('lang');
+    try { localStorage.setItem('legal-lang', id); } catch (e) {}
+    if (push) history.replaceState(null, '', '#' + id);
+    document.querySelectorAll('.doclinks a').forEach(function (a) { a.href = a.href.split('#')[0] + '#' + id; });
+  }
+  ids.forEach(function (i, n) {
+    var b = document.getElementById('tab-' + i);
+    b.addEventListener('click', function () { show(i, true); });
+    b.addEventListener('keydown', function (e) {
+      var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (d) { var j = ids[(n + d + ids.length) % ids.length]; show(j, true); document.getElementById('tab-' + j).focus(); }
+    });
+  });
+  window.addEventListener('hashchange', function () { show(pick(), false); });
+  show(pick(), false);
+})();
+</script>
+</body>
+</html>

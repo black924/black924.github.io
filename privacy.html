@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy</title>
+<style>
+  :root { --bg:#f7f3ea; --paper:#fffdf8; --ink:#1a2133; --muted:#5c6475; --line:#d9d2c3; --accent:#c8231e; --todo:#fff2a8; --todo-line:#d9a400; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#1f2530; --paper:#2a3342; --ink:#f3ede0; --muted:#aab3c5; --line:#465066; --accent:#ff6b5e; --todo:#5a4a00; --todo-line:#ffcf40; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.75 -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", "Noto Sans JP", "Noto Sans TC", "Noto Sans SC", "Noto Sans Thai", "Segoe UI", "Malgun Gothic", sans-serif; }
+  main { max-width:780px; margin:0 auto; padding:16px 16px 64px; }
+  nav.tabs { position:sticky; top:0; z-index:5; background:var(--bg); padding:10px 0 8px; border-bottom:2px solid var(--line); display:flex; flex-wrap:wrap; gap:6px; }
+  nav.tabs button { font:inherit; font-size:14px; padding:6px 12px; border-radius:999px; border:1.5px solid var(--line); background:var(--paper); color:var(--ink); cursor:pointer; }
+  nav.tabs button[aria-selected="true"] { background:var(--ink); color:var(--paper); border-color:var(--ink); }
+  nav.tabs button:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+  .doclinks { margin:8px 0 0; font-size:13px; color:var(--muted); }
+  h1 { font-size:26px; line-height:1.3; margin:20px 0 4px; }
+  h2 { font-size:19px; margin:36px 0 8px; padding-top:14px; border-top:2px solid var(--line); }
+  p, li { color:var(--ink); }
+  ol.clause { padding-left:22px; }
+  .sub { color:var(--muted); font-size:14px; margin:0 0 20px; }
+  .box { background:var(--paper); border:1px solid var(--line); border-radius:10px; padding:14px 16px; margin:14px 0; }
+  .wrap { overflow-x:auto; }
+  table { border-collapse:collapse; width:100%; min-width:520px; font-size:14.5px; background:var(--paper); }
+  th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+  th { background:rgba(127,127,127,.12); }
+  a { color:var(--accent); }
+  mark.todo { background:var(--todo); color:inherit; border-bottom:2px solid var(--todo-line); padding:1px 4px; border-radius:3px; font-weight:700; }
+  .todo-list { background:var(--todo); border:2px dashed var(--todo-line); border-radius:10px; padding:12px 16px; margin:16px 0 8px; }
+  .todo-list h2 { border:0; margin:0 0 6px; padding:0; font-size:16px; }
+  .todo-list li { font-size:14.5px; }
+  footer { margin-top:40px; color:var(--muted); font-size:13px; }
+  .panel[hidden] { display:none; }
+  @media print { nav.tabs, .todo-list { display:none; } .panel[hidden] { display:block; } }
+</style>
+</head>
+<body>
+<main>
+<nav class="tabs" role="tablist" aria-label="Language"><button role="tab" id="tab-ko" aria-controls="privacy-ko" aria-selected="false" lang="ko">한국어</button><button role="tab" id="tab-ja" aria-controls="privacy-ja" aria-selected="false" lang="ja">日本語</button><button role="tab" id="tab-zh-tw" aria-controls="privacy-zh-tw" aria-selected="false" lang="zh-Hant">繁體中文</button><button role="tab" id="tab-th" aria-controls="privacy-th" aria-selected="false" lang="th">ไทย</button><button role="tab" id="tab-vi" aria-controls="privacy-vi" aria-selected="false" lang="vi">Tiếng Việt</button><button role="tab" id="tab-en" aria-controls="privacy-en" aria-selected="false" lang="en">English</button><button role="tab" id="tab-zh-sg" aria-controls="privacy-zh-sg" aria-selected="false" lang="zh-Hans">简体中文</button><button role="tab" id="tab-ms" aria-controls="privacy-ms" aria-selected="false" lang="ms">Bahasa Melayu</button></nav>
+<p class="doclinks"><a href="terms.html">Terms of Service · 이용약관 · 利用規約 · 使用條款 · ข้อกำหนด · Điều khoản · Terma</a></p>
+
+<section class="panel" id="privacy-ko" lang="ko" role="tabpanel" hidden>
+<h1>개인정보 처리방침</h1>
+<p class="sub">시행일: 2026-10-10</p>
+<h2>1. 수집하는 개인정보 항목과 수집 방법</h2>
+<div class="wrap"><table><tr><th>구분</th><th>항목</th><th>수집 시점·방법</th></tr><tr><td>로그인 없이 시작(익명)</td><td>서비스가 만든 임의의 이용자 식별자(Firebase 익명 계정 ID)</td><td>"로그인 없이 시작"을 누를 때 자동 생성</td></tr><tr><td>Google 계정으로 로그인·연결</td><td>이메일 주소, 이름(표시 이름), 프로필 사진 주소, Google 계정 식별자</td><td>이용자가 Google 로그인을 선택하고 동의할 때 Google로부터 제공받음</td></tr><tr><td>서비스 이용 기록</td><td>이용자가 입력한 사유(핑계) 문장, 선택한 나라·언어, 테마·결재권자·영역·모드, AI가 만든 답변(결재 의견·다음 행동·도장 문구·핑계 등급), 작성 일시, 테마별 직급·출석일 수, 하루 이용 횟수, 관심 영역과 직접 추가한 영역 이름, 신고 여부</td><td>서비스 이용 과정에서 생성·저장</td></tr><tr><td>광고 시청 확인 정보</td><td>보상형 광고를 끝까지 봤다는 확인 정보(일회용 토큰, 광고 거래 ID, 이용자 식별자)</td><td>Google AdMob의 서버 측 확인(SSV)으로 서버가 수신</td></tr><tr><td>기기·이용 통계</td><td>앱 이용 이벤트(화면 조회, 테마 선택, 제출·결과·공유·신고 등), 기기 모델, 운영체제 버전, 앱 버전, 언어·국가(대략적 지역), 앱 인스턴스 ID</td><td>Firebase Analytics가 자동 수집</td></tr><tr><td>오류 정보</td><td>앱 비정상 종료 시의 오류 기록(스택 트레이스), 기기 상태 정보, 설치 식별자</td><td>Firebase Crashlytics가 자동 수집(이용자가 입력한 사유 문장은 포함하지 않음)</td></tr><tr><td>광고</td><td>광고 식별자(Android 광고 ID), IP 주소, 기기 정보, 광고 조회·클릭 기록</td><td>Google AdMob 광고 SDK가 자동 수집</td></tr><tr><td>부정 이용 방지</td><td>앱·기기의 무결성 확인 정보(Play Integrity 판정 결과)</td><td>Firebase App Check가 서버 호출 시 자동 확인</td></tr></table></div>
+<div class="box"><strong>수집하지 않는 정보</strong><ul><li>주민등록번호 등 신분증 번호, 전화번호, 주소, 결제 정보, 정확한 위치 정보, 연락처, 사진·파일은 수집하지 않습니다.</li><li>사유 입력란에는 이름·연락처·주소 같은 개인정보나 건강 등 민감한 정보를 적지 말아 주세요. 전화번호·이메일·신분증 번호 형태의 입력은 앱과 서버가 자동으로 걸러 접수하지 않습니다.</li><li>공유용 이미지는 이용자의 기기 안에서 만들어지며 운영자의 서버로 전송되지 않습니다.</li></ul></div>
+<h2>2. 개인정보의 처리 목적</h2>
+<ul><li><strong>서비스 제공:</strong> 이용자가 낸 사유에 대한 AI 답변 생성, 결과·기록·직급·출석일 표시, 테마별 진행 상황 저장</li><li><strong>계정 관리:</strong> 이용자 식별, 기기를 바꾸거나 앱을 다시 설치했을 때 기록 유지(Google 계정 연결 시), 계정 삭제 처리</li><li><strong>이용 횟수 관리와 부정 이용 방지:</strong> 하루 무료 이용 횟수 확인, 광고 시청 확인, 비정상적인 호출 차단</li><li><strong>안전한 이용 환경:</strong> 위험 신호(자해 등)나 부적절한 입력의 차단, 이용자 신고 처리</li><li><strong>서비스 개선:</strong> 이용 통계 분석, 오류 원인 파악과 수정</li><li><strong>광고 게재:</strong> 배너 광고와 보상형 광고 표시, 광고 성과 측정</li></ul>
+<h2>3. 개인정보의 보유 및 이용 기간</h2>
+<div class="wrap"><table><tr><th>항목</th><th>보유 기간</th></tr><tr><td>계정 정보, 서비스 이용 기록(사유·AI 답변·직급 등)</td><td>이용자가 계정을 삭제할 때까지. 계정을 삭제하면 서버에 저장된 이용 기록과 계정을 지체 없이 삭제합니다.</td></tr><tr><td>서버 처리 기록(로그)</td><td>입력 원문은 남기지 않고 길이와 해시값 등 최소 정보만 기록하며, 보관 기간은 Firebase(Google Cloud)의 정책을 따릅니다.</td></tr><tr><td>이용 통계(Firebase Analytics)</td><td>Firebase(Google Analytics)의 정책에 따름</td></tr><tr><td>오류 정보(Firebase Crashlytics)</td><td>수집일로부터 90일(Google 정책에 따름)</td></tr><tr><td>광고 관련 정보</td><td>Google의 광고 정책에 따라 Google이 보관</td></tr></table></div>
+<p>관련 법령에 따라 보존해야 하는 정보가 있는 경우 해당 법령이 정한 기간 동안 보관합니다.</p>
+<h2>4. 개인정보의 제3자 제공</h2>
+<p>운영자는 이용자의 개인정보를 제1조와 제2조에서 알린 범위 안에서만 처리하며, 이용자의 동의가 있거나 법령에 근거가 있는 경우를 제외하고 제3자에게 제공하지 않습니다.</p>
+<h2>5. 개인정보 처리의 위탁과 국외 이전</h2>
+<p>서비스는 Google의 클라우드·광고 서비스를 이용해 운영되며, 이 과정에서 개인정보가 국외에 있는 Google의 서버에서 처리될 수 있습니다.</p>
+<div class="wrap"><table><tr><th>받는 자</th><th>이용 서비스와 위탁 업무</th><th>이전되는 항목</th><th>이전 국가·시기·방법</th><th>보유 기간</th></tr><tr><td>Google LLC<br><a href="https://support.google.com/policies/contact/general_privacy_form">Google 개인정보 문의</a></td><td>Firebase Authentication(로그인)<br>Cloud Firestore(데이터 저장)<br>Cloud Functions(서버 처리)<br>Vertex AI Gemini(AI 답변 생성)<br>Firebase Analytics·Crashlytics·App Check<br>Google AdMob(광고)</td><td>제1조의 항목 전부(서비스별로 필요한 범위)</td><td>미국 등 Google이 데이터센터를 운영하는 국가<br>서비스 이용 시점마다 네트워크를 통해 전송<br>서버 함수: 서울 리전(asia-northeast3)<br>데이터베이스: 서울 리전(asia-northeast3)<br>AI 답변 생성: Google의 글로벌 엔드포인트(처리 위치가 국외일 수 있음)</td><td>제3조의 보유 기간과 같음(위탁 계약 종료 시까지)</td></tr></table></div>
+<ul><li>AI 답변을 만들 때 이용자가 입력한 사유 문장이 Google의 AI 서비스(Vertex AI)로 전송됩니다. 운영자는 유료 기업용 경로를 사용하며, Google의 약관상 이 경로로 전송된 내용은 Google의 AI 모델 학습에 사용되지 않습니다.</li><li>이용자는 국외 이전을 원하지 않으면 서비스 이용을 중단하고 계정을 삭제할 수 있습니다. 다만 국외 이전 없이는 서비스를 제공할 수 없습니다.</li></ul>
+<h2>6. 광고와 광고 식별자</h2>
+<ul><li>서비스는 Google AdMob을 통해 배너 광고와 보상형 광고를 보여 줍니다. Google은 광고 식별자 등을 이용해 맞춤형 광고를 제공하거나 광고 성과를 측정할 수 있습니다.</li><li>기기의 <strong>설정 &gt; Google &gt; 광고</strong>에서 광고 ID를 재설정하거나 삭제하고, 맞춤형 광고를 끌 수 있습니다.</li><li>Google이 정보를 이용하는 방법은 <a href="https://policies.google.com/technologies/partner-sites">Google의 파트너 사이트 정보 이용 안내</a>에서 확인할 수 있습니다.</li></ul>
+<h2>7. 개인정보의 파기</h2>
+<ul><li>보유 기간이 지나거나 처리 목적을 달성한 개인정보는 지체 없이 파기합니다.</li><li>이용자가 앱의 <strong>내 계정 &gt; 계정 삭제</strong>를 실행하면, 서버에 저장된 이용 기록(사유·AI 답변·직급·이용 횟수 등)과 계정 정보를 복구할 수 없는 방법으로 삭제합니다.</li><li>기기에 저장된 설정값(마지막으로 쓴 테마, 선택한 결재권자, 선택한 나라·언어 등)은 로그아웃·계정 삭제 시 또는 앱을 삭제할 때 지워집니다.</li><li>이용자가 갤러리에 저장하거나 다른 앱으로 공유한 이미지는 운영자가 삭제할 수 없으므로 이용자가 직접 관리해야 합니다.</li></ul>
+<h2>8. 이용자와 법정대리인의 권리와 행사 방법</h2>
+<ul><li>이용자는 언제든지 자신의 개인정보를 열람·정정·삭제하거나 처리 정지를 요구할 수 있습니다.</li><li><strong>열람:</strong> 앱의 기록 화면과 내 계정 화면에서 확인할 수 있습니다.</li><li><strong>삭제(회원 탈퇴):</strong> 앱의 <strong>내 계정 &gt; 계정 삭제</strong>에서 바로 처리할 수 있습니다.</li><li>앱에서 처리하기 어려운 요청은 아래 개인정보 보호책임자에게 이메일로 보내 주세요. 운영자는 지체 없이 조치합니다.</li><li>권리 행사는 법정대리인이나 위임을 받은 사람을 통해서도 할 수 있습니다.</li></ul>
+<h2>9. 아동의 개인정보</h2>
+<ul><li>서비스는 만 14세 이상을 대상으로 하며, 그보다 어린 아동의 개인정보를 알면서 수집하지 않습니다. 아동의 정보가 수집된 사실을 알게 되면 지체 없이 삭제합니다.</li></ul>
+<h2>10. 개인정보의 안전성 확보 조치</h2>
+<ul><li>기기와 서버 사이의 통신을 암호화(HTTPS)합니다.</li><li>이용자는 자신의 기록만 읽을 수 있고, 기록·직급·이용 횟수는 서버만 쓸 수 있도록 접근 권한을 제한합니다.</li><li>서버 호출 시 앱과 기기의 무결성을 확인(App Check)하여 비정상적인 접근을 차단합니다.</li><li>서버 처리 기록에는 이용자가 입력한 원문을 남기지 않습니다.</li><li>개인정보를 다루는 사람을 최소한으로 제한합니다.</li></ul>
+<h2>11. AI가 만든 콘텐츠에 대한 안내</h2>
+<p>서비스의 답변은 인공지능이 만든 재미용 콘텐츠이며, 사람의 판단이나 의료·법률·재무 등 전문적인 조언이 아닙니다. 이용자가 입력한 사유는 답변을 만드는 데에만 쓰이며, 이용자의 기록 화면에 저장됩니다.</p>
+<h2>12. 개인정보 보호책임자와 문의</h2>
+<div class="box">운영자: Haram &amp; Harang<br>개인정보 보호책임자: Haram &amp; Harang<br>이메일: black924.menew@gmail.com</div>
+<h2>13. 처리방침의 변경</h2>
+<p>이 처리방침을 바꾸는 경우 시행일 최소 7일 전에(이용자에게 불리하거나 중요한 변경은 30일 전에) 앱 또는 이 페이지에서 알립니다.</p>
+<ul><li>시행일: 2026-10-10</li><li>개정 이력: 최초 제정</li></ul>
+<footer>© 2026 Haram &amp; Harang</footer></section>
+<section class="panel" id="privacy-ja" lang="ja" role="tabpanel" hidden>
+<h1>プライバシーポリシー</h1>
+<p class="sub">施行日: 2026年10月10日</p>
+<h2>1. 取得する個人情報の項目と取得方法</h2>
+<div class="wrap"><table><tr><th>区分</th><th>項目</th><th>取得の時点・方法</th></tr><tr><td>ログインせずに開始(匿名)</td><td>サービスが作った任意の利用者識別子(Firebase匿名アカウントID)</td><td>「ログインせずに始める」を押したときに自動生成</td></tr><tr><td>Googleアカウントでログイン・連携</td><td>メールアドレス、氏名(表示名)、プロフィール写真のURL、Googleアカウント識別子</td><td>利用者がGoogleログインを選び同意したときにGoogleから提供される</td></tr><tr><td>サービス利用記録</td><td>利用者が入力した理由(言い訳)の文章、選んだ国・言語、テーマ・承認者・分野・モード、AIが作った返答(決裁意見・次の行動・印の文言・言い訳レベル)、作成日時、テーマごとの階級・出席日数、1日の利用回数、関心分野と自分で追加した分野名、報告の有無</td><td>サービスの利用の過程で生成・保存</td></tr><tr><td>広告視聴の確認情報</td><td>リワード広告を最後まで見たことの確認情報(使い捨てトークン、広告取引ID、利用者識別子)</td><td>Google AdMobのサーバー側確認(SSV)でサーバーが受信</td></tr><tr><td>端末・利用統計</td><td>アプリの利用イベント(画面表示、テーマ選択、提出・結果・シェア・報告など)、端末モデル、OSバージョン、アプリバージョン、言語・国(おおよその地域)、アプリインスタンスID</td><td>Firebase Analyticsが自動取得</td></tr><tr><td>エラー情報</td><td>アプリが異常終了したときのエラー記録(スタックトレース)、端末の状態情報、インストール識別子</td><td>Firebase Crashlyticsが自動取得(利用者が入力した理由の文章は含まない)</td></tr><tr><td>広告</td><td>広告識別子(Android広告ID)、IPアドレス、端末情報、広告の表示・クリック記録</td><td>Google AdMob広告SDKが自動取得</td></tr><tr><td>不正利用の防止</td><td>アプリ・端末の完全性の確認情報(Play Integrityの判定結果)</td><td>Firebase App Checkがサーバー呼び出し時に自動確認</td></tr></table></div>
+<div class="box"><strong>取得しない情報</strong><ul><li>身分証の番号、電話番号、住所、決済情報、正確な位置情報、連絡先、写真・ファイルは取得しません。</li><li>理由の入力欄には、氏名・連絡先・住所などの個人情報や、健康などの機微な情報を書かないでください。電話番号・メールアドレス・身分証番号の形の入力は、アプリとサーバーが自動で検出して受け付けません。</li><li>シェア用の画像は利用者の端末の中で作られ、運営者のサーバーには送信されません。</li></ul></div>
+<h2>2. 個人情報の利用目的</h2>
+<ul><li><strong>サービスの提供:</strong> 利用者が出した理由に対するAI返答の生成、結果・記録・階級・出席日数の表示、テーマごとの進行状況の保存</li><li><strong>アカウント管理:</strong> 利用者の識別、端末を変えたりアプリを再インストールしたりしたときの記録の維持(Googleアカウント連携時)、アカウント削除の処理</li><li><strong>利用回数の管理と不正利用の防止:</strong> 1日の無料利用回数の確認、広告視聴の確認、不審な呼び出しの遮断</li><li><strong>安全な利用環境:</strong> 危険のサイン(自傷など)や不適切な入力の遮断、利用者からの報告の処理</li><li><strong>サービスの改善:</strong> 利用統計の分析、エラーの原因の把握と修正</li><li><strong>広告の配信:</strong> バナー広告とリワード広告の表示、広告効果の測定</li></ul>
+<h2>3. 個人情報の保有期間</h2>
+<div class="wrap"><table><tr><th>項目</th><th>保有期間</th></tr><tr><td>アカウント情報、サービス利用記録(理由・AI返答・階級など)</td><td>利用者がアカウントを削除するまで。アカウントを削除すると、サーバーに保存された利用記録とアカウントを遅滞なく削除します。</td></tr><tr><td>サーバー処理記録(ログ)</td><td>入力原文は残さず、長さやハッシュ値など最小限の情報のみ記録し、保管期間はFirebase(Google Cloud)のポリシーに従います。</td></tr><tr><td>利用統計(Firebase Analytics)</td><td>Firebase(Google Analytics)のポリシーに従う</td></tr><tr><td>エラー情報(Firebase Crashlytics)</td><td>取得日から90日(Googleのポリシーによる)</td></tr><tr><td>広告関連情報</td><td>Googleの広告ポリシーに従い、Googleが保管</td></tr></table></div>
+<p>関連法令により保存が必要な情報がある場合は、その法令が定める期間保管します。</p>
+<h2>4. 個人データの第三者提供</h2>
+<p>運営者は、利用者の個人情報を、第1条・第2条でお知らせした範囲内でのみ取り扱い、利用者の同意がある場合または法令に基づく場合を除き、第三者に提供しません。</p>
+<h2>5. 取扱いの委託と外国への移転</h2>
+<p>本サービスはGoogleのクラウド・広告サービスを利用して運営されており、その過程で個人情報が外国にあるGoogleのサーバーで取り扱われることがあります。</p>
+<div class="wrap"><table><tr><th>委託先</th><th>利用サービスと委託業務</th><th>移転される項目</th><th>移転先の国・時期・方法</th><th>保有期間</th></tr><tr><td>Google LLC<br><a href="https://support.google.com/policies/contact/general_privacy_form">Googleプライバシーに関するお問い合わせ</a></td><td>Firebase Authentication(ログイン)<br>Cloud Firestore(データ保存)<br>Cloud Functions(サーバー処理)<br>Vertex AI Gemini(AI返答の生成)<br>Firebase Analytics・Crashlytics・App Check<br>Google AdMob(広告)</td><td>第1条の項目のすべて(サービスごとに必要な範囲)</td><td>米国などGoogleがデータセンターを運営する国<br>サービス利用のたびにネットワークで送信<br>サーバー関数: ソウルリージョン(asia-northeast3)<br>データベース: ソウルリージョン(asia-northeast3)<br>AI返答の生成: Googleのグローバルエンドポイント(処理場所が国外の場合あり)</td><td>第3条の保有期間と同じ(委託契約の終了まで)</td></tr></table></div>
+<ul><li>AI返答を作るとき、利用者が入力した理由の文章がGoogleのAIサービス(Vertex AI)に送信されます。運営者は有料の企業向け経路を使用しており、Googleの規約上、この経路で送信された内容はGoogleのAIモデルの学習には使われません。</li><li>利用者は、国外への移転を望まない場合、サービスの利用をやめてアカウントを削除できます。ただし、国外への移転なしには本サービスを提供できません。</li></ul>
+<h2>6. 広告と広告識別子</h2>
+<ul><li>本サービスはGoogle AdMobを通じてバナー広告とリワード広告を表示します。Googleは広告識別子などを使って、パーソナライズ広告を配信したり広告効果を測定したりすることがあります。</li><li>端末の<strong>設定 &gt; Google &gt; 広告</strong>で、広告IDのリセットや削除、パーソナライズ広告のオフができます。</li><li>Googleによる情報の利用方法は<a href="https://policies.google.com/technologies/partner-sites">Googleのパートナーサイトの情報利用について</a>で確認できます。</li></ul>
+<h2>7. 個人情報の消去</h2>
+<ul><li>保有期間が過ぎた個人情報、または利用目的を達成した個人情報は、遅滞なく消去します。</li><li>利用者がアプリの<strong>アカウント &gt; アカウント削除</strong>を実行すると、サーバーに保存された利用記録(理由・AI返答・階級・利用回数など)とアカウント情報を、復元できない方法で削除します。</li><li>端末に保存された設定値(最後に使ったテーマ、選んだ承認者、選んだ国・言語など)は、ログアウト・アカウント削除時またはアプリを削除したときに消えます。</li><li>利用者がギャラリーに保存したり他のアプリにシェアしたりした画像は、運営者が削除できないため、利用者ご自身で管理してください。</li></ul>
+<h2>8. 利用者の権利と行使の方法</h2>
+<ul><li>利用者は、いつでも自分の個人情報の開示・訂正・削除・利用停止を求めることができます。</li><li><strong>開示:</strong> アプリの記録画面とアカウント画面で確認できます。</li><li><strong>削除(退会):</strong> アプリの<strong>アカウント &gt; アカウント削除</strong>からすぐに処理できます。</li><li>アプリで処理しにくい請求は、下記の個人情報保護責任者にメールでお送りください。運営者は遅滞なく対応します。</li><li>権利の行使は、代理人または委任を受けた人を通じても行えます。</li></ul>
+<h2>9. 子どもの個人情報</h2>
+<ul><li>本サービスは満14歳以上を対象としており、それより幼い子どもの個人情報を知りながら取得することはありません。子どもの情報が取得されたことを知った場合は、遅滞なく削除します。</li></ul>
+<h2>10. 安全管理措置</h2>
+<ul><li>端末とサーバーの間の通信を暗号化(HTTPS)します。</li><li>利用者は自分の記録だけを読めるようにし、記録・階級・利用回数はサーバーだけが書き込めるようアクセス権限を制限します。</li><li>サーバー呼び出し時にアプリと端末の完全性を確認(App Check)し、不正なアクセスを遮断します。</li><li>サーバー処理記録には、利用者が入力した原文を残しません。</li><li>個人情報を取り扱う者を最小限に限定します。</li></ul>
+<h2>11. AIが作ったコンテンツについて</h2>
+<p>本サービスの返答は人工知能が作った娯楽コンテンツであり、人の判断や、医療・法律・金融などの専門的なアドバイスではありません。利用者が入力した理由は返答を作るためだけに使われ、利用者の記録画面に保存されます。</p>
+<h2>12. 個人情報保護責任者とお問い合わせ</h2>
+<div class="box">運営者: Haram &amp; Harang<br>個人情報保護責任者: Haram &amp; Harang<br>メール: black924.menew@gmail.com</div>
+<h2>13. ポリシーの変更</h2>
+<p>このポリシーを変更する場合は、施行日の少なくとも7日前に(利用者に不利または重要な変更は30日前に)、アプリまたはこのページでお知らせします。</p>
+<ul><li>施行日: 2026年10月10日</li><li>改定履歴: 初版制定</li></ul>
+<footer>© 2026 Haram &amp; Harang</footer></section>
+<section class="panel" id="privacy-zh-tw" lang="zh-Hant" role="tabpanel" hidden>
+<h1>隱私權政策</h1>
+<p class="sub">生效日：2026 年 10 月 10 日</p>
+<h2>1. 蒐集的個人資料項目與蒐集方式</h2>
+<div class="wrap"><table><tr><th>類別</th><th>項目</th><th>蒐集時點・方式</th></tr><tr><td>不登入開始(匿名)</td><td>由服務產生的任意使用者識別碼(Firebase 匿名帳號 ID)</td><td>按下「不登入直接開始」時自動產生</td></tr><tr><td>以 Google 帳號登入・連結</td><td>電子郵件地址、姓名(顯示名稱)、大頭貼網址、Google 帳號識別碼</td><td>使用者選擇 Google 登入並同意時，由 Google 提供</td></tr><tr><td>服務使用紀錄</td><td>使用者輸入的事由(藉口)文字、所選的國家與語言、主題・簽核人・領域・模式、AI 產生的回覆(簽核意見・下一步・印章文字・藉口等級)、撰寫時間、各主題的職級與出席天數、每日使用次數、關注領域與自行新增的領域名稱、是否檢舉</td><td>於使用服務的過程中產生並儲存</td></tr><tr><td>廣告觀看確認資訊</td><td>確認已看完獎勵廣告的資訊(一次性權杖、廣告交易 ID、使用者識別碼)</td><td>由伺服器透過 Google AdMob 的伺服器端驗證(SSV)接收</td></tr><tr><td>裝置・使用統計</td><td>App 使用事件(畫面瀏覽、選擇主題、提交・結果・分享・檢舉等)、裝置型號、作業系統版本、App 版本、語言與國家(大略地區)、App 執行個體 ID</td><td>Firebase Analytics 自動蒐集</td></tr><tr><td>錯誤資訊</td><td>App 異常終止時的錯誤紀錄(堆疊追蹤)、裝置狀態資訊、安裝識別碼</td><td>Firebase Crashlytics 自動蒐集(不含使用者輸入的事由文字)</td></tr><tr><td>廣告</td><td>廣告識別碼(Android 廣告 ID)、IP 位址、裝置資訊、廣告瀏覽與點擊紀錄</td><td>Google AdMob 廣告 SDK 自動蒐集</td></tr><tr><td>防止不當使用</td><td>App 與裝置的完整性驗證資訊(Play Integrity 判定結果)</td><td>Firebase App Check 於呼叫伺服器時自動驗證</td></tr></table></div>
+<div class="box"><strong>不蒐集的資訊</strong><ul><li>不蒐集身分證字號等證件號碼、電話號碼、地址、付款資訊、精確位置、聯絡人、照片與檔案。</li><li>請勿在事由輸入欄填寫姓名、聯絡方式、地址等個人資料或健康等敏感資訊。電話號碼、電子郵件、證件號碼形式的輸入，App 與伺服器會自動攔截而不受理。</li><li>分享用圖片在使用者的裝置內製作，不會傳送到營運者的伺服器。</li></ul></div>
+<h2>2. 個人資料的處理目的</h2>
+<ul><li><strong>提供服務：</strong>針對使用者所提事由產生 AI 回覆、顯示結果・紀錄・職級・出席天數、儲存各主題的進度</li><li><strong>帳號管理：</strong>識別使用者、更換裝置或重新安裝 App 時維持紀錄(連結 Google 帳號時)、處理刪除帳號</li><li><strong>管理使用次數與防止不當使用：</strong>確認每日免費使用次數、確認廣告觀看、攔截異常呼叫</li><li><strong>安全的使用環境：</strong>攔截危險訊號(自傷等)或不適當的輸入、處理使用者檢舉</li><li><strong>改善服務：</strong>分析使用統計、查明並修正錯誤原因</li><li><strong>刊登廣告：</strong>顯示橫幅廣告與獎勵廣告、衡量廣告成效</li></ul>
+<h2>3. 個人資料的保存期間</h2>
+<div class="wrap"><table><tr><th>項目</th><th>保存期間</th></tr><tr><td>帳號資訊、服務使用紀錄(事由・AI 回覆・職級等)</td><td>至使用者刪除帳號為止。刪除帳號後，將立即刪除儲存在伺服器上的使用紀錄與帳號。</td></tr><tr><td>伺服器處理紀錄(日誌)</td><td>不保留輸入原文，僅記錄長度與雜湊值等最少資訊，保存期間依 Firebase(Google Cloud)的政策。</td></tr><tr><td>使用統計(Firebase Analytics)</td><td>依 Firebase(Google Analytics)的政策</td></tr><tr><td>錯誤資訊(Firebase Crashlytics)</td><td>自蒐集日起 90 日(依 Google 政策)</td></tr><tr><td>廣告相關資訊</td><td>依 Google 廣告政策由 Google 保存</td></tr></table></div>
+<p>依相關法令須保存的資訊，於該法令所定期間內保存。</p>
+<h2>4. 個人資料的第三人提供</h2>
+<p>營運者僅在第1條與第2條所告知的範圍內處理使用者的個人資料；除經使用者同意或有法令依據外，不向第三人提供。</p>
+<h2>5. 委託處理與國際傳輸</h2>
+<p>本服務使用 Google 的雲端與廣告服務營運，在此過程中個人資料可能在位於境外的 Google 伺服器處理。</p>
+<div class="wrap"><table><tr><th>接收者</th><th>使用服務與委託事項</th><th>傳輸項目</th><th>傳輸國家・時點・方式</th><th>保存期間</th></tr><tr><td>Google LLC<br><a href="https://support.google.com/policies/contact/general_privacy_form">Google 隱私權諮詢</a></td><td>Firebase Authentication(登入)<br>Cloud Firestore(資料儲存)<br>Cloud Functions(伺服器處理)<br>Vertex AI Gemini(產生 AI 回覆)<br>Firebase Analytics・Crashlytics・App Check<br>Google AdMob(廣告)</td><td>第1條所列項目之全部(依各服務所需範圍)</td><td>美國等 Google 營運資料中心的國家<br>每次使用服務時透過網路傳輸<br>伺服器函式：首爾區域(asia-northeast3)<br>資料庫：首爾區域(asia-northeast3)<br>產生 AI 回覆：Google 全球端點(處理地點可能在境外)</td><td>與第3條的保存期間相同(至委託契約終止)</td></tr></table></div>
+<ul><li>產生 AI 回覆時，使用者輸入的事由文字會傳送到 Google 的 AI 服務(Vertex AI)。營運者使用付費的企業級路徑，依 Google 條款，經此路徑傳送的內容不會用於訓練 Google 的 AI 模型。</li><li>使用者若不希望傳輸至境外，得停止使用服務並刪除帳號。但沒有境外傳輸就無法提供本服務。</li></ul>
+<h2>6. 廣告與廣告識別碼</h2>
+<ul><li>本服務透過 Google AdMob 顯示橫幅廣告與獎勵廣告。Google 可能使用廣告識別碼等提供個人化廣告或衡量廣告成效。</li><li>可在裝置的<strong>設定 &gt; Google &gt; 廣告</strong>重設或刪除廣告 ID，並關閉個人化廣告。</li><li>Google 使用資訊的方式，請見<a href="https://policies.google.com/technologies/partner-sites">Google 合作夥伴網站的資訊使用說明</a>。</li></ul>
+<h2>7. 個人資料的銷毀</h2>
+<ul><li>保存期間屆滿或處理目的已達成的個人資料，將立即銷毀。</li><li>使用者於 App 執行<strong>我的帳號 &gt; 刪除帳號</strong>後，儲存在伺服器上的使用紀錄(事由・AI 回覆・職級・使用次數等)與帳號資訊將以無法復原的方式刪除。</li><li>儲存在裝置上的設定值(最後使用的主題、所選簽核人、所選國家與語言等)將於登出・刪除帳號時或刪除 App 時清除。</li><li>使用者儲存到相簿或分享到其他 App 的圖片，營運者無法刪除，請使用者自行管理。</li></ul>
+<h2>8. 使用者與法定代理人的權利及行使方式</h2>
+<ul><li>使用者得隨時請求查詢或閱覽、製給複製本、補充或更正、停止蒐集處理利用及刪除自己的個人資料。</li><li><strong>查閱：</strong>可在 App 的紀錄畫面與我的帳號畫面查看。</li><li><strong>刪除(退出)：</strong>可於 App 的<strong>我的帳號 &gt; 刪除帳號</strong>直接處理。</li><li>無法在 App 內處理的請求，請以電子郵件寄給下方的個人資料保護負責人，營運者將立即處理。</li><li>權利的行使亦得透過法定代理人或受委任之人進行。</li></ul>
+<h2>9. 兒童的個人資料</h2>
+<ul><li>本服務以年滿 14 歲為對象，不會在明知的情況下蒐集更年幼兒童的個人資料。得知蒐集到兒童資料時，將立即刪除。</li></ul>
+<h2>10. 個人資料的安全維護措施</h2>
+<ul><li>裝置與伺服器之間的通訊加密(HTTPS)。</li><li>使用者只能讀取自己的紀錄，並限制存取權限，使紀錄・職級・使用次數只有伺服器能寫入。</li><li>呼叫伺服器時驗證 App 與裝置的完整性(App Check)，攔截異常存取。</li><li>伺服器處理紀錄不保留使用者輸入的原文。</li><li>將接觸個人資料的人員限制在最少。</li></ul>
+<h2>11. 關於 AI 產生的內容</h2>
+<p>本服務的回覆為人工智慧產生的娛樂內容，並非人的判斷，亦非醫療、法律、財務等專業建議。使用者輸入的事由僅用於產生回覆，並儲存在使用者的紀錄畫面中。</p>
+<h2>12. 個人資料保護負責人與聯絡方式</h2>
+<div class="box">營運者：Haram &amp; Harang<br>個人資料保護負責人：Haram &amp; Harang<br>電子郵件：black924.menew@gmail.com</div>
+<h2>13. 政策的變更</h2>
+<p>變更本政策時，將於生效日前至少 7 日(對使用者不利或重大的變更為 30 日前)，於 App 或本頁面告知。</p>
+<ul><li>生效日：2026 年 10 月 10 日</li><li>修訂紀錄：首次制定</li></ul>
+<footer>© 2026 Haram &amp; Harang</footer></section>
+<section class="panel" id="privacy-th" lang="th" role="tabpanel" hidden>
+<h1>นโยบายความเป็นส่วนตัว</h1>
+<p class="sub">วันที่มีผลบังคับใช้: 10 ตุลาคม 2569 (2026-10-10)</p>
+<h2>1. รายการข้อมูลส่วนบุคคลที่เก็บและวิธีการเก็บ</h2>
+<div class="wrap"><table><tr><th>ประเภท</th><th>รายการ</th><th>เวลาและวิธีการเก็บ</th></tr><tr><td>เริ่มโดยไม่ล็อกอิน (ไม่ระบุตัวตน)</td><td>รหัสระบุผู้ใช้แบบสุ่มที่บริการสร้างขึ้น (ID บัญชีแบบไม่ระบุตัวตนของ Firebase)</td><td>สร้างอัตโนมัติเมื่อกด "เริ่มโดยไม่ล็อกอิน"</td></tr><tr><td>ล็อกอิน/เชื่อมด้วยบัญชี Google</td><td>ที่อยู่อีเมล ชื่อ (ชื่อที่แสดง) URL รูปโปรไฟล์ รหัสระบุบัญชี Google</td><td>ได้รับจาก Google เมื่อผู้ใช้เลือกล็อกอิน Google และยินยอม</td></tr><tr><td>ประวัติการใช้บริการ</td><td>ข้อความเหตุผล (ข้ออ้าง) ที่ผู้ใช้ป้อน ประเทศและภาษาที่เลือก ธีม ผู้อนุมัติ หมวด โหมด คำตอบที่ AI สร้าง (ความเห็นการอนุมัติ สิ่งที่ควรทำต่อ ข้อความบนตราประทับ ระดับข้ออ้าง) วันเวลาที่เขียน ตำแหน่งและจำนวนวันที่เข้าร่วมของแต่ละธีม จำนวนครั้งที่ใช้ต่อวัน หมวดที่สนใจและชื่อหมวดที่เพิ่มเอง สถานะการรายงาน</td><td>สร้างและบันทึกระหว่างการใช้บริการ</td></tr><tr><td>ข้อมูลยืนยันการดูโฆษณา</td><td>ข้อมูลยืนยันว่าดูโฆษณาแบบมีรางวัลจนจบ (โทเคนใช้ครั้งเดียว รหัสธุรกรรมโฆษณา รหัสระบุผู้ใช้)</td><td>เซิร์ฟเวอร์ได้รับผ่านการยืนยันฝั่งเซิร์ฟเวอร์ (SSV) ของ Google AdMob</td></tr><tr><td>อุปกรณ์และสถิติการใช้</td><td>เหตุการณ์การใช้แอป (ดูหน้าจอ เลือกธีม ส่ง ผลลัพธ์ แชร์ รายงาน ฯลฯ) รุ่นอุปกรณ์ เวอร์ชันระบบปฏิบัติการ เวอร์ชันแอป ภาษาและประเทศ (ภูมิภาคโดยประมาณ) รหัสอินสแตนซ์ของแอป</td><td>Firebase Analytics เก็บอัตโนมัติ</td></tr><tr><td>ข้อมูลข้อผิดพลาด</td><td>บันทึกข้อผิดพลาดเมื่อแอปปิดผิดปกติ (stack trace) ข้อมูลสถานะอุปกรณ์ รหัสการติดตั้ง</td><td>Firebase Crashlytics เก็บอัตโนมัติ (ไม่รวมข้อความเหตุผลที่ผู้ใช้ป้อน)</td></tr><tr><td>โฆษณา</td><td>รหัสโฆษณา (Android Advertising ID) ที่อยู่ IP ข้อมูลอุปกรณ์ บันทึกการแสดงและการคลิกโฆษณา</td><td>SDK โฆษณา Google AdMob เก็บอัตโนมัติ</td></tr><tr><td>ป้องกันการใช้ในทางที่ไม่เหมาะสม</td><td>ข้อมูลยืนยันความสมบูรณ์ของแอปและอุปกรณ์ (ผลการตัดสินของ Play Integrity)</td><td>Firebase App Check ตรวจสอบอัตโนมัติเมื่อเรียกเซิร์ฟเวอร์</td></tr></table></div>
+<div class="box"><strong>ข้อมูลที่ไม่เก็บ</strong><ul><li>ไม่เก็บเลขบัตรประจำตัว หมายเลขโทรศัพท์ ที่อยู่ ข้อมูลการชำระเงิน ตำแหน่งที่แม่นยำ รายชื่อติดต่อ รูปภาพและไฟล์</li><li>โปรดอย่าเขียนข้อมูลส่วนบุคคล เช่น ชื่อ ข้อมูลติดต่อ ที่อยู่ หรือข้อมูลอ่อนไหว เช่น สุขภาพ ในช่องกรอกเหตุผล ข้อความในรูปแบบหมายเลขโทรศัพท์ อีเมล หรือเลขบัตรประจำตัว แอปและเซิร์ฟเวอร์จะตรวจจับและไม่รับ</li><li>รูปสำหรับแชร์สร้างขึ้นภายในเครื่องของผู้ใช้ และไม่ถูกส่งไปยังเซิร์ฟเวอร์ของผู้ให้บริการ</li></ul></div>
+<h2>2. วัตถุประสงค์ในการประมวลผลข้อมูลส่วนบุคคล</h2>
+<ul><li><strong>ให้บริการ:</strong> สร้างคำตอบจาก AI ต่อเหตุผลที่ผู้ใช้ส่ง แสดงผลลัพธ์ ประวัติ ตำแหน่ง จำนวนวันที่เข้าร่วม และบันทึกความคืบหน้าของแต่ละธีม</li><li><strong>จัดการบัญชี:</strong> ระบุตัวผู้ใช้ รักษาประวัติเมื่อเปลี่ยนเครื่องหรือติดตั้งแอปใหม่ (เมื่อเชื่อมบัญชี Google) และดำเนินการลบบัญชี</li><li><strong>จัดการจำนวนครั้งที่ใช้และป้องกันการใช้ในทางที่ไม่เหมาะสม:</strong> ตรวจสอบจำนวนครั้งที่ใช้ฟรีต่อวัน ยืนยันการดูโฆษณา และปิดกั้นการเรียกใช้ที่ผิดปกติ</li><li><strong>สภาพแวดล้อมการใช้ที่ปลอดภัย:</strong> ปิดกั้นสัญญาณอันตราย (เช่น การทำร้ายตนเอง) หรือข้อความที่ไม่เหมาะสม และจัดการรายงานของผู้ใช้</li><li><strong>ปรับปรุงบริการ:</strong> วิเคราะห์สถิติการใช้ ค้นหาสาเหตุของข้อผิดพลาดและแก้ไข</li><li><strong>แสดงโฆษณา:</strong> แสดงโฆษณาแบนเนอร์และโฆษณาแบบมีรางวัล และวัดผลโฆษณา</li></ul>
+<h2>3. ระยะเวลาเก็บรักษาข้อมูลส่วนบุคคล</h2>
+<div class="wrap"><table><tr><th>รายการ</th><th>ระยะเวลาเก็บรักษา</th></tr><tr><td>ข้อมูลบัญชี ประวัติการใช้บริการ (เหตุผล คำตอบจาก AI ตำแหน่ง ฯลฯ)</td><td>จนกว่าผู้ใช้จะลบบัญชี เมื่อลบบัญชี จะลบประวัติการใช้และบัญชีที่เก็บในเซิร์ฟเวอร์โดยไม่ชักช้า</td></tr><tr><td>บันทึกการประมวลผลของเซิร์ฟเวอร์ (log)</td><td>ไม่เก็บข้อความต้นฉบับ บันทึกเฉพาะข้อมูลน้อยที่สุด เช่น ความยาวและค่าแฮช และระยะเวลาเก็บเป็นไปตามนโยบายของ Firebase (Google Cloud)</td></tr><tr><td>สถิติการใช้ (Firebase Analytics)</td><td>เป็นไปตามนโยบายของ Firebase (Google Analytics)</td></tr><tr><td>ข้อมูลข้อผิดพลาด (Firebase Crashlytics)</td><td>90 วันนับจากวันที่เก็บ (ตามนโยบายของ Google)</td></tr><tr><td>ข้อมูลที่เกี่ยวกับโฆษณา</td><td>Google เก็บรักษาตามนโยบายโฆษณาของ Google</td></tr></table></div>
+<p>หากมีข้อมูลที่กฎหมายกำหนดให้เก็บ จะเก็บตามระยะเวลาที่กฎหมายนั้นกำหนด</p>
+<h2>4. การเปิดเผยข้อมูลส่วนบุคคลแก่บุคคลที่สาม</h2>
+<p>ผู้ให้บริการประมวลผลข้อมูลส่วนบุคคลของผู้ใช้ภายในขอบเขตที่แจ้งไว้ในข้อ 1 และข้อ 2 เท่านั้น และไม่เปิดเผยแก่บุคคลที่สาม ยกเว้นเมื่อได้รับความยินยอมจากผู้ใช้หรือมีกฎหมายรองรับ</p>
+<h2>5. การมอบหมายประมวลผลและการส่งข้อมูลไปต่างประเทศ</h2>
+<p>บริการนี้ดำเนินงานโดยใช้บริการคลาวด์และโฆษณาของ Google ในกระบวนการนี้ ข้อมูลส่วนบุคคลอาจถูกประมวลผลบนเซิร์ฟเวอร์ของ Google ที่อยู่ในต่างประเทศ</p>
+<div class="wrap"><table><tr><th>ผู้รับ</th><th>บริการที่ใช้และงานที่มอบหมาย</th><th>รายการที่ส่ง</th><th>ประเทศ เวลา และวิธีการส่ง</th><th>ระยะเวลาเก็บรักษา</th></tr><tr><td>Google LLC<br><a href="https://support.google.com/policies/contact/general_privacy_form">สอบถามเรื่องความเป็นส่วนตัวกับ Google</a></td><td>Firebase Authentication (ล็อกอิน)<br>Cloud Firestore (เก็บข้อมูล)<br>Cloud Functions (ประมวลผลบนเซิร์ฟเวอร์)<br>Vertex AI Gemini (สร้างคำตอบจาก AI)<br>Firebase Analytics・Crashlytics・App Check<br>Google AdMob (โฆษณา)</td><td>ทุกรายการในข้อ 1 (เท่าที่จำเป็นของแต่ละบริการ)</td><td>สหรัฐอเมริกาและประเทศอื่นที่ Google มีศูนย์ข้อมูล<br>ส่งผ่านเครือข่ายทุกครั้งที่ใช้บริการ<br>ฟังก์ชันเซิร์ฟเวอร์: ภูมิภาคโซล (asia-northeast3)<br>ฐานข้อมูล: ภูมิภาคโซล (asia-northeast3)<br>สร้างคำตอบจาก AI: Endpoint ระดับโลกของ Google (สถานที่ประมวลผลอาจอยู่ต่างประเทศ)</td><td>เท่ากับระยะเวลาในข้อ 3 (จนสิ้นสุดสัญญามอบหมาย)</td></tr></table></div>
+<ul><li>เมื่อสร้างคำตอบจาก AI ข้อความเหตุผลที่ผู้ใช้ป้อนจะถูกส่งไปยังบริการ AI ของ Google (Vertex AI) ผู้ให้บริการใช้เส้นทางสำหรับองค์กรแบบเสียค่าบริการ และตามข้อกำหนดของ Google เนื้อหาที่ส่งผ่านเส้นทางนี้จะไม่ถูกนำไปใช้ฝึกโมเดล AI ของ Google</li><li>หากผู้ใช้ไม่ต้องการให้ส่งข้อมูลไปต่างประเทศ ผู้ใช้อาจหยุดใช้บริการและลบบัญชีได้ อย่างไรก็ตาม หากไม่ส่งข้อมูลไปต่างประเทศ จะให้บริการไม่ได้</li></ul>
+<h2>6. โฆษณาและรหัสโฆษณา</h2>
+<ul><li>บริการแสดงโฆษณาแบนเนอร์และโฆษณาแบบมีรางวัลผ่าน Google AdMob Google อาจใช้รหัสโฆษณาเพื่อแสดงโฆษณาตามความสนใจหรือวัดผลโฆษณา</li><li>ผู้ใช้สามารถรีเซ็ตหรือลบ ID โฆษณา และปิดโฆษณาตามความสนใจได้ที่ <strong>การตั้งค่า &gt; Google &gt; โฆษณา</strong> ของเครื่อง</li><li>ดูวิธีที่ Google ใช้ข้อมูลได้ที่ <a href="https://policies.google.com/technologies/partner-sites">วิธีที่ Google ใช้ข้อมูลจากเว็บไซต์หรือแอปของพาร์ตเนอร์</a></li></ul>
+<h2>7. การทำลายข้อมูลส่วนบุคคล</h2>
+<ul><li>ข้อมูลส่วนบุคคลที่พ้นระยะเวลาเก็บรักษาหรือบรรลุวัตถุประสงค์แล้ว จะถูกทำลายโดยไม่ชักช้า</li><li>เมื่อผู้ใช้ทำรายการ <strong>บัญชีของฉัน &gt; ลบบัญชี</strong> ในแอป ประวัติการใช้ที่เก็บในเซิร์ฟเวอร์ (เหตุผล คำตอบจาก AI ตำแหน่ง จำนวนครั้งที่ใช้ ฯลฯ) และข้อมูลบัญชีจะถูกลบด้วยวิธีที่กู้คืนไม่ได้</li><li>ค่าตั้งที่เก็บในเครื่อง (ธีมที่ใช้ล่าสุด ผู้อนุมัติที่เลือก ประเทศและภาษาที่เลือก ฯลฯ) จะถูกล้างเมื่อออกจากระบบ ลบบัญชี หรือลบแอป</li><li>รูปที่ผู้ใช้บันทึกลงแกลเลอรีหรือแชร์ไปยังแอปอื่น ผู้ให้บริการลบให้ไม่ได้ ผู้ใช้ต้องจัดการเอง</li></ul>
+<h2>8. สิทธิ์ของผู้ใช้และผู้แทนโดยชอบธรรม และวิธีใช้สิทธิ์</h2>
+<ul><li>ผู้ใช้มีสิทธิ์ขอเข้าถึง ขอรับสำเนา ขอแก้ไข ขอลบ หรือขอให้ระงับการประมวลผลข้อมูลส่วนบุคคลของตนได้ทุกเมื่อ</li><li><strong>เข้าถึง:</strong> ดูได้ที่หน้าประวัติและหน้าบัญชีของฉันในแอป</li><li><strong>ลบ (ถอนตัว):</strong> ทำได้ทันทีที่ <strong>บัญชีของฉัน &gt; ลบบัญชี</strong> ในแอป</li><li>คำขอที่ทำในแอปไม่ได้ โปรดส่งอีเมลถึงผู้รับผิดชอบด้านการคุ้มครองข้อมูลส่วนบุคคลด้านล่าง ผู้ให้บริการจะดำเนินการโดยไม่ชักช้า</li><li>การใช้สิทธิ์อาจทำผ่านผู้แทนโดยชอบธรรมหรือผู้ได้รับมอบอำนาจก็ได้</li></ul>
+<h2>9. ข้อมูลส่วนบุคคลของเด็ก</h2>
+<ul><li>บริการนี้มุ่งสำหรับผู้ที่มีอายุ 14 ปีขึ้นไป และไม่เก็บข้อมูลส่วนบุคคลของเด็กที่อายุน้อยกว่านั้นโดยรู้ตัว หากทราบว่าเก็บข้อมูลของเด็ก จะลบโดยไม่ชักช้า</li></ul>
+<h2>10. มาตรการรักษาความปลอดภัยของข้อมูลส่วนบุคคล</h2>
+<ul><li>เข้ารหัสการสื่อสารระหว่างอุปกรณ์กับเซิร์ฟเวอร์ (HTTPS)</li><li>ผู้ใช้อ่านได้เฉพาะประวัติของตนเอง และจำกัดสิทธิ์การเข้าถึงให้ประวัติ ตำแหน่ง และจำนวนครั้งที่ใช้เขียนได้เฉพาะเซิร์ฟเวอร์</li><li>ตรวจสอบความสมบูรณ์ของแอปและอุปกรณ์ (App Check) เมื่อเรียกเซิร์ฟเวอร์ เพื่อปิดกั้นการเข้าถึงที่ผิดปกติ</li><li>บันทึกการประมวลผลของเซิร์ฟเวอร์ไม่เก็บข้อความต้นฉบับที่ผู้ใช้ป้อน</li><li>จำกัดผู้ที่เข้าถึงข้อมูลส่วนบุคคลให้น้อยที่สุด</li></ul>
+<h2>11. ข้อควรทราบเกี่ยวกับเนื้อหาที่ AI สร้าง</h2>
+<p>คำตอบของบริการเป็นเนื้อหาเพื่อความบันเทิงที่ปัญญาประดิษฐ์สร้างขึ้น ไม่ใช่การตัดสินใจของมนุษย์ และไม่ใช่คำแนะนำเฉพาะทางด้านการแพทย์ กฎหมาย หรือการเงิน เหตุผลที่ผู้ใช้ป้อนใช้เพื่อสร้างคำตอบเท่านั้น และบันทึกไว้ในหน้าประวัติของผู้ใช้</p>
+<h2>12. ผู้รับผิดชอบด้านการคุ้มครองข้อมูลส่วนบุคคลและช่องทางติดต่อ</h2>
+<div class="box">ผู้ให้บริการ: Haram &amp; Harang<br>ผู้รับผิดชอบด้านการคุ้มครองข้อมูลส่วนบุคคล: Haram &amp; Harang<br>อีเมล: black924.menew@gmail.com</div>
+<h2>13. การเปลี่ยนแปลงนโยบาย</h2>
+<p>หากเปลี่ยนแปลงนโยบายนี้ จะแจ้งในแอปหรือหน้านี้ก่อนวันมีผลอย่างน้อย 7 วัน (30 วันสำหรับการเปลี่ยนแปลงที่ไม่เป็นคุณหรือสำคัญ)</p>
+<ul><li>วันที่มีผลบังคับใช้: 10 ตุลาคม 2569 (2026-10-10)</li><li>ประวัติการแก้ไข: ฉบับแรก</li></ul>
+<footer>© 2026 Haram &amp; Harang</footer></section>
+<section class="panel" id="privacy-vi" lang="vi" role="tabpanel" hidden>
+<h1>Chính sách quyền riêng tư</h1>
+<p class="sub">Ngày có hiệu lực: 10/10/2026</p>
+<h2>1. Mục thông tin cá nhân thu thập và cách thu thập</h2>
+<div class="wrap"><table><tr><th>Phân loại</th><th>Mục thông tin</th><th>Thời điểm và cách thu thập</th></tr><tr><td>Bắt đầu không đăng nhập (ẩn danh)</td><td>Mã định danh người dùng ngẫu nhiên do Dịch vụ tạo (ID tài khoản ẩn danh Firebase)</td><td>Tự động tạo khi nhấn "Bắt đầu không cần đăng nhập"</td></tr><tr><td>Đăng nhập, liên kết bằng tài khoản Google</td><td>Địa chỉ email, họ tên (tên hiển thị), địa chỉ ảnh đại diện, mã định danh tài khoản Google</td><td>Nhận từ Google khi người dùng chọn đăng nhập Google và đồng ý</td></tr><tr><td>Lịch sử sử dụng Dịch vụ</td><td>Câu chữ lý do (lời viện cớ) người dùng nhập, quốc gia và ngôn ngữ đã chọn, chủ đề, người duyệt, mục, chế độ, câu trả lời do AI tạo (ý kiến phê duyệt, việc cần làm tiếp, chữ trên con dấu, cấp độ viện cớ), thời điểm viết, cấp bậc và số ngày có mặt theo từng chủ đề, số lượt dùng mỗi ngày, lĩnh vực quan tâm và tên lĩnh vực tự thêm, trạng thái báo cáo</td><td>Được tạo và lưu trong quá trình sử dụng Dịch vụ</td></tr><tr><td>Thông tin xác nhận đã xem quảng cáo</td><td>Thông tin xác nhận đã xem hết quảng cáo có thưởng (mã dùng một lần, mã giao dịch quảng cáo, mã định danh người dùng)</td><td>Máy chủ nhận qua xác minh phía máy chủ (SSV) của Google AdMob</td></tr><tr><td>Thiết bị và thống kê sử dụng</td><td>Sự kiện sử dụng ứng dụng (xem màn hình, chọn chủ đề, gửi, kết quả, chia sẻ, báo cáo, v.v.), kiểu thiết bị, phiên bản hệ điều hành, phiên bản ứng dụng, ngôn ngữ và quốc gia (khu vực đại khái), ID phiên bản ứng dụng</td><td>Firebase Analytics tự động thu thập</td></tr><tr><td>Thông tin lỗi</td><td>Nhật ký lỗi khi ứng dụng đóng bất thường (stack trace), thông tin trạng thái thiết bị, mã định danh cài đặt</td><td>Firebase Crashlytics tự động thu thập (không bao gồm câu chữ lý do người dùng nhập)</td></tr><tr><td>Quảng cáo</td><td>Mã nhận dạng quảng cáo (Android Advertising ID), địa chỉ IP, thông tin thiết bị, nhật ký hiển thị và nhấp quảng cáo</td><td>SDK quảng cáo Google AdMob tự động thu thập</td></tr><tr><td>Ngăn chặn sử dụng sai</td><td>Thông tin xác minh tính toàn vẹn của ứng dụng và thiết bị (kết quả đánh giá Play Integrity)</td><td>Firebase App Check tự động xác minh khi gọi máy chủ</td></tr></table></div>
+<div class="box"><strong>Thông tin không thu thập</strong><ul><li>Không thu thập số giấy tờ tùy thân, số điện thoại, địa chỉ, thông tin thanh toán, vị trí chính xác, danh bạ, ảnh và tệp.</li><li>Vui lòng không ghi thông tin cá nhân như họ tên, thông tin liên hệ, địa chỉ hoặc thông tin nhạy cảm như sức khỏe vào ô nhập lý do. Nội dung nhập có dạng số điện thoại, email, số giấy tờ tùy thân sẽ bị ứng dụng và máy chủ tự động lọc và không tiếp nhận.</li><li>Ảnh chia sẻ được tạo ngay trong thiết bị của người dùng và không được gửi lên máy chủ của Nhà cung cấp.</li></ul></div>
+<h2>2. Mục đích xử lý thông tin cá nhân</h2>
+<ul><li><strong>Cung cấp Dịch vụ:</strong> tạo câu trả lời của AI cho lý do người dùng gửi, hiển thị kết quả, lịch sử, cấp bậc, số ngày có mặt, lưu tiến độ theo chủ đề</li><li><strong>Quản lý tài khoản:</strong> nhận diện người dùng, giữ lịch sử khi đổi thiết bị hoặc cài lại ứng dụng (khi liên kết tài khoản Google), xử lý xóa tài khoản</li><li><strong>Quản lý số lượt sử dụng và ngăn chặn sử dụng sai:</strong> kiểm tra số lượt miễn phí mỗi ngày, xác nhận việc xem quảng cáo, chặn các lệnh gọi bất thường</li><li><strong>Môi trường sử dụng an toàn:</strong> chặn dấu hiệu nguy hiểm (tự làm hại bản thân, v.v.) hoặc nội dung nhập không phù hợp, xử lý báo cáo của người dùng</li><li><strong>Cải thiện Dịch vụ:</strong> phân tích thống kê sử dụng, tìm và sửa nguyên nhân lỗi</li><li><strong>Hiển thị quảng cáo:</strong> hiển thị quảng cáo biểu ngữ và quảng cáo có thưởng, đo lường hiệu quả quảng cáo</li></ul>
+<h2>3. Thời hạn lưu giữ thông tin cá nhân</h2>
+<div class="wrap"><table><tr><th>Mục</th><th>Thời hạn lưu giữ</th></tr><tr><td>Thông tin tài khoản, lịch sử sử dụng Dịch vụ (lý do, câu trả lời của AI, cấp bậc, v.v.)</td><td>Đến khi người dùng xóa tài khoản. Khi xóa tài khoản, lịch sử sử dụng và tài khoản lưu trên máy chủ sẽ được xóa ngay.</td></tr><tr><td>Nhật ký xử lý của máy chủ (log)</td><td>Không giữ nguyên văn nội dung nhập, chỉ ghi thông tin tối thiểu như độ dài và giá trị băm, và thời hạn lưu theo chính sách của Firebase (Google Cloud).</td></tr><tr><td>Thống kê sử dụng (Firebase Analytics)</td><td>Theo chính sách của Firebase (Google Analytics)</td></tr><tr><td>Thông tin lỗi (Firebase Crashlytics)</td><td>90 ngày kể từ ngày thu thập (theo chính sách của Google)</td></tr><tr><td>Thông tin liên quan quảng cáo</td><td>Google lưu giữ theo chính sách quảng cáo của Google</td></tr></table></div>
+<p>Nếu có thông tin phải lưu theo pháp luật, sẽ lưu trong thời hạn mà pháp luật đó quy định.</p>
+<h2>4. Cung cấp thông tin cá nhân cho bên thứ ba</h2>
+<p>Nhà cung cấp chỉ xử lý thông tin cá nhân của người dùng trong phạm vi đã thông báo tại Mục 1 và Mục 2, và không cung cấp cho bên thứ ba trừ khi có sự đồng ý của người dùng hoặc có căn cứ pháp luật.</p>
+<h2>5. Ủy quyền xử lý và chuyển thông tin ra nước ngoài</h2>
+<p>Dịch vụ được vận hành bằng dịch vụ đám mây và quảng cáo của Google, trong quá trình này thông tin cá nhân có thể được xử lý trên máy chủ của Google ở nước ngoài.</p>
+<div class="wrap"><table><tr><th>Bên nhận</th><th>Dịch vụ sử dụng và công việc ủy quyền</th><th>Thông tin được chuyển</th><th>Quốc gia, thời điểm, cách thức chuyển</th><th>Thời hạn lưu giữ</th></tr><tr><td>Google LLC<br><a href="https://support.google.com/policies/contact/general_privacy_form">Liên hệ Google về quyền riêng tư</a></td><td>Firebase Authentication (đăng nhập)<br>Cloud Firestore (lưu dữ liệu)<br>Cloud Functions (xử lý máy chủ)<br>Vertex AI Gemini (tạo câu trả lời của AI)<br>Firebase Analytics・Crashlytics・App Check<br>Google AdMob (quảng cáo)</td><td>Toàn bộ các mục ở Mục 1 (trong phạm vi cần thiết cho từng dịch vụ)</td><td>Hoa Kỳ và các nước khác nơi Google vận hành trung tâm dữ liệu<br>Truyền qua mạng mỗi lần sử dụng Dịch vụ<br>Hàm máy chủ: khu vực Seoul (asia-northeast3)<br>Cơ sở dữ liệu: khu vực Seoul (asia-northeast3)<br>Tạo câu trả lời AI: điểm cuối toàn cầu của Google (nơi xử lý có thể ở nước ngoài)</td><td>Giống thời hạn ở Mục 3 (đến khi hợp đồng ủy quyền chấm dứt)</td></tr></table></div>
+<ul><li>Khi tạo câu trả lời của AI, câu chữ lý do người dùng nhập được gửi đến dịch vụ AI của Google (Vertex AI). Nhà cung cấp dùng kênh trả phí dành cho doanh nghiệp; theo điều khoản của Google, nội dung gửi qua kênh này không được dùng để huấn luyện mô hình AI của Google.</li><li>Nếu không muốn chuyển thông tin ra nước ngoài, người dùng có thể ngừng sử dụng Dịch vụ và xóa tài khoản. Tuy nhiên, nếu không chuyển ra nước ngoài thì không thể cung cấp Dịch vụ.</li></ul>
+<h2>6. Quảng cáo và mã nhận dạng quảng cáo</h2>
+<ul><li>Dịch vụ hiển thị quảng cáo biểu ngữ và quảng cáo có thưởng thông qua Google AdMob. Google có thể dùng mã nhận dạng quảng cáo để hiển thị quảng cáo được cá nhân hóa hoặc đo lường hiệu quả quảng cáo.</li><li>Có thể đặt lại hoặc xóa ID quảng cáo và tắt quảng cáo cá nhân hóa tại <strong>Cài đặt &gt; Google &gt; Quảng cáo</strong> trên thiết bị.</li><li>Cách Google sử dụng thông tin xem tại <a href="https://policies.google.com/technologies/partner-sites">Cách Google sử dụng thông tin từ trang web hoặc ứng dụng của đối tác</a>.</li></ul>
+<h2>7. Hủy thông tin cá nhân</h2>
+<ul><li>Thông tin cá nhân đã hết thời hạn lưu giữ hoặc đã đạt mục đích xử lý sẽ được hủy ngay.</li><li>Khi người dùng thực hiện <strong>Tài khoản của tôi &gt; Xóa tài khoản</strong> trong ứng dụng, lịch sử sử dụng lưu trên máy chủ (lý do, câu trả lời của AI, cấp bậc, số lượt dùng, v.v.) và thông tin tài khoản sẽ bị xóa theo cách không thể khôi phục.</li><li>Các giá trị cài đặt lưu trên thiết bị (chủ đề dùng gần nhất, người duyệt đã chọn, quốc gia và ngôn ngữ đã chọn, v.v.) sẽ bị xóa khi đăng xuất, xóa tài khoản hoặc xóa ứng dụng.</li><li>Ảnh người dùng đã lưu vào thư viện hoặc chia sẻ sang ứng dụng khác thì Nhà cung cấp không thể xóa, người dùng cần tự quản lý.</li></ul>
+<h2>8. Quyền của người dùng và người đại diện hợp pháp, cách thực hiện</h2>
+<ul><li>Người dùng có thể bất cứ lúc nào yêu cầu truy cập, chỉnh sửa, xóa, hạn chế xử lý hoặc rút lại sự đồng ý đối với thông tin cá nhân của mình.</li><li><strong>Truy cập:</strong> có thể xem tại màn hình lịch sử và màn hình tài khoản của tôi trong ứng dụng.</li><li><strong>Xóa (thôi sử dụng):</strong> xử lý ngay tại <strong>Tài khoản của tôi &gt; Xóa tài khoản</strong> trong ứng dụng.</li><li>Yêu cầu khó xử lý trong ứng dụng, vui lòng gửi email cho người phụ trách bảo vệ thông tin cá nhân bên dưới. Nhà cung cấp sẽ xử lý ngay.</li><li>Việc thực hiện quyền cũng có thể thông qua người đại diện hợp pháp hoặc người được ủy quyền.</li></ul>
+<h2>9. Thông tin cá nhân của trẻ em</h2>
+<ul><li>Dịch vụ dành cho người từ đủ 14 tuổi trở lên, và không cố ý thu thập thông tin cá nhân của trẻ nhỏ hơn. Nếu biết đã thu thập thông tin của trẻ em, sẽ xóa ngay.</li></ul>
+<h2>10. Biện pháp bảo đảm an toàn thông tin cá nhân</h2>
+<ul><li>Mã hóa liên lạc giữa thiết bị và máy chủ (HTTPS).</li><li>Người dùng chỉ đọc được lịch sử của mình, và giới hạn quyền truy cập để lịch sử, cấp bậc, số lượt dùng chỉ máy chủ mới ghi được.</li><li>Xác minh tính toàn vẹn của ứng dụng và thiết bị (App Check) khi gọi máy chủ để chặn truy cập bất thường.</li><li>Nhật ký xử lý của máy chủ không giữ nguyên văn nội dung người dùng nhập.</li><li>Giới hạn tối thiểu số người được tiếp cận thông tin cá nhân.</li></ul>
+<h2>11. Lưu ý về nội dung do AI tạo</h2>
+<p>Câu trả lời của Dịch vụ là nội dung giải trí do trí tuệ nhân tạo tạo ra, không phải phán đoán của con người, cũng không phải lời khuyên chuyên môn về y tế, pháp lý, tài chính, v.v. Lý do người dùng nhập chỉ được dùng để tạo câu trả lời và được lưu trong màn hình lịch sử của người dùng.</p>
+<h2>12. Người phụ trách bảo vệ thông tin cá nhân và liên hệ</h2>
+<div class="box">Nhà cung cấp: Haram &amp; Harang<br>Người phụ trách bảo vệ thông tin cá nhân: Haram &amp; Harang<br>Email: black924.menew@gmail.com</div>
+<h2>13. Thay đổi chính sách</h2>
+<p>Khi thay đổi chính sách này, sẽ thông báo trong ứng dụng hoặc trang này trước ngày có hiệu lực ít nhất 7 ngày (30 ngày với thay đổi bất lợi hoặc quan trọng đối với người dùng).</p>
+<ul><li>Ngày có hiệu lực: 10/10/2026</li><li>Lịch sử sửa đổi: Ban hành lần đầu</li></ul>
+<footer>© 2026 Haram &amp; Harang</footer></section>
+<section class="panel" id="privacy-en" lang="en" role="tabpanel" hidden>
+<h1>Privacy Policy</h1>
+<p class="sub">Effective date: 10 October 2026</p>
+<h2>1. Personal Information We Collect and How</h2>
+<div class="wrap"><table><tr><th>Category</th><th>Items</th><th>When and how collected</th></tr><tr><td>Starting without logging in (anonymous)</td><td>A random user identifier created by the Service (Firebase anonymous account ID)</td><td>Created automatically when you tap "Start without logging in"</td></tr><tr><td>Logging in or linking with a Google account</td><td>Email address, name (display name), profile photo URL, Google account identifier</td><td>Provided by Google when the user chooses Google login and consents</td></tr><tr><td>Service usage records</td><td>The reason (excuse) text the user entered, the selected country and language, theme, approver, category, mode, the reply created by the AI (remarks, next step, stamp text, excuse level), date and time written, rank and days attended per theme, number of uses per day, interest categories and custom category names, whether reported</td><td>Created and stored while the Service is used</td></tr><tr><td>Ad-watching verification information</td><td>Information confirming that a rewarded ad was watched to the end (one-time token, ad transaction ID, user identifier)</td><td>Received by the server through Google AdMob server-side verification (SSV)</td></tr><tr><td>Device and usage statistics</td><td>App usage events (screen views, theme selection, submission, result, share, report, etc.), device model, OS version, app version, language and country (approximate region), app instance ID</td><td>Collected automatically by Firebase Analytics</td></tr><tr><td>Error information</td><td>Error logs when the app crashes (stack traces), device state information, installation identifier</td><td>Collected automatically by Firebase Crashlytics (does not include the reason text the user entered)</td></tr><tr><td>Advertising</td><td>Advertising identifier (Android Advertising ID), IP address, device information, ad impression and click records</td><td>Collected automatically by the Google AdMob ad SDK</td></tr><tr><td>Preventing misuse</td><td>App and device integrity verification information (Play Integrity verdict)</td><td>Verified automatically by Firebase App Check when calling the server</td></tr></table></div>
+<div class="box"><strong>Information we do not collect</strong><ul><li>We do not collect ID numbers, phone numbers, addresses, payment information, precise location, contacts, photos or files.</li><li>Please do not write personal information such as names, contact details or addresses, or sensitive information such as health, in the reason field. Input in the form of phone numbers, emails or ID numbers is automatically filtered by the app and server and is not accepted.</li><li>Images for sharing are created within the user's device and are not sent to the Operator's servers.</li></ul></div>
+<h2>2. Purposes of Processing</h2>
+<ul><li><strong>Providing the Service:</strong> generating AI replies to the reasons users submit, showing results, history, ranks and days attended, and saving progress per theme</li><li><strong>Account management:</strong> identifying users, keeping records when the device is changed or the app is reinstalled (when a Google account is linked), and handling account deletion</li><li><strong>Managing usage and preventing misuse:</strong> checking the daily free uses, verifying ad viewing, and blocking abnormal calls</li><li><strong>A safe environment:</strong> blocking danger signals (such as self-harm) and inappropriate input, and handling user reports</li><li><strong>Improving the Service:</strong> analysing usage statistics and finding and fixing the causes of errors</li><li><strong>Serving ads:</strong> showing banner and rewarded ads and measuring ad performance</li></ul>
+<h2>3. Retention Period</h2>
+<div class="wrap"><table><tr><th>Item</th><th>Retention period</th></tr><tr><td>Account information and service usage records (reasons, AI replies, ranks, etc.)</td><td>Until the user deletes the account. When the account is deleted, the usage records and account stored on the server are deleted without delay.</td></tr><tr><td>Server processing records (logs)</td><td>The original input is not kept; only minimal information such as length and a hash is recorded, and the retention period follows the policies of Firebase (Google Cloud).</td></tr><tr><td>Usage statistics (Firebase Analytics)</td><td>Follows the policies of Firebase (Google Analytics)</td></tr><tr><td>Error information (Firebase Crashlytics)</td><td>90 days from collection (according to Google's policy)</td></tr><tr><td>Ad-related information</td><td>Retained by Google according to Google's advertising policies</td></tr></table></div>
+<p>Where information must be retained under applicable law, it is kept for the period that law sets.</p>
+<h2>4. Disclosure to Third Parties</h2>
+<p>The Operator processes users' personal information only within the scope stated in Articles 1 and 2, and does not disclose it to third parties except with the user's consent or where the law requires or permits.</p>
+<h2>5. Outsourcing and Overseas Transfer</h2>
+<p>The Service operates using Google's cloud and advertising services, and in this process personal information may be processed on Google's servers located overseas.</p>
+<div class="wrap"><table><tr><th>Recipient</th><th>Services used and outsourced tasks</th><th>Items transferred</th><th>Countries, timing and method</th><th>Retention</th></tr><tr><td>Google LLC<br><a href="https://support.google.com/policies/contact/general_privacy_form">Google privacy contact</a></td><td>Firebase Authentication (login)<br>Cloud Firestore (data storage)<br>Cloud Functions (server processing)<br>Vertex AI Gemini (generating AI replies)<br>Firebase Analytics・Crashlytics・App Check<br>Google AdMob (ads)</td><td>All items in Article 1 (to the extent needed for each service)</td><td>The United States and other countries where Google operates data centres<br>Sent over the network each time the Service is used<br>Server functions: Seoul region (asia-northeast3)<br>Database: Seoul region (asia-northeast3)<br>AI reply generation: Google's global endpoint (processing may take place overseas)</td><td>Same as the retention period in Article 3 (until the outsourcing agreement ends)</td></tr></table></div>
+<ul><li>When an AI reply is created, the reason text the user entered is sent to Google's AI service (Vertex AI). The Operator uses the paid enterprise route, and under Google's terms, content sent through this route is not used to train Google's AI models.</li><li>A user who does not want overseas transfer may stop using the Service and delete the account. However, the Service cannot be provided without overseas transfer.</li></ul>
+<h2>6. Advertising and Advertising Identifiers</h2>
+<ul><li>The Service shows banner ads and rewarded ads through Google AdMob. Google may use advertising identifiers to serve personalised ads or measure ad performance.</li><li>You can reset or delete your advertising ID and turn off personalised ads under <strong>Settings &gt; Google &gt; Ads</strong> on your device.</li><li>How Google uses information is explained in <a href="https://policies.google.com/technologies/partner-sites">How Google uses information from sites or apps that use our services</a>.</li></ul>
+<h2>7. Destruction of Personal Information</h2>
+<ul><li>Personal information whose retention period has passed or whose purpose has been achieved is destroyed without delay.</li><li>When a user runs <strong>My account &gt; Delete account</strong> in the app, the usage records stored on the server (reasons, AI replies, ranks, number of uses, etc.) and the account information are deleted in a way that cannot be restored.</li><li>Settings stored on the device (the last theme used, the selected approver, the selected country and language, etc.) are cleared when you log out, delete the account or delete the app.</li><li>Images the user saved to the gallery or shared to other apps cannot be deleted by the Operator, so users must manage them themselves.</li></ul>
+<h2>8. Rights of Users and Legal Representatives, and How to Exercise Them</h2>
+<ul><li>Users may at any time request access to, correction of, or deletion of their personal information, or withdraw consent or ask us to stop processing it.</li><li><strong>Access:</strong> you can view it on the history screen and the My account screen in the app.</li><li><strong>Deletion (leaving the Service):</strong> you can do this right away from <strong>My account &gt; Delete account</strong> in the app.</li><li>For requests that are difficult to handle in the app, please email the person responsible for personal information protection below. The Operator will act without delay.</li><li>Rights may also be exercised through a legal representative or an authorised person.</li></ul>
+<h2>9. Children's Personal Information</h2>
+<ul><li>The Service is intended for people who are 14 years of age or older, and we do not knowingly collect personal information from younger children. If we learn that a child's information has been collected, we will delete it without delay.</li></ul>
+<h2>10. Security Measures</h2>
+<ul><li>Communication between the device and the server is encrypted (HTTPS).</li><li>Users can read only their own records, and access rights are restricted so that records, ranks and usage counts can be written only by the server.</li><li>The integrity of the app and device is verified (App Check) when the server is called, to block abnormal access.</li><li>The original text entered by the user is not kept in server processing records.</li><li>The number of people who handle personal information is kept to a minimum.</li></ul>
+<h2>11. About AI-Generated Content</h2>
+<p>The Service's replies are entertainment content generated by artificial intelligence, not a human judgement, and not professional medical, legal or financial advice. The reasons a user enters are used only to generate replies and are saved on the user's history screen.</p>
+<h2>12. Person Responsible for Personal Information Protection and Contact</h2>
+<div class="box">Operator: Haram &amp; Harang<br>Person responsible for personal information protection: Haram &amp; Harang<br>Email: black924.menew@gmail.com</div>
+<h2>13. Changes to This Policy</h2>
+<p>If this policy is changed, we will announce it in the app or on this page at least 7 days before the effective date (30 days for changes that are unfavourable to users or significant).</p>
+<ul><li>Effective date: 10 October 2026</li><li>Revision history: Initial version</li></ul>
+<footer>© 2026 Haram &amp; Harang</footer></section>
+<section class="panel" id="privacy-zh-sg" lang="zh-Hans" role="tabpanel" hidden>
+<h1>隐私政策</h1>
+<p class="sub">生效日：2026 年 10 月 10 日</p>
+<h2>1. 搜集的个人数据项目与搜集方式</h2>
+<div class="wrap"><table><tr><th>类别</th><th>项目</th><th>搜集时点・方式</th></tr><tr><td>不登录开始(匿名)</td><td>由服务产生的任意用户识别码(Firebase 匿名帐号 ID)</td><td>按下「不登录直接开始」时自动产生</td></tr><tr><td>以 Google 帐号登录・链接</td><td>电子邮件地址、姓名(显示名称)、大头贴网址、Google 帐号识别码</td><td>用户选择 Google 登录并同意时，由 Google 提供</td></tr><tr><td>服务使用纪录</td><td>用户输入的事由(借口)文本、所选的国家与语言、主题・签核人・领域・模式、AI 产生的回复(签核意见・下一步・印章文本・借口等级)、撰写时间、各主题的职级与出席天数、每日使用次数、关注领域与自行添加的领域名称、是否检举</td><td>于使用服务的过程中产生并保存</td></tr><tr><td>广告观看确认信息</td><td>确认已看完奖励广告的信息(一次性权杖、广告交易 ID、用户识别码)</td><td>由服务器通过 Google AdMob 的服务器端验证(SSV)接收</td></tr><tr><td>设备・使用统计</td><td>App 使用事件(画面浏览、选择主题、提交・结果・分享・检举等)、设备型号、操作系统版本、App 版本、语言与国家(大略地区)、App 运行个体 ID</td><td>Firebase Analytics 自动搜集</td></tr><tr><td>错误信息</td><td>App 异常终止时的错误纪录(堆栈追踪)、设备状态信息、安装识别码</td><td>Firebase Crashlytics 自动搜集(不含用户输入的事由文本)</td></tr><tr><td>广告</td><td>广告识别码(Android 广告 ID)、IP 地址、设备信息、广告浏览与点击纪录</td><td>Google AdMob 广告 SDK 自动搜集</td></tr><tr><td>防止不当使用</td><td>App 与设备的完整性验证信息(Play Integrity 判定结果)</td><td>Firebase App Check 于调用服务器时自动验证</td></tr></table></div>
+<div class="box"><strong>不搜集的信息</strong><ul><li>不搜集身分证字号等证件号码、电话号码、地址、付款信息、精确位置、联系人、照片与文件。</li><li>请勿在事由输入栏填写姓名、联系方式、地址等个人数据或健康等敏感信息。电话号码、电子邮件、证件号码形式的输入，App 与服务器会自动拦截而不受理。</li><li>分享用图片在用户的设备内制作，不会发送到营运者的服务器。</li></ul></div>
+<h2>2. 个人数据的处理目的</h2>
+<ul><li><strong>提供服务：</strong>针对用户所提事由产生 AI 回复、显示结果・纪录・职级・出席天数、保存各主题的进度</li><li><strong>帐号管理：</strong>识别用户、更换设备或重新安装 App 时维持纪录(链接 Google 帐号时)、处理删除帐号</li><li><strong>管理使用次数与防止不当使用：</strong>确认每日免费使用次数、确认广告观看、拦截异常调用</li><li><strong>安全的使用环境：</strong>拦截危险信号(自伤等)或不适当的输入、处理用户检举</li><li><strong>改善服务：</strong>分析使用统计、查明并修正错误原因</li><li><strong>刊登广告：</strong>显示横幅广告与奖励广告、衡量广告成效</li></ul>
+<h2>3. 个人数据的保存期间</h2>
+<div class="wrap"><table><tr><th>项目</th><th>保存期间</th></tr><tr><td>帐号信息、服务使用纪录(事由・AI 回复・职级等)</td><td>至用户删除帐号为止。删除帐号后，将立即删除保存在服务器上的使用纪录与帐号。</td></tr><tr><td>服务器处理纪录(日志)</td><td>不保留输入原文，仅记录长度与哈希值等最少信息，保存期间依 Firebase(Google Cloud)的政策。</td></tr><tr><td>使用统计(Firebase Analytics)</td><td>依 Firebase(Google Analytics)的政策</td></tr><tr><td>错误信息(Firebase Crashlytics)</td><td>自搜集日起 90 日(依 Google 政策)</td></tr><tr><td>广告相关信息</td><td>依 Google 广告政策由 Google 保存</td></tr></table></div>
+<p>依相关法令须保存的信息，于该法令所定期间内保存。</p>
+<h2>4. 个人数据的第三人提供</h2>
+<p>营运者仅在第1条与第2条所告知的范围内处理用户的个人数据；除经用户同意或有法令依据外，不向第三人提供。</p>
+<h2>5. 委托处理与国际传输</h2>
+<p>本服务使用 Google 的云端与广告服务营运，在此过程中个人数据可能在位于境外的 Google 服务器处理。</p>
+<div class="wrap"><table><tr><th>接收者</th><th>使用服务与委托事项</th><th>传输项目</th><th>传输国家・时点・方式</th><th>保存期间</th></tr><tr><td>Google LLC<br><a href="https://support.google.com/policies/contact/general_privacy_form">Google 隐私权咨询</a></td><td>Firebase Authentication(登录)<br>Cloud Firestore(数据保存)<br>Cloud Functions(服务器处理)<br>Vertex AI Gemini(产生 AI 回复)<br>Firebase Analytics・Crashlytics・App Check<br>Google AdMob(广告)</td><td>第1条所列项目之全部(依各服务所需范围)</td><td>美国等 Google 营运数据中心的国家<br>每次使用服务时通过网络传输<br>服务器函数：首尔区域(asia-northeast3)<br>数据库：首尔区域(asia-northeast3)<br>产生 AI 回复：Google 全球端点(处理地点可能在境外)</td><td>与第3条的保存期间相同(至委托契约终止)</td></tr></table></div>
+<ul><li>产生 AI 回复时，用户输入的事由文本会发送到 Google 的 AI 服务(Vertex AI)。营运者使用付费的企业级路径，依 Google 条款，经此路径发送的内容不会用于训练 Google 的 AI 模型。</li><li>用户若不希望传输至境外，得停止使用服务并删除帐号。但没有境外传输就无法提供本服务。</li></ul>
+<h2>6. 广告与广告识别码</h2>
+<ul><li>本服务通过 Google AdMob 显示横幅广告与奖励广告。Google 可能使用广告识别码等提供个人化广告或衡量广告成效。</li><li>可在设备的<strong>设置 &gt; Google &gt; 广告</strong>重设或删除广告 ID，并关闭个人化广告。</li><li>Google 使用信息的方式，请见<a href="https://policies.google.com/technologies/partner-sites">Google 合作伙伴网站的信息使用说明</a>。</li></ul>
+<h2>7. 个人数据的销毁</h2>
+<ul><li>保存期间届满或处理目的已达成的个人数据，将立即销毁。</li><li>用户于 App 运行<strong>我的帐号 &gt; 删除帐号</strong>后，保存在服务器上的使用纪录(事由・AI 回复・职级・使用次数等)与帐号信息将以无法复原的方式删除。</li><li>保存在设备上的设置值(最后使用的主题、所选签核人、所选国家与语言等)将于注销・删除帐号时或删除 App 时清除。</li><li>用户保存到图库或分享到其他 App 的图片，营运者无法删除，请用户自行管理。</li></ul>
+<h2>8. 用户与法定代理人的权利及行使方式</h2>
+<ul><li>用户得随时请求查找或阅览、制给拷贝本、补充或更正、停止搜集处理利用及删除自己的个人数据。</li><li><strong>查阅：</strong>可在 App 的纪录画面与我的帐号画面查看。</li><li><strong>删除(退出)：</strong>可于 App 的<strong>我的帐号 &gt; 删除帐号</strong>直接处理。</li><li>无法在 App 内处理的请求，请以电子邮件寄给下方的个人数据保护负责人，营运者将立即处理。</li><li>权利的行使亦得通过法定代理人或受委任之人进行。</li></ul>
+<h2>9. 儿童的个人数据</h2>
+<ul><li>本服务以年满 14 岁为对象，不会在明知的情况下搜集更年幼儿童的个人数据。得知搜集到儿童数据时，将立即删除。</li></ul>
+<h2>10. 个人数据的安全维护措施</h2>
+<ul><li>设备与服务器之间的通信加密(HTTPS)。</li><li>用户只能读取自己的纪录，并限制访问权限，使纪录・职级・使用次数只有服务器能写入。</li><li>调用服务器时验证 App 与设备的完整性(App Check)，拦截异常访问。</li><li>服务器处理纪录不保留用户输入的原文。</li><li>将接触个人数据的人员限制在最少。</li></ul>
+<h2>11. 关于 AI 产生的内容</h2>
+<p>本服务的回复为人工智能产生的娱乐内容，并非人的判断，亦非医疗、法律、财务等专业建议。用户输入的事由仅用于产生回复，并保存在用户的纪录画面中。</p>
+<h2>12. 个人数据保护负责人与联系方式</h2>
+<div class="box">运营者：Haram &amp; Harang<br>个人资料保护负责人：Haram &amp; Harang<br>电子邮件：black924.menew@gmail.com</div>
+<h2>13. 政策的变更</h2>
+<p>变更本政策时，将于生效日前至少 7 日(对用户不利或重大的变更为 30 日前)，于 App 或本页面告知。</p>
+<ul><li>生效日：2026 年 10 月 10 日</li><li>修订纪录：首次制定</li></ul>
+<footer>© 2026 Haram &amp; Harang</footer></section>
+<section class="panel" id="privacy-ms" lang="ms" role="tabpanel" hidden>
+<h1>Dasar Privasi</h1>
+<p class="sub">Tarikh berkuat kuasa: 10 Oktober 2026</p>
+<h2>1. Maklumat Peribadi yang Dikumpul dan Cara Pengumpulan</h2>
+<div class="wrap"><table><tr><th>Kategori</th><th>Item</th><th>Masa dan cara pengumpulan</th></tr><tr><td>Bermula tanpa log masuk (tanpa nama)</td><td>Pengecam pengguna rawak yang dicipta oleh Perkhidmatan (ID akaun tanpa nama Firebase)</td><td>Dicipta secara automatik apabila anda mengetik "Mula tanpa log masuk"</td></tr><tr><td>Log masuk atau memautkan dengan akaun Google</td><td>Alamat e-mel, nama (nama paparan), URL gambar profil, pengecam akaun Google</td><td>Diberikan oleh Google apabila pengguna memilih log masuk Google dan bersetuju</td></tr><tr><td>Rekod penggunaan Perkhidmatan</td><td>Teks sebab (alasan) yang dimasukkan pengguna, negara dan bahasa yang dipilih, tema, pelulus, kategori, mod, jawapan yang dihasilkan AI (ulasan kelulusan, langkah seterusnya, teks cop, tahap alasan), tarikh dan masa penulisan, pangkat dan hari kehadiran mengikut tema, bilangan penggunaan sehari, kategori minat dan nama kategori tambahan sendiri, status laporan</td><td>Dicipta dan disimpan semasa Perkhidmatan digunakan</td></tr><tr><td>Maklumat pengesahan tontonan iklan</td><td>Maklumat yang mengesahkan iklan berganjaran ditonton sehingga tamat (token sekali guna, ID transaksi iklan, pengecam pengguna)</td><td>Diterima oleh pelayan melalui pengesahan sisi pelayan (SSV) Google AdMob</td></tr><tr><td>Peranti dan statistik penggunaan</td><td>Peristiwa penggunaan aplikasi (paparan skrin, pemilihan tema, penghantaran, keputusan, perkongsian, laporan, dsb.), model peranti, versi OS, versi aplikasi, bahasa dan negara (kawasan anggaran), ID instance aplikasi</td><td>Dikumpul secara automatik oleh Firebase Analytics</td></tr><tr><td>Maklumat ralat</td><td>Log ralat apabila aplikasi ranap (jejak tindanan), maklumat keadaan peranti, pengecam pemasangan</td><td>Dikumpul secara automatik oleh Firebase Crashlytics (tidak termasuk teks sebab yang dimasukkan pengguna)</td></tr><tr><td>Pengiklanan</td><td>Pengecam pengiklanan (Android Advertising ID), alamat IP, maklumat peranti, rekod paparan dan klik iklan</td><td>Dikumpul secara automatik oleh SDK iklan Google AdMob</td></tr><tr><td>Mencegah salah guna</td><td>Maklumat pengesahan integriti aplikasi dan peranti (keputusan Play Integrity)</td><td>Disahkan secara automatik oleh Firebase App Check semasa memanggil pelayan</td></tr></table></div>
+<div class="box"><strong>Maklumat yang tidak dikumpul</strong><ul><li>Kami tidak mengumpul nombor pengenalan, nombor telefon, alamat, maklumat pembayaran, lokasi tepat, kenalan, gambar atau fail.</li><li>Sila jangan tulis maklumat peribadi seperti nama, maklumat perhubungan atau alamat, atau maklumat sensitif seperti kesihatan, dalam ruang sebab. Input dalam bentuk nombor telefon, e-mel atau nombor pengenalan ditapis secara automatik oleh aplikasi dan pelayan dan tidak diterima.</li><li>Imej untuk dikongsi dicipta dalam peranti pengguna dan tidak dihantar ke pelayan Pengendali.</li></ul></div>
+<h2>2. Tujuan Pemprosesan</h2>
+<ul><li><strong>Menyediakan Perkhidmatan:</strong> menjana jawapan AI kepada sebab yang dihantar pengguna, memaparkan keputusan, sejarah, pangkat dan hari kehadiran, serta menyimpan kemajuan mengikut tema</li><li><strong>Pengurusan akaun:</strong> mengenal pasti pengguna, mengekalkan rekod apabila peranti ditukar atau aplikasi dipasang semula (apabila akaun Google dipautkan), dan mengendalikan pemadaman akaun</li><li><strong>Menguruskan penggunaan dan mencegah salah guna:</strong> menyemak penggunaan percuma harian, mengesahkan tontonan iklan, dan menyekat panggilan tidak normal</li><li><strong>Persekitaran yang selamat:</strong> menyekat isyarat bahaya (seperti mencederakan diri) dan input yang tidak sesuai, serta mengendalikan laporan pengguna</li><li><strong>Menambah baik Perkhidmatan:</strong> menganalisis statistik penggunaan dan mencari serta membetulkan punca ralat</li><li><strong>Memaparkan iklan:</strong> memaparkan iklan sepanduk dan iklan berganjaran serta mengukur prestasi iklan</li></ul>
+<h2>3. Tempoh Pengekalan</h2>
+<div class="wrap"><table><tr><th>Item</th><th>Tempoh pengekalan</th></tr><tr><td>Maklumat akaun dan rekod penggunaan Perkhidmatan (sebab, jawapan AI, pangkat, dsb.)</td><td>Sehingga pengguna memadam akaun. Apabila akaun dipadam, rekod penggunaan dan akaun yang disimpan pada pelayan dipadam tanpa lengah.</td></tr><tr><td>Rekod pemprosesan pelayan (log)</td><td>Teks asal input tidak disimpan; hanya maklumat minimum seperti panjang dan hash direkodkan, dan tempoh pengekalan mengikut dasar Firebase (Google Cloud).</td></tr><tr><td>Statistik penggunaan (Firebase Analytics)</td><td>Mengikut dasar Firebase (Google Analytics)</td></tr><tr><td>Maklumat ralat (Firebase Crashlytics)</td><td>90 hari dari tarikh pengumpulan (mengikut dasar Google)</td></tr><tr><td>Maklumat berkaitan iklan</td><td>Disimpan oleh Google mengikut dasar pengiklanan Google</td></tr></table></div>
+<p>Jika terdapat maklumat yang mesti disimpan di bawah undang-undang, ia disimpan untuk tempoh yang ditetapkan oleh undang-undang itu.</p>
+<h2>4. Pendedahan kepada Pihak Ketiga</h2>
+<p>Pengendali memproses maklumat peribadi pengguna hanya dalam skop yang dinyatakan dalam Perkara 1 dan 2, dan tidak mendedahkannya kepada pihak ketiga kecuali dengan persetujuan pengguna atau apabila undang-undang memerlukan atau membenarkan.</p>
+<h2>5. Penyumberluaran dan Pemindahan ke Luar Negara</h2>
+<p>Perkhidmatan beroperasi menggunakan perkhidmatan awan dan pengiklanan Google, dan dalam proses ini maklumat peribadi mungkin diproses pada pelayan Google yang terletak di luar negara.</p>
+<div class="wrap"><table><tr><th>Penerima</th><th>Perkhidmatan yang digunakan dan tugas yang disumberluar</th><th>Item yang dipindahkan</th><th>Negara, masa dan cara</th><th>Pengekalan</th></tr><tr><td>Google LLC<br><a href="https://support.google.com/policies/contact/general_privacy_form">Hubungi Google tentang privasi</a></td><td>Firebase Authentication (log masuk)<br>Cloud Firestore (penyimpanan data)<br>Cloud Functions (pemprosesan pelayan)<br>Vertex AI Gemini (menjana jawapan AI)<br>Firebase Analytics・Crashlytics・App Check<br>Google AdMob (iklan)</td><td>Semua item dalam Perkara 1 (setakat yang diperlukan bagi setiap perkhidmatan)</td><td>Amerika Syarikat dan negara lain tempat Google mengendalikan pusat data<br>Dihantar melalui rangkaian setiap kali Perkhidmatan digunakan<br>Fungsi pelayan: wilayah Seoul (asia-northeast3)<br>Pangkalan data: wilayah Seoul (asia-northeast3)<br>Penjanaan jawapan AI: titik akhir global Google (pemprosesan mungkin berlaku di luar negara)</td><td>Sama seperti tempoh pengekalan dalam Perkara 3 (sehingga perjanjian penyumberluaran tamat)</td></tr></table></div>
+<ul><li>Apabila jawapan AI dijana, teks sebab yang dimasukkan pengguna dihantar kepada perkhidmatan AI Google (Vertex AI). Pengendali menggunakan laluan perusahaan berbayar, dan di bawah terma Google, kandungan yang dihantar melalui laluan ini tidak digunakan untuk melatih model AI Google.</li><li>Pengguna yang tidak mahu pemindahan ke luar negara boleh berhenti menggunakan Perkhidmatan dan memadam akaun. Namun, Perkhidmatan tidak dapat disediakan tanpa pemindahan ke luar negara.</li></ul>
+<h2>6. Pengiklanan dan Pengecam Pengiklanan</h2>
+<ul><li>Perkhidmatan memaparkan iklan sepanduk dan iklan berganjaran melalui Google AdMob. Google mungkin menggunakan pengecam pengiklanan untuk memaparkan iklan peribadi atau mengukur prestasi iklan.</li><li>Anda boleh menetapkan semula atau memadam ID pengiklanan dan mematikan iklan peribadi di bawah <strong>Tetapan &gt; Google &gt; Iklan</strong> pada peranti anda.</li><li>Cara Google menggunakan maklumat dijelaskan di <a href="https://policies.google.com/technologies/partner-sites">Cara Google menggunakan maklumat daripada tapak atau aplikasi rakan kongsi</a>.</li></ul>
+<h2>7. Pemusnahan Maklumat Peribadi</h2>
+<ul><li>Maklumat peribadi yang tempoh pengekalannya telah tamat atau tujuannya telah dicapai dimusnahkan tanpa lengah.</li><li>Apabila pengguna menjalankan <strong>Akaun saya &gt; Padam akaun</strong> dalam aplikasi, rekod penggunaan yang disimpan pada pelayan (sebab, jawapan AI, pangkat, bilangan penggunaan, dsb.) dan maklumat akaun dipadam dengan cara yang tidak boleh dipulihkan.</li><li>Tetapan yang disimpan pada peranti (tema yang terakhir digunakan, pelulus yang dipilih, negara dan bahasa yang dipilih, dsb.) dikosongkan apabila anda log keluar, memadam akaun atau memadam aplikasi.</li><li>Imej yang disimpan pengguna ke galeri atau dikongsi ke aplikasi lain tidak dapat dipadam oleh Pengendali, jadi pengguna perlu menguruskannya sendiri.</li></ul>
+<h2>8. Hak Pengguna dan Wakil Sah serta Cara Menggunakannya</h2>
+<ul><li>Pengguna boleh pada bila-bila masa meminta akses kepada, pembetulan, atau pemadaman maklumat peribadi mereka, atau menarik balik persetujuan atau meminta kami berhenti memprosesnya.</li><li><strong>Akses:</strong> anda boleh melihatnya pada skrin sejarah dan skrin Akaun saya dalam aplikasi.</li><li><strong>Pemadaman (berhenti menggunakan Perkhidmatan):</strong> anda boleh melakukannya serta-merta melalui <strong>Akaun saya &gt; Padam akaun</strong> dalam aplikasi.</li><li>Bagi permintaan yang sukar dikendalikan dalam aplikasi, sila e-mel orang yang bertanggungjawab atas perlindungan maklumat peribadi di bawah. Pengendali akan bertindak tanpa lengah.</li><li>Hak juga boleh dilaksanakan melalui wakil sah atau orang yang diberi kuasa.</li></ul>
+<h2>9. Maklumat Peribadi Kanak-kanak</h2>
+<ul><li>Perkhidmatan ditujukan kepada orang yang berumur 14 tahun ke atas, dan kami tidak dengan sengaja mengumpul maklumat peribadi kanak-kanak yang lebih muda. Jika kami mengetahui maklumat kanak-kanak telah dikumpul, kami akan memadamnya tanpa lengah.</li></ul>
+<h2>10. Langkah Keselamatan</h2>
+<ul><li>Komunikasi antara peranti dan pelayan disulitkan (HTTPS).</li><li>Pengguna hanya boleh membaca rekod sendiri, dan hak akses dihadkan supaya rekod, pangkat dan bilangan penggunaan hanya boleh ditulis oleh pelayan.</li><li>Integriti aplikasi dan peranti disahkan (App Check) apabila pelayan dipanggil, untuk menyekat akses tidak normal.</li><li>Teks asal yang dimasukkan pengguna tidak disimpan dalam rekod pemprosesan pelayan.</li><li>Bilangan orang yang mengendalikan maklumat peribadi dihadkan kepada yang minimum.</li></ul>
+<h2>11. Mengenai Kandungan Janaan AI</h2>
+<p>Jawapan Perkhidmatan ialah kandungan hiburan yang dijana oleh kecerdasan buatan, bukan pertimbangan manusia, dan bukan nasihat profesional perubatan, undang-undang atau kewangan. Sebab yang dimasukkan pengguna hanya digunakan untuk menjana jawapan dan disimpan pada skrin sejarah pengguna.</p>
+<h2>12. Orang yang Bertanggungjawab atas Perlindungan Maklumat Peribadi dan Hubungan</h2>
+<div class="box">Pengendali: Haram &amp; Harang<br>Orang yang bertanggungjawab atas perlindungan maklumat peribadi: Haram &amp; Harang<br>E-mel: black924.menew@gmail.com</div>
+<h2>13. Perubahan Dasar Ini</h2>
+<p>Jika dasar ini diubah, kami akan mengumumkannya dalam aplikasi atau laman ini sekurang-kurangnya 7 hari sebelum tarikh berkuat kuasa (30 hari bagi perubahan yang tidak menguntungkan pengguna atau yang penting).</p>
+<ul><li>Tarikh berkuat kuasa: 10 Oktober 2026</li><li>Sejarah semakan: Versi awal</li></ul>
+<footer>© 2026 Haram &amp; Harang</footer></section>
+</main>
+<script>
+(function () {
+  var ids = ['ko', 'ja', 'zh-tw', 'th', 'vi', 'en', 'zh-sg', 'ms'];
+  var map = { ko: 'ko', ja: 'ja', th: 'th', vi: 'vi', ms: 'ms', id: 'ms', en: 'en' };
+  function pick() {
+    var h = (location.hash || '').replace('#', '');
+    if (ids.indexOf(h) >= 0) return h;
+    try { var s = localStorage.getItem('legal-lang'); if (s && ids.indexOf(s) >= 0) return s; } catch (e) {}
+    var l = (navigator.language || 'en').toLowerCase();
+    if (l.indexOf('zh') === 0) return (/hant|tw|hk|mo/.test(l)) ? 'zh-tw' : 'zh-sg';
+    return map[l.split('-')[0]] || 'en';
+  }
+  function show(id, push) {
+    ids.forEach(function (i) {
+      var p = document.getElementById('privacy-' + i), b = document.getElementById('tab-' + i);
+      p.hidden = (i !== id); b.setAttribute('aria-selected', i === id ? 'true' : 'false'); b.tabIndex = (i === id) ? 0 : -1;
+    });
+    document.documentElement.lang = document.getElementById('privacy-' + id).getAttribute('lang');
+    try { localStorage.setItem('legal-lang', id); } catch (e) {}
+    if (push) history.replaceState(null, '', '#' + id);
+    document.querySelectorAll('.doclinks a').forEach(function (a) { a.href = a.href.split('#')[0] + '#' + id; });
+  }
+  ids.forEach(function (i, n) {
+    var b = document.getElementById('tab-' + i);
+    b.addEventListener('click', function () { show(i, true); });
+    b.addEventListener('keydown', function (e) {
+      var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (d) { var j = ids[(n + d + ids.length) % ids.length]; show(j, true); document.getElementById('tab-' + j).focus(); }
+    });
+  });
+  window.addEventListener('hashchange', function () { show(pick(), false); });
+  show(pick(), false);
+})();
+</script>
+</body>
+</html>
