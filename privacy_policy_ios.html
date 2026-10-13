@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Floor Noise Log (iOS)</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        /* Tabs Styling */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+        }
+        .tab-button {
+            padding: 10px 15px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 14px;
+            font-weight: bold;
+            color: #888;
+            transition: 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+        .tab-button.active {
+            color: #FF9800;
+            border-bottom: 3px solid #FF9800;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        /* Policy Styling */
+        h1 { font-size: 22px; color: #111; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        h2 { font-size: 18px; color: #FF9800; margin-top: 25px; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 8px; }
+        .footer {
+            margin-top: 40px;
+            font-size: 0.85em;
+            color: #777;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        strong { color: #222; }
+        a { color: #FF9800; text-decoration: none; }
+    </style>
+</head>
+<body>
+<!--
+  iOS 전용 개인정보 처리방침. 공통 문서(privacy_policy.html)와 같은 테마를 쓰고, iOS 앱이 실제로 다루는 정보만 적었다.
+  출시 전에 아래 항목을 실제 운영 정책과 대조해 확정할 것:
+  - 시행일(2026-10-13)
+  - 서버 위치/국외 이전 문구(Firebase, Supabase 리전), 보유 기간
+  - 개인정보 보호책임자(성명/연락처)를 따로 명시할지 여부
+  - 커뮤니티/프로모션 코드/Google 로그인은 이 문서에 넣지 않았다. 해당 기능을 켜기 전에 내용을 추가해야 한다.
+-->
+
+<div class="container">
+    <div class="tabs">
+        <button class="tab-button active" data-lang="ko" onclick="showSection('ko')">한글</button>
+        <button class="tab-button" data-lang="en" onclick="showSection('en')">English</button>
+        <button class="tab-button" data-lang="ja" onclick="showSection('ja')">日本語</button>
+        <button class="tab-button" data-lang="de" onclick="showSection('de')">Deutsch</button>
+        <button class="tab-button" data-lang="fr" onclick="showSection('fr')">Français</button>
+        <button class="tab-button" data-lang="es" onclick="showSection('es')">Español</button>
+        <button class="tab-button" data-lang="pt" onclick="showSection('pt')">Português</button>
+        <button class="tab-button" data-lang="it" onclick="showSection('it')">Italiano</button>
+        <button class="tab-button" data-lang="zh" onclick="showSection('zh')">简体中文</button>
+        <button class="tab-button" data-lang="hi" onclick="showSection('hi')">हिन्दी</button>
+    </div>
+
+    <!-- ko -->
+    <div id="section-ko" class="content-section active" lang="ko">
+        <h1>개인정보 처리방침</h1>
+        <p><strong>시행일: 2026년 10월 13일</strong></p>
+        <p>'층소일지(자동 층간 소음 측정 기록기)'(이하 '앱')의 iPhone용 앱은 Haram &amp; Harang이 운영하며, 사용자의 개인정보를 소중하게 생각하고 관련 법령을 준수합니다. 이 방침은 iOS 앱이 어떤 정보를 어떤 목적으로 다루는지 설명합니다.</p>
+        <h2>1. 기기에만 저장되는 정보</h2>
+        <ul>
+            <li>마이크로 측정한 소리, 녹음 파일, 측정 기록, 메모, 설정은 이 기기에만 저장되며 서버로 전송되지 않습니다.</li>
+            <li>마이크는 사용자가 측정하는 동안에만 사용합니다. 기본값에서는 앱이 화면에 있는 동안에만 측정하며, 설정에서 "백그라운드 녹음"을 켜면 앱이 백그라운드에 있거나 화면이 잠겨 있어도 측정을 이어 갑니다. 이때 iOS가 마이크 사용 표시를 보여 줍니다.</li>
+            <li>녹음 파일은 앱 폴더에 저장되며 파일 앱에서 확인할 수 있습니다. 파일을 어디로 공유할지는 사용자가 결정합니다.</li>
+        </ul>
+        <h2>2. 서버로 전송되는 정보</h2>
+        <ul>
+            <li><strong>웹페이지에서 보기(실시간 공유)</strong> — 사용자가 켠 경우에만: 앱이 만든 기기 식별자와 측정 요약(평균·최대 소음, 이벤트 시각, 파일 이름)이 Supabase로 전송되며, 측정을 마치거나 공유를 끄면 삭제됩니다. 오디오 파일은 전송되지 않습니다.</li>
+            <li><strong>앱 설정값</strong>: 앱은 Firebase Remote Config로 설정값을 가져오며, 이때 설치 식별자가 사용됩니다.</li>
+            <li>이 iOS 앱은 별도의 분석(Analytics) 및 오류 리포팅 SDK와 푸시 알림을 사용하지 않습니다.</li>
+        </ul>
+        <h2>3. 권한</h2>
+        <ul>
+            <li><strong>마이크</strong>: 소음 측정에 필수입니다.</li>
+            <li><strong>알림</strong>(선택): 백그라운드 녹음 중 측정 상태를 알려 주는 용도로만 사용합니다.</li>
+            <li><strong>추적(ATT)</strong>(선택): 맞춤형 광고를 위해 요청하며, 허용하지 않아도 앱을 사용할 수 있습니다.</li>
+        </ul>
+        <h2>4. 광고와 추적</h2>
+        <ul>
+            <li>광고는 Google AdMob이 제공합니다. 첫 실행 시 추적 허용 여부(App Tracking Transparency)와, 해당 지역에서는 개인정보 동의(Google UMP)를 묻습니다.</li>
+            <li>허용하면 광고 식별자(IDFA)와 기기 정보가 맞춤형 광고에 사용될 수 있고, 허용하지 않으면 맞춤형이 아닌 광고가 표시됩니다.</li>
+            <li>동의는 iOS 설정 > 개인정보 보호 및 보안 > 추적에서, 해당 지역에서는 앱의 설정 > 기타에서 다시 변경할 수 있습니다.</li>
+        </ul>
+        <h2>5. 제3자 서비스</h2>
+        <ul>
+            <li>Google Firebase (Remote Config)</li>
+            <li>Google AdMob 및 User Messaging Platform (광고 및 동의 관리)</li>
+            <li>Supabase (웹페이지 실시간 공유)</li>
+            <li>각 서비스는 자체 개인정보 처리방침에 따라 정보를 처리합니다. 이 서비스들의 서버는 사용자가 거주하는 국가 밖(예: 미국)에 있을 수 있어, 정보가 국외로 이전될 수 있습니다.</li>
+        </ul>
+        <h2>6. 보관 및 삭제</h2>
+        <ul>
+            <li>기기에 저장된 정보는 앱 또는 개별 기록을 삭제하면 함께 삭제됩니다.</li>
+            <li>실시간 공유 데이터는 측정을 마치거나 공유를 끄면 삭제됩니다.</li>
+        </ul>
+        <h2>7. 아동</h2>
+        <p>이 앱은 만 14세 미만 아동을 대상으로 하지 않습니다.</p>
+        <h2>8. 이용자의 권리</h2>
+        <p>개인정보의 열람, 정정, 삭제, 처리 정지를 요청할 수 있습니다. 대부분은 앱에서 직접 할 수 있으며, 그 외에는 아래 이메일로 문의해 주세요.</p>
+        <h2>9. 방침의 변경</h2>
+        <p>방침이 바뀌면 이 페이지와 시행일을 갱신합니다.</p>
+        <div class="footer">문의: Haram &amp; Harang (black924.menew@gmail.com)</div>
+    </div>
+
+    <!-- en -->
+    <div id="section-en" class="content-section" lang="en">
+        <h1>Privacy Policy</h1>
+        <p><strong>Effective Date: October 13, 2026</strong></p>
+        <p>The iPhone version of 'Floor Noise Log' (the "App") is operated by Haram &amp; Harang. We value your privacy and comply with applicable laws. This policy explains what information the iOS app handles and why.</p>
+        <h2>1. Information that stays on your device</h2>
+        <ul>
+            <li>Sounds captured by the microphone, recordings, measurement history, notes and settings are stored only on your device and are not uploaded.</li>
+            <li>The microphone is used only while you measure. By default, measurement happens only while the app is on screen. If you turn on "Background Recording" in Settings, the app can keep measuring while it is in the background or the screen is locked; iOS shows its microphone indicator while this happens.</li>
+            <li>Recordings are kept in the app's folder, which you can see in the Files app. You decide where to share them.</li>
+        </ul>
+        <h2>2. Information sent to servers</h2>
+        <ul>
+            <li><strong>Live sharing ("View on web page")</strong>, only if you turn it on: a device identifier generated by the app and a summary of your measurement (average/maximum levels, event times, file names) are sent to Supabase and deleted when you stop measuring or turn sharing off. Audio files are never uploaded.</li>
+            <li><strong>App configuration:</strong> the app retrieves settings through Firebase Remote Config, which uses an installation identifier.</li>
+            <li>The iOS app does not use a separate analytics or crash-reporting SDK, and does not use push notifications.</li>
+        </ul>
+        <h2>3. Permissions</h2>
+        <ul>
+            <li><strong>Microphone:</strong> required to measure noise.</li>
+            <li><strong>Notifications</strong> (optional): used only to show measurement status during background recording.</li>
+            <li><strong>Tracking (ATT)</strong> (optional): requested for personalized ads; you can use the app without allowing it.</li>
+        </ul>
+        <h2>4. Advertising and tracking</h2>
+        <ul>
+            <li>Ads are provided by Google AdMob. On first launch the app asks for tracking permission (App Tracking Transparency) and, where required, for privacy consent (Google UMP).</li>
+            <li>If you allow tracking, the advertising identifier (IDFA) and device information may be used for personalized ads; otherwise non-personalized ads are shown.</li>
+            <li>You can change your choice in iOS Settings > Privacy &amp; Security > Tracking and, where applicable, in the app under Settings > Others.</li>
+        </ul>
+        <h2>5. Third-party services</h2>
+        <ul>
+            <li>Google Firebase (Remote Config)</li>
+            <li>Google AdMob and User Messaging Platform (ads and consent)</li>
+            <li>Supabase (live sharing on a web page)</li>
+            <li>Each service processes information under its own privacy policy. Their servers may be located outside your country (for example, in the United States), so information may be transferred internationally.</li>
+        </ul>
+        <h2>6. Retention and deletion</h2>
+        <ul>
+            <li>Data on your device is removed when you delete the app or individual records.</li>
+            <li>Live sharing data is deleted when you stop measuring or turn sharing off.</li>
+        </ul>
+        <h2>7. Children</h2>
+        <p>This app is not directed to children under 14.</p>
+        <h2>8. Your rights</h2>
+        <p>You can request access, correction, deletion or restriction of your information. Most of this can be done in the app; for anything else, contact us at the email below.</p>
+        <h2>9. Changes to this policy</h2>
+        <p>If this policy changes, we will update this page and the effective date.</p>
+        <div class="footer">Contact: Haram &amp; Harang (black924.menew@gmail.com)</div>
+    </div>
+
+    <!-- ja -->
+    <div id="section-ja" class="content-section" lang="ja">
+        <h1>個人情報保護方針</h1>
+        <p><strong>施行日: 2026年10月13日</strong></p>
+        <p>「騒音日記」（以下「アプリ」）のiPhone版は Haram &amp; Harang が運営しており、ユーザーの個人情報を大切に考え、関連法令を遵守します。本方針は、iOS版アプリがどのような情報をどのような目的で扱うかを説明します。</p>
+        <h2>1. 端末内にのみ保存される情報</h2>
+        <ul>
+            <li>マイクで取得した音、録音ファイル、測定履歴、メモ、設定は、この端末内にのみ保存され、アップロードされることはありません。</li>
+            <li>マイクは、ユーザーが測定している間のみ使用します。初期設定では、アプリが画面に表示されている間のみ測定します。設定で「バックグラウンド録音」をオンにすると、アプリがバックグラウンドにあるときや画面がロックされているときも測定を続けます。その間、iOSがマイク使用中の表示を行います。</li>
+            <li>録音ファイルはアプリのフォルダに保存され、「ファイル」アプリで確認できます。共有先はユーザーが決定します。</li>
+        </ul>
+        <h2>2. サーバーに送信される情報</h2>
+        <ul>
+            <li><strong>ウェブページで見る（リアルタイム共有）</strong>（オンにした場合のみ）：アプリが生成した端末識別子と測定の概要（平均・最大騒音レベル、イベント時刻、ファイル名）がSupabaseに送信され、測定を終了するか共有をオフにすると削除されます。音声ファイルは送信されません。</li>
+            <li><strong>アプリの設定値</strong>：アプリはFirebase Remote Configで設定値を取得します。このとき、インストール識別子が使用されます。</li>
+            <li>このiOSアプリは、独立した分析（Analytics）やクラッシュレポートのSDK、およびプッシュ通知を使用しません。</li>
+        </ul>
+        <h2>3. 権限</h2>
+        <ul>
+            <li><strong>マイク</strong>：騒音測定に必須です。</li>
+            <li><strong>通知</strong>（任意）：バックグラウンド録音中の測定状況を知らせるためにのみ使用します。</li>
+            <li><strong>トラッキング（ATT）</strong>（任意）：パーソナライズ広告のために許可を求めます。許可しなくてもアプリを利用できます。</li>
+        </ul>
+        <h2>4. 広告とトラッキング</h2>
+        <ul>
+            <li>広告はGoogle AdMobによって配信されます。初回起動時に、トラッキングの許可（App Tracking Transparency）と、該当する地域ではプライバシーに関する同意（Google UMP）をお尋ねします。</li>
+            <li>許可した場合、広告識別子（IDFA）と端末情報がパーソナライズ広告に使用されることがあります。許可しない場合は、パーソナライズされない広告が表示されます。</li>
+            <li>選択は、iOSの「設定」>「プライバシーとセキュリティ」>「トラッキング」、および該当する地域ではアプリの「設定」>「その他」から変更できます。</li>
+        </ul>
+        <h2>5. 第三者サービス</h2>
+        <ul>
+            <li>Google Firebase（Remote Config）</li>
+            <li>Google AdMob および User Messaging Platform（広告と同意管理）</li>
+            <li>Supabase（ウェブページでのリアルタイム共有）</li>
+            <li>各サービスは、それぞれのプライバシーポリシーに従って情報を処理します。これらのサーバーはお住まいの国の外（例：米国）にある場合があり、情報が国外に移転されることがあります。</li>
+        </ul>
+        <h2>6. 保管と削除</h2>
+        <ul>
+            <li>端末内のデータは、アプリまたは個々の記録を削除すると消去されます。</li>
+            <li>リアルタイム共有のデータは、測定を終了するか共有をオフにすると削除されます。</li>
+        </ul>
+        <h2>7. お子様</h2>
+        <p>このアプリは14歳未満のお子様を対象としていません。</p>
+        <h2>8. ユーザーの権利</h2>
+        <p>個人情報の開示、訂正、削除、処理の停止を請求できます。多くの操作はアプリ内で行えます。それ以外は下記のメールアドレスまでお問い合わせください。</p>
+        <h2>9. 本方針の変更</h2>
+        <p>本方針を変更する場合は、このページと施行日を更新します。</p>
+        <div class="footer">お問い合わせ: Haram &amp; Harang (black924.menew@gmail.com)</div>
+    </div>
+
+    <!-- de -->
+    <div id="section-de" class="content-section" lang="de">
+        <h1>Datenschutzerklärung</h1>
+        <p><strong>In Kraft seit: 13. Oktober 2026</strong></p>
+        <p>Die iPhone-Version von „Lärmprotokoll“ (die „App“) wird von Haram &amp; Harang betrieben. Wir schätzen Ihre Privatsphäre und halten uns an die geltenden Gesetze. Diese Erklärung beschreibt, welche Informationen die iOS-App verarbeitet und wozu.</p>
+        <h2>1. Daten, die auf Ihrem Gerät bleiben</h2>
+        <ul>
+            <li>Vom Mikrofon erfasste Geräusche, Aufnahmen, Messverlauf, Notizen und Einstellungen werden nur auf Ihrem Gerät gespeichert und nicht hochgeladen.</li>
+            <li>Das Mikrofon wird nur verwendet, während Sie messen. Standardmäßig wird nur gemessen, solange die App auf dem Bildschirm ist. Wenn Sie in den Einstellungen „Hintergrundaufnahme“ aktivieren, kann die App weiter messen, während sie im Hintergrund ist oder der Bildschirm gesperrt ist; iOS zeigt dabei seine Mikrofonanzeige.</li>
+            <li>Aufnahmen werden im Ordner der App gespeichert, den Sie in der Dateien-App sehen können. Sie entscheiden, wohin Sie sie teilen.</li>
+        </ul>
+        <h2>2. An Server gesendete Daten</h2>
+        <ul>
+            <li><strong>Live-Freigabe („Auf Webseite ansehen“)</strong>, nur wenn Sie sie einschalten: Eine von der App erzeugte Geräte-Kennung und eine Zusammenfassung Ihrer Messung (Durchschnitts-/Höchstwerte, Ereigniszeiten, Dateinamen) werden an Supabase gesendet und gelöscht, wenn Sie die Messung beenden oder die Freigabe ausschalten. Audiodateien werden nie hochgeladen.</li>
+            <li><strong>App-Konfiguration:</strong> Die App ruft Einstellungen über Firebase Remote Config ab; dabei wird eine Installations-Kennung verwendet.</li>
+            <li>Die iOS-App verwendet kein separates Analyse- oder Absturzbericht-SDK und keine Push-Benachrichtigungen.</li>
+        </ul>
+        <h2>3. Berechtigungen</h2>
+        <ul>
+            <li><strong>Mikrofon:</strong> erforderlich für die Lärmmessung.</li>
+            <li><strong>Mitteilungen</strong> (optional): nur, um den Messstatus bei Hintergrundaufnahme anzuzeigen.</li>
+            <li><strong>Tracking (ATT)</strong> (optional): für personalisierte Werbung angefragt; Sie können die App auch ohne Erlaubnis nutzen.</li>
+        </ul>
+        <h2>4. Werbung und Tracking</h2>
+        <ul>
+            <li>Werbung wird von Google AdMob bereitgestellt. Beim ersten Start fragt die App nach der Tracking-Erlaubnis (App Tracking Transparency) und, wo erforderlich, nach der Datenschutz-Einwilligung (Google UMP).</li>
+            <li>Wenn Sie Tracking erlauben, können die Werbe-ID (IDFA) und Geräteinformationen für personalisierte Werbung verwendet werden; andernfalls wird nicht personalisierte Werbung angezeigt.</li>
+            <li>Sie können Ihre Auswahl unter iOS-Einstellungen > Datenschutz &amp; Sicherheit > Tracking und, wo zutreffend, in der App unter Einstellungen > Sonstiges ändern.</li>
+        </ul>
+        <h2>5. Drittanbieter-Dienste</h2>
+        <ul>
+            <li>Google Firebase (Remote Config)</li>
+            <li>Google AdMob und User Messaging Platform (Werbung und Einwilligung)</li>
+            <li>Supabase (Live-Freigabe auf einer Webseite)</li>
+            <li>Jeder Dienst verarbeitet Informationen nach seiner eigenen Datenschutzerklärung. Die Server können sich außerhalb Ihres Landes befinden (z. B. in den USA), sodass Informationen international übermittelt werden können.</li>
+        </ul>
+        <h2>6. Speicherung und Löschung</h2>
+        <ul>
+            <li>Daten auf Ihrem Gerät werden entfernt, wenn Sie die App oder einzelne Aufnahmen löschen.</li>
+            <li>Daten der Live-Freigabe werden gelöscht, wenn Sie die Messung beenden oder die Freigabe ausschalten.</li>
+        </ul>
+        <h2>7. Kinder</h2>
+        <p>Diese App richtet sich nicht an Kinder unter 14 Jahren.</p>
+        <h2>8. Ihre Rechte</h2>
+        <p>Sie können Auskunft, Berichtigung, Löschung oder Einschränkung der Verarbeitung Ihrer Daten verlangen. Vieles lässt sich direkt in der App erledigen; für alles Weitere wenden Sie sich an die unten genannte E-Mail-Adresse.</p>
+        <h2>9. Änderungen</h2>
+        <p>Wenn sich diese Erklärung ändert, aktualisieren wir diese Seite und das Datum des Inkrafttretens.</p>
+        <div class="footer">Kontakt: Haram &amp; Harang (black924.menew@gmail.com)</div>
+    </div>
+
+    <!-- fr -->
+    <div id="section-fr" class="content-section" lang="fr">
+        <h1>Politique de Confidentialité</h1>
+        <p><strong>Date d'effet : 13 octobre 2026</strong></p>
+        <p>La version iPhone de « Journal du Bruit » (l'« App ») est exploitée par Haram &amp; Harang. Nous respectons votre vie privée et les lois applicables. Cette politique explique quelles informations l'app iOS traite et pourquoi.</p>
+        <h2>1. Données qui restent sur votre appareil</h2>
+        <ul>
+            <li>Les sons captés par le micro, les enregistrements, l'historique des mesures, les notes et les réglages sont stockés uniquement sur votre appareil et ne sont pas envoyés.</li>
+            <li>Le micro n'est utilisé que pendant que vous mesurez. Par défaut, la mesure n'a lieu que lorsque l'app est à l'écran. Si vous activez « Enregistrement en arrière-plan » dans les Réglages, l'app peut continuer à mesurer en arrière-plan ou écran verrouillé ; iOS affiche alors son indicateur d'utilisation du micro.</li>
+            <li>Les enregistrements sont conservés dans le dossier de l'app, visible dans l'app Fichiers. Vous décidez où les partager.</li>
+        </ul>
+        <h2>2. Données envoyées à des serveurs</h2>
+        <ul>
+            <li><strong>Partage en direct (« Voir sur une page web »)</strong>, uniquement si vous l'activez : un identifiant d'appareil généré par l'app et un résumé de votre mesure (niveaux moyen/maximal, heures des événements, noms de fichiers) sont envoyés à Supabase et supprimés lorsque vous arrêtez la mesure ou désactivez le partage. Les fichiers audio ne sont jamais envoyés.</li>
+            <li><strong>Configuration de l'app :</strong> l'app récupère des paramètres via Firebase Remote Config, qui utilise un identifiant d'installation.</li>
+            <li>L'app iOS n'utilise pas de SDK d'analyse ou de rapport de plantage distinct, ni de notifications push.</li>
+        </ul>
+        <h2>3. Autorisations</h2>
+        <ul>
+            <li><strong>Micro :</strong> nécessaire pour mesurer le bruit.</li>
+            <li><strong>Notifications</strong> (facultatif) : utilisées uniquement pour afficher l'état de la mesure pendant l'enregistrement en arrière-plan.</li>
+            <li><strong>Suivi (ATT)</strong> (facultatif) : demandé pour les publicités personnalisées ; vous pouvez utiliser l'app sans l'autoriser.</li>
+        </ul>
+        <h2>4. Publicité et suivi</h2>
+        <ul>
+            <li>Les publicités sont fournies par Google AdMob. Au premier lancement, l'app demande l'autorisation de suivi (App Tracking Transparency) et, là où c'est requis, le consentement à la confidentialité (Google UMP).</li>
+            <li>Si vous autorisez le suivi, l'identifiant publicitaire (IDFA) et des informations sur l'appareil peuvent servir à des publicités personnalisées ; sinon, des publicités non personnalisées sont affichées.</li>
+            <li>Vous pouvez modifier votre choix dans Réglages iOS > Confidentialité et sécurité > Suivi et, le cas échéant, dans l'app sous Réglages > Autres.</li>
+        </ul>
+        <h2>5. Services tiers</h2>
+        <ul>
+            <li>Google Firebase (Remote Config)</li>
+            <li>Google AdMob et User Messaging Platform (publicité et consentement)</li>
+            <li>Supabase (partage en direct sur une page web)</li>
+            <li>Chaque service traite les informations selon sa propre politique de confidentialité. Leurs serveurs peuvent se trouver hors de votre pays (par exemple aux États-Unis) ; les informations peuvent donc être transférées à l'international.</li>
+        </ul>
+        <h2>6. Conservation et suppression</h2>
+        <ul>
+            <li>Les données de votre appareil sont supprimées lorsque vous supprimez l'app ou des enregistrements individuels.</li>
+            <li>Les données de partage en direct sont supprimées lorsque vous arrêtez la mesure ou désactivez le partage.</li>
+        </ul>
+        <h2>7. Enfants</h2>
+        <p>Cette app ne s'adresse pas aux enfants de moins de 14 ans.</p>
+        <h2>8. Vos droits</h2>
+        <p>Vous pouvez demander l'accès, la rectification, la suppression ou la limitation du traitement de vos informations. La plupart de ces actions sont possibles dans l'app ; pour le reste, contactez-nous à l'adresse e-mail ci-dessous.</p>
+        <h2>9. Modifications</h2>
+        <p>Si cette politique change, nous mettrons à jour cette page et la date d'effet.</p>
+        <div class="footer">Contact : Haram &amp; Harang (black924.menew@gmail.com)</div>
+    </div>
+
+    <!-- es -->
+    <div id="section-es" class="content-section" lang="es">
+        <h1>Política de Privacidad</h1>
+        <p><strong>Fecha de vigencia: 13 de octubre de 2026</strong></p>
+        <p>La versión para iPhone de «Registro de Ruidos» (la «App») está operada por Haram &amp; Harang. Valoramos su privacidad y cumplimos las leyes aplicables. Esta política explica qué información trata la app de iOS y con qué fin.</p>
+        <h2>1. Datos que permanecen en su dispositivo</h2>
+        <ul>
+            <li>Los sonidos captados por el micrófono, las grabaciones, el historial de mediciones, las notas y los ajustes se almacenan solo en su dispositivo y no se suben.</li>
+            <li>El micrófono solo se usa mientras usted mide. De forma predeterminada, la medición solo ocurre mientras la app está en pantalla. Si activa «Grabación en segundo plano» en Ajustes, la app puede seguir midiendo en segundo plano o con la pantalla bloqueada; iOS muestra su indicador de uso del micrófono.</li>
+            <li>Las grabaciones se guardan en la carpeta de la app, que puede ver en la app Archivos. Usted decide dónde compartirlas.</li>
+        </ul>
+        <h2>2. Datos enviados a servidores</h2>
+        <ul>
+            <li><strong>Uso compartido en directo («Ver en página web»)</strong>, solo si lo activa: un identificador de dispositivo generado por la app y un resumen de su medición (niveles medio/máximo, horas de los eventos, nombres de archivo) se envían a Supabase y se eliminan cuando detiene la medición o desactiva el uso compartido. Los archivos de audio nunca se suben.</li>
+            <li><strong>Configuración de la app:</strong> la app obtiene ajustes mediante Firebase Remote Config, que usa un identificador de instalación.</li>
+            <li>La app de iOS no utiliza un SDK independiente de analítica ni de informes de fallos, ni notificaciones push.</li>
+        </ul>
+        <h2>3. Permisos</h2>
+        <ul>
+            <li><strong>Micrófono:</strong> necesario para medir el ruido.</li>
+            <li><strong>Notificaciones</strong> (opcional): se usan solo para mostrar el estado de la medición durante la grabación en segundo plano.</li>
+            <li><strong>Seguimiento (ATT)</strong> (opcional): se solicita para anuncios personalizados; puede usar la app sin permitirlo.</li>
+        </ul>
+        <h2>4. Publicidad y seguimiento</h2>
+        <ul>
+            <li>Los anuncios los proporciona Google AdMob. En el primer inicio, la app solicita permiso de seguimiento (App Tracking Transparency) y, donde sea necesario, consentimiento de privacidad (Google UMP).</li>
+            <li>Si permite el seguimiento, el identificador de publicidad (IDFA) y la información del dispositivo pueden usarse para anuncios personalizados; de lo contrario, se muestran anuncios no personalizados.</li>
+            <li>Puede cambiar su elección en Ajustes de iOS > Privacidad y seguridad > Seguimiento y, cuando corresponda, en la app en Ajustes > Otros.</li>
+        </ul>
+        <h2>5. Servicios de terceros</h2>
+        <ul>
+            <li>Google Firebase (Remote Config)</li>
+            <li>Google AdMob y User Messaging Platform (publicidad y consentimiento)</li>
+            <li>Supabase (uso compartido en directo en una página web)</li>
+            <li>Cada servicio trata la información conforme a su propia política de privacidad. Sus servidores pueden estar fuera de su país (por ejemplo, en Estados Unidos), por lo que la información puede transferirse internacionalmente.</li>
+        </ul>
+        <h2>6. Conservación y eliminación</h2>
+        <ul>
+            <li>Los datos de su dispositivo se eliminan cuando borra la app o registros individuales.</li>
+            <li>Los datos del uso compartido en directo se eliminan cuando detiene la medición o desactiva el uso compartido.</li>
+        </ul>
+        <h2>7. Menores</h2>
+        <p>Esta app no está dirigida a menores de 14 años.</p>
+        <h2>8. Sus derechos</h2>
+        <p>Puede solicitar el acceso, la rectificación, la eliminación o la limitación del tratamiento de su información. Gran parte puede hacerse en la app; para lo demás, contáctenos en el correo electrónico indicado abajo.</p>
+        <h2>9. Cambios en esta política</h2>
+        <p>Si esta política cambia, actualizaremos esta página y la fecha de vigencia.</p>
+        <div class="footer">Contacto: Haram &amp; Harang (black924.menew@gmail.com)</div>
+    </div>
+
+    <!-- pt -->
+    <div id="section-pt" class="content-section" lang="pt">
+        <h1>Política de Privacidade</h1>
+        <p><strong>Data de vigência: 13 de outubro de 2026</strong></p>
+        <p>A versão para iPhone do «Diário de Ruído» (o «App») é operada por Haram &amp; Harang. Valorizamos a sua privacidade e cumprimos as leis aplicáveis. Esta política explica quais informações o app para iOS trata e por quê.</p>
+        <h2>1. Dados que ficam no seu dispositivo</h2>
+        <ul>
+            <li>Os sons captados pelo microfone, as gravações, o histórico de medições, as notas e as configurações ficam armazenados somente no seu dispositivo e não são enviados.</li>
+            <li>O microfone só é usado enquanto você mede. Por padrão, a medição acontece somente enquanto o app está na tela. Se você ativar «Gravação em segundo plano» em Ajustes, o app pode continuar medindo em segundo plano ou com a tela bloqueada; o iOS mostra o indicador de uso do microfone.</li>
+            <li>As gravações ficam na pasta do app, que você pode ver no app Arquivos. Você decide para onde compartilhá-las.</li>
+        </ul>
+        <h2>2. Dados enviados a servidores</h2>
+        <ul>
+            <li><strong>Compartilhamento ao vivo («Ver em página da web»)</strong>, somente se você ativar: um identificador de dispositivo gerado pelo app e um resumo da medição (níveis médio/máximo, horários dos eventos, nomes de arquivos) são enviados ao Supabase e excluídos quando você encerra a medição ou desativa o compartilhamento. Arquivos de áudio nunca são enviados.</li>
+            <li><strong>Configuração do app:</strong> o app obtém configurações pelo Firebase Remote Config, que usa um identificador de instalação.</li>
+            <li>O app para iOS não usa SDK separado de análise ou de relatório de falhas, nem notificações push.</li>
+        </ul>
+        <h2>3. Permissões</h2>
+        <ul>
+            <li><strong>Microfone:</strong> necessário para medir o ruído.</li>
+            <li><strong>Notificações</strong> (opcional): usadas somente para mostrar o status da medição durante a gravação em segundo plano.</li>
+            <li><strong>Rastreamento (ATT)</strong> (opcional): solicitado para anúncios personalizados; você pode usar o app sem permitir.</li>
+        </ul>
+        <h2>4. Publicidade e rastreamento</h2>
+        <ul>
+            <li>Os anúncios são fornecidos pelo Google AdMob. Na primeira abertura, o app pede permissão de rastreamento (App Tracking Transparency) e, onde exigido, consentimento de privacidade (Google UMP).</li>
+            <li>Se você permitir o rastreamento, o identificador de publicidade (IDFA) e informações do dispositivo podem ser usados para anúncios personalizados; caso contrário, são exibidos anúncios não personalizados.</li>
+            <li>Você pode alterar sua escolha em Ajustes do iOS > Privacidade e Segurança > Rastreamento e, quando aplicável, no app em Ajustes > Outros.</li>
+        </ul>
+        <h2>5. Serviços de terceiros</h2>
+        <ul>
+            <li>Google Firebase (Remote Config)</li>
+            <li>Google AdMob e User Messaging Platform (publicidade e consentimento)</li>
+            <li>Supabase (compartilhamento ao vivo em página da web)</li>
+            <li>Cada serviço trata as informações conforme sua própria política de privacidade. Os servidores podem estar fora do seu país (por exemplo, nos Estados Unidos), de modo que as informações podem ser transferidas internacionalmente.</li>
+        </ul>
+        <h2>6. Retenção e exclusão</h2>
+        <ul>
+            <li>Os dados do seu dispositivo são removidos quando você exclui o app ou registros individuais.</li>
+            <li>Os dados do compartilhamento ao vivo são excluídos quando você encerra a medição ou desativa o compartilhamento.</li>
+        </ul>
+        <h2>7. Crianças</h2>
+        <p>Este app não é direcionado a crianças com menos de 14 anos.</p>
+        <h2>8. Seus direitos</h2>
+        <p>Você pode solicitar acesso, correção, exclusão ou restrição do tratamento das suas informações. Grande parte pode ser feita no app; para o restante, entre em contato pelo e-mail abaixo.</p>
+        <h2>9. Alterações nesta política</h2>
+        <p>Se esta política mudar, atualizaremos esta página e a data de vigência.</p>
+        <div class="footer">Contato: Haram &amp; Harang (black924.menew@gmail.com)</div>
+    </div>
+
+    <!-- it -->
+    <div id="section-it" class="content-section" lang="it">
+        <h1>Informativa sulla Privacy</h1>
+        <p><strong>Data di entrata in vigore: 13 ottobre 2026</strong></p>
+        <p>La versione per iPhone di «Diario dei Rumori» (l'«App») è gestita da Haram &amp; Harang. Rispettiamo la tua privacy e le leggi applicabili. Questa informativa spiega quali informazioni tratta l'app per iOS e perché.</p>
+        <h2>1. Dati che restano sul tuo dispositivo</h2>
+        <ul>
+            <li>I suoni acquisiti dal microfono, le registrazioni, la cronologia delle misurazioni, le note e le impostazioni sono memorizzati solo sul tuo dispositivo e non vengono caricati.</li>
+            <li>Il microfono viene usato solo mentre misuri. Per impostazione predefinita, la misurazione avviene solo mentre l'app è sullo schermo. Se attivi «Registrazione in background» nelle Impostazioni, l'app può continuare a misurare in background o con lo schermo bloccato; iOS mostra il proprio indicatore di uso del microfono.</li>
+            <li>Le registrazioni sono conservate nella cartella dell'app, visibile nell'app File. Sei tu a decidere dove condividerle.</li>
+        </ul>
+        <h2>2. Dati inviati ai server</h2>
+        <ul>
+            <li><strong>Condivisione in tempo reale («Visualizza su pagina web»)</strong>, solo se la attivi: un identificatore del dispositivo generato dall'app e un riepilogo della misurazione (livelli medio/massimo, orari degli eventi, nomi dei file) vengono inviati a Supabase e cancellati quando termini la misurazione o disattivi la condivisione. I file audio non vengono mai caricati.</li>
+            <li><strong>Configurazione dell'app:</strong> l'app ottiene le impostazioni tramite Firebase Remote Config, che usa un identificatore di installazione.</li>
+            <li>L'app per iOS non usa SDK separati di analisi o di segnalazione degli arresti anomali, né notifiche push.</li>
+        </ul>
+        <h2>3. Autorizzazioni</h2>
+        <ul>
+            <li><strong>Microfono:</strong> necessario per misurare il rumore.</li>
+            <li><strong>Notifiche</strong> (facoltative): usate solo per mostrare lo stato della misurazione durante la registrazione in background.</li>
+            <li><strong>Tracciamento (ATT)</strong> (facoltativo): richiesto per gli annunci personalizzati; puoi usare l'app senza consentirlo.</li>
+        </ul>
+        <h2>4. Pubblicità e tracciamento</h2>
+        <ul>
+            <li>Gli annunci sono forniti da Google AdMob. Al primo avvio l'app richiede l'autorizzazione al tracciamento (App Tracking Transparency) e, dove richiesto, il consenso sulla privacy (Google UMP).</li>
+            <li>Se consenti il tracciamento, l'identificatore pubblicitario (IDFA) e le informazioni sul dispositivo possono essere usati per annunci personalizzati; in caso contrario vengono mostrati annunci non personalizzati.</li>
+            <li>Puoi modificare la scelta in Impostazioni iOS > Privacy e sicurezza > Tracciamento e, ove applicabile, nell'app in Impostazioni > Altro.</li>
+        </ul>
+        <h2>5. Servizi di terze parti</h2>
+        <ul>
+            <li>Google Firebase (Remote Config)</li>
+            <li>Google AdMob e User Messaging Platform (pubblicità e consenso)</li>
+            <li>Supabase (condivisione in tempo reale su una pagina web)</li>
+            <li>Ogni servizio tratta le informazioni secondo la propria informativa sulla privacy. I loro server possono trovarsi fuori dal tuo paese (ad esempio negli Stati Uniti), quindi le informazioni possono essere trasferite a livello internazionale.</li>
+        </ul>
+        <h2>6. Conservazione ed eliminazione</h2>
+        <ul>
+            <li>I dati sul tuo dispositivo vengono rimossi quando elimini l'app o singole registrazioni.</li>
+            <li>I dati della condivisione in tempo reale vengono cancellati quando termini la misurazione o disattivi la condivisione.</li>
+        </ul>
+        <h2>7. Minori</h2>
+        <p>Questa app non è rivolta ai minori di 14 anni.</p>
+        <h2>8. I tuoi diritti</h2>
+        <p>Puoi richiedere l'accesso, la rettifica, la cancellazione o la limitazione del trattamento delle tue informazioni. Gran parte può essere fatta nell'app; per il resto, contattaci all'indirizzo email qui sotto.</p>
+        <h2>9. Modifiche</h2>
+        <p>Se questa informativa cambia, aggiorneremo questa pagina e la data di entrata in vigore.</p>
+        <div class="footer">Contatti: Haram &amp; Harang (black924.menew@gmail.com)</div>
+    </div>
+
+    <!-- zh -->
+    <div id="section-zh" class="content-section" lang="zh-Hans">
+        <h1>隐私政策</h1>
+        <p><strong>生效日期：2026年10月13日</strong></p>
+        <p>“楼层噪音日志”（以下简称“应用”）iPhone 版由 Haram &amp; Harang 运营。我们重视您的隐私并遵守相关法律。本政策说明 iOS 应用处理哪些信息以及用途。</p>
+        <h2>1. 仅保存在您设备上的信息</h2>
+        <ul>
+            <li>通过麦克风采集的声音、录音文件、测量记录、备注和设置仅保存在您的设备上，不会被上传。</li>
+            <li>麦克风仅在您测量期间使用。默认情况下，仅在应用显示在屏幕上时进行测量。如果您在设置中开启“后台录音”，应用在后台或屏幕锁定时也可以继续测量；此时 iOS 会显示麦克风使用指示。</li>
+            <li>录音文件保存在应用的文件夹中，您可以在“文件”应用中查看。分享到哪里由您决定。</li>
+        </ul>
+        <h2>2. 发送到服务器的信息</h2>
+        <ul>
+            <li><strong>实时共享（“在网页上查看”）</strong>，仅在您开启时：应用生成的设备标识符和测量摘要（平均/最大噪音、事件时间、文件名）会发送到 Supabase，并在您结束测量或关闭共享后删除。音频文件不会被上传。</li>
+            <li><strong>应用配置：</strong>应用通过 Firebase Remote Config 获取设置，该服务会使用安装标识符。</li>
+            <li>此 iOS 应用不使用单独的分析（Analytics）或崩溃报告 SDK，也不使用推送通知。</li>
+        </ul>
+        <h2>3. 权限</h2>
+        <ul>
+            <li><strong>麦克风：</strong>测量噪音所必需。</li>
+            <li><strong>通知</strong>（可选）：仅用于在后台录音期间显示测量状态。</li>
+            <li><strong>跟踪（ATT）</strong>（可选）：为个性化广告而请求；不允许也可以使用应用。</li>
+        </ul>
+        <h2>4. 广告与跟踪</h2>
+        <ul>
+            <li>广告由 Google AdMob 提供。首次启动时，应用会请求跟踪许可（App Tracking Transparency），并在需要的地区请求隐私同意（Google UMP）。</li>
+            <li>如果您允许跟踪，广告标识符（IDFA）和设备信息可能用于个性化广告；否则将显示非个性化广告。</li>
+            <li>您可以在 iOS“设置”>“隐私与安全性”>“跟踪”中更改选择，在适用地区也可在应用的“设置”>“其他”中更改。</li>
+        </ul>
+        <h2>5. 第三方服务</h2>
+        <ul>
+            <li>Google Firebase（Remote Config）</li>
+            <li>Google AdMob 与 User Messaging Platform（广告与同意管理）</li>
+            <li>Supabase（网页实时共享）</li>
+            <li>各服务按其自身的隐私政策处理信息。这些服务的服务器可能位于您所在国家/地区之外（例如美国），因此信息可能会跨境传输。</li>
+        </ul>
+        <h2>6. 保存与删除</h2>
+        <ul>
+            <li>删除应用或单条记录时，设备上的数据会一并删除。</li>
+            <li>结束测量或关闭共享后，实时共享的数据会被删除。</li>
+        </ul>
+        <h2>7. 儿童</h2>
+        <p>本应用不面向 14 岁以下儿童。</p>
+        <h2>8. 您的权利</h2>
+        <p>您可以申请查阅、更正、删除或限制处理您的信息。大部分操作可在应用内完成；其他情况请通过下方邮箱联系我们。</p>
+        <h2>9. 政策变更</h2>
+        <p>如本政策发生变更，我们会更新本页面和生效日期。</p>
+        <div class="footer">联系方式：Haram &amp; Harang (black924.menew@gmail.com)</div>
+    </div>
+
+    <!-- hi -->
+    <div id="section-hi" class="content-section" lang="hi">
+        <h1>गोपनीयता नीति</h1>
+        <p><strong>प्रभावी तिथि: 13 अक्टूबर 2026</strong></p>
+        <p>“फ्लोर शोर लॉग” (“ऐप”) का iPhone संस्करण Haram &amp; Harang द्वारा संचालित है। हम आपकी गोपनीयता को महत्व देते हैं और लागू कानूनों का पालन करते हैं। यह नीति बताती है कि iOS ऐप कौन-सी जानकारी किस उद्देश्य से संभालता है।</p>
+        <h2>1. जो जानकारी आपके डिवाइस पर ही रहती है</h2>
+        <ul>
+            <li>माइक्रोफ़ोन से ली गई आवाज़ें, रिकॉर्डिंग, माप का इतिहास, नोट्स और सेटिंग्स केवल आपके डिवाइस पर सहेजी जाती हैं और अपलोड नहीं की जातीं।</li>
+            <li>माइक्रोफ़ोन का उपयोग केवल तभी होता है जब आप माप रहे हों। डिफ़ॉल्ट रूप से माप केवल तब होता है जब ऐप स्क्रीन पर हो। यदि आप सेटिंग्स में “बैकग्राउंड रिकॉर्डिंग” चालू करते हैं, तो ऐप बैकग्राउंड में या स्क्रीन लॉक होने पर भी माप जारी रख सकता है; तब iOS अपना माइक्रोफ़ोन संकेतक दिखाता है।</li>
+            <li>रिकॉर्डिंग ऐप के फ़ोल्डर में रखी जाती हैं, जिन्हें आप “फ़ाइलें” ऐप में देख सकते हैं। उन्हें कहाँ साझा करना है, यह आप तय करते हैं।</li>
+        </ul>
+        <h2>2. सर्वर पर भेजी जाने वाली जानकारी</h2>
+        <ul>
+            <li><strong>लाइव शेयरिंग (“वेब पेज पर देखें”)</strong>, केवल यदि आप इसे चालू करते हैं: ऐप द्वारा बनाई गई डिवाइस पहचान और आपके माप का सारांश (औसत/अधिकतम स्तर, घटनाओं के समय, फ़ाइल के नाम) Supabase को भेजे जाते हैं और माप समाप्त करने या शेयरिंग बंद करने पर हटा दिए जाते हैं। ऑडियो फ़ाइलें कभी अपलोड नहीं होतीं।</li>
+            <li><strong>ऐप कॉन्फ़िगरेशन:</strong> ऐप Firebase Remote Config से सेटिंग्स प्राप्त करता है, जो एक इंस्टॉलेशन पहचानकर्ता का उपयोग करता है।</li>
+            <li>यह iOS ऐप अलग से एनालिटिक्स या क्रैश-रिपोर्टिंग SDK और पुश नोटिफ़िकेशन का उपयोग नहीं करता।</li>
+        </ul>
+        <h2>3. अनुमतियाँ</h2>
+        <ul>
+            <li><strong>माइक्रोफ़ोन:</strong> शोर मापने के लिए आवश्यक।</li>
+            <li><strong>नोटिफ़िकेशन</strong> (वैकल्पिक): केवल बैकग्राउंड रिकॉर्डिंग के दौरान माप की स्थिति दिखाने के लिए।</li>
+            <li><strong>ट्रैकिंग (ATT)</strong> (वैकल्पिक): वैयक्तिकृत विज्ञापनों के लिए माँगी जाती है; अनुमति न देने पर भी आप ऐप का उपयोग कर सकते हैं।</li>
+        </ul>
+        <h2>4. विज्ञापन और ट्रैकिंग</h2>
+        <ul>
+            <li>विज्ञापन Google AdMob द्वारा दिए जाते हैं। पहली बार खोलने पर ऐप ट्रैकिंग की अनुमति (App Tracking Transparency) और जहाँ आवश्यक हो, गोपनीयता सहमति (Google UMP) माँगता है।</li>
+            <li>यदि आप ट्रैकिंग की अनुमति देते हैं, तो विज्ञापन पहचानकर्ता (IDFA) और डिवाइस जानकारी का उपयोग वैयक्तिकृत विज्ञापनों के लिए हो सकता है; अन्यथा गैर-वैयक्तिकृत विज्ञापन दिखाए जाते हैं।</li>
+            <li>आप अपना चुनाव iOS सेटिंग्स > गोपनीयता और सुरक्षा > ट्रैकिंग में, और जहाँ लागू हो, ऐप की सेटिंग्स > अन्य में बदल सकते हैं।</li>
+        </ul>
+        <h2>5. तृतीय-पक्ष सेवाएँ</h2>
+        <ul>
+            <li>Google Firebase (Remote Config)</li>
+            <li>Google AdMob और User Messaging Platform (विज्ञापन और सहमति)</li>
+            <li>Supabase (वेब पेज पर लाइव शेयरिंग)</li>
+            <li>प्रत्येक सेवा जानकारी को अपनी गोपनीयता नीति के अनुसार संसाधित करती है। उनके सर्वर आपके देश के बाहर (उदाहरण के लिए अमेरिका में) हो सकते हैं, इसलिए जानकारी अंतरराष्ट्रीय स्तर पर स्थानांतरित हो सकती है।</li>
+        </ul>
+        <h2>6. भंडारण और हटाना</h2>
+        <ul>
+            <li>ऐप या अलग-अलग रिकॉर्ड हटाने पर आपके डिवाइस का डेटा हट जाता है।</li>
+            <li>माप समाप्त करने या शेयरिंग बंद करने पर लाइव शेयरिंग का डेटा हटा दिया जाता है।</li>
+        </ul>
+        <h2>7. बच्चे</h2>
+        <p>यह ऐप 14 वर्ष से कम उम्र के बच्चों के लिए नहीं है।</p>
+        <h2>8. आपके अधिकार</h2>
+        <p>आप अपनी जानकारी तक पहुँच, सुधार, हटाने या प्रसंस्करण पर रोक का अनुरोध कर सकते हैं। इनमें से अधिकांश ऐप में किया जा सकता है; बाकी के लिए नीचे दिए ईमेल पर संपर्क करें।</p>
+        <h2>9. नीति में बदलाव</h2>
+        <p>यदि यह नीति बदलती है, तो हम इस पेज और प्रभावी तिथि को अपडेट करेंगे।</p>
+        <div class="footer">संपर्क: Haram &amp; Harang (black924.menew@gmail.com)</div>
+    </div>
+</div>
+
+<script>
+    function showSection(lang) {
+        document.querySelectorAll('.content-section').forEach(function (s) { s.classList.remove('active'); });
+        document.querySelectorAll('.tab-button').forEach(function (b) { b.classList.remove('active'); });
+        var section = document.getElementById('section-' + lang);
+        if (!section) { lang = 'ko'; section = document.getElementById('section-ko'); }
+        section.classList.add('active');
+        var button = document.querySelector('.tab-button[data-lang="' + lang + '"]');
+        if (button) { button.classList.add('active'); }
+        document.documentElement.lang = lang === 'zh' ? 'zh-Hans' : lang;
+    }
+    // #en 처럼 해시로 언어를 지정하면 그 언어로, 아니면 브라우저 언어로 연다.
+    (function () {
+        var wanted = (location.hash || '').replace('#', '').toLowerCase();
+        if (!document.getElementById('section-' + wanted)) {
+            var nav = (navigator.language || 'ko').toLowerCase();
+            wanted = nav.indexOf('zh') === 0 ? 'zh' : nav.split('-')[0];
+        }
+        if (document.getElementById('section-' + wanted)) { showSection(wanted); }
+    })();
+</script>
+
+</body>
+</html>
