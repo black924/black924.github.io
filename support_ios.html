@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support - Floor Noise Log (iOS)</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+        }
+        .tab-button {
+            padding: 10px 15px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 14px;
+            font-weight: bold;
+            color: #888;
+            transition: 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+        .tab-button.active {
+            color: #FF9800;
+            border-bottom: 3px solid #FF9800;
+        }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        h1 { font-size: 22px; color: #111; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        h2 { font-size: 18px; color: #FF9800; margin-top: 25px; }
+        h3 { font-size: 15px; color: #222; margin: 18px 0 4px; }
+        h3 + p { margin-top: 0; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 8px; }
+        .mail { display: inline-block; padding: 10px 16px; border-radius: 8px; background: #FF9800; color: #fff; font-weight: bold; }
+        .footer {
+            margin-top: 40px;
+            font-size: 0.85em;
+            color: #777;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        a { color: #FF9800; text-decoration: none; }
+        .mail:hover { text-decoration: none; opacity: 0.9; }
+    </style>
+</head>
+<body>
+
+<!-- App Store Connect의 "지원 URL"에 넣는 iOS 앱 지원 페이지. 개인정보 처리방침(privacy_policy_ios.html)과 같은 위치/테마. -->
+
+<div class="container">
+    <div class="tabs">
+        <button class="tab-button active" data-lang="ko" onclick="showSection('ko')">한글</button>
+        <button class="tab-button" data-lang="en" onclick="showSection('en')">English</button>
+        <button class="tab-button" data-lang="ja" onclick="showSection('ja')">日本語</button>
+        <button class="tab-button" data-lang="de" onclick="showSection('de')">Deutsch</button>
+    </div>
+
+    <div id="section-ko" class="content-section active" lang="ko">
+        <h1>층소일지 지원</h1>
+        <p>'층소일지(자동 층간 소음 측정 기록기)' iPhone 앱 사용 중 도움이 필요하시면 아래 이메일로 문의해 주세요.</p>
+        <h2>문의하기</h2>
+        <p>이메일로 보내 주시면 순서대로 답변드립니다. 답변까지 며칠 걸릴 수 있습니다.</p>
+        <p><a class="mail" href="mailto:black924.menew@gmail.com">이메일 문의: black924.menew@gmail.com</a></p>
+        <h2>문의 시 알려 주시면 좋은 정보</h2>
+        <ul><li>기기 모델과 iOS 버전 (설정 > 일반 > 정보)</li><li>앱 버전 (설정 > 일반 > iPhone 저장 공간 > 앱 선택)</li><li>어떤 상황에서 문제가 생겼는지, 가능하면 화면 캡처</li></ul>
+        <h2>자주 묻는 질문</h2>
+        <h3>마이크 권한을 거부했어요.</h3><p>iPhone의 설정 > 층소일지 > 마이크를 켠 뒤 앱에서 측정을 다시 시작해 주세요.</p><h3>화면을 끄면 측정이 멈춰요.</h3><p>기본값에서는 앱이 화면에 있는 동안에만 측정합니다. 앱의 설정 > 녹음 설정에서 "백그라운드 녹음"을 켜면 화면이 잠겨 있어도 측정을 이어 갑니다.</p><h3>녹음 파일은 어디에 저장되나요?</h3><p>기기의 앱 폴더에 저장되며 "파일" 앱 > iPhone 내부 > 층소일지에서 볼 수 있습니다. 앱의 "백업" 기능으로 기록과 오디오를 한꺼번에 내보낼 수도 있습니다.</p><h3>측정값이 실제와 달라요.</h3><p>측정값은 기기의 마이크 성능, 케이스, 놓은 위치에 따라 달라지는 참고용 수치이며 법적·공식 용도로 사용하기 위한 것이 아닙니다. 설정에서 가중치와 보정값을 조정할 수 있습니다.</p><h3>기록을 지우고 싶어요.</h3><p>기록 상세 화면의 메뉴 또는 목록에서 선택해 삭제할 수 있습니다. 앱을 삭제하면 기기에 저장된 기록도 함께 삭제됩니다.</p><h3>광고와 개인정보 동의를 바꾸고 싶어요.</h3><p>해당 지역에서는 앱의 설정 > 기타에서 개인정보 동의를 다시 변경할 수 있고, 추적 허용은 iPhone의 설정 > 개인정보 보호 및 보안 > 추적에서 바꿀 수 있습니다.</p>
+        <h2>개인정보 처리방침</h2>
+        <p>앱이 다루는 정보에 대해서는 개인정보 처리방침을 확인해 주세요. <a href="privacy_policy_ios.html#ko">개인정보 처리방침</a></p>
+        <div class="footer">Haram &amp; Harang (black924.menew@gmail.com)</div>
+    </div>
+    <div id="section-en" class="content-section" lang="en">
+        <h1>Floor Noise Log Support</h1>
+        <p>Need help with the iPhone version of Floor Noise Log? Contact us at the email address below.</p>
+        <h2>Contact us</h2>
+        <p>Send us an email and we will reply in order. It may take a few days to get back to you.</p>
+        <p><a class="mail" href="mailto:black924.menew@gmail.com">Email us: black924.menew@gmail.com</a></p>
+        <h2>Helpful details to include</h2>
+        <ul><li>Your device model and iOS version (Settings > General > About)</li><li>The app version (Settings > General > iPhone Storage > select the app)</li><li>What happened and, if possible, a screenshot</li></ul>
+        <h2>Frequently asked questions</h2>
+        <h3>I denied microphone access.</h3><p>Turn on Settings > Floor Noise Log > Microphone on your iPhone, then start measuring again in the app.</p><h3>Measurement stops when the screen turns off.</h3><p>By default the app measures only while it is on screen. Turn on "Background Recording" in the app under Settings > Recording Settings to keep measuring while the screen is locked.</p><h3>Where are my recordings stored?</h3><p>They are stored in the app folder on your device, which you can open in the Files app under On My iPhone > Floor Noise Log. You can also export records and audio together with the in-app Backup feature.</p><h3>The readings differ from what I expected.</h3><p>Readings depend on your device (microphone, case, placement) and are for reference only, not for legal or official use. You can adjust the weighting and calibration offset in Settings.</p><h3>How do I delete a record?</h3><p>Use the menu on the record detail screen, or select records in the list and delete them. Deleting the app also removes the data stored on your device.</p><h3>How do I change my ad or privacy consent?</h3><p>Where applicable, you can change your consent in the app under Settings > Others. Tracking permission can be changed in iPhone Settings > Privacy &amp; Security > Tracking.</p>
+        <h2>Privacy Policy</h2>
+        <p>For what information the app handles, see our Privacy Policy. <a href="privacy_policy_ios.html#en">Privacy Policy</a></p>
+        <div class="footer">Haram &amp; Harang (black924.menew@gmail.com)</div>
+    </div>
+    <div id="section-ja" class="content-section" lang="ja">
+        <h1>騒音日記 サポート</h1>
+        <p>「騒音日記」iPhone版のご利用でお困りの際は、下記のメールアドレスまでお問い合わせください。</p>
+        <h2>お問い合わせ</h2>
+        <p>メールをお送りいただければ、順番にご返信します。返信までに数日かかる場合があります。</p>
+        <p><a class="mail" href="mailto:black924.menew@gmail.com">メールで問い合わせる: black924.menew@gmail.com</a></p>
+        <h2>お問い合わせの際にお知らせいただきたい情報</h2>
+        <ul><li>端末のモデルとiOSのバージョン（設定 > 一般 > 情報）</li><li>アプリのバージョン（設定 > 一般 > iPhoneストレージ > アプリを選択）</li><li>どのような状況で問題が起きたか（可能であればスクリーンショット）</li></ul>
+        <h2>よくある質問</h2>
+        <h3>マイクへのアクセスを拒否してしまいました。</h3><p>iPhoneの「設定 > 騒音日記 > マイク」をオンにして、アプリで測定をやり直してください。</p><h3>画面を消すと測定が止まります。</h3><p>初期設定では、アプリが画面に表示されている間のみ測定します。アプリの「設定 > 録音設定」で「バックグラウンド録音」をオンにすると、画面ロック中も測定を続けます。</p><h3>録音ファイルはどこに保存されますか？</h3><p>端末内のアプリのフォルダに保存され、「ファイル」アプリの「このiPhone内 > 騒音日記」で確認できます。アプリの「バックアップ」機能で記録と音声をまとめて書き出すこともできます。</p><h3>測定値が実際と違います。</h3><p>測定値は端末のマイク性能、ケース、置き場所により異なる参考値で、法的・公式な用途を想定していません。設定で重み付けと補正値を調整できます。</p><h3>記録を削除したいです。</h3><p>記録の詳細画面のメニュー、または一覧で選択して削除できます。アプリを削除すると、端末内の記録も削除されます。</p><h3>広告やプライバシーの同意を変更したいです。</h3><p>該当する地域では、アプリの「設定 > その他」から同意を変更できます。トラッキングの許可は、iPhoneの「設定 > プライバシーとセキュリティ > トラッキング」で変更できます。</p>
+        <h2>個人情報保護方針</h2>
+        <p>アプリが扱う情報については、個人情報保護方針をご確認ください。 <a href="privacy_policy_ios.html#ja">個人情報保護方針</a></p>
+        <div class="footer">Haram &amp; Harang (black924.menew@gmail.com)</div>
+    </div>
+    <div id="section-de" class="content-section" lang="de">
+        <h1>Lärmprotokoll Support</h1>
+        <p>Brauchen Sie Hilfe bei der iPhone-Version von Lärmprotokoll? Schreiben Sie uns an die folgende E-Mail-Adresse.</p>
+        <h2>Kontakt</h2>
+        <p>Senden Sie uns eine E-Mail, wir antworten der Reihe nach. Es kann einige Tage dauern, bis wir uns melden.</p>
+        <p><a class="mail" href="mailto:black924.menew@gmail.com">E-Mail senden: black924.menew@gmail.com</a></p>
+        <h2>Hilfreiche Angaben für Ihre Nachricht</h2>
+        <ul><li>Gerätemodell und iOS-Version (Einstellungen > Allgemein > Info)</li><li>App-Version (Einstellungen > Allgemein > iPhone-Speicher > App auswählen)</li><li>Was passiert ist, möglichst mit Screenshot</li></ul>
+        <h2>Häufige Fragen</h2>
+        <h3>Ich habe den Mikrofonzugriff abgelehnt.</h3><p>Aktivieren Sie auf dem iPhone Einstellungen > Lärmprotokoll > Mikrofon und starten Sie die Messung in der App erneut.</p><h3>Die Messung stoppt, wenn der Bildschirm ausgeht.</h3><p>Standardmäßig misst die App nur, solange sie auf dem Bildschirm ist. Aktivieren Sie in der App unter Einstellungen > Aufnahmeeinstellungen „Hintergrundaufnahme“, um bei gesperrtem Bildschirm weiterzumessen.</p><h3>Wo werden meine Aufnahmen gespeichert?</h3><p>Im App-Ordner auf Ihrem Gerät, den Sie in der Dateien-App unter Auf meinem iPhone > Lärmprotokoll öffnen können. Mit der Sicherungsfunktion der App können Sie Einträge und Audio auch gemeinsam exportieren.</p><h3>Die Messwerte weichen von meiner Erwartung ab.</h3><p>Die Werte hängen von Ihrem Gerät ab (Mikrofon, Hülle, Position) und dienen nur als Anhaltspunkt, nicht für rechtliche oder amtliche Zwecke. In den Einstellungen können Sie Bewertung und Kalibrierung anpassen.</p><h3>Wie lösche ich einen Eintrag?</h3><p>Über das Menü in der Detailansicht oder durch Auswählen in der Liste. Beim Löschen der App werden auch die auf dem Gerät gespeicherten Daten entfernt.</p><h3>Wie ändere ich meine Werbe- oder Datenschutz-Einwilligung?</h3><p>Wo zutreffend, in der App unter Einstellungen > Sonstiges. Die Tracking-Erlaubnis ändern Sie in den iPhone-Einstellungen unter Datenschutz &amp; Sicherheit > Tracking.</p>
+        <h2>Datenschutzerklärung</h2>
+        <p>Welche Daten die App verarbeitet, steht in unserer Datenschutzerklärung. <a href="privacy_policy_ios.html#de">Datenschutzerklärung</a></p>
+        <div class="footer">Haram &amp; Harang (black924.menew@gmail.com)</div>
+    </div>
+</div>
+
+<script>
+    function showSection(lang) {
+        document.querySelectorAll('.content-section').forEach(function (s) { s.classList.remove('active'); });
+        document.querySelectorAll('.tab-button').forEach(function (b) { b.classList.remove('active'); });
+        var section = document.getElementById('section-' + lang);
+        if (!section) { lang = 'ko'; section = document.getElementById('section-ko'); }
+        section.classList.add('active');
+        var button = document.querySelector('.tab-button[data-lang="' + lang + '"]');
+        if (button) { button.classList.add('active'); }
+        document.documentElement.lang = lang;
+    }
+    // #en 처럼 해시로 언어를 지정하면 그 언어로, 아니면 브라우저 언어로 연다.
+    (function () {
+        var wanted = (location.hash || '').replace('#', '').toLowerCase();
+        if (!document.getElementById('section-' + wanted)) {
+            wanted = (navigator.language || 'ko').toLowerCase().split('-')[0];
+        }
+        if (document.getElementById('section-' + wanted)) { showSection(wanted); }
+    })();
+</script>
+
+</body>
+</html>
