@@ -1,0 +1,994 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Floor Noise Log</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Floor Noise Log records only when a loud thud happens and organizes it by time, level and sound type.">
+<meta property="og:title" content="Floor Noise Log">
+<meta property="og:description" content="Records only the loud moments and turns them into a log, statistics and PDF reports. Android · iOS">
+<meta property="og:image" content="img/icon.png">
+<link rel="icon" href="img/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Dela+Gothic+One&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+JP:wght@400;600&family=IBM+Plex+Sans+KR:wght@300;400;600&display=swap">
+<style>
+/* Layout: 한밤의 아파트. 어두운 바탕 위에 소음 그래프가 흐르고, 스크롤이 '쿵'을 만든다.
+   스크롤에 따라 고정된 휴대폰 화면이 기능별로 바뀌고, 부가 기능은 가로로 흘러간다. */
+:root {
+  --night: #0b0e15;      /* 바탕: 푸른 기가 도는 밤 */
+  --night-2: #131823;    /* 패널 */
+  --line: #232a38;       /* 구분선 */
+  --fg: #eceef3;         /* 본문 */
+  --mute: #8d95a6;       /* 보조 텍스트 */
+  --dim: #6b7385;        /* 아직 읽지 않은 단어 */
+  --amber: #ffb020;      /* 아이콘 그라데이션 시작 */
+  --orange: #ff6a1f;     /* 아이콘 그라데이션 끝, 이벤트 */
+  --leq: #7fd49a;        /* 등가소음(데이터 전용) */
+  --on-accent: #1a0d04;
+  --droid: #8fd6a4;      /* Android 전용 표시 */
+
+  --f-display: "Black Han Sans", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --f-body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --gut-l: max(20px, env(safe-area-inset-left, 0px));
+  --gut-r: max(20px, env(safe-area-inset-right, 0px));
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  background: var(--night);
+  color: var(--fg);
+  font-family: var(--f-body);
+  font-size: 17px;
+  line-height: 1.7;
+  font-weight: 400;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px); z-index: 30;
+  background: var(--night);
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; border-radius: 6px; }
+h1, h2, h3 { text-wrap: balance; margin: 0; font-weight: 400; }
+p { margin: 0; }
+
+.wrap {
+  max-width: 1160px; margin-inline: auto;
+  padding-left: var(--gut-l); padding-right: var(--gut-r);
+}
+.eyebrow {
+  font-family: var(--f-mono); font-size: 12.5px; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--amber);
+}
+.mono { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+
+/* ---------- 헤더 ---------- */
+.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  background: color-mix(in srgb, var(--night) 82%, transparent);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+.top .wrap { display: flex; align-items: center; gap: 24px; height: 60px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 600; }
+.brand img { width: 30px; height: 30px; border-radius: 8px; }
+.brand small { font-family: var(--f-mono); color: var(--mute); font-weight: 400; font-size: 12px; }
+.nav { display: flex; gap: 22px; margin-left: auto; margin-right: 4px; font-size: 15px; }
+.nav a { text-decoration: none; color: var(--mute); }
+.nav a:hover { color: var(--fg); }
+.top .cta-mini {
+  text-decoration: none; font-size: 14px; font-weight: 600;
+  padding: 7px 14px; border-radius: 999px;
+  background: var(--amber); color: var(--on-accent);
+}
+.meter { position: absolute; left: 0; bottom: -1px; height: 2px; width: 100%;
+  background: linear-gradient(90deg, var(--amber), var(--orange));
+  transform-origin: 0 50%; transform: scaleX(var(--p, 0)); }
+@media (max-width: 760px) { .nav { display: none; } }
+
+/* ---------- 버튼 ---------- */
+.stores { display: flex; flex-wrap: wrap; gap: 12px; }
+.store {
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 11px 20px 11px 16px; border-radius: 14px;
+  text-decoration: none; line-height: 1.2;
+  background: var(--fg); color: var(--night);
+  border: 1px solid var(--fg);
+  transition: transform .2s ease, background .2s ease, color .2s ease;
+}
+.store.alt { background: transparent; color: var(--fg); border-color: #3a4357; }
+.store:hover { transform: translateY(-2px); }
+.store.alt:hover { border-color: var(--fg); }
+.store svg { width: 24px; height: 24px; flex: none; }
+.store span { display: grid; }
+.store small { font-size: 11.5px; opacity: .75; }
+.store b { font-size: 17px; font-weight: 600; }
+
+/* ---------- 휴대폰 프레임 ---------- */
+.phone {
+  position: relative; width: min(300px, 74vw); max-width: 100%;
+  aspect-ratio: 1080 / 2424; border-radius: 40px;
+  padding: 9px; background: #05070b;
+  box-shadow: 0 0 0 1px #2b3243, 0 40px 80px -30px rgba(0,0,0,.8), 0 0 120px -40px color-mix(in srgb, var(--orange) 55%, transparent);
+}
+.phone .scr { position: relative; width: 100%; height: 100%; border-radius: 32px; overflow: hidden; background: #111; }
+.phone .scr img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+
+/* ---------- 히어로 ---------- */
+.hero { position: relative; padding-block: 64px 40px; }
+.hero .wrap { display: grid; grid-template-columns: 1.3fr .7fr; gap: 40px; align-items: center; }
+.hero-copy { display: grid; gap: 26px; min-width: 0; }
+.hero h1 {
+  font-family: var(--f-display); font-size: clamp(44px, 6vw, 74px);
+  line-height: 1.02; letter-spacing: -.01em;
+}
+.hero h1 .thump { color: var(--orange); display: inline-block; }
+.hero h1 .thump.hit { animation: hit .5s cubic-bezier(.2,.9,.3,1.4); }
+@keyframes hit { 0% { transform: translateY(0) scale(1); } 30% { transform: translateY(6px) scale(1.08,.9); } 100% { transform: none; } }
+.lede { font-size: clamp(17px, 1.6vw, 19px); color: var(--mute); max-width: 34em; }
+.lede strong { color: var(--fg); font-weight: 600; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px 18px; font-family: var(--f-mono); font-size: 13px; color: var(--mute); }
+.facts span::before { content: "—"; color: var(--amber); margin-right: 8px; }
+.hero-phone { display: grid; justify-items: center; will-change: transform; }
+
+.scope { margin-top: 56px; }
+.scope .wrap { display: block; }
+.scope-box {
+  position: relative; border: 1px solid var(--line); border-radius: 20px;
+  background: linear-gradient(180deg, var(--night-2), var(--night));
+  overflow: hidden;
+}
+.scope-head {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 28px;
+  padding: 18px 22px 0; font-family: var(--f-mono); font-size: 13px; color: var(--mute);
+}
+.scope-head .now { font-size: 30px; color: var(--leq); font-weight: 500; }
+.scope-head .now.loud { color: var(--orange); }
+.scope-head .hint { margin-left: auto; color: var(--amber); }
+.scope canvas { display: block; width: 100%; height: 190px; }
+
+/* ---------- 문제 제기 ---------- */
+.manifesto { padding-block: 140px 120px; }
+.manifesto p {
+  font-family: var(--f-display); font-size: clamp(30px, 4.4vw, 58px); line-height: 1.28;
+  max-width: 19em;
+}
+.manifesto .w { color: var(--dim); transition: color .25s linear; }
+.manifesto .w.on { color: var(--fg); }
+.manifesto .w.hot.on { color: var(--orange); }
+.manifesto .sub { margin-top: 36px; font-family: var(--f-body); font-size: 18px; color: var(--mute); max-width: 36em; line-height: 1.8; }
+
+/* ---------- 기능 스토리 ---------- */
+.story { padding-block: 40px 80px; border-top: 1px solid var(--line); }
+.story-head { display: grid; gap: 14px; padding-block: 72px 24px; }
+.story-head h2 { font-family: var(--f-display); font-size: clamp(34px, 4.6vw, 60px); line-height: 1.1; }
+.story-grid { display: grid; grid-template-columns: 1fr minmax(300px, 380px); gap: 64px; }
+.steps { min-width: 0; }
+.step {
+  min-height: 82vh; display: grid; align-content: center; gap: 16px;
+  padding-block: 40px; max-width: 32em;
+}
+.step .num { font-family: var(--f-mono); font-size: 13px; color: var(--mute); }
+.step .num b { color: var(--amber); font-weight: 500; }
+.step h3 { font-family: var(--f-display); font-size: clamp(30px, 3.4vw, 44px); line-height: 1.15; }
+.step p { color: var(--mute); }
+.step p strong { color: var(--fg); font-weight: 600; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  font-family: var(--f-mono); font-size: 12.5px; padding: 5px 11px; border-radius: 999px;
+  border: 1px solid #3a4357; color: var(--fg);
+}
+.chip.o { border-color: color-mix(in srgb, var(--orange) 60%, transparent); color: var(--amber); }
+.step-shot { display: none; }
+.step { opacity: .55; transition: opacity .4s ease; }
+.step.active { opacity: 1; }
+
+.pin { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 84px); height: calc(100vh - 110px); display: grid; place-items: center; }
+.pin .phone { width: auto; height: min(calc(100vh - 150px), 700px); max-width: 100%; }
+@supports not (aspect-ratio: 1) { .pin .phone { width: 300px; height: 673px; } }
+.pin .phone .scr img { opacity: 0; transform: scale(1.03); transition: opacity .5s ease, transform .6s ease; }
+.pin .phone .scr img.on { opacity: 1; transform: none; }
+.pin-label {
+  position: absolute; left: 50%; bottom: 0; transform: translateX(-50%);
+  font-family: var(--f-mono); font-size: 12.5px; color: var(--mute); white-space: nowrap;
+}
+.pin-label b { color: var(--amber); font-weight: 500; }
+
+@media (max-width: 900px) {
+  .story-grid { grid-template-columns: 1fr; }
+  .pin { display: none; }
+  .step { min-height: 0; opacity: 1; padding-block: 36px; border-top: 1px solid var(--line); }
+  .step-shot { display: block; margin-top: 10px; justify-self: center; }
+  .step-shot .phone { width: min(260px, 70vw); }
+}
+
+/* ---------- 가로 갤러리 ---------- */
+.hz { position: relative; border-top: 1px solid var(--line); }
+.hz-pin { padding-block: 72px 56px; overflow: hidden; }
+.hz.pinned .hz-pin { position: sticky; top: 0; height: 100vh; display: grid; align-content: center; padding-block: 60px 30px; }
+.hz-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px 40px; margin-bottom: 36px; }
+.hz-head h2 { font-family: var(--f-display); font-size: clamp(32px, 4.2vw, 54px); line-height: 1.1; }
+.hz-head p { color: var(--mute); max-width: 26em; }
+.hz-track {
+  display: flex; gap: 20px; width: max-content;
+  padding-left: max(var(--gut-l), calc((100vw - 1160px) / 2 + 20px));
+  padding-right: var(--gut-r);
+  will-change: transform;
+}
+.hz:not(.pinned) .hz-scroll { overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; padding-bottom: 12px; }
+.hz:not(.pinned) .card { scroll-snap-align: start; }
+.card {
+  width: min(340px, 78vw); flex: none; display: grid; grid-template-rows: auto 1fr; gap: 0;
+  border: 1px solid var(--line); border-radius: 22px; overflow: hidden; background: var(--night-2);
+}
+.card .shot { height: 300px; overflow: hidden; background: #0a0c12; border-bottom: 1px solid var(--line); }
+.card .shot img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.card .shot.bottom img { object-position: bottom; }
+.card .shot.paper { background: #f4f5f7; padding: 18px 18px 0; }
+.card .shot.paper img { border-radius: 4px 4px 0 0; box-shadow: 0 6px 20px rgba(0,0,0,.18); }
+.card .body { padding: 20px 22px 24px; display: grid; gap: 8px; align-content: start; }
+.card h3 { font-size: 20px; font-weight: 600; }
+.card p { color: var(--mute); font-size: 15.5px; line-height: 1.65; }
+.card .tag { font-family: var(--f-mono); font-size: 12px; color: var(--amber); }
+
+/* ---------- 사용법 ---------- */
+.how { padding-block: 110px 100px; border-top: 1px solid var(--line); }
+.how h2 { font-family: var(--f-display); font-size: clamp(32px, 4.2vw, 54px); line-height: 1.1; margin-bottom: 48px; }
+.how ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; counter-reset: s; }
+.how li { counter-increment: s; padding: 28px 28px 8px 0; border-top: 2px solid var(--line); display: grid; gap: 10px; align-content: start; position: relative; min-width: 0; }
+.how li::before { content: counter(s, decimal-leading-zero); font-family: var(--f-mono); color: var(--amber); font-size: 14px; }
+.how li::after { content: ""; position: absolute; top: -2px; left: 0; height: 2px; width: var(--fill, 100%); background: var(--orange); }
+.how h3 { font-size: 21px; font-weight: 600; }
+.how p { color: var(--mute); }
+@media (max-width: 760px) { .how ol { grid-template-columns: 1fr; } .how li { padding-right: 0; padding-bottom: 20px; } }
+
+.note {
+  margin-top: 64px; padding: 22px 24px; border-radius: 16px;
+  border: 1px dashed #3a4357; color: var(--mute); font-size: 15.5px; display: grid; gap: 6px;
+}
+.note b { color: var(--fg); font-weight: 600; }
+
+/* ---------- 마지막 CTA ---------- */
+.final { position: relative; padding-block: 120px 110px; border-top: 1px solid var(--line); overflow: hidden; text-align: left; }
+.final .wrap { display: grid; gap: 28px; position: relative; z-index: 1; }
+.final img.icon { width: 84px; height: 84px; border-radius: 22px; }
+.final h2 { font-family: var(--f-display); font-size: clamp(40px, 6.4vw, 84px); line-height: 1.05; }
+.final h2 span { color: var(--orange); }
+.final p { color: var(--mute); max-width: 32em; }
+.final .glow {
+  position: absolute; right: -10%; bottom: -40%; width: 70vw; height: 70vw; border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--orange) 26%, transparent), transparent);
+  pointer-events: none; transform: scale(var(--g, .7));
+}
+footer { border-top: 1px solid var(--line); padding-block: 28px 40px; font-size: 13.5px; color: var(--mute); }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+
+/* ---------- 스크롤 등장 ---------- */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .rise { animation: rise linear both; animation-timeline: view(); animation-range: entry 0% cover 28%; }
+    @keyframes rise { from { opacity: .15; transform: translateY(48px); } to { opacity: 1; transform: none; } }
+  }
+}
+
+@media (max-width: 900px) {
+  .hero { padding-block: 40px 24px; }
+  .hero .wrap { grid-template-columns: 1fr; }
+  .hero-phone .phone { width: min(260px, 66vw); }
+  .manifesto { padding-block: 90px 80px; }
+  .scope canvas { height: 150px; }
+  .scope-head .hint { margin-left: 0; width: 100%; }
+}
+
+/* ---------- 언어 ---------- */
+/* ---------- 플랫폼 표시 ---------- */
+.plat {
+  display: inline-flex; align-items: center; gap: 5px; vertical-align: middle;
+  font: 500 11.5px/1 var(--f-mono); letter-spacing: .04em; white-space: nowrap;
+  padding: 5px 9px; border-radius: 999px;
+  color: var(--droid); border: 1px solid color-mix(in srgb, var(--droid) 45%, transparent);
+  background: color-mix(in srgb, var(--droid) 10%, transparent);
+}
+.plat::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.story-note { color: var(--mute); font-size: 15px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+
+:root:lang(ja) {
+  --f-display: "Dela Gothic One", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  --f-body: "IBM Plex Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, sans-serif;
+}
+:lang(ja) .hero h1, :lang(ja) .manifesto p { line-height: 1.3; }
+.lang { display: flex; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: 999px; }
+.lang button {
+  font: 500 12px/1 var(--f-mono); letter-spacing: .06em; color: var(--mute);
+  background: none; border: 0; padding: 7px 9px; border-radius: 999px; cursor: pointer;
+}
+.lang button:hover { color: var(--fg); }
+.lang button[aria-pressed="true"] { background: var(--night-2); color: var(--fg); box-shadow: inset 0 0 0 1px #3a4357; }
+@media (max-width: 760px) { .lang { margin-left: auto; } .top .cta-mini { margin-left: 0; } }
+@media (max-width: 520px) { .top .cta-mini { display: none; } .top .wrap { gap: 12px; } .lang button { padding: 7px 7px; } }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="img/icon.png" alt="" width="30" height="30"><span data-i18n="app">Floor Noise Log</span></a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#features" data-i18n="nav.features">Features</a>
+      <a href="#more" data-i18n="nav.more">More</a>
+      <a href="#how" data-i18n="nav.how">How it works</a>
+    </nav>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="en" aria-pressed="true" title="English">EN</button>
+      <button type="button" data-lang="ko" aria-pressed="false" title="한국어">KO</button>
+      <button type="button" data-lang="ja" aria-pressed="false" title="日本語">JA</button>
+      <button type="button" data-lang="de" aria-pressed="false" title="Deutsch">DE</button>
+    </div>
+    <a class="cta-mini" href="#download" data-i18n="nav.dl">Download</a>
+  </div>
+  <div class="meter" id="meter"></div>
+</header>
+
+<main id="top">
+  <!-- 히어로 -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-copy">
+        <div class="eyebrow" data-i18n="hero.eyebrow">Noise log for apartment living</div>
+        <h1 data-i18n="hero.h1">Records only<br>when it goes <span class="thump" id="thump">THUD</span>.</h1>
+        <p class="lede" data-i18n="hero.lede">Before you go to sleep or head out, start measuring and set your phone down. Floor Noise Log keeps <strong>only the moments louder than your threshold</strong> and turns them into a log of when it happened and how loud it was.</p>
+        <div class="stores">
+          <a class="store" href="https://play.google.com/store/apps/details?id=com.menew.noiseanalyzer" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#00a0ff" d="M3.6 1.8 13.5 12l-9.9 10.2c-.3-.2-.5-.6-.5-1.1V2.9c0-.5.2-.9.5-1.1Z"/><path fill="#00d26a" d="M3.6 1.8 13.5 12l3.1-3.1L5 2.1c-.5-.3-1-.4-1.4-.3Z"/><path fill="#ff3a44" d="M3.6 22.2 13.5 12l3.1 3.1L5 21.9c-.5.3-1 .4-1.4.3Z"/><path fill="#ffd400" d="m16.6 8.9 3.7 2.2c.7.4.7 1.4 0 1.8l-3.7 2.2-3.1-3.1Z"/></svg>
+            <span><small>Android</small><b data-i18n="store.play">Get it on Google Play</b></span>
+          </a>
+          <a class="store alt" href="https://apps.apple.com/kr/app/floor-noise-log/id6823575453" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.37 1.43c0 1.14-.5 2.27-1.18 3.08-.74.9-1.99 1.57-2.99 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.57-2.27 1.2-2.98.81-.94 2.15-1.64 3.25-1.68.03.13.06.28.06.43Zm4.56 15.71c-.03.07-.46 1.58-1.52 3.12-.94 1.34-1.94 2.71-3.43 2.71-1.52 0-1.9-.88-3.63-.88-1.7 0-2.3.91-3.67.91-1.38 0-2.33-1.26-3.43-2.8-1.29-1.82-2.32-4.63-2.32-7.28 0-4.28 2.8-6.55 5.55-6.55 1.45 0 2.67.95 3.6.95.86 0 2.22-1.01 3.9-1.01.61 0 2.89.06 4.37 2.19-.13.09-2.38 1.37-2.38 4.19 0 3.26 2.85 4.42 2.96 4.45Z"/></svg>
+            <span><small>iPhone</small><b data-i18n="store.apple">Download on the App Store</b></span>
+          </a>
+        </div>
+        <div class="facts" data-i18n-list="hero.facts"><span>Events from 50 dB</span><span>Keeps measuring with the screen off</span><span>Records in 1-minute files</span></div>
+      </div>
+      <div class="hero-phone" id="heroPhone">
+        <div class="phone"><div class="scr"><img src="img/en/33_measure.webp" data-shot="33_measure.webp" alt="Measuring screen: current level 35.5 dB, live noise graph, frequency spectrum, 1-minute Leq and event count" width="540" height="1212"></div></div>
+      </div>
+    </div>
+
+    <div class="scope">
+      <div class="wrap">
+        <div class="scope-box">
+          <div class="scope-head" aria-live="off">
+            <span class="now" id="now">35.0</span><span data-i18n="scope.now">dB now</span>
+            <span><span data-i18n="scope.ev">Events</span> <b id="evc" style="color:var(--fg)">0</b></span>
+            <span data-i18n="scope.th">Threshold 50 dB</span>
+            <span class="hint" id="hint" data-i18n="scope.hint">Scroll and the upstairs neighbor goes thud</span>
+          </div>
+          <canvas id="scope" role="img" aria-label="Sample live noise graph. Sounds above the 50 dB line are saved as events."></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 문제 제기 -->
+  <section class="manifesto">
+    <div class="wrap">
+      <p id="words" data-i18n="man.p">1 a.m., woken by another <span class="hot">thud</span>. You want to tell the building manager, but you have nothing that shows when it happened or how loud it was. Recording all night means listening back to hours of audio. And while you are out, you have no way of knowing what went on.</p>
+      <p class="sub rise" data-i18n="man.sub">Floor Noise Log throws away the quiet minutes and keeps only the ones with loud sounds. When you wake up or get home, you can see what time it happened, how many decibels, and how many times.</p>
+    </div>
+  </section>
+
+  <!-- 기능 스토리 -->
+  <section class="story" id="features">
+    <div class="wrap">
+      <div class="story-head">
+        <div class="eyebrow" data-i18n="story.eyebrow">From measuring to organizing</div>
+        <h2 data-i18n="story.h2">It logs while you sleep<br>and while you are out.</h2>
+        <p class="story-note"><span class="plat" data-i18n="plat.android">Android only</span><span data-i18n="story.note">Features marked like this are not yet available in the iPhone app.</span></p>
+      </div>
+      <div class="story-grid">
+        <div class="steps">
+          <article class="step active" data-i="0">
+            <div class="num"><b>01</b> / 06 · <span data-i18n="names.0">Measure</span></div>
+            <h3 data-i18n="s1.h">Set your phone down<br>and start measuring</h3>
+            <p data-i18n="s1.p">See the current level in dB, a live graph and the frequency spectrum on one screen. <strong>Measuring continues with the screen off</strong>, and you can schedule it to stop when you wake up or get home.</p>
+            <div class="chips" data-i18n-chips="s1.c"><span class="chip">Live dB</span><span class="chip">31 Hz – 16 kHz</span><span class="chip o">Scheduled stop</span></div>
+            <div class="step-shot"><div class="phone"><div class="scr"><img src="img/en/33_measure.webp" data-shot="33_measure.webp" alt="Measuring screen" loading="lazy" width="540" height="1212"></div></div></div>
+          </article>
+          <article class="step" data-i="1">
+            <div class="num"><b>02</b> / 06 · <span data-i18n="names.1">Events</span></div>
+            <h3 data-i18n="s2.h">Only sounds above the threshold<br>become events</h3>
+            <p data-i18n="s2.p">Sounds above the threshold (<strong>50 dB</strong> by default, adjustable from 40 to 80 dB) are marked as events. One-minute files with no events are not saved, so storage lasts longer. Turn on <strong>record on event</strong> and recording starts 5 seconds before the sound.</p>
+            <div class="chips" data-i18n-chips="s2.c"><span class="chip o">Threshold 50 dB</span><span class="chip">5 s pre-roll</span><span class="chip">Peak · duration</span></div>
+            <div class="step-shot"><div class="phone"><div class="scr"><img src="img/en/05_detail.webp" data-shot="05_detail.webp" alt="Record detail: four events with time, level and duration" loading="lazy" width="540" height="1212"></div></div></div>
+          </article>
+          <article class="step" data-i="2">
+            <div class="num"><b>03</b> / 06 · <span data-i18n="names.2">Listen again</span></div>
+            <h3 data-i18n="s3.h">Jump to the moment<br>and listen again</h3>
+            <p data-i18n="s3.p">Tap an event number to play from that point. Low, booming footsteps come through clearly with <strong>bass emphasis</strong> and the <strong>equalizer</strong>. <span class="plat">Android only</span></p>
+            <div class="chips" data-i18n-chips="s3.c"><span class="chip">Skip between events</span><span class="chip o">Bass emphasis</span><span class="chip">EQ</span></div>
+            <div class="step-shot"><div class="phone"><div class="scr"><img src="img/en/09_audio_eq.webp" data-shot="09_audio_eq.webp" alt="Audio adjustment: equalizer" loading="lazy" width="540" height="1212"></div></div></div>
+          </article>
+          <article class="step" data-i="3">
+            <div class="num"><b>04</b> / 06 · <span data-i18n="names.3">AI analysis</span> <span class="plat" data-i18n="plat.android">Android only</span></div>
+            <h3 data-i18n="s4.h">AI tells you<br>what the sound was</h3>
+            <p data-i18n="s4.p">Based on the recording and its frequency profile, AI describes the likely type of sound, such as heavy footsteps, a dropped object or a door closing. Equivalent level (Leq) and maximum level (Lmax) are shown too.</p>
+            <div class="chips" data-i18n-chips="s4.c"><span class="chip">Leq · Lmax</span><span class="chip o">Sound type estimate</span></div>
+            <div class="step-shot"><div class="phone"><div class="scr"><img src="img/en/12_ai_result2.webp" data-shot="12_ai_result2.webp" alt="AI analysis result: estimated sound type for each event" loading="lazy" width="540" height="1212"></div></div></div>
+          </article>
+          <article class="step" data-i="4">
+            <div class="num"><b>05</b> / 06 · <span data-i18n="names.4">Log</span></div>
+            <h3 data-i18n="s5.h">Keep important records<br>in your log</h3>
+            <p data-i18n="s5.p">The calendar shows how many records each day has. Star the important ones and add them to your <strong>log</strong>. Attach notes like "heavy footsteps" or "door slamming" with one tap.</p>
+            <div class="chips" data-i18n-chips="s5.c"><span class="chip">Calendar</span><span class="chip o">Mark as important</span><span class="chip">Quick notes</span></div>
+            <div class="step-shot"><div class="phone"><div class="scr"><img src="img/en/02_main.webp" data-shot="02_main.webp" alt="Home screen: record cards by date with notes" loading="lazy" width="540" height="1212"></div></div></div>
+          </article>
+          <article class="step" data-i="5">
+            <div class="num"><b>06</b> / 06 · <span data-i18n="names.5">Statistics</span></div>
+            <h3 data-i18n="s6.h">See when<br>it gets loud</h3>
+            <p data-i18n="s6.p">Charts show counts by weekday and hour, the share at night and the mix of noise types. A time slot that keeps repeating gives you something concrete to talk about.</p>
+            <div class="chips" data-i18n-chips="s6.c"><span class="chip">Weekday × hour</span><span class="chip o">Night ratio</span><span class="chip">Noise types</span></div>
+            <div class="step-shot"><div class="phone"><div class="scr"><img src="img/en/18_stats1.webp" data-shot="18_stats1.webp" alt="Statistics screen" loading="lazy" width="540" height="1212"></div></div></div>
+          </article>
+        </div>
+        <div class="pin" aria-hidden="true">
+          <div class="phone" id="pinPhone"><div class="scr">
+            <img class="on" src="img/en/33_measure.webp" data-shot="33_measure.webp" alt="" width="540" height="1212">
+            <img src="img/en/05_detail.webp" data-shot="05_detail.webp" alt="" loading="lazy" width="540" height="1212">
+            <img src="img/en/09_audio_eq.webp" data-shot="09_audio_eq.webp" alt="" loading="lazy" width="540" height="1212">
+            <img src="img/en/12_ai_result2.webp" data-shot="12_ai_result2.webp" alt="" loading="lazy" width="540" height="1212">
+            <img src="img/en/02_main.webp" data-shot="02_main.webp" alt="" loading="lazy" width="540" height="1212">
+            <img src="img/en/18_stats1.webp" data-shot="18_stats1.webp" alt="" loading="lazy" width="540" height="1212">
+          </div></div>
+          <div class="pin-label"><b id="pinNum">01</b> / 06 · <span id="pinName">Measure</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 가로 갤러리 -->
+  <section class="hz" id="more">
+    <div class="hz-pin">
+      <div class="wrap hz-head">
+        <h2 data-i18n="hz.h">More you can do<br>with your records</h2>
+        <p data-i18n="hz.p">Export reports, watch the level live with your family, and pick up where you left off on a new phone.</p>
+      </div>
+      <div class="hz-scroll">
+        <div class="hz-track" id="track">
+          <article class="card">
+            <div class="shot paper"><img src="img/en/21_pdf_page1.webp" data-shot="21_pdf_page1.webp" alt="First page of a PDF noise report" loading="lazy" width="800" height="1132"></div>
+            <div class="body"><span class="tag" data-i18n="c1.t">PDF · Excel</span><h3 data-i18n="c1.h">Export a report</h3><p data-i18n="c1.p">Pick a period and turn your noise log into a PDF report, or export it to Excel and organize it yourself.</p></div>
+          </article>
+          <article class="card">
+            <div class="shot"><img src="img/en/39_web_share.webp" data-shot="39_web_share.webp" alt="Real-time sharing: QR code and link" loading="lazy" width="540" height="1212"></div>
+            <div class="body"><span class="tag" data-i18n="c2.t">QR · link</span><h3 data-i18n="c2.h">Watch live on another device</h3><p data-i18n="c2.p">Open the QR code or link on another phone or in a PC browser to see the current noise level.</p></div>
+          </article>
+          <article class="card">
+            <div class="shot bottom"><img src="img/en/38_stop_time_set.webp" data-shot="38_stop_time_set.webp" alt="Measuring settings: power saving and scheduled stop" loading="lazy" width="540" height="1212"></div>
+            <div class="body"><span class="tag" data-i18n="c3.t">Scheduled stop · Power saving</span><h3 data-i18n="c3.h">Leave it running for hours</h3><p data-i18n="c3.p">A scheduled stop ends the measurement at the time you set, while you sleep or are out. Power saving mode hides the graphs to save battery. <span class="plat">Android only</span></p></div>
+          </article>
+          <article class="card">
+            <div class="shot"><img src="img/en/42_backup.webp" data-shot="42_backup.webp" alt="Backup screen: save to Google Drive or the device" loading="lazy" width="540" height="1212"></div>
+            <div class="body"><span class="tag" data-i18n="c4.t">ZIP · Google Drive</span><h3 data-i18n="c4.h">Backup and restore</h3><p data-i18n="c4.p">Back up all records, or only those in your log, as a ZIP file and restore them on a new phone. Android saves straight to Google Drive; on iPhone, save the file to the Files app.</p></div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 사용법 -->
+  <section class="how" id="how">
+    <div class="wrap">
+      <h2 data-i18n="how.h">Three steps</h2>
+      <ol id="howList">
+        <li><h3 data-i18n="how.1h">Install and start measuring</h3><p data-i18n="how.1p">Allow the microphone and notifications, then tap the play button in the middle. Place the phone on the floor or a desk where it can pick up the sound.</p></li>
+        <li><h3 data-i18n="how.2h">Leave it on when you sleep or go out</h3><p data-i18n="how.2p">Measuring continues with the screen off. On Android, exclude the app from battery optimization for long sessions. On iPhone, turn on Background Recording in Settings.</p></li>
+        <li><h3 data-i18n="how.3h">Check when you wake up or get home</h3><p data-i18n="how.3p">Only records with events are kept, sorted by date. Listen again, add notes and add them to your log.</p></li>
+      </ol>
+      <div class="note rise">
+        <b data-i18n="note.b">Readings are for everyday reference.</b>
+        <span data-i18n="note.s">Phone microphones differ in sensitivity, so readings carry some error and do not replace an official measurement. Use mic calibration (−20 to +20 dB) in Settings to adjust for your device.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 마지막 CTA -->
+  <section class="final" id="download">
+    <div class="glow" id="glow"></div>
+    <div class="wrap">
+      <img class="icon" src="img/icon.png" alt="Floor Noise Log app icon" width="84" height="84">
+      <h2 data-i18n="final.h">Asleep or away,<br>it keeps <span>the log</span>.</h2>
+      <p data-i18n="final.p">Floor Noise Log is available for Android and iPhone.</p>
+      <div class="stores">
+        <a class="store" href="https://play.google.com/store/apps/details?id=com.menew.noiseanalyzer" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#00a0ff" d="M3.6 1.8 13.5 12l-9.9 10.2c-.3-.2-.5-.6-.5-1.1V2.9c0-.5.2-.9.5-1.1Z"/><path fill="#00d26a" d="M3.6 1.8 13.5 12l3.1-3.1L5 2.1c-.5-.3-1-.4-1.4-.3Z"/><path fill="#ff3a44" d="M3.6 22.2 13.5 12l3.1 3.1L5 21.9c-.5.3-1 .4-1.4.3Z"/><path fill="#ffd400" d="m16.6 8.9 3.7 2.2c.7.4.7 1.4 0 1.8l-3.7 2.2-3.1-3.1Z"/></svg>
+          <span><small>Android</small><b data-i18n="store.play">Get it on Google Play</b></span>
+        </a>
+        <a class="store alt" href="https://apps.apple.com/kr/app/floor-noise-log/id6823575453" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.37 1.43c0 1.14-.5 2.27-1.18 3.08-.74.9-1.99 1.57-2.99 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.57-2.27 1.2-2.98.81-.94 2.15-1.64 3.25-1.68.03.13.06.28.06.43Zm4.56 15.71c-.03.07-.46 1.58-1.52 3.12-.94 1.34-1.94 2.71-3.43 2.71-1.52 0-1.9-.88-3.63-.88-1.7 0-2.3.91-3.67.91-1.38 0-2.33-1.26-3.43-2.8-1.29-1.82-2.32-4.63-2.32-7.28 0-4.28 2.8-6.55 5.55-6.55 1.45 0 2.67.95 3.6.95.86 0 2.22-1.01 3.9-1.01.61 0 2.89.06 4.37 2.19-.13.09-2.38 1.37-2.38 4.19 0 3.26 2.85 4.42 2.96 4.45Z"/></svg>
+          <span><small>iPhone</small><b data-i18n="store.apple">Download on the App Store</b></span>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 <span data-i18n="app">Floor Noise Log</span></span>
+    <span data-i18n="foot">Screenshots use sample data.</span>
+  </div>
+</footer>
+
+<script>
+const I18N = {
+  en: {
+    "story.note": "Features marked like this are not yet available in the iPhone app.",
+    "plat.android": "Android only",
+    app: "Floor Noise Log",
+    "nav.features": "Features", "nav.more": "More", "nav.how": "How it works", "nav.dl": "Download",
+    "hero.eyebrow": "Noise log for apartment living",
+    "hero.h1": 'Records only<br>when it goes <span class="thump" id="thump">THUD</span>.',
+    "hero.lede": "Before you go to sleep or head out, start measuring and set your phone down. Floor Noise Log keeps <strong>only the moments louder than your threshold</strong> and turns them into a log of when it happened and how loud it was.",
+    "store.play": "Get it on Google Play", "store.apple": "Download on the App Store",
+    "hero.facts": ["Events from 50 dB", "Keeps measuring with the screen off", "Records in 1-minute files"],
+    "scope.now": "dB now", "scope.ev": "Events", "scope.th": "Threshold 50 dB",
+    "scope.hint": "Scroll and the upstairs neighbor goes thud",
+    "scope.hint2": "Sounds above 50 dB are saved as events",
+    "man.p": '1 a.m., woken by another <span class="hot">thud</span>. You want to tell the building manager, but you have nothing that shows when it happened or how loud it was. Recording all night means listening back to hours of audio. And while you are out, you have no way of knowing what went on.',
+    "man.sub": "Floor Noise Log throws away the quiet minutes and keeps only the ones with loud sounds. When you wake up or get home, you can see what time it happened, how many decibels, and how many times.",
+    "story.eyebrow": "From measuring to organizing",
+    "story.h2": "It logs while you sleep<br>and while you are out.",
+    names: ["Measure", "Events", "Listen again", "AI analysis", "Log", "Statistics"],
+    "s1.h": "Set your phone down<br>and start measuring",
+    "s1.p": "See the current level in dB, a live graph and the frequency spectrum on one screen. <strong>Measuring continues with the screen off</strong>, and you can schedule it to stop when you wake up or get home.",
+    "s1.c": ["Live dB", "31 Hz – 16 kHz", "*Scheduled stop"],
+    "s2.h": "Only sounds above the threshold<br>become events",
+    "s2.p": "Sounds above the threshold (<strong>50 dB</strong> by default, adjustable from 40 to 80 dB) are marked as events. One-minute files with no events are not saved, so storage lasts longer. Turn on <strong>record on event</strong> and recording starts 5 seconds before the sound.",
+    "s2.c": ["*Threshold 50 dB", "5 s pre-roll", "Peak · duration"],
+    "s3.h": "Jump to the moment<br>and listen again",
+    "s3.p": "Tap an event number to play from that point. Low, booming footsteps come through clearly with <strong>bass emphasis</strong> and the <strong>equalizer</strong>. {A}",
+    "s3.c": ["Skip between events", "*Bass emphasis", "EQ"],
+    "s4.h": "AI tells you<br>what the sound was",
+    "s4.p": "Based on the recording and its frequency profile, AI describes the likely type of sound, such as heavy footsteps, a dropped object or a door closing. Equivalent level (Leq) and maximum level (Lmax) are shown too.",
+    "s4.c": ["Leq · Lmax", "*Sound type estimate"],
+    "s5.h": "Keep important records<br>in your log",
+    "s5.p": "The calendar shows how many records each day has. Star the important ones and add them to your <strong>log</strong>. Attach notes like \"heavy footsteps\" or \"door slamming\" with one tap.",
+    "s5.c": ["Calendar", "*Mark as important", "Quick notes"],
+    "s6.h": "See when<br>it gets loud",
+    "s6.p": "Charts show counts by weekday and hour, the share at night and the mix of noise types. A time slot that keeps repeating gives you something concrete to talk about.",
+    "s6.c": ["Weekday × hour", "*Night ratio", "Noise types"],
+    "hz.h": "More you can do<br>with your records",
+    "hz.p": "Export reports, watch the level live with your family, and pick up where you left off on a new phone.",
+    "c1.t": "PDF · Excel", "c1.h": "Export a report", "c1.p": "Pick a period and turn your noise log into a PDF report, or export it to Excel and organize it yourself.",
+    "c2.t": "QR · link", "c2.h": "Watch live on another device", "c2.p": "Open the QR code or link on another phone or in a PC browser to see the current noise level.",
+    "c3.t": "Scheduled stop · Power saving", "c3.h": "Leave it running for hours", "c3.p": "A scheduled stop ends the measurement at the time you set, while you sleep or are out. Power saving mode hides the graphs to save battery. {A}",
+    "c4.t": "ZIP · Google Drive", "c4.h": "Backup and restore", "c4.p": "Back up all records, or only those in your log, as a ZIP file and restore them on a new phone. Android saves straight to Google Drive; on iPhone, save the file to the Files app.",
+    "how.h": "Three steps",
+    "how.1h": "Install and start measuring", "how.1p": "Allow the microphone and notifications, then tap the play button in the middle. Place the phone on the floor or a desk where it can pick up the sound.",
+    "how.2h": "Leave it on when you sleep or go out", "how.2p": "Measuring continues with the screen off. On Android, exclude the app from battery optimization for long sessions. On iPhone, turn on Background Recording in Settings.",
+    "how.3h": "Check when you wake up or get home", "how.3p": "Only records with events are kept, sorted by date. Listen again, add notes and add them to your log.",
+    "note.b": "Readings are for everyday reference.",
+    "note.s": "Phone microphones differ in sensitivity, so readings carry some error and do not replace an official measurement. Use mic calibration (−20 to +20 dB) in Settings to adjust for your device.",
+    "final.h": "Asleep or away,<br>it keeps <span>the log</span>.",
+    "final.p": "Floor Noise Log is available for Android and iPhone.",
+    foot: "Screenshots use sample data.",
+    desc: "Floor Noise Log records only when a loud thud happens and organizes it by time, level and sound type."
+  },
+  ko: {
+    "story.note": "이 표시가 있는 기능은 아직 iPhone 앱에서 지원하지 않습니다.",
+    "plat.android": "Android 전용",
+    app: "층소일지",
+    "nav.features": "기능", "nav.more": "기록 활용", "nav.how": "사용법", "nav.dl": "다운로드",
+    "hero.eyebrow": "층간소음 기록 앱",
+    "hero.h1": '<span class="thump" id="thump">쿵</span> 소리가 날 때만<br>녹음합니다.',
+    "hero.lede": "잘 때나 외출할 때 휴대폰을 두고 측정을 시작하세요. 층소일지는 <strong>기준보다 큰 소리가 난 순간</strong>만 골라 남기고, 언제 얼마나 컸는지 일지로 정리합니다.",
+    "store.play": "Google Play에서 받기", "store.apple": "App Store에서 받기",
+    "hero.facts": ["기준 50 dB부터 이벤트", "화면을 꺼도 측정", "1분 단위 녹음"],
+    "scope.now": "dB 현재", "scope.ev": "이벤트", "scope.th": "기준선 50 dB",
+    "scope.hint": "스크롤하면 위층에서 쿵 소리가 납니다",
+    "scope.hint2": "50 dB를 넘는 소리가 이벤트로 기록됩니다",
+    "man.p": '새벽 1시, 또 <span class="hot">쿵</span> 소리에 깼습니다. 관리사무소에 이야기하려니 언제, 얼마나 컸는지 보여줄 게 없습니다. 밤새 녹음을 켜 두면 몇 시간짜리 파일을 다시 들어야 합니다. 외출한 사이에 무슨 소리가 났는지는 알 길이 없습니다.',
+    "man.sub": "층소일지는 조용한 시간은 버리고 큰 소리가 난 1분만 남깁니다. 자고 일어나거나 외출했다 돌아오면 몇 시 몇 분에, 몇 dB짜리 소리가, 몇 번 났는지 바로 확인할 수 있습니다.",
+    "story.eyebrow": "측정부터 정리까지",
+    "story.h2": "잘 때도, 외출할 때도<br>알아서 기록합니다.",
+    names: ["측정", "이벤트", "다시 듣기", "AI 분석", "일지", "통계"],
+    "s1.h": "휴대폰을 두고<br>측정을 시작합니다",
+    "s1.p": "현재 소음(dB), 실시간 그래프, 주파수 분포를 한 화면에서 봅니다. <strong>화면을 꺼도 측정은 계속</strong>되고, 일어날 시간이나 돌아올 시간에 맞춰 종료를 예약해 둘 수 있습니다.",
+    "s1.c": ["실시간 dB", "31 Hz – 16 kHz", "*종료 예약"],
+    "s2.h": "기준을 넘는 소리만<br>이벤트로 남깁니다",
+    "s2.p": "기준(기본 <strong>50 dB</strong>, 40–80 dB 조절)을 넘는 소리를 이벤트로 잡습니다. 이벤트가 없던 1분 파일은 저장하지 않아서 저장 공간을 아낍니다. <strong>이벤트 발생 시 녹음</strong>을 켜면 소리가 나기 5초 전부터 녹음합니다.",
+    "s2.c": ["*기준 50 dB", "5초 전부터 녹음", "Peak · 지속시간"],
+    "s3.h": "그 순간으로 바로 가서<br>다시 들어봅니다",
+    "s3.p": "이벤트 번호를 누르면 해당 위치부터 재생됩니다. 발망치처럼 낮게 울리는 소리는 <strong>중저음 강조</strong>와 <strong>이퀄라이저</strong>로 또렷하게 들을 수 있습니다. {A}",
+    "s3.c": ["이벤트 건너뛰기", "*중저음 강조", "EQ"],
+    "s4.h": "어떤 소리였는지<br>AI가 짚어줍니다",
+    "s4.p": "녹음과 주파수 특성을 바탕으로 발걸음(발망치), 물체 낙하, 문 닫힘 같은 소리 종류와 특징을 정리해 줍니다. 등가소음(Leq)과 최고소음(Lmax)도 함께 보여줍니다.",
+    "s4.c": ["Leq · Lmax", "*소리 종류 추정"],
+    "s5.h": "중요한 기록은<br>일지에 모아 둡니다",
+    "s5.p": "달력에서 날짜별 기록 수를 보고, 중요한 기록은 별표와 함께 <strong>층소일지</strong>에 추가합니다. \"발망치\", \"문 쾅\" 같은 메모를 한 번에 붙일 수 있습니다.",
+    "s5.c": ["달력", "*중요 표시", "퀵노트 메모"],
+    "s6.h": "언제 시끄러운지<br>패턴이 보입니다",
+    "s6.p": "요일별·시간대별 발생 건수, 야간 비중, 소음 유형 비중을 그래프로 보여줍니다. 반복되는 시간대를 근거로 이야기할 수 있습니다.",
+    "s6.c": ["요일 × 시간", "*야간 비중", "소음 유형"],
+    "hz.h": "기록한 뒤에도<br>쓸 곳이 많습니다",
+    "hz.p": "보고서로 뽑고, 가족과 실시간으로 보고, 휴대폰을 바꿔도 이어서 씁니다.",
+    "c1.t": "PDF · Excel", "c1.h": "보고서로 내보내기", "c1.p": "기간을 골라 소음 발생 일지를 PDF 보고서로 만듭니다. 엑셀로 내보내 직접 정리할 수도 있습니다.",
+    "c2.t": "QR · 링크", "c2.h": "다른 기기에서 실시간 보기", "c2.p": "QR 코드나 링크로 열면 다른 휴대폰이나 PC 브라우저에서 지금 소음 수치를 볼 수 있습니다.",
+    "c3.t": "예약 종료 · 절전", "c3.h": "오래 켜 두기", "c3.p": "자는 동안이나 외출한 동안, 정해 둔 시각에 측정이 끝나도록 예약합니다. 절전 모드로 그래프 표시를 멈춰 배터리를 아낄 수도 있습니다. {A}",
+    "c4.t": "ZIP · Google Drive", "c4.h": "백업과 복구", "c4.p": "전체 기록이나 일지에 넣은 기록만 골라 ZIP 파일로 백업하고, 새 휴대폰에서 복구합니다. Android는 구글 드라이브에 바로 저장하고, iPhone은 파일 앱에 저장합니다.",
+    "how.h": "세 단계면 됩니다",
+    "how.1h": "앱을 설치하고 측정 시작", "how.1p": "마이크·알림 권한을 허용하고 가운데 재생 버튼을 누릅니다. 휴대폰은 소리가 잘 들리는 바닥이나 책상에 둡니다.",
+    "how.2h": "잘 때나 외출할 때 켜 두기", "how.2p": "화면을 꺼도 측정은 계속됩니다. Android는 오래 측정할 때 배터리 최적화 제외를 켜 두고, iPhone은 설정에서 백그라운드 녹음을 켜 두세요.",
+    "how.3h": "일어나거나 돌아와서 확인", "how.3p": "이벤트가 있던 기록만 날짜별로 쌓입니다. 다시 듣고, 메모하고, 일지에 추가하세요.",
+    "note.b": "측정값은 생활 참고용입니다.",
+    "note.s": "스마트폰 마이크는 기기마다 감도가 달라 오차가 있고, 공식 측정 자료를 대신하지 않습니다. 설정의 마이크 보정(−20 ~ +20 dB)으로 기기 차이를 맞출 수 있습니다.",
+    "final.h": "잘 때도, 외출할 때도<br><span>기록</span>을 남기세요.",
+    "final.p": "층소일지는 Android와 iPhone에서 받을 수 있습니다.",
+    foot: "화면 이미지는 예시 데이터로 촬영했습니다.",
+    desc: "층간소음, 쿵 소리가 날 때만 녹음해서 시간·크기·소리 종류와 함께 일지로 정리하는 앱."
+  },
+  ja: {
+    "story.note": "この表示がある機能は、まだiPhoneアプリでは利用できません。",
+    "plat.android": "Androidのみ",
+    app: "騒音日記",
+    "nav.features": "機能", "nav.more": "記録の活用", "nav.how": "使い方", "nav.dl": "ダウンロード",
+    "hero.eyebrow": "マンションの騒音記録アプリ",
+    "hero.h1": '<span class="thump" id="thump">ドン</span>と鳴った<br>瞬間だけ録音。',
+    "hero.lede": "寝るときや出かけるときに、スマホを置いて測定を始めるだけ。騒音日記は<strong>基準より大きな音がした瞬間</strong>だけを残し、いつ、どれくらいの音だったかを日誌にまとめます。",
+    "store.play": "Google Play で手に入れよう", "store.apple": "App Store からダウンロード",
+    "hero.facts": ["50 dB からイベント", "画面オフでも測定", "1分単位で録音"],
+    "scope.now": "dB 現在", "scope.ev": "イベント", "scope.th": "基準線 50 dB",
+    "scope.hint": "スクロールすると上の階からドンと音がします",
+    "scope.hint2": "50 dB を超える音がイベントとして記録されます",
+    "man.p": '深夜1時、また<span class="hot">ドン</span>という音で目が覚めました。管理会社に伝えたくても、いつ、どれくらい大きかったのかを示すものがありません。一晩中録音すれば、何時間もの音声を聞き直すことになります。外出中に何があったのかは、知るすべもありません。',
+    "man.sub": "騒音日記は静かな時間を捨て、大きな音がした1分だけを残します。起きたときや帰宅したときに、何時何分に、何 dB の音が、何回鳴ったかをすぐに確認できます。",
+    "story.eyebrow": "測定から整理まで",
+    "story.h2": "寝ている間も、外出中も<br>自動で記録。",
+    names: ["測定", "イベント", "聞き直し", "AI分析", "日誌", "統計"],
+    "s1.h": "スマホを置いて<br>測定を開始",
+    "s1.p": "現在の騒音(dB)、リアルタイムグラフ、周波数分布を1画面で確認できます。<strong>画面を消しても測定は続き</strong>、起床や帰宅の時刻に合わせて終了を予約できます。",
+    "s1.c": ["リアルタイム dB", "31 Hz – 16 kHz", "*予約終了"],
+    "s2.h": "基準を超えた音だけを<br>イベントとして保存",
+    "s2.p": "基準(初期値 <strong>50 dB</strong>、40〜80 dB で調整可能)を超えた音をイベントとして記録します。イベントがなかった1分のファイルは保存しないので、容量を節約できます。<strong>イベント発生時に録音</strong>をオンにすると、音の5秒前から録音します。",
+    "s2.c": ["*基準 50 dB", "5秒前から録音", "ピーク · 持続時間"],
+    "s3.h": "その瞬間へ移動して<br>聞き直す",
+    "s3.p": "イベント番号をタップすると、その位置から再生します。足音のように低く響く音は、<strong>低音強調</strong>と<strong>イコライザー</strong>ではっきり聞こえます。 {A}",
+    "s3.c": ["イベント間の移動", "*低音強調", "EQ"],
+    "s4.h": "どんな音だったか<br>AIが分析",
+    "s4.p": "録音と周波数の特徴をもとに、足音、物の落下、ドアを閉める音など、音の種類と特徴をまとめます。等価騒音レベル(Leq)と最大騒音レベル(Lmax)も表示します。",
+    "s4.c": ["Leq · Lmax", "*音の種類を推定"],
+    "s5.h": "大切な記録は<br>日誌にまとめる",
+    "s5.p": "カレンダーで日付ごとの記録数を確認し、大切な記録には星を付けて<strong>日誌</strong>に追加します。「足音」「ドアの開閉音」などのメモをワンタップで付けられます。",
+    "s5.c": ["カレンダー", "*重要マーク", "クイックノート"],
+    "s6.h": "いつうるさいのか<br>パターンが見える",
+    "s6.p": "曜日別・時間帯別の発生件数、夜間比率、騒音タイプの比率をグラフで表示します。繰り返される時間帯を根拠に話し合えます。",
+    "s6.c": ["曜日 × 時間", "*夜間比率", "騒音タイプ"],
+    "hz.h": "記録したあとも<br>使い道がたくさん",
+    "hz.p": "レポートに出力し、家族とリアルタイムで確認し、機種変更しても続きから使えます。",
+    "c1.t": "PDF · Excel", "c1.h": "レポートを出力", "c1.p": "期間を選んで騒音の記録を PDF レポートにします。Excel に書き出して自分で整理することもできます。",
+    "c2.t": "QR · リンク", "c2.h": "別の端末でリアルタイム表示", "c2.p": "QRコードやリンクを開けば、別のスマホや PC のブラウザで今の騒音レベルを確認できます。",
+    "c3.t": "予約終了 · 節電モード", "c3.h": "長時間つけたままに", "c3.p": "寝ている間や外出中も、決めた時刻に測定が終わるよう予約できます。節電モードでグラフ表示を止め、バッテリーを節約することもできます。{A}",
+    "c4.t": "ZIP · Google ドライブ", "c4.h": "バックアップと復元", "c4.p": "すべての記録、または日誌の記録だけをZIPファイルにバックアップし、新しいスマホで復元できます。AndroidはGoogle ドライブに直接保存でき、iPhoneは「ファイル」アプリに保存します。",
+    "how.h": "3ステップで完了",
+    "how.1h": "インストールして測定開始", "how.1p": "マイクと通知を許可し、中央の再生ボタンをタップします。スマホは音がよく届く床や机の上に置きます。",
+    "how.2h": "寝るとき・出かけるときにオン", "how.2p": "画面を消しても測定は続きます。Androidでは長時間測定するときにバッテリー最適化の対象から外し、iPhoneでは設定で「バックグラウンド録音」をオンにしてください。",
+    "how.3h": "起きたら・帰ったら確認", "how.3p": "イベントがあった記録だけが日付ごとに残ります。聞き直し、メモを付けて、日誌に追加しましょう。",
+    "note.b": "測定値は日常の参考用です。",
+    "note.s": "スマホのマイクは機種によって感度が異なるため誤差があり、公式な測定の代わりにはなりません。設定のマイク補正(−20〜+20 dB)で機種ごとの差を調整できます。",
+    "final.h": "寝るときも、出かけるときも<br><span>記録</span>を残そう。",
+    "final.p": "騒音日記は Android と iPhone で利用できます。",
+    foot: "画面はサンプルデータで撮影しています。",
+    desc: "大きな音がしたときだけ録音し、時刻・音量・音の種類とともに日誌にまとめる騒音記録アプリ。"
+  },
+  de: {
+    "story.note": "So markierte Funktionen gibt es in der iPhone-App noch nicht.",
+    "plat.android": "Nur Android",
+    app: "Lärmprotokoll",
+    "nav.features": "Funktionen", "nav.more": "Mehr", "nav.how": "So geht's", "nav.dl": "Download",
+    "hero.eyebrow": "Lärm-Tagebuch für Wohnungen",
+    "hero.h1": 'Nimmt nur auf,<br>wenn es <span class="thump" id="thump">RUMMS</span> macht.',
+    "hero.lede": "Vor dem Schlafengehen oder Weggehen Messung starten, Handy hinlegen. Lärmprotokoll speichert <strong>nur die Momente, die lauter als Ihr Schwellenwert sind</strong>, und ordnet sie zu einem Protokoll: wann es war und wie laut.",
+    "store.play": "Jetzt bei Google Play", "store.apple": "Laden im App Store",
+    "hero.facts": ["Ereignisse ab 50 dB", "Misst auch bei ausgeschaltetem Display", "Aufnahme in 1-Minuten-Dateien"],
+    "scope.now": "dB aktuell", "scope.ev": "Ereignisse", "scope.th": "Schwelle 50 dB",
+    "scope.hint": "Scrollen Sie, und von oben kommt ein Rumms",
+    "scope.hint2": "Geräusche über 50 dB werden als Ereignis gespeichert",
+    "man.p": '1 Uhr nachts, wieder von einem <span class="hot">Rumms</span> geweckt. Sie wollen es der Hausverwaltung melden, können aber nicht zeigen, wann es war und wie laut. Wer die ganze Nacht aufnimmt, muss stundenlange Dateien nachhören. Und was passiert, während Sie unterwegs sind, erfahren Sie nie.',
+    "man.sub": "Lärmprotokoll verwirft die ruhigen Minuten und behält nur die mit lauten Geräuschen. Wenn Sie aufwachen oder nach Hause kommen, sehen Sie sofort, um wie viel Uhr, wie viele Dezibel und wie oft.",
+    "story.eyebrow": "Vom Messen bis zum Ordnen",
+    "story.h2": "Es protokolliert, während Sie schlafen<br>oder unterwegs sind.",
+    names: ["Messen", "Ereignisse", "Nachhören", "AI-Analyse", "Protokoll", "Statistiken"],
+    "s1.h": "Handy hinlegen,<br>Messung starten",
+    "s1.p": "Aktueller Pegel in dB, Live-Graph und Frequenzspektrum auf einem Bildschirm. <strong>Die Messung läuft bei ausgeschaltetem Display weiter</strong>, und Sie können eine Abschaltung planen, passend zu Ihrer Aufsteh- oder Heimkehrzeit.",
+    "s1.c": ["Live-dB", "31 Hz – 16 kHz", "*Geplante Abschaltung"],
+    "s2.h": "Nur Geräusche über der Schwelle<br>werden zu Ereignissen",
+    "s2.p": "Geräusche über der Schwelle (standardmäßig <strong>50 dB</strong>, einstellbar von 40 bis 80 dB) werden als Ereignis erfasst. Minutendateien ohne Ereignis werden nicht gespeichert, das spart Speicher. Mit <strong>Aufnahme bei Ereignis</strong> beginnt die Aufnahme 5 Sekunden vor dem Geräusch.",
+    "s2.c": ["*Schwelle 50 dB", "5 s Vorlauf", "Spitze · Dauer"],
+    "s3.h": "Direkt zum Moment springen<br>und nachhören",
+    "s3.p": "Tippen Sie auf eine Ereignisnummer, um ab dieser Stelle abzuspielen. Dumpfe Trittgeräusche werden mit <strong>Bassbetonung</strong> und <strong>Equalizer</strong> deutlich hörbar. {A}",
+    "s3.c": ["Von Ereignis zu Ereignis", "*Bassbetonung", "EQ"],
+    "s4.h": "Die AI sagt Ihnen,<br>was es war",
+    "s4.p": "Anhand der Aufnahme und ihres Frequenzprofils beschreibt die AI die wahrscheinliche Geräuschart, etwa schwere Schritte, einen herunterfallenden Gegenstand oder eine schließende Tür. Mittelungspegel (Leq) und Maximalpegel (Lmax) werden ebenfalls angezeigt.",
+    "s4.c": ["Leq · Lmax", "*Geräuschart-Schätzung"],
+    "s5.h": "Wichtige Aufnahmen<br>im Protokoll sammeln",
+    "s5.p": "Der Kalender zeigt, wie viele Aufnahmen es pro Tag gibt. Markieren Sie wichtige mit einem Stern und fügen Sie sie dem <strong>Protokoll</strong> hinzu. Notizen wie „Schwere Schritte“ oder „Türenschlagen“ hängen Sie mit einem Tipp an.",
+    "s5.c": ["Kalender", "*Als wichtig markieren", "Quick-Notizen"],
+    "s6.h": "Sehen, wann<br>es laut wird",
+    "s6.p": "Diagramme zeigen die Häufigkeit nach Wochentag und Uhrzeit, den Nachtanteil und die Verteilung der Lärmarten. Ein wiederkehrendes Zeitfenster ist ein konkreter Gesprächspunkt.",
+    "s6.c": ["Wochentag × Uhrzeit", "*Nachtanteil", "Lärmarten"],
+    "hz.h": "Nach der Aufnahme<br>geht es weiter",
+    "hz.p": "Berichte exportieren, den Pegel live mit der Familie verfolgen und auf einem neuen Handy weitermachen.",
+    "c1.t": "PDF · Excel", "c1.h": "Bericht exportieren", "c1.p": "Wählen Sie einen Zeitraum und erstellen Sie aus Ihrem Lärmprotokoll einen PDF-Bericht, oder exportieren Sie es nach Excel.",
+    "c2.t": "QR · Link", "c2.h": "Live auf einem anderen Gerät", "c2.p": "Über QR-Code oder Link sehen Sie den aktuellen Pegel auf einem anderen Handy oder im PC-Browser.",
+    "c3.t": "Geplante Abschaltung · Energiesparmodus", "c3.h": "Stundenlang laufen lassen", "c3.p": "Eine geplante Abschaltung beendet die Messung zur gewählten Zeit, während Sie schlafen oder unterwegs sind. Der Energiesparmodus blendet die Diagramme aus und spart Akku. {A}",
+    "c4.t": "ZIP · Google Drive", "c4.h": "Sichern und wiederherstellen", "c4.p": "Sichern Sie alle Aufnahmen oder nur die im Protokoll als ZIP-Datei und stellen Sie sie auf einem neuen Handy wieder her. Android speichert direkt in Google Drive, auf dem iPhone sichern Sie die Datei in der Dateien-App.",
+    "how.h": "Drei Schritte",
+    "how.1h": "Installieren und Messung starten", "how.1p": "Mikrofon und Benachrichtigungen erlauben, dann die Wiedergabetaste in der Mitte tippen. Legen Sie das Handy auf den Boden oder einen Tisch, wo es den Lärm gut aufnimmt.",
+    "how.2h": "Beim Schlafen oder Weggehen einschalten", "how.2p": "Die Messung läuft bei ausgeschaltetem Display weiter. Nehmen Sie die App unter Android für lange Messungen von der Akkuoptimierung aus, und schalten Sie auf dem iPhone in den Einstellungen „Hintergrundaufnahme“ ein.",
+    "how.3h": "Nach dem Aufwachen oder Heimkommen nachsehen", "how.3p": "Nur Aufnahmen mit Ereignissen bleiben erhalten, nach Datum sortiert. Nachhören, Notizen ergänzen und ins Protokoll übernehmen.",
+    "note.b": "Die Messwerte dienen zur Orientierung im Alltag.",
+    "note.s": "Handymikrofone unterscheiden sich in der Empfindlichkeit, daher sind die Werte nicht exakt und ersetzen keine amtliche Messung. Mit der Mikrofonkalibrierung (−20 bis +20 dB) in den Einstellungen gleichen Sie Ihr Gerät an.",
+    "final.h": "Im Schlaf und unterwegs:<br>einfach <span>protokollieren</span>.",
+    "final.p": "Lärmprotokoll gibt es für Android und iPhone.",
+    foot: "Die Screenshots zeigen Beispieldaten.",
+    desc: "Lärmprotokoll nimmt nur auf, wenn es laut wird, und ordnet die Aufnahmen nach Zeit, Pegel und Geräuschart."
+  }
+};
+
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const css = getComputedStyle(document.documentElement);
+  const C = k => css.getPropertyValue(k).trim();
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  let lang = 'en';
+
+  /* ---------- 언어 ---------- */
+  const words = document.getElementById('words');
+  let ws = [];
+  function splitWords() {
+    const seg = window.Intl && Intl.Segmenter ? new Intl.Segmenter(lang, { granularity: 'word' }) : null;
+    const pieces = t => seg ? [...seg.segment(t)].map(s => s.segment)
+      : (lang === 'ja' ? t.split(/(?<=[、。])/) : t.split(/(\s+)/));
+    const frag = document.createDocumentFragment();
+    [...words.childNodes].forEach(n => {
+      const hot = n.nodeType === 1;
+      pieces(n.textContent).forEach(t => {
+        if (!t) return;
+        if (/^\s+$/.test(t)) { frag.appendChild(document.createTextNode(t)); return; }
+        const s = document.createElement('span'); s.className = 'w' + (hot ? ' hot' : ''); s.textContent = t; frag.appendChild(s);
+      });
+    });
+    words.textContent = ''; words.appendChild(frag);
+    ws = [...words.querySelectorAll('.w')];
+    if (reduce) ws.forEach(w => w.classList.add('on'));
+  }
+
+  function setLang(l, save) {
+    const D = I18N[l] || I18N.en; lang = I18N[l] ? l : 'en';
+    document.documentElement.lang = lang;
+    document.title = D.app;
+    const md = document.querySelector('meta[name="description"]'); if (md) md.content = D.desc;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const k = el.dataset.i18n;
+      const v = k.startsWith('names.') ? D.names[+k.slice(6)] : D[k];
+      if (v != null) el.innerHTML = typeof v === 'string' ? v.replace('{A}', `<span class="plat">${D['plat.android']}</span>`) : v;
+    });
+    document.querySelectorAll('[data-i18n-list]').forEach(el => {
+      el.innerHTML = D[el.dataset.i18nList].map(t => `<span>${t}</span>`).join('');
+    });
+    document.querySelectorAll('[data-i18n-chips]').forEach(el => {
+      el.innerHTML = D[el.dataset.i18nChips].map(t => t[0] === '*'
+        ? `<span class="chip o">${t.slice(1)}</span>` : `<span class="chip">${t}</span>`).join('');
+    });
+    if (reduce) document.getElementById('hint').textContent = D['scope.hint2'];
+    document.querySelectorAll('.lang button').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === lang));
+    pinName.textContent = D.names[current];
+    document.querySelectorAll('img[data-shot]').forEach(im => {
+      const src = (lang === 'ko' ? 'img/' : `img/${lang}/`) + im.dataset.shot;
+      if (im.getAttribute('src') !== src) im.setAttribute('src', src);
+    });
+    splitWords();
+    if (save) { try { localStorage.setItem('fnl-lang', lang); } catch (e) {} }
+    if (typeof hzSetup === 'function') { hzSetup(); onScroll(); }
+  }
+
+  /* ---------- 소음 그래프 (히어로) ---------- */
+  const cv = document.getElementById('scope');
+  const ctx = cv.getContext('2d');
+  const nowEl = document.getElementById('now');
+  const evEl = document.getElementById('evc');
+  const N = 260, LO = 20, HI = 80, TH = 50;
+  const buf = [];
+  let pending = [];
+  let above = false, events = 0;
+  const gauss = () => (Math.random() + Math.random() + Math.random() - 1.5) * 1.6;
+  const base = () => 34 + gauss();
+  for (let i = 0; i < N; i++) buf.push(base());
+
+  function thump(strength) {
+    const peak = clamp(53 + strength * 13 + Math.random() * 3, 40, 78);
+    const len = 4 + Math.round(Math.random() * 5);
+    const shape = [];
+    for (let k = 0; k < len; k++) shape.push(TH + (peak - TH) * Math.sin(Math.PI * (k + 1) / (len + 1)));
+    for (let k = 0; k < 5; k++) shape.push(42 - k * 1.5);
+    pending = shape;
+    const el = document.getElementById('thump');
+    if (!reduce && el) { el.classList.remove('hit'); void el.offsetWidth; el.classList.add('hit'); }
+  }
+
+  function step() {
+    let v = base();
+    if (pending.length) v = Math.max(v, pending.shift());
+    buf.push(v); buf.shift();
+    if (v >= TH && !above) { above = true; events++; evEl.textContent = events; }
+    if (v < TH - 2) above = false;
+    nowEl.textContent = v.toFixed(1);
+    nowEl.classList.toggle('loud', v >= TH);
+  }
+
+  let W = 0, H = 0, dpr = 1;
+  function size() {
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    W = cv.clientWidth; H = cv.clientHeight;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    draw();
+  }
+  const y = db => H - 8 - (clamp(db, LO, HI) - LO) / (HI - LO) * (H - 24);
+
+  function draw() {
+    if (!W) return;
+    ctx.clearRect(0, 0, W, H);
+    ctx.font = '11px ' + C('--f-mono');
+    ctx.fillStyle = C('--mute');
+    ctx.strokeStyle = C('--line'); ctx.lineWidth = 1;
+    [30, 40, 60, 70].forEach(d => {
+      ctx.beginPath(); ctx.moveTo(0, y(d) + .5); ctx.lineTo(W, y(d) + .5); ctx.stroke();
+      ctx.fillText(d + ' dB', W - 44, y(d) - 4);
+    });
+    const dx = W / (N - 1);
+    const g = ctx.createLinearGradient(0, y(70), 0, H);
+    g.addColorStop(0, 'rgba(255,106,31,.35)'); g.addColorStop(1, 'rgba(255,106,31,0)');
+    ctx.beginPath(); ctx.moveTo(0, H);
+    buf.forEach((v, i) => ctx.lineTo(i * dx, y(v)));
+    ctx.lineTo(W, H); ctx.closePath(); ctx.fillStyle = g; ctx.fill();
+    ctx.beginPath();
+    buf.forEach((v, i) => i ? ctx.lineTo(i * dx, y(v)) : ctx.moveTo(0, y(v)));
+    ctx.strokeStyle = C('--orange'); ctx.lineWidth = 1.6; ctx.lineJoin = 'round'; ctx.stroke();
+    ctx.setLineDash([3, 5]); ctx.strokeStyle = C('--fg'); ctx.globalAlpha = .55;
+    ctx.beginPath(); ctx.moveTo(0, y(TH) + .5); ctx.lineTo(W, y(TH) + .5); ctx.stroke();
+    ctx.setLineDash([]); ctx.globalAlpha = 1;
+    const lx = 14, ly = y(TH);
+    ctx.fillStyle = '#2a3040';
+    ctx.beginPath(); ctx.roundRect ? ctx.roundRect(lx, ly - 11, 50, 22, 11) : ctx.rect(lx, ly - 11, 50, 22); ctx.fill();
+    ctx.fillStyle = C('--fg'); ctx.fillText('50 dB', lx + 9, ly + 4);
+    const last = buf[N - 1];
+    ctx.fillStyle = last >= TH ? C('--orange') : C('--fg');
+    ctx.beginPath(); ctx.arc(W - 3, y(last), 3.5, 0, Math.PI * 2); ctx.fill();
+  }
+
+  let visible = true, lastT = 0, acc = 0, nextAuto = 1800;
+  function loop(t) {
+    if (visible) {
+      const dt = Math.min(100, t - (lastT || t)); lastT = t;
+      acc += dt; nextAuto -= dt;
+      if (nextAuto <= 0) { thump(Math.random() * .6); nextAuto = 2600 + Math.random() * 3200; }
+      let moved = false;
+      while (acc >= 55) { step(); acc -= 55; moved = true; }
+      if (moved) draw();
+    } else lastT = 0;
+    requestAnimationFrame(loop);
+  }
+
+  if (reduce) {
+    [40, 110, 150, 215].forEach((at, j) => {
+      const peak = [58, 61, 55, 64][j];
+      for (let k = 0; k < 7; k++) buf[at + k] = Math.max(buf[at + k], TH + (peak - TH) * Math.sin(Math.PI * (k + 1) / 8));
+    });
+    evEl.textContent = 4;
+  } else {
+    requestAnimationFrame(loop);
+    new IntersectionObserver(es => { visible = es[0].isIntersecting; }).observe(cv);
+  }
+  new ResizeObserver(size).observe(cv);
+
+  /* ---------- 고정 휴대폰 화면 교체 ---------- */
+  const steps = [...document.querySelectorAll('.step')];
+  const shots = [...document.querySelectorAll('#pinPhone img')];
+  const pinNum = document.getElementById('pinNum'), pinName = document.getElementById('pinName');
+  let current = 0;
+  function activate(i) {
+    current = i;
+    steps.forEach((s, j) => s.classList.toggle('active', j === i));
+    shots.forEach((s, j) => s.classList.toggle('on', j === i));
+    pinNum.textContent = String(i + 1).padStart(2, '0'); pinName.textContent = (I18N[lang] || I18N.en).names[i];
+  }
+  const stepIO = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting) activate(+e.target.dataset.i); });
+  }, { rootMargin: '-45% 0px -45% 0px' });
+  steps.forEach(s => stepIO.observe(s));
+
+  /* ---------- 스크롤 반응 ---------- */
+  const meter = document.getElementById('meter');
+  const heroPhone = document.getElementById('heroPhone');
+  const glow = document.getElementById('glow');
+  const howList = document.getElementById('howList');
+  const hz = document.getElementById('more');
+  const track = document.getElementById('track');
+  let pinned = false, dist = 0;
+
+  function hzSetup() {
+    const want = !reduce && innerWidth > 900 && innerHeight > 620;
+    hz.classList.toggle('pinned', want); pinned = want;
+    if (!want) { hz.style.height = ''; track.style.transform = ''; return; }
+    dist = Math.max(0, track.scrollWidth - innerWidth);
+    hz.style.height = (innerHeight + dist) + 'px';
+    hzUpdate();
+  }
+  function hzUpdate() {
+    if (!pinned) return;
+    const r = hz.getBoundingClientRect();
+    const p = clamp(-r.top / Math.max(1, dist), 0, 1);
+    track.style.transform = `translate3d(${-p * dist}px,0,0)`;
+  }
+
+  let lastY = scrollY, lastThump = 0;
+  function onScroll() {
+    const sy = scrollY, vh = innerHeight;
+    const max = document.documentElement.scrollHeight - vh;
+    meter.style.setProperty('--p', max > 0 ? (sy / max).toFixed(4) : 0);
+
+    const d = Math.abs(sy - lastY); lastY = sy;
+    const now = performance.now();
+    if (!reduce && d > 6 && now - lastThump > 420 && sy < vh * 1.2) { lastThump = now; thump(clamp(d / 80, 0, 1)); }
+
+    if (reduce) return;
+    const hp = clamp(sy / vh, 0, 1);
+    heroPhone.style.transform = `translateY(${-hp * 70}px) rotate(${-hp * 5}deg)`;
+
+    const r = words.getBoundingClientRect();
+    const p = clamp((vh * .78 - r.top) / (r.height + vh * .25), 0, 1);
+    const k = Math.round(p * ws.length);
+    ws.forEach((w, i) => w.classList.toggle('on', i < k));
+
+    const hr = howList.getBoundingClientRect();
+    const hpg = clamp((vh * .85 - hr.top) / (vh * .5), 0, 1);
+    howList.querySelectorAll('li').forEach((li, i) => li.style.setProperty('--fill', clamp(hpg * 3 - i, 0, 1) * 100 + '%'));
+
+    const gr = glow.parentElement.getBoundingClientRect();
+    glow.style.setProperty('--g', (.6 + clamp(1 - gr.top / vh, 0, 1) * .6).toFixed(3));
+
+    hzUpdate();
+  }
+
+  /* ---------- 시작 ---------- */
+  document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang, true)));
+  let initial = 'en';
+  try {
+    const q = new URLSearchParams(location.search).get('lang');
+    const saved = localStorage.getItem('fnl-lang');
+    if (q && I18N[q]) initial = q; else if (saved && I18N[saved]) initial = saved;
+  } catch (e) {}
+  setLang(initial, false);
+
+  let ticking = false;
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; onScroll(); }); } }, { passive: true });
+  addEventListener('resize', () => { hzSetup(); onScroll(); });
+  hzSetup(); onScroll();
+})();
+</script>
+</body>
+</html>
