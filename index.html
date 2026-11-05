@@ -5,17 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>HNH Labs</title>
 <meta name="description" content="HNH Labs는 일상의 작은 불편을 덜어주는 모바일 앱을 만듭니다.">
-<meta name="theme-color" content="#0B0C10">
+<meta name="theme-color" content="#111114">
 <meta property="og:type" content="website">
 <meta property="og:title" content="HNH Labs">
 <meta property="og:description" content="일상의 작은 불편을 앱 하나로 덜어냅니다. HNH Labs가 만든 앱을 만나 보세요.">
-<meta property="og:image" content="https://black924.github.io/assets/apps/noiselog.png">
+<meta property="og:url" content="https://black924.github.io/">
+<meta property="og:image" content="https://black924.github.io/assets/brand/og-image-1200x630.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="hnh.labs">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="alternate" hreflang="ko" href="https://black924.github.io/?lang=ko">
 <link rel="alternate" hreflang="en" href="https://black924.github.io/?lang=en">
 <link rel="alternate" hreflang="ja" href="https://black924.github.io/?lang=ja">
 <link rel="alternate" hreflang="de" href="https://black924.github.io/?lang=de">
 <link rel="alternate" hreflang="x-default" href="https://black924.github.io/">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230B0C10'/%3E%3Cpath d='M18 18v28M30 18v28M18 32h12M46 18v28M34 18v28M34 32h12' stroke='%23fff' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -40,6 +48,7 @@
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .orbit-core { --cursor: #8A8A90; }
   :root:not([data-theme="light"]) {
     --bg: #0B0C10; --bg2: #121319; --surface: #15161C; --ink: #F3F2EE; --ink2: #B4B7BF; --muted: #8C9099;
     --line: #24262E; --line2: #343743; --chip: #1E2028; --glass: rgba(21,22,28,.72);
@@ -47,6 +56,7 @@
     color-scheme: dark;
   }
 }
+:root[data-theme="dark"] .orbit-core { --cursor: #8A8A90; }
 :root[data-theme="dark"] {
   --bg: #0B0C10; --bg2: #121319; --surface: #15161C; --ink: #F3F2EE; --ink2: #B4B7BF; --muted: #8C9099;
   --line: #24262E; --line2: #343743; --chip: #1E2028; --glass: rgba(21,22,28,.72);
@@ -78,7 +88,14 @@ h1, h2, h3 { margin: 0; letter-spacing: -0.035em; line-height: 1.15; }
 .nav.scrolled .nav-pill { background: transparent; border-color: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; }
 .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 72px; gap: 12px; }
 .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 800; font-size: 19px; letter-spacing: -0.03em; white-space: nowrap; }
-.brand-mark { width: 32px; height: 32px; border-radius: 10px; background: var(--ink); color: var(--bg); display: grid; place-items: center; flex: none; }
+.logo { display: block; height: 24px; width: auto; }
+.logo-dark { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .logo-light { display: none; }
+  :root:not([data-theme="light"]) .logo-dark { display: block; }
+}
+:root[data-theme="dark"] .logo-light { display: none; }
+:root[data-theme="dark"] .logo-dark { display: block; }
 .nav-pill { display: flex; align-items: center; gap: 4px; padding: 5px; border-radius: 999px; background: var(--glass); border: 1px solid var(--line); backdrop-filter: blur(16px) saturate(1.5); -webkit-backdrop-filter: blur(16px) saturate(1.5); }
 .nav-pill a { text-decoration: none; font-size: 15px; font-weight: 600; color: var(--ink2); padding: 8px 14px; border-radius: 999px; white-space: nowrap; }
 .nav-pill a:hover { color: var(--ink); background: var(--chip); }
@@ -126,8 +143,8 @@ h1, h2, h3 { margin: 0; letter-spacing: -0.035em; line-height: 1.15; }
 .o-item a:hover, .o-item a:focus-visible { scale: 1.12; }
 .o-item img { width: 100%; height: auto; aspect-ratio: 1; border-radius: 24%; box-shadow: 0 14px 30px -10px rgba(11,12,16,.35), 0 0 0 1px rgba(11,12,16,.06); }
 .orbit-core { position: absolute; inset: 39%; border-radius: 30%; background: var(--ink); color: var(--bg); display: grid; place-items: center; box-shadow: 0 30px 60px -20px rgba(11,12,16,.5); }
-.orbit-core b { font-family: "Pretendard Variable", Pretendard, system-ui, sans-serif; font-size: calc(var(--size) * .055); font-weight: 800; letter-spacing: -0.04em; line-height: 1; text-align: center; }
-.orbit-core b small { display: block; font-family: var(--mono); font-size: .42em; font-weight: 500; opacity: .6; margin-top: 6px; letter-spacing: .1em; }
+.orbit-core { --cursor: #9A9AA1; }
+.core-symbol { width: 58%; height: auto; }
 .orbit:hover .ring, .orbit:hover .o-item a, .orbit:focus-within .ring, .orbit:focus-within .o-item a { animation-play-state: paused; }
 @keyframes spin { to { rotate: 360deg; } }
 @media (max-width: 900px) {
@@ -255,8 +272,7 @@ try { var t = localStorage.getItem('hnh-theme'); if (t) document.documentElement
 <header class="nav" id="nav">
   <div class="wrap">
     <a class="brand" href="#top" aria-label="HNH Labs">
-      <span class="brand-mark" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 64 64"><path d="M14 12v40M30 12v40M14 32h16M50 12v40M34 12v40M34 32h16" stroke="currentColor" stroke-width="7" stroke-linecap="round" fill="none"/></svg></span>
-      HNH Labs
+      <img class="logo logo-light" src="assets/brand/logo-light.svg" alt="" width="140" height="24"><img class="logo logo-dark" src="assets/brand/logo-dark.svg" alt="" width="140" height="24">
     </a>
     <nav class="nav-pill" data-i18n-aria="navLabel" aria-label="주요 메뉴">
       <a class="hide-m" href="#apps" data-i18n="nav.apps">앱</a>
@@ -303,7 +319,7 @@ try { var t = localStorage.getItem('hnh-theme'); if (t) document.documentElement
           <div class="o-item" style="--a:120deg"><a href="#app-breeze" aria-label="Breeze"><img src="assets/apps/breeze.png" alt="" width="128" height="128"></a></div>
           <div class="o-item" style="--a:240deg"><a href="#app-remit" aria-label="Remit"><img src="assets/apps/remit.png" alt="" width="128" height="128"></a></div>
         </div>
-        <div class="orbit-core" aria-hidden="true"><b>HNH<small>LABS</small></b></div>
+        <div class="orbit-core" aria-hidden="true"><svg class="core-symbol" viewBox="0 0 1024 1024" aria-hidden="true"><g transform="translate(-73.8 862.0) scale(0.9588)"><path d="M77 0V-730H202V-550L199 -448Q209 -500 248.0 -530.0Q287 -560 347 -560Q428 -560 476.5 -506.0Q525 -452 525 -361V0H400V-346Q400 -397 373.5 -424.5Q347 -452 302 -452Q255 -452 228.5 -424.0Q202 -396 202 -344V0Z" fill="currentColor"/><rect x="645" y="-730" width="500" height="730" fill="var(--cursor)"/></g></svg></div>
       </div>
     </div>
   </section>
@@ -499,7 +515,7 @@ try { var t = localStorage.getItem('hnh-theme'); if (t) document.documentElement
       <span class="mono" style="color:var(--muted)">Contact</span>
       <h2 data-i18n="contact.title">제안이나 문의가 있으신가요?</h2>
       <p data-i18n="contact.p">앱 사용 문의, 제휴, 피드백 모두 환영해요.</p>
-      <a class="cta" href="mailto:black924.menew@gmail.com">black924.menew@gmail.com</a>
+      <a class="cta" href="mailto:support@hnh-labs.com">support@hnh-labs.com</a>
     </div>
   </section>
 </main>
@@ -507,7 +523,7 @@ try { var t = localStorage.getItem('hnh-theme'); if (t) document.documentElement
 <footer>
   <div class="wrap">
     <div>
-      <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 64 64"><path d="M14 12v40M30 12v40M14 32h16M50 12v40M34 12v40M34 32h16" stroke="currentColor" stroke-width="7" stroke-linecap="round" fill="none"/></svg></span>HNH Labs</a>
+      <a class="brand" href="#top" aria-label="HNH Labs"><img class="logo logo-light" src="assets/brand/logo-light.svg" alt="" width="140" height="24"><img class="logo logo-dark" src="assets/brand/logo-dark.svg" alt="" width="140" height="24"></a>
       <p style="margin:14px 0 0">© 2026 HNH Labs. All rights reserved.</p>
     </div>
     <div>
