@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="ko" data-l="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Breeze - 오늘 창문 열까 말까?</title>
+<meta name="description" content="미세먼지·날씨를 보고 지금 창문을 열지 말지 1초 만에 알려주는 환기 가이드.">
+<meta name="theme-color" content="#123B3F">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Breeze - 오늘 창문 열까 말까?">
+<meta property="og:description" content="미세먼지·날씨를 보고 지금 창문을 열지 말지 1초 만에 알려주는 환기 가이드.">
+<meta property="og:image" content="https://black924.github.io/assets/apps/breeze.png">
+<link rel="icon" href="../assets/apps/breeze.png">
+<link rel="apple-touch-icon" href="../assets/apps/breeze.png">
+<script>document.documentElement.classList.add("js");</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;800&display=swap">
+<style>
+:root {
+  --accent: #23936F; --deep: #123B3F; --soft: #E2F5EE; --paper: #F3F8F6; --glow: #5ED6B0;
+  --surface: #fff; --ink: #121318; --ink2: #4B4F58; --muted: #6E727B; --line: rgba(18,19,24,.09);
+  --sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", system-ui, sans-serif;
+  --display: var(--sans);
+  --gut: max(20px, env(safe-area-inset-left, 0px));
+  --ratio: 1080 / 2160;
+  color-scheme: light;
+}
+:root:lang(ja) { --sans: "Noto Sans JP", "Hiragino Sans", "Pretendard Variable", system-ui, sans-serif; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 17px; line-height: 1.65; word-break: keep-all; overflow-wrap: anywhere; overflow-x: clip; -webkit-font-smoothing: antialiased; }
+:lang(ja) body, body:lang(ja), .L:lang(ja) { word-break: normal; line-break: strict; }
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+.L { display: none; }
+html[data-l="ko"] .L[lang="ko"] { display: block; }
+.wrap { max-width: 1160px; margin: 0 auto; padding: 0 var(--gut); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+h1, h2, h3 { margin: 0; font-family: var(--display); letter-spacing: -0.035em; line-height: 1.18; }
+:lang(ja) h1, :lang(ja) h2, :lang(ja) h3 { letter-spacing: -0.01em; }
+.kicker { font-size: 14px; font-weight: 800; color: var(--accent); letter-spacing: .02em; }
+
+/* 상단 바 */
+.nav { position: fixed; inset: 0 0 auto; z-index: 30; padding-top: env(safe-area-inset-top, 0px); border-bottom: 1px solid transparent; transition: background-color .25s, border-color .25s; }
+.nav.scrolled { background: color-mix(in srgb, var(--paper) 80%, transparent); backdrop-filter: saturate(1.6) blur(16px); -webkit-backdrop-filter: saturate(1.6) blur(16px); border-bottom-color: var(--line); }
+.nav .wrap { display: flex; align-items: center; gap: 12px; height: 64px; }
+.back { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 700; font-size: 15px; color: var(--ink2); padding: 8px 12px 8px 4px; border-radius: 12px; white-space: nowrap; }
+.back:hover { color: var(--ink); }
+.app-id { display: flex; align-items: center; gap: 10px; text-decoration: none; opacity: 0; transform: translateY(6px); transition: opacity .25s, transform .25s; min-width: 0; }
+.app-id img { width: 30px; height: 30px; border-radius: 8px; }
+.app-id b { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nav.scrolled .app-id { opacity: 1; transform: none; }
+.nav-r { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.lang { position: relative; display: flex; align-items: center; }
+.lang svg { position: absolute; left: 10px; width: 16px; height: 16px; pointer-events: none; color: var(--ink2); }
+.lang select { appearance: none; -webkit-appearance: none; font: inherit; font-size: 14px; font-weight: 700; color: var(--ink); background: color-mix(in srgb, var(--surface) 70%, transparent); border: 1px solid var(--line); height: 38px; padding: 0 12px 0 32px; border-radius: 999px; cursor: pointer; }
+.nav-cta { display: inline-flex; align-items: center; height: 38px; padding: 0 16px; border-radius: 999px; background: var(--deep); color: #fff; text-decoration: none; font-weight: 700; font-size: 14px; white-space: nowrap; }
+@media (max-width: 560px) { .back-t { display: none; } .nav-cta { display: none; } }
+
+/* 히어로 */
+.hero { position: relative; padding: 112px 0 72px; overflow: hidden; }
+.hero::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(50% 60% at 80% 40%, color-mix(in srgb, var(--glow) 26%, transparent), transparent 70%),
+              radial-gradient(40% 50% at 10% 0%, color-mix(in srgb, var(--soft) 90%, transparent), transparent 70%); }
+.hero .wrap { position: relative; display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center; }
+.hero-id { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+.hero-id img { width: 64px; height: 64px; border-radius: 24%; box-shadow: 0 12px 28px -12px color-mix(in srgb, var(--accent) 70%, transparent), 0 0 0 1px rgba(0,0,0,.06); }
+.hero-id b { display: block; font-size: 20px; font-weight: 800; letter-spacing: -0.02em; }
+.hero-id span { font-size: 14px; color: var(--muted); font-weight: 600; }
+.pill { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, var(--surface)); padding: 6px 12px; border-radius: 999px; }
+.pill i { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+.hero h1 { font-size: clamp(36px, 5.2vw, 66px); font-weight: 800; margin: 18px 0 20px; }
+:lang(ja) .hero h1 { font-size: clamp(30px, 4.4vw, 56px); line-height: 1.25; }
+
+.lead { font-size: clamp(16px, 1.7vw, 19px); color: var(--ink2); margin: 0 0 30px; max-width: 32em; }
+.stores { display: flex; flex-wrap: wrap; gap: 10px; }
+.store { display: inline-flex; align-items: center; gap: 10px; min-height: 56px; padding: 0 20px 0 16px; border-radius: 16px; background: var(--deep); color: #fff; text-decoration: none; transition: transform .15s; }
+.store:hover { transform: translateY(-2px); }
+.store svg { width: 22px; height: 22px; flex: none; }
+.store span { display: flex; flex-direction: column; line-height: 1.15; }
+.store small { font-size: 11px; opacity: .75; font-weight: 500; }
+.store b { font-size: 17px; }
+.store.off { background: transparent; color: var(--muted); border: 1.5px dashed color-mix(in srgb, var(--ink) 22%, transparent); cursor: default; }
+.store.off:hover { transform: none; }
+.hero-art { position: relative; height: clamp(440px, 50vw, 600px); }
+.hero-art .shot { position: absolute; width: clamp(190px, 21vw, 260px); }
+.hero-art .h1 { left: 6%; top: 2%; transform: rotate(-5deg); z-index: 2; }
+.hero-art .h2 { right: 4%; top: 12%; transform: rotate(5deg); }
+@media (max-width: 900px) {
+  .hero .wrap { grid-template-columns: 1fr; gap: 28px; }
+  .hero-art { height: auto; aspect-ratio: 1 / 1.1; max-width: 480px; width: 100%; margin: 0 auto; }
+  .hero-art .shot { width: 50%; }
+}
+
+/* 스크린샷 */
+.shot img { width: 100%; aspect-ratio: var(--ratio); object-fit: cover; background: var(--soft); }
+.shot.card img { border-radius: 22px; box-shadow: 0 30px 60px -24px color-mix(in srgb, var(--deep) 55%, transparent), 0 0 0 1px rgba(0,0,0,.05); }
+.shot.frame { padding: 1.4%; border-radius: 12.5% / 5.6%; background: #1C1D21; box-shadow: 0 0 0 1px rgba(0,0,0,.06), 0 30px 60px -24px color-mix(in srgb, var(--deep) 55%, transparent); }
+.shot.frame img { border-radius: 11.4% / 5.1%; }
+
+/* 기능 */
+.features { padding: clamp(56px, 8vw, 96px) 0; }
+.sec-head { margin-bottom: 8px; }
+.feature { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 96px); align-items: center; padding: clamp(36px, 5vw, 64px) 0; }
+.feature:nth-of-type(even) .f-art { order: 2; }
+.f-art { position: relative; display: grid; place-items: center; padding: 40px 0; }
+.f-art::before { content: ""; position: absolute; inset: 0 8%; border-radius: 40px; background: var(--soft); }
+.f-art .shot { position: relative; width: min(300px, 68%); }
+.f-copy h3 { font-size: clamp(28px, 3.6vw, 42px); font-weight: 800; margin: 12px 0 16px; }
+.f-copy p { color: var(--ink2); margin: 0 0 20px; }
+.ticks { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.ticks li { display: flex; gap: 12px; align-items: flex-start; }
+.ticks svg { flex: none; width: 22px; height: 22px; padding: 4px; margin-top: 2px; border-radius: 50%; background: var(--soft); color: var(--accent); }
+@media (max-width: 820px) {
+  .feature { grid-template-columns: 1fr; }
+  .feature:nth-of-type(even) .f-art { order: 0; }
+  .f-art .shot { width: min(260px, 62%); }
+}
+
+/* 포인트 */
+.points-sec { background: var(--deep); color: #fff; padding: clamp(64px, 9vw, 110px) 0; border-radius: clamp(28px, 4vw, 48px); margin: 0 clamp(0px, 1.5vw, 20px); }
+.points-sec h2 { font-size: clamp(30px, 4.4vw, 48px); font-weight: 800; margin-bottom: 36px; }
+.points { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.point { border: 1px solid rgba(255,255,255,.14); border-radius: 22px; padding: 24px; background: rgba(255,255,255,.04); }
+.point b { display: block; font-size: 18px; margin-bottom: 8px; color: var(--glow); }
+.point p { margin: 0; color: rgba(255,255,255,.72); font-size: 15px; }
+@media (max-width: 960px) { .points { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 520px) { .points { grid-template-columns: 1fr; } }
+
+/* 화면 둘러보기 */
+.gallery { padding: clamp(72px, 10vw, 120px) 0 clamp(40px, 6vw, 72px); }
+.g-head { display: flex; justify-content: space-between; align-items: end; gap: 16px; }
+.g-head h2 { font-size: clamp(30px, 4.4vw, 48px); font-weight: 800; }
+.g-btns { display: flex; gap: 8px; }
+.g-btns button { width: 46px; height: 46px; border-radius: 50%; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); font-size: 18px; cursor: pointer; }
+.shots-note { max-width: 1160px; margin: 10px auto 0; padding: 0 var(--gut); color: var(--muted); font-size: 14px; }
+.rail { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 36px var(--gut) 20px; scroll-padding: 0 var(--gut); scrollbar-width: none; }
+.rail::-webkit-scrollbar { display: none; }
+@media (min-width: 1200px) { .rail { padding-left: calc((100vw - 1160px) / 2 + var(--gut)); scroll-padding-left: calc((100vw - 1160px) / 2 + var(--gut)); } }
+.rail figure { flex: none; width: clamp(190px, 21vw, 240px); margin: 0; scroll-snap-align: start; }
+.rail figcaption { margin-top: 14px; text-align: center; font-weight: 700; font-size: 15px; }
+
+/* 마지막 */
+.final { padding: 0 0 clamp(48px, 6vw, 72px); }
+.final-card { position: relative; overflow: hidden; text-align: center; background: var(--surface); border: 1px solid var(--line); border-radius: clamp(28px, 4vw, 44px); padding: clamp(48px, 7vw, 88px) 24px; }
+.final-card::before { content: ""; position: absolute; inset: 0; background: radial-gradient(60% 80% at 50% 0%, color-mix(in srgb, var(--glow) 22%, transparent), transparent 70%); pointer-events: none; }
+.final-icon { position: relative; width: 96px; height: 96px; border-radius: 24%; margin: 0 auto 22px; box-shadow: 0 16px 36px -14px color-mix(in srgb, var(--accent) 70%, transparent); }
+.final-card h2 { position: relative; font-size: clamp(28px, 4vw, 44px); font-weight: 800; margin-bottom: 10px; }
+.final-card p { position: relative; color: var(--ink2); margin: 0 auto 28px; max-width: 30em; }
+.final-card .stores { position: relative; justify-content: center; }
+
+footer { padding: 28px 0 calc(40px + env(safe-area-inset-bottom, 0px)); color: var(--ink2); font-size: 14px; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; }
+footer nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+footer a { text-decoration: none; }
+footer a:hover { color: var(--ink); text-decoration: underline; }
+
+.js .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
+.js .reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js .reveal { opacity: 1; transform: none; transition: none; }
+  .store, .app-id { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="L" lang="ko">
+<header class="nav" data-nav>
+  <div class="wrap">
+    <a class="back" href="../index.html?lang=ko" aria-label="HNH Labs 앱"><span aria-hidden="true">←</span><span class="back-t">HNH Labs</span></a>
+    <a class="app-id" href="#top-ko"><img src="../assets/apps/breeze.png" alt="" width="32" height="32"><b>Breeze</b></a>
+    <div class="nav-r"><a class="nav-cta" href="#get-ko">무료로 받기</a></div>
+  </div>
+</header>
+<main id="top-ko">
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-copy">
+        <div class="hero-id reveal"><img src="../assets/apps/breeze.png" alt="" width="72" height="72"><div><b>Breeze</b><span>Android · 한국 전용</span></div></div>
+        <span class="pill reveal"><i></i>Google Play에서 무료</span>
+        <h1 class="reveal">오늘 창문, 열까 말까?<br>1초 만에 정해 드려요.</h1>
+        <p class="lead reveal">미세먼지, 습도, 기온, 바람을 한꺼번에 읽고 지금 해야 할 행동 하나를 가장 크게 보여주는 환기 가이드예요.</p>
+        <div class="stores reveal"><a class="store big" href="https://play.google.com/store/apps/details?id=com.hnh.breeze" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3.6 1.8c-.3.3-.5.8-.5 1.4v17.6c0 .6.2 1.1.5 1.4l.1.1 9.9-9.9v-.2L3.7 1.7l-.1.1zm13.3 13.4-3.3-3.3v-.2l3.3-3.3.1.1 3.9 2.2c1.1.6 1.1 1.7 0 2.3l-3.9 2.2h-.1zm.1-.1L13.6 12 3.6 22c.4.4 1 .4 1.7.1l11.7-7zM17 8.9 5.3 2.2c-.7-.4-1.3-.3-1.7.1l10 10L17 8.9z"/></svg><span><small>무료로 받기</small><b>Google Play</b></span></a></div>
+      </div>
+      <div class="hero-art reveal" aria-hidden="true">
+        <div class="shot card h2"><img src="img/05.jpg" alt="" width="1080" height="2160" loading="eager"></div>
+        <div class="shot card h1"><img src="img/01.jpg" alt="" width="1080" height="2160" loading="eager"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="wrap">
+      <div class="sec-head reveal"><span class="kicker">주요 기능</span></div>
+      <article class="feature"><div class="f-art reveal"><div class="shot card "><img src="img/01.jpg" alt="지금 열어도 될까?" width="1080" height="2160" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">01 · 환기 판단</span><h3>숫자 대신,<br>지금 할 일 하나</h3><p>복잡한 대기질 수치를 늘어놓지 않아요. 지금 시간대에 맞춰 ‘창문을 15분 열어두세요’처럼 해야 할 행동을 크게 알려줘요.</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>0~100점 환기 점수로 한눈에</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>시간대에 맞는 생활 모드를 자동으로 강조</span></li></ul></div></article><article class="feature"><div class="f-art reveal"><div class="shot card "><img src="img/02.jpg" alt="외출 전 창문" width="1080" height="2160" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">02 · 외출·취침</span><h3>외출할 때도,<br>잠들기 전에도</h3><p>집을 비우는 동안 창문을 열어둬도 될지, 자기 전에 닫아야 할지 시간대별 예보로 미리 알려줘요.</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>외출 모드와 취침 모드</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>시간대별 환기 예보 그래프</span></li></ul></div></article><article class="feature"><div class="f-art reveal"><div class="shot card "><img src="img/04.jpg" alt="점수의 이유" width="1080" height="2160" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">03 · 판정 근거</span><h3>점수가 나온<br>이유까지</h3><p>초미세먼지, 미세먼지, 습도, 기온·풍속이 점수에 얼마나 영향을 줬는지 보여줘요.</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>환경부 대기질 기준 반영</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>비가 오거나 초미세먼지가 매우 나쁘면 환기 멈춤</span></li></ul></div></article><article class="feature"><div class="f-art reveal"><div class="shot card "><img src="img/05.jpg" alt="15분 환기 타이머" width="1080" height="2160" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">04 · 환기 타이머</span><h3>딱 15분,<br>환기 타이머</h3><p>창문을 연 뒤 타이머를 켜 두면 15분 뒤 진동과 알림으로 닫을 때를 알려줘요.</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>화면이 어두워지는 집중 화면</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>끝나면 진동과 알림</span></li></ul></div></article>
+    </div>
+  </section>
+
+  <section class="points-sec">
+    <div class="wrap">
+      <h2 class="reveal">이런 점이 좋아요</h2>
+      <div class="points"><div class="point reveal"><b>공공데이터 기반</b><p>기상청 단기예보와 에어코리아 측정값을 써요.</p></div><div class="point reveal"><b>기기 안에서 판정</b><p>점수와 판정은 휴대폰 안에서 계산해요.</p></div><div class="point reveal"><b>우리 동네 기준</b><p>가까운 측정소의 값으로 알려줘요.</p></div><div class="point reveal"><b>가입 없이 바로</b><p>회원가입 없이 열자마자 확인해요.</p></div></div>
+    </div>
+  </section>
+
+  <section class="gallery">
+    <div class="wrap g-head">
+      <h2 class="reveal">화면 둘러보기</h2>
+      <div class="g-btns"><button type="button" data-dir="-1" aria-label="이전 화면">←</button><button type="button" data-dir="1" aria-label="다음 화면">→</button></div>
+    </div>
+    
+    <div class="rail" tabindex="0"><figure><div class="shot card "><img src="img/01.jpg" alt="지금 열어도 될까?" width="1080" height="2160" loading="lazy"></div><figcaption>지금 열어도 될까?</figcaption></figure><figure><div class="shot card "><img src="img/02.jpg" alt="외출 전 창문" width="1080" height="2160" loading="lazy"></div><figcaption>외출 전 창문</figcaption></figure><figure><div class="shot card "><img src="img/03.jpg" alt="잠들기 전" width="1080" height="2160" loading="lazy"></div><figcaption>잠들기 전</figcaption></figure><figure><div class="shot card "><img src="img/04.jpg" alt="점수의 이유" width="1080" height="2160" loading="lazy"></div><figcaption>점수의 이유</figcaption></figure><figure><div class="shot card "><img src="img/05.jpg" alt="15분 환기 타이머" width="1080" height="2160" loading="lazy"></div><figcaption>15분 환기 타이머</figcaption></figure></div>
+  </section>
+
+  <section class="final" id="get-ko">
+    <div class="wrap">
+      <div class="final-card reveal">
+        <img class="final-icon" src="../assets/apps/breeze.png" alt="" width="96" height="96">
+        <h2>지금 무료로 시작해 보세요</h2>
+        <p>미세먼지·날씨를 보고 지금 창문을 열지 말지 1초 만에 알려주는 환기 가이드.</p>
+        <div class="stores"><a class="store big" href="https://play.google.com/store/apps/details?id=com.hnh.breeze" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3.6 1.8c-.3.3-.5.8-.5 1.4v17.6c0 .6.2 1.1.5 1.4l.1.1 9.9-9.9v-.2L3.7 1.7l-.1.1zm13.3 13.4-3.3-3.3v-.2l3.3-3.3.1.1 3.9 2.2c1.1.6 1.1 1.7 0 2.3l-3.9 2.2h-.1zm.1-.1L13.6 12 3.6 22c.4.4 1 .4 1.7.1l11.7-7zM17 8.9 5.3 2.2c-.7-.4-1.3-.3-1.7.1l10 10L17 8.9z"/></svg><span><small>무료로 받기</small><b>Google Play</b></span></a></div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="wrap">
+    <span>© 2026 HNH Labs</span>
+    <nav><a href="../breeze-privacy-policy.html">개인정보 처리방침</a> <a href="mailto:black924.menew@gmail.com">문의</a> <a href="../index.html?lang=ko">HNH Labs 앱</a></nav>
+  </div>
+</footer>
+</div>
+<script>
+(function () {
+  var root = document.documentElement;
+  var TITLES = {"ko": "Breeze - 오늘 창문 열까 말까?"}, DESCS = {"ko": "미세먼지·날씨를 보고 지금 창문을 열지 말지 1초 만에 알려주는 환기 가이드."};
+  function apply(l, save) {
+    root.dataset.l = l; root.lang = l;
+    document.title = TITLES[l];
+    document.querySelector('meta[name="description"]').content = DESCS[l];
+    document.querySelectorAll('[data-lang-select]').forEach(function (s) { s.value = l; });
+    if (save) {
+      try { localStorage.setItem('hnh-lang', l); } catch (e) {}
+      try { var u = new URL(location.href); u.searchParams.set('lang', l); history.replaceState(null, '', u); } catch (e) {}
+    }
+    observe(); onScroll();
+  }
+  document.querySelectorAll('[data-lang-select]').forEach(function (s) {
+    s.addEventListener('change', function () { apply(s.value, true); });
+  });
+
+  // 스크롤하면 상단 바 뒤를 흐리게
+  function onScroll() { document.querySelectorAll('[data-nav]').forEach(function (n) { n.classList.toggle('scrolled', scrollY > 8); }); }
+  addEventListener('scroll', onScroll, { passive: true });
+
+  // 화면 둘러보기 버튼
+  document.querySelectorAll('.g-btns button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var rail = b.closest('.gallery').querySelector('.rail');
+      var step = rail.querySelector('figure').offsetWidth + 20;
+      rail.scrollBy({ left: step * 2 * Number(b.dataset.dir), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    });
+  });
+
+  // 나타나는 효과
+  var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) {
+    es.forEach(function (x) { if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); } });
+  }, { rootMargin: '0px 0px -6% 0px' }) : null;
+  function observe() {
+    document.querySelectorAll('.L[lang="' + root.dataset.l + '"] .reveal:not(.in)').forEach(function (x) {
+      if (io) io.observe(x); else x.classList.add('in');
+    });
+  }
+  apply(root.dataset.l || 'ko', false);
+})();
+</script>
+</body>
+</html>

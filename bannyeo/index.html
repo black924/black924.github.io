@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="ko" data-l="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>오늘도 반려 - 핑계 대면 도장이 쾅!</title>
+<meta name="description" content="핑계를 쓰면 상사·엄마·담임쌤·분대장이 도장을 쾅! 결재 놀이 앱.">
+<meta name="theme-color" content="#232C45">
+<meta property="og:type" content="website">
+<meta property="og:title" content="오늘도 반려 - 핑계 대면 도장이 쾅!">
+<meta property="og:description" content="핑계를 쓰면 상사·엄마·담임쌤·분대장이 도장을 쾅! 결재 놀이 앱.">
+<meta property="og:image" content="https://black924.github.io/assets/apps/bannyeo.png">
+<link rel="icon" href="../assets/apps/bannyeo.png">
+<link rel="apple-touch-icon" href="../assets/apps/bannyeo.png">
+<script>
+(function () {
+  var LANGS = ["ko", "en", "ja"], l = 'ko';
+  try {
+    var q = new URLSearchParams(location.search).get('lang');
+    var saved = localStorage.getItem('hnh-lang');
+    var nav = (navigator.languages && navigator.languages[0] || navigator.language || '').slice(0, 2).toLowerCase();
+    if (q && LANGS.indexOf(q) > -1) l = q;
+    else if (q === 'de' && LANGS.indexOf('en') > -1) l = 'en';
+    else if (saved && LANGS.indexOf(saved) > -1) l = saved;
+    else if (LANGS.indexOf(nav) > -1) l = nav;
+    else if (LANGS.length > 1) l = 'en';
+  } catch (e) {}
+  var r = document.documentElement; r.dataset.l = l; r.lang = l; r.classList.add('js');
+})();
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;800&display=swap">
+<style>
+:root {
+  --accent: #C8282F; --deep: #232C45; --soft: #FBE9E9; --paper: #F8F5EF; --glow: #FF6B6B;
+  --surface: #fff; --ink: #121318; --ink2: #4B4F58; --muted: #6E727B; --line: rgba(18,19,24,.09);
+  --sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", system-ui, sans-serif;
+  --display: var(--sans);
+  --gut: max(20px, env(safe-area-inset-left, 0px));
+  --ratio: 1080 / 1920;
+  color-scheme: light;
+}
+:root:lang(ja) { --sans: "Noto Sans JP", "Hiragino Sans", "Pretendard Variable", system-ui, sans-serif; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 17px; line-height: 1.65; word-break: keep-all; overflow-wrap: anywhere; overflow-x: clip; -webkit-font-smoothing: antialiased; }
+:lang(ja) body, body:lang(ja), .L:lang(ja) { word-break: normal; line-break: strict; }
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+.L { display: none; }
+html[data-l="ko"] .L[lang="ko"], html[data-l="en"] .L[lang="en"], html[data-l="ja"] .L[lang="ja"] { display: block; }
+.wrap { max-width: 1160px; margin: 0 auto; padding: 0 var(--gut); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+h1, h2, h3 { margin: 0; font-family: var(--display); letter-spacing: -0.035em; line-height: 1.18; }
+:lang(ja) h1, :lang(ja) h2, :lang(ja) h3 { letter-spacing: -0.01em; }
+.kicker { font-size: 14px; font-weight: 800; color: var(--accent); letter-spacing: .02em; }
+
+/* 상단 바 */
+.nav { position: fixed; inset: 0 0 auto; z-index: 30; padding-top: env(safe-area-inset-top, 0px); border-bottom: 1px solid transparent; transition: background-color .25s, border-color .25s; }
+.nav.scrolled { background: color-mix(in srgb, var(--paper) 80%, transparent); backdrop-filter: saturate(1.6) blur(16px); -webkit-backdrop-filter: saturate(1.6) blur(16px); border-bottom-color: var(--line); }
+.nav .wrap { display: flex; align-items: center; gap: 12px; height: 64px; }
+.back { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 700; font-size: 15px; color: var(--ink2); padding: 8px 12px 8px 4px; border-radius: 12px; white-space: nowrap; }
+.back:hover { color: var(--ink); }
+.app-id { display: flex; align-items: center; gap: 10px; text-decoration: none; opacity: 0; transform: translateY(6px); transition: opacity .25s, transform .25s; min-width: 0; }
+.app-id img { width: 30px; height: 30px; border-radius: 8px; }
+.app-id b { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nav.scrolled .app-id { opacity: 1; transform: none; }
+.nav-r { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.lang { position: relative; display: flex; align-items: center; }
+.lang svg { position: absolute; left: 10px; width: 16px; height: 16px; pointer-events: none; color: var(--ink2); }
+.lang select { appearance: none; -webkit-appearance: none; font: inherit; font-size: 14px; font-weight: 700; color: var(--ink); background: color-mix(in srgb, var(--surface) 70%, transparent); border: 1px solid var(--line); height: 38px; padding: 0 12px 0 32px; border-radius: 999px; cursor: pointer; }
+.nav-cta { display: inline-flex; align-items: center; height: 38px; padding: 0 16px; border-radius: 999px; background: var(--deep); color: #fff; text-decoration: none; font-weight: 700; font-size: 14px; white-space: nowrap; }
+@media (max-width: 560px) { .back-t { display: none; } .nav-cta { display: none; } }
+
+/* 히어로 */
+.hero { position: relative; padding: 112px 0 72px; overflow: hidden; }
+.hero::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(50% 60% at 80% 40%, color-mix(in srgb, var(--glow) 26%, transparent), transparent 70%),
+              radial-gradient(40% 50% at 10% 0%, color-mix(in srgb, var(--soft) 90%, transparent), transparent 70%); }
+.hero .wrap { position: relative; display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center; }
+.hero-id { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+.hero-id img { width: 64px; height: 64px; border-radius: 24%; box-shadow: 0 12px 28px -12px color-mix(in srgb, var(--accent) 70%, transparent), 0 0 0 1px rgba(0,0,0,.06); }
+.hero-id b { display: block; font-size: 20px; font-weight: 800; letter-spacing: -0.02em; }
+.hero-id span { font-size: 14px; color: var(--muted); font-weight: 600; }
+.pill { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, var(--surface)); padding: 6px 12px; border-radius: 999px; }
+.pill i { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+.hero h1 { font-size: clamp(36px, 5.2vw, 66px); font-weight: 800; margin: 18px 0 20px; }
+:lang(ja) .hero h1 { font-size: clamp(30px, 4.4vw, 56px); line-height: 1.25; }
+
+.lead { font-size: clamp(16px, 1.7vw, 19px); color: var(--ink2); margin: 0 0 30px; max-width: 32em; }
+.stores { display: flex; flex-wrap: wrap; gap: 10px; }
+.store { display: inline-flex; align-items: center; gap: 10px; min-height: 56px; padding: 0 20px 0 16px; border-radius: 16px; background: var(--deep); color: #fff; text-decoration: none; transition: transform .15s; }
+.store:hover { transform: translateY(-2px); }
+.store svg { width: 22px; height: 22px; flex: none; }
+.store span { display: flex; flex-direction: column; line-height: 1.15; }
+.store small { font-size: 11px; opacity: .75; font-weight: 500; }
+.store b { font-size: 17px; }
+.store.off { background: transparent; color: var(--muted); border: 1.5px dashed color-mix(in srgb, var(--ink) 22%, transparent); cursor: default; }
+.store.off:hover { transform: none; }
+.hero-art { position: relative; height: clamp(440px, 50vw, 600px); }
+.hero-art .shot { position: absolute; width: clamp(190px, 21vw, 260px); }
+.hero-art .h1 { left: 6%; top: 2%; transform: rotate(-5deg); z-index: 2; }
+.hero-art .h2 { right: 4%; top: 12%; transform: rotate(5deg); }
+@media (max-width: 900px) {
+  .hero .wrap { grid-template-columns: 1fr; gap: 28px; }
+  .hero-art { height: auto; aspect-ratio: 1 / 1.1; max-width: 480px; width: 100%; margin: 0 auto; }
+  .hero-art .shot { width: 50%; }
+}
+
+/* 스크린샷 */
+.shot img { width: 100%; aspect-ratio: var(--ratio); object-fit: cover; background: var(--soft); }
+.shot.card img { border-radius: 22px; box-shadow: 0 30px 60px -24px color-mix(in srgb, var(--deep) 55%, transparent), 0 0 0 1px rgba(0,0,0,.05); }
+.shot.frame { padding: 1.4%; border-radius: 12.5% / 5.6%; background: #1C1D21; box-shadow: 0 0 0 1px rgba(0,0,0,.06), 0 30px 60px -24px color-mix(in srgb, var(--deep) 55%, transparent); }
+.shot.frame img { border-radius: 11.4% / 5.1%; }
+
+/* 기능 */
+.features { padding: clamp(56px, 8vw, 96px) 0; }
+.sec-head { margin-bottom: 8px; }
+.feature { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 96px); align-items: center; padding: clamp(36px, 5vw, 64px) 0; }
+.feature:nth-of-type(even) .f-art { order: 2; }
+.f-art { position: relative; display: grid; place-items: center; padding: 40px 0; }
+.f-art::before { content: ""; position: absolute; inset: 0 8%; border-radius: 40px; background: var(--soft); }
+.f-art .shot { position: relative; width: min(300px, 68%); }
+.f-copy h3 { font-size: clamp(28px, 3.6vw, 42px); font-weight: 800; margin: 12px 0 16px; }
+.f-copy p { color: var(--ink2); margin: 0 0 20px; }
+.ticks { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.ticks li { display: flex; gap: 12px; align-items: flex-start; }
+.ticks svg { flex: none; width: 22px; height: 22px; padding: 4px; margin-top: 2px; border-radius: 50%; background: var(--soft); color: var(--accent); }
+@media (max-width: 820px) {
+  .feature { grid-template-columns: 1fr; }
+  .feature:nth-of-type(even) .f-art { order: 0; }
+  .f-art .shot { width: min(260px, 62%); }
+}
+
+/* 포인트 */
+.points-sec { background: var(--deep); color: #fff; padding: clamp(64px, 9vw, 110px) 0; border-radius: clamp(28px, 4vw, 48px); margin: 0 clamp(0px, 1.5vw, 20px); }
+.points-sec h2 { font-size: clamp(30px, 4.4vw, 48px); font-weight: 800; margin-bottom: 36px; }
+.points { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.point { border: 1px solid rgba(255,255,255,.14); border-radius: 22px; padding: 24px; background: rgba(255,255,255,.04); }
+.point b { display: block; font-size: 18px; margin-bottom: 8px; color: var(--glow); }
+.point p { margin: 0; color: rgba(255,255,255,.72); font-size: 15px; }
+@media (max-width: 960px) { .points { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 520px) { .points { grid-template-columns: 1fr; } }
+
+/* 화면 둘러보기 */
+.gallery { padding: clamp(72px, 10vw, 120px) 0 clamp(40px, 6vw, 72px); }
+.g-head { display: flex; justify-content: space-between; align-items: end; gap: 16px; }
+.g-head h2 { font-size: clamp(30px, 4.4vw, 48px); font-weight: 800; }
+.g-btns { display: flex; gap: 8px; }
+.g-btns button { width: 46px; height: 46px; border-radius: 50%; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); font-size: 18px; cursor: pointer; }
+.shots-note { max-width: 1160px; margin: 10px auto 0; padding: 0 var(--gut); color: var(--muted); font-size: 14px; }
+.rail { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 36px var(--gut) 20px; scroll-padding: 0 var(--gut); scrollbar-width: none; }
+.rail::-webkit-scrollbar { display: none; }
+@media (min-width: 1200px) { .rail { padding-left: calc((100vw - 1160px) / 2 + var(--gut)); scroll-padding-left: calc((100vw - 1160px) / 2 + var(--gut)); } }
+.rail figure { flex: none; width: clamp(190px, 21vw, 240px); margin: 0; scroll-snap-align: start; }
+.rail figcaption { margin-top: 14px; text-align: center; font-weight: 700; font-size: 15px; }
+
+/* 마지막 */
+.final { padding: 0 0 clamp(48px, 6vw, 72px); }
+.final-card { position: relative; overflow: hidden; text-align: center; background: var(--surface); border: 1px solid var(--line); border-radius: clamp(28px, 4vw, 44px); padding: clamp(48px, 7vw, 88px) 24px; }
+.final-card::before { content: ""; position: absolute; inset: 0; background: radial-gradient(60% 80% at 50% 0%, color-mix(in srgb, var(--glow) 22%, transparent), transparent 70%); pointer-events: none; }
+.final-icon { position: relative; width: 96px; height: 96px; border-radius: 24%; margin: 0 auto 22px; box-shadow: 0 16px 36px -14px color-mix(in srgb, var(--accent) 70%, transparent); }
+.final-card h2 { position: relative; font-size: clamp(28px, 4vw, 44px); font-weight: 800; margin-bottom: 10px; }
+.final-card p { position: relative; color: var(--ink2); margin: 0 auto 28px; max-width: 30em; }
+.final-card .stores { position: relative; justify-content: center; }
+
+footer { padding: 28px 0 calc(40px + env(safe-area-inset-bottom, 0px)); color: var(--ink2); font-size: 14px; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; }
+footer nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+footer a { text-decoration: none; }
+footer a:hover { color: var(--ink); text-decoration: underline; }
+
+.js .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
+.js .reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js .reveal { opacity: 1; transform: none; transition: none; }
+  .store, .app-id { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="L" lang="ko">
+<header class="nav" data-nav>
+  <div class="wrap">
+    <a class="back" href="../index.html?lang=ko" aria-label="HNH Labs 앱"><span aria-hidden="true">←</span><span class="back-t">HNH Labs</span></a>
+    <a class="app-id" href="#top-ko"><img src="../assets/apps/bannyeo.png" alt="" width="32" height="32"><b>오늘도 반려</b></a>
+    <div class="nav-r"><label class="lang"><span class="sr">언어</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z" fill="none" stroke="currentColor" stroke-width="2"/></svg><select data-lang-select><option value="ko" selected>한국어</option><option value="en">English</option><option value="ja">日本語</option></select></label><a class="nav-cta" href="#get-ko">곧 출시</a></div>
+  </div>
+</header>
+<main id="top-ko">
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-copy">
+        <div class="hero-id reveal"><img src="../assets/apps/bannyeo.png" alt="" width="72" height="72"><div><b>오늘도 반려</b><span>Android · 전 세계</span></div></div>
+        <span class="pill reveal"><i></i>출시 예정</span>
+        <h1 class="reveal">핑계 대면<br>도장이 쾅!</h1>
+        <p class="lead reveal">오늘 하기 싫은 일의 핑계를 한 줄 적어 보세요. 상사도, 엄마도, 담임쌤도, 분대장도 오늘은 도장을 쾅 찍어 드려요.</p>
+        <div class="stores reveal"><span class="store big off"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3.6 1.8c-.3.3-.5.8-.5 1.4v17.6c0 .6.2 1.1.5 1.4l.1.1 9.9-9.9v-.2L3.7 1.7l-.1.1zm13.3 13.4-3.3-3.3v-.2l3.3-3.3.1.1 3.9 2.2c1.1.6 1.1 1.7 0 2.3l-3.9 2.2h-.1zm.1-.1L13.6 12 3.6 22c.4.4 1 .4 1.7.1l11.7-7zM17 8.9 5.3 2.2c-.7-.4-1.3-.3-1.7.1l10 10L17 8.9z"/></svg><span><small>곧 출시</small><b>Google Play</b></span></span></div>
+      </div>
+      <div class="hero-art reveal" aria-hidden="true">
+        <div class="shot card h2"><img src="img/ko/02.jpg" alt="" width="1080" height="1920" loading="eager"></div>
+        <div class="shot card h1"><img src="img/ko/01.jpg" alt="" width="1080" height="1920" loading="eager"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="wrap">
+      <div class="sec-head reveal"><span class="kicker">주요 기능</span></div>
+      <article class="feature"><div class="f-art reveal"><div class="shot card "><img src="img/ko/01.jpg" alt="결재 결과" width="1080" height="1920" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">01 · 결재 결과</span><h3>결재 의견에<br>도장까지 쾅</h3><p>AI 결재권자가 ‘나 때는 말이야~’ 하며 손글씨로 결재 의견을 남기고 도장을 찍어요. 찍히는 순간 폰이 진동해요.</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>결재권자마다 다른 말투</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>같은 핑계도 누가 보느냐에 따라 다른 반응</span></li></ul></div></article><article class="feature"><div class="f-art reveal"><div class="shot card "><img src="img/ko/02.jpg" alt="4가지 세계관" width="1080" height="1920" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">02 · 세계관</span><h3>회사도 엄마도 군대도<br>오늘도 반려</h3><p>네 가지 세계관에서 결재권자를 골라요.</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>회사: 인턴부터 차장까지 꼰대 결재라인</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>엄마: 엄마·아빠·할머니·이모의 잔소리</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>학교: 담임쌤의 생활기록부와 ‘재제출’ 도장</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>군대: 분대장의 ‘~지 말입니다’ 호통</span></li></ul></div></article><article class="feature"><div class="f-art reveal"><div class="shot card "><img src="img/ko/04.jpg" alt="사유서 작성" width="1080" height="1920" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">03 · 사유서</span><h3>사유서는<br>한 줄이면 충분</h3><p>영역과 결재권자를 고르고 핑계를 한 줄 적으면 끝. 결재가 끝나기를 기다리는 동안에도 웃음이 나요.</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>운동·공부·집안일·약속까지 모든 핑계</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>결재 대기 연출</span></li></ul></div></article><article class="feature"><div class="f-art reveal"><div class="shot card "><img src="img/ko/07.jpg" alt="공유 카드" width="1080" height="1920" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">04 · 공유</span><h3>공유하면<br>더 웃겨요</h3><p>도장이 찍힌 결과를 한 장의 이미지로 만들어 친구에게 바로 보내요.</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>9:16 공유 카드</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>메신저·SNS로 바로 공유</span></li></ul></div></article><article class="feature"><div class="f-art reveal"><div class="shot card "><img src="img/ko/08.jpg" alt="나의 직급" width="1080" height="1920" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">05 · 직급</span><h3>쓸수록 오르는<br>나의 직급</h3><p>쓸수록 직급이 올라가고 새로운 결재권자가 등장해요. 출석일과 연속 기록도 쌓여요.</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>세계관별 진급</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>새 결재권자 해금</span></li></ul></div></article>
+    </div>
+  </section>
+
+  <section class="points-sec">
+    <div class="wrap">
+      <h2 class="reveal">이런 점이 좋아요</h2>
+      <div class="points"><div class="point reveal"><b>로그인 없이</b><p>로그인 없이 하루 1회, Google 로그인 시 하루 3회 무료.</p></div><div class="point reveal"><b>유료 결제 없음</b><p>다 쓰면 짧은 광고를 보고 1회 더 쓸 수 있어요.</p></div><div class="point reveal"><b>찍히는 손맛</b><p>도장이 찍히는 순간 진동으로 손맛이 살아요.</p></div><div class="point reveal"><b>재미용 콘텐츠</b><p>AI가 만든 재미용 결과예요. 전문 조언이 아니에요.</p></div></div>
+    </div>
+  </section>
+
+  <section class="gallery">
+    <div class="wrap g-head">
+      <h2 class="reveal">화면 둘러보기</h2>
+      <div class="g-btns"><button type="button" data-dir="-1" aria-label="이전 화면">←</button><button type="button" data-dir="1" aria-label="다음 화면">→</button></div>
+    </div>
+    
+    <div class="rail" tabindex="0"><figure><div class="shot card "><img src="img/ko/01.jpg" alt="결재 결과" width="1080" height="1920" loading="lazy"></div><figcaption>결재 결과</figcaption></figure><figure><div class="shot card "><img src="img/ko/02.jpg" alt="4가지 세계관" width="1080" height="1920" loading="lazy"></div><figcaption>4가지 세계관</figcaption></figure><figure><div class="shot card "><img src="img/ko/03.jpg" alt="결재 중" width="1080" height="1920" loading="lazy"></div><figcaption>결재 중</figcaption></figure><figure><div class="shot card "><img src="img/ko/04.jpg" alt="사유서 작성" width="1080" height="1920" loading="lazy"></div><figcaption>사유서 작성</figcaption></figure><figure><div class="shot card "><img src="img/ko/05.jpg" alt="학교" width="1080" height="1920" loading="lazy"></div><figcaption>학교</figcaption></figure><figure><div class="shot card "><img src="img/ko/06.jpg" alt="군대" width="1080" height="1920" loading="lazy"></div><figcaption>군대</figcaption></figure><figure><div class="shot card "><img src="img/ko/07.jpg" alt="공유 카드" width="1080" height="1920" loading="lazy"></div><figcaption>공유 카드</figcaption></figure><figure><div class="shot card "><img src="img/ko/08.jpg" alt="나의 직급" width="1080" height="1920" loading="lazy"></div><figcaption>나의 직급</figcaption></figure></div>
+  </section>
+
+  <section class="final" id="get-ko">
+    <div class="wrap">
+      <div class="final-card reveal">
+        <img class="final-icon" src="../assets/apps/bannyeo.png" alt="" width="96" height="96">
+        <h2>곧 만나요</h2>
+        <p>출시되면 이 페이지에서 바로 받을 수 있어요.</p>
+        <div class="stores"><span class="store big off"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3.6 1.8c-.3.3-.5.8-.5 1.4v17.6c0 .6.2 1.1.5 1.4l.1.1 9.9-9.9v-.2L3.7 1.7l-.1.1zm13.3 13.4-3.3-3.3v-.2l3.3-3.3.1.1 3.9 2.2c1.1.6 1.1 1.7 0 2.3l-3.9 2.2h-.1zm.1-.1L13.6 12 3.6 22c.4.4 1 .4 1.7.1l11.7-7zM17 8.9 5.3 2.2c-.7-.4-1.3-.3-1.7.1l10 10L17 8.9z"/></svg><span><small>곧 출시</small><b>Google Play</b></span></span></div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="wrap">
+    <span>© 2026 HNH Labs</span>
+    <nav><a href="mailto:black924.menew@gmail.com">문의</a> <a href="../index.html?lang=ko">HNH Labs 앱</a></nav>
+  </div>
+</footer>
+</div>
+<div class="L" lang="en">
+<header class="nav" data-nav>
+  <div class="wrap">
+    <a class="back" href="../index.html?lang=en" aria-label="HNH Labs apps"><span aria-hidden="true">←</span><span class="back-t">HNH Labs</span></a>
+    <a class="app-id" href="#top-en"><img src="../assets/apps/bannyeo-en.png" alt="" width="32" height="32"><b>Denied Again</b></a>
+    <div class="nav-r"><label class="lang"><span class="sr">Language</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z" fill="none" stroke="currentColor" stroke-width="2"/></svg><select data-lang-select><option value="ko">한국어</option><option value="en" selected>English</option><option value="ja">日本語</option></select></label><a class="nav-cta" href="#get-en">Coming soon</a></div>
+  </div>
+</header>
+<main id="top-en">
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-copy">
+        <div class="hero-id reveal"><img src="../assets/apps/bannyeo-en.png" alt="" width="72" height="72"><div><b>Denied Again</b><span>Android · Worldwide</span></div></div>
+        <span class="pill reveal"><i></i>Coming soon</span>
+        <h1 class="reveal">Make an excuse,<br>get stamped!</h1>
+        <p class="lead reveal">Write one line about what you don’t feel like doing today. Your boss, mum, teacher or sergeant will stamp it for you.</p>
+        <div class="stores reveal"><span class="store big off"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3.6 1.8c-.3.3-.5.8-.5 1.4v17.6c0 .6.2 1.1.5 1.4l.1.1 9.9-9.9v-.2L3.7 1.7l-.1.1zm13.3 13.4-3.3-3.3v-.2l3.3-3.3.1.1 3.9 2.2c1.1.6 1.1 1.7 0 2.3l-3.9 2.2h-.1zm.1-.1L13.6 12 3.6 22c.4.4 1 .4 1.7.1l11.7-7zM17 8.9 5.3 2.2c-.7-.4-1.3-.3-1.7.1l10 10L17 8.9z"/></svg><span><small>Coming soon</small><b>Google Play</b></span></span></div>
+      </div>
+      <div class="hero-art reveal" aria-hidden="true">
+        <div class="shot card h2"><img src="img/en/02.jpg" alt="" width="1080" height="1920" loading="eager"></div>
+        <div class="shot card h1"><img src="img/en/01.jpg" alt="" width="1080" height="1920" loading="eager"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="wrap">
+      <div class="sec-head reveal"><span class="kicker">Features</span></div>
+      <article class="feature"><div class="f-art reveal"><div class="shot card "><img src="img/en/01.jpg" alt="The verdict" width="1080" height="1920" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">01 · The verdict</span><h3>A handwritten note<br>and a big stamp</h3><p>An AI approver writes a handwritten comment and slams a stamp on your excuse. Your phone buzzes the moment it lands.</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Every approver has their own voice</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>The same excuse gets a different reaction</span></li></ul></div></article><article class="feature"><div class="f-art reveal"><div class="shot card "><img src="img/en/02.jpg" alt="Four worlds" width="1080" height="1920" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">02 · Worlds</span><h3>Four worlds,<br>one answer: denied</h3><p>Pick your approver from four worlds.</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Office: from intern to manager, up the approval chain</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Family: nagging from mum, dad, grandma and auntie</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>School: the form teacher’s report book and the RESUBMIT stamp</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Army: the sergeant’s barking orders</span></li></ul></div></article><article class="feature"><div class="f-art reveal"><div class="shot card "><img src="img/en/04.jpg" alt="Writing an excuse" width="1080" height="1920" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">03 · Your excuse</span><h3>One line<br>is all it takes</h3><p>Pick an area and an approver, write a single line, and wait for the verdict.</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Workouts, study, chores, plans — any excuse</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>A suspenseful approval wait</span></li></ul></div></article><article class="feature"><div class="f-art reveal"><div class="shot card "><img src="img/en/07.jpg" alt="Share card" width="1080" height="1920" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">04 · Share</span><h3>Even funnier<br>when shared</h3><p>Turn the stamped result into a single image and send it to friends.</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>9:16 share card</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Share to any messenger or social app</span></li></ul></div></article><article class="feature"><div class="f-art reveal"><div class="shot card "><img src="img/en/08.jpg" alt="My rank" width="1080" height="1920" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">05 · Rank</span><h3>Climb the ranks<br>as you go</h3><p>The more you use it, the higher your rank climbs and new approvers appear. Attendance days and streaks add up too.</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Separate promotions for each world</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Unlock new approvers</span></li></ul></div></article>
+    </div>
+  </section>
+
+  <section class="points-sec">
+    <div class="wrap">
+      <h2 class="reveal">Why you’ll like it</h2>
+      <div class="points"><div class="point reveal"><b>No sign-in needed</b><p>Free once a day without signing in, three times with Google.</p></div><div class="point reveal"><b>No purchases</b><p>Out of free tries? Watch a short ad for one more.</p></div><div class="point reveal"><b>Feel the stamp</b><p>A haptic thud the moment the stamp lands.</p></div><div class="point reveal"><b>Just for fun</b><p>AI-made results for laughs, not professional advice.</p></div></div>
+    </div>
+  </section>
+
+  <section class="gallery">
+    <div class="wrap g-head">
+      <h2 class="reveal">Screens</h2>
+      <div class="g-btns"><button type="button" data-dir="-1" aria-label="Previous screen">←</button><button type="button" data-dir="1" aria-label="Next screen">→</button></div>
+    </div>
+    
+    <div class="rail" tabindex="0"><figure><div class="shot card "><img src="img/en/01.jpg" alt="The verdict" width="1080" height="1920" loading="lazy"></div><figcaption>The verdict</figcaption></figure><figure><div class="shot card "><img src="img/en/02.jpg" alt="Four worlds" width="1080" height="1920" loading="lazy"></div><figcaption>Four worlds</figcaption></figure><figure><div class="shot card "><img src="img/en/03.jpg" alt="Approval pending" width="1080" height="1920" loading="lazy"></div><figcaption>Approval pending</figcaption></figure><figure><div class="shot card "><img src="img/en/04.jpg" alt="Writing an excuse" width="1080" height="1920" loading="lazy"></div><figcaption>Writing an excuse</figcaption></figure><figure><div class="shot card "><img src="img/en/05.jpg" alt="School" width="1080" height="1920" loading="lazy"></div><figcaption>School</figcaption></figure><figure><div class="shot card "><img src="img/en/06.jpg" alt="Army" width="1080" height="1920" loading="lazy"></div><figcaption>Army</figcaption></figure><figure><div class="shot card "><img src="img/en/07.jpg" alt="Share card" width="1080" height="1920" loading="lazy"></div><figcaption>Share card</figcaption></figure><figure><div class="shot card "><img src="img/en/08.jpg" alt="My rank" width="1080" height="1920" loading="lazy"></div><figcaption>My rank</figcaption></figure></div>
+  </section>
+
+  <section class="final" id="get-en">
+    <div class="wrap">
+      <div class="final-card reveal">
+        <img class="final-icon" src="../assets/apps/bannyeo-en.png" alt="" width="96" height="96">
+        <h2>See you soon</h2>
+        <p>Once it launches, you can download it right from this page.</p>
+        <div class="stores"><span class="store big off"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3.6 1.8c-.3.3-.5.8-.5 1.4v17.6c0 .6.2 1.1.5 1.4l.1.1 9.9-9.9v-.2L3.7 1.7l-.1.1zm13.3 13.4-3.3-3.3v-.2l3.3-3.3.1.1 3.9 2.2c1.1.6 1.1 1.7 0 2.3l-3.9 2.2h-.1zm.1-.1L13.6 12 3.6 22c.4.4 1 .4 1.7.1l11.7-7zM17 8.9 5.3 2.2c-.7-.4-1.3-.3-1.7.1l10 10L17 8.9z"/></svg><span><small>Coming soon</small><b>Google Play</b></span></span></div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="wrap">
+    <span>© 2026 HNH Labs</span>
+    <nav><a href="mailto:black924.menew@gmail.com">Contact</a> <a href="../index.html?lang=en">HNH Labs apps</a></nav>
+  </div>
+</footer>
+</div>
+<div class="L" lang="ja">
+<header class="nav" data-nav>
+  <div class="wrap">
+    <a class="back" href="../index.html?lang=ja" aria-label="HNH Labsのアプリ"><span aria-hidden="true">←</span><span class="back-t">HNH Labs</span></a>
+    <a class="app-id" href="#top-ja"><img src="../assets/apps/bannyeo-ja.png" alt="" width="32" height="32"><b>今日も却下</b></a>
+    <div class="nav-r"><label class="lang"><span class="sr">言語</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z" fill="none" stroke="currentColor" stroke-width="2"/></svg><select data-lang-select><option value="ko">한국어</option><option value="en">English</option><option value="ja" selected>日本語</option></select></label><a class="nav-cta" href="#get-ja">近日公開</a></div>
+  </div>
+</header>
+<main id="top-ja">
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-copy">
+        <div class="hero-id reveal"><img src="../assets/apps/bannyeo-ja.png" alt="" width="72" height="72"><div><b>今日も却下</b><span>Android · 全世界</span></div></div>
+        <span class="pill reveal"><i></i>近日公開</span>
+        <h1 class="reveal">言い訳を書けば<br>ハンコがポン！</h1>
+        <p class="lead reveal">今日やりたくないことの言い訳を一行書いてみてください。上司も、お母さんも、先生も、先輩も、ハンコをポンと押してくれます。</p>
+        <div class="stores reveal"><span class="store big off"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3.6 1.8c-.3.3-.5.8-.5 1.4v17.6c0 .6.2 1.1.5 1.4l.1.1 9.9-9.9v-.2L3.7 1.7l-.1.1zm13.3 13.4-3.3-3.3v-.2l3.3-3.3.1.1 3.9 2.2c1.1.6 1.1 1.7 0 2.3l-3.9 2.2h-.1zm.1-.1L13.6 12 3.6 22c.4.4 1 .4 1.7.1l11.7-7zM17 8.9 5.3 2.2c-.7-.4-1.3-.3-1.7.1l10 10L17 8.9z"/></svg><span><small>近日公開</small><b>Google Play</b></span></span></div>
+      </div>
+      <div class="hero-art reveal" aria-hidden="true">
+        <div class="shot card h2"><img src="img/ja/02.jpg" alt="" width="1080" height="1920" loading="eager"></div>
+        <div class="shot card h1"><img src="img/ja/01.jpg" alt="" width="1080" height="1920" loading="eager"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="wrap">
+      <div class="sec-head reveal"><span class="kicker">主な機能</span></div>
+      <article class="feature"><div class="f-art reveal"><div class="shot card "><img src="img/ja/01.jpg" alt="決裁結果" width="1080" height="1920" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">01 · 決裁結果</span><h3>手書きのコメントに<br>ハンコまでポン</h3><p>AIの決裁者が手書きでコメントを残し、ハンコを押します。押された瞬間にスマホがブルッと震えます。</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>決裁者ごとに違う口調</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>同じ言い訳でも相手によって反応が変わる</span></li></ul></div></article><article class="feature"><div class="f-art reveal"><div class="shot card "><img src="img/ja/02.jpg" alt="4つの世界" width="1080" height="1920" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">02 · 世界観</span><h3>会社も家族も部活も<br>今日も却下</h3><p>4つの世界から決裁者を選べます。</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>会社：インターンから課長までの決裁ライン</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>家族：お母さん・お父さん・おばあちゃん・おばさんの小言</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>学校：担任の先生の通知表と「再提出」ハンコ</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>部活：先輩の「〜であります！」の喝</span></li></ul></div></article><article class="feature"><div class="f-art reveal"><div class="shot card "><img src="img/ja/04.jpg" alt="理由書" width="1080" height="1920" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">03 · 理由書</span><h3>理由書は<br>一行でOK</h3><p>分野と決裁者を選び、言い訳を一行書くだけ。決裁を待つ間も笑えます。</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>運動・勉強・家事・約束、どんな言い訳でも</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>決裁待ちの演出</span></li></ul></div></article><article class="feature"><div class="f-art reveal"><div class="shot card "><img src="img/ja/07.jpg" alt="シェアカード" width="1080" height="1920" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">04 · シェア</span><h3>シェアすると<br>もっと笑える</h3><p>ハンコが押された結果を一枚の画像にして、友だちにすぐ送れます。</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>9:16のシェアカード</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>メッセンジャーやSNSにすぐ共有</span></li></ul></div></article><article class="feature"><div class="f-art reveal"><div class="shot card "><img src="img/ja/08.jpg" alt="私の階級" width="1080" height="1920" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">05 · 階級</span><h3>使うほど上がる<br>私の階級</h3><p>使うほど階級が上がり、新しい決裁者が登場します。出席日数と連続記録もたまります。</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>世界ごとに昇進</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>新しい決裁者を解放</span></li></ul></div></article>
+    </div>
+  </section>
+
+  <section class="points-sec">
+    <div class="wrap">
+      <h2 class="reveal">ここがうれしい</h2>
+      <div class="points"><div class="point reveal"><b>ログイン不要</b><p>ログインなしで1日1回、Googleログインで1日3回まで無料。</p></div><div class="point reveal"><b>課金なし</b><p>回数を使い切ったら短い広告でもう1回。</p></div><div class="point reveal"><b>押される手ごたえ</b><p>ハンコが押される瞬間に振動でフィードバック。</p></div><div class="point reveal"><b>お楽しみコンテンツ</b><p>AIが作るお楽しみ用の結果です。専門的な助言ではありません。</p></div></div>
+    </div>
+  </section>
+
+  <section class="gallery">
+    <div class="wrap g-head">
+      <h2 class="reveal">画面を見る</h2>
+      <div class="g-btns"><button type="button" data-dir="-1" aria-label="前の画面">←</button><button type="button" data-dir="1" aria-label="次の画面">→</button></div>
+    </div>
+    
+    <div class="rail" tabindex="0"><figure><div class="shot card "><img src="img/ja/01.jpg" alt="決裁結果" width="1080" height="1920" loading="lazy"></div><figcaption>決裁結果</figcaption></figure><figure><div class="shot card "><img src="img/ja/02.jpg" alt="4つの世界" width="1080" height="1920" loading="lazy"></div><figcaption>4つの世界</figcaption></figure><figure><div class="shot card "><img src="img/ja/03.jpg" alt="決裁中" width="1080" height="1920" loading="lazy"></div><figcaption>決裁中</figcaption></figure><figure><div class="shot card "><img src="img/ja/04.jpg" alt="理由書" width="1080" height="1920" loading="lazy"></div><figcaption>理由書</figcaption></figure><figure><div class="shot card "><img src="img/ja/05.jpg" alt="学校" width="1080" height="1920" loading="lazy"></div><figcaption>学校</figcaption></figure><figure><div class="shot card "><img src="img/ja/06.jpg" alt="部活" width="1080" height="1920" loading="lazy"></div><figcaption>部活</figcaption></figure><figure><div class="shot card "><img src="img/ja/07.jpg" alt="シェアカード" width="1080" height="1920" loading="lazy"></div><figcaption>シェアカード</figcaption></figure><figure><div class="shot card "><img src="img/ja/08.jpg" alt="私の階級" width="1080" height="1920" loading="lazy"></div><figcaption>私の階級</figcaption></figure></div>
+  </section>
+
+  <section class="final" id="get-ja">
+    <div class="wrap">
+      <div class="final-card reveal">
+        <img class="final-icon" src="../assets/apps/bannyeo-ja.png" alt="" width="96" height="96">
+        <h2>もうすぐ公開</h2>
+        <p>公開されたら、このページからすぐにダウンロードできます。</p>
+        <div class="stores"><span class="store big off"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3.6 1.8c-.3.3-.5.8-.5 1.4v17.6c0 .6.2 1.1.5 1.4l.1.1 9.9-9.9v-.2L3.7 1.7l-.1.1zm13.3 13.4-3.3-3.3v-.2l3.3-3.3.1.1 3.9 2.2c1.1.6 1.1 1.7 0 2.3l-3.9 2.2h-.1zm.1-.1L13.6 12 3.6 22c.4.4 1 .4 1.7.1l11.7-7zM17 8.9 5.3 2.2c-.7-.4-1.3-.3-1.7.1l10 10L17 8.9z"/></svg><span><small>近日公開</small><b>Google Play</b></span></span></div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="wrap">
+    <span>© 2026 HNH Labs</span>
+    <nav><a href="mailto:black924.menew@gmail.com">お問い合わせ</a> <a href="../index.html?lang=ja">HNH Labsのアプリ</a></nav>
+  </div>
+</footer>
+</div>
+<script>
+(function () {
+  var root = document.documentElement;
+  var TITLES = {"ko": "오늘도 반려 - 핑계 대면 도장이 쾅!", "en": "Denied Again - Make an excuse, get stamped", "ja": "今日も却下 - 言い訳を書けばハンコがポン！"}, DESCS = {"ko": "핑계를 쓰면 상사·엄마·담임쌤·분대장이 도장을 쾅! 결재 놀이 앱.", "en": "Write an excuse and your boss, mum, teacher or sergeant stamps it.", "ja": "言い訳を書くと上司・お母さん・先生・先輩がハンコをポン！決裁ごっこアプリ。"};
+  function apply(l, save) {
+    root.dataset.l = l; root.lang = l;
+    document.title = TITLES[l];
+    document.querySelector('meta[name="description"]').content = DESCS[l];
+    document.querySelectorAll('[data-lang-select]').forEach(function (s) { s.value = l; });
+    if (save) {
+      try { localStorage.setItem('hnh-lang', l); } catch (e) {}
+      try { var u = new URL(location.href); u.searchParams.set('lang', l); history.replaceState(null, '', u); } catch (e) {}
+    }
+    observe(); onScroll();
+  }
+  document.querySelectorAll('[data-lang-select]').forEach(function (s) {
+    s.addEventListener('change', function () { apply(s.value, true); });
+  });
+
+  // 스크롤하면 상단 바 뒤를 흐리게
+  function onScroll() { document.querySelectorAll('[data-nav]').forEach(function (n) { n.classList.toggle('scrolled', scrollY > 8); }); }
+  addEventListener('scroll', onScroll, { passive: true });
+
+  // 화면 둘러보기 버튼
+  document.querySelectorAll('.g-btns button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var rail = b.closest('.gallery').querySelector('.rail');
+      var step = rail.querySelector('figure').offsetWidth + 20;
+      rail.scrollBy({ left: step * 2 * Number(b.dataset.dir), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    });
+  });
+
+  // 나타나는 효과
+  var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) {
+    es.forEach(function (x) { if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); } });
+  }, { rootMargin: '0px 0px -6% 0px' }) : null;
+  function observe() {
+    document.querySelectorAll('.L[lang="' + root.dataset.l + '"] .reveal:not(.in)').forEach(function (x) {
+      if (io) io.observe(x); else x.classList.add('in');
+    });
+  }
+  apply(root.dataset.l || 'ko', false);
+})();
+</script>
+</body>
+</html>

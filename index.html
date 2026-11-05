@@ -1,159 +1,812 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Floor Noise Log - Smart Noise Tracking</title>
-    <style>
-        :root {
-            --bg-black: #0f0f0f;
-            --card-bg: #1a1a1a;
-            --primary-orange: #f39c12;
-            --text-white: #ffffff;
-            --text-gray: #a0a0a0;
-            --gradient-orange: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
-        }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HNH Labs</title>
+<meta name="description" content="HNH Labs는 일상의 작은 불편을 덜어주는 모바일 앱을 만듭니다.">
+<meta name="theme-color" content="#0B0C10">
+<meta property="og:type" content="website">
+<meta property="og:title" content="HNH Labs">
+<meta property="og:description" content="일상의 작은 불편을 앱 하나로 덜어냅니다. HNH Labs가 만든 앱을 만나 보세요.">
+<meta property="og:image" content="https://black924.github.io/assets/apps/noiselog.png">
+<link rel="alternate" hreflang="ko" href="https://black924.github.io/?lang=ko">
+<link rel="alternate" hreflang="en" href="https://black924.github.io/?lang=en">
+<link rel="alternate" hreflang="ja" href="https://black924.github.io/?lang=ja">
+<link rel="alternate" hreflang="de" href="https://black924.github.io/?lang=de">
+<link rel="alternate" hreflang="x-default" href="https://black924.github.io/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230B0C10'/%3E%3Cpath d='M18 18v28M30 18v28M18 32h12M46 18v28M34 18v28M34 32h12' stroke='%23fff' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Noto+Sans+JP:wght@400;700;800&display=swap">
+<style>
+:root {
+  --bg: #F6F5F1;
+  --bg2: #EFEDE7;
+  --surface: #FFFFFF;
+  --ink: #0B0C10;
+  --ink2: #4B4F58;
+  --muted: #6E727B;
+  --line: #E3E0D8;
+  --line2: #D3CFC4;
+  --chip: #ECEAE3;
+  --glass: rgba(255,255,255,.72);
+  --shadow: 0 1px 2px rgba(11,12,16,.04), 0 12px 32px -12px rgba(11,12,16,.14);
+  --font: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --wrap: 1200px;
+  --gut: max(20px, env(safe-area-inset-left, 0px));
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0B0C10; --bg2: #121319; --surface: #15161C; --ink: #F3F2EE; --ink2: #B4B7BF; --muted: #8C9099;
+    --line: #24262E; --line2: #343743; --chip: #1E2028; --glass: rgba(21,22,28,.72);
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 16px 40px -16px rgba(0,0,0,.6);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0B0C10; --bg2: #121319; --surface: #15161C; --ink: #F3F2EE; --ink2: #B4B7BF; --muted: #8C9099;
+  --line: #24262E; --line2: #343743; --chip: #1E2028; --glass: rgba(21,22,28,.72);
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 16px 40px -16px rgba(0,0,0,.6);
+  color-scheme: dark;
+}
+:root:lang(ja) { --font: "Noto Sans JP", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Pretendard Variable", system-ui, sans-serif; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--font); font-size: 17px; line-height: 1.6;
+  word-break: keep-all; overflow-wrap: anywhere; overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+:lang(ja) body, body:lang(ja) { word-break: normal; line-break: strict; }
+:lang(de) body, body:lang(de) { hyphens: auto; -webkit-hyphens: auto; }
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+.wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gut); }
+.mono { font-family: var(--mono); font-size: 13px; letter-spacing: .02em; text-transform: uppercase; }
+h1, h2, h3 { margin: 0; letter-spacing: -0.035em; line-height: 1.15; }
+:lang(ja) h1, :lang(ja) h2, :lang(ja) h3 { letter-spacing: -0.02em; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background-color: var(--bg-black);
-            color: var(--text-white);
-            margin: 0;
-            line-height: 1.6;
-        }
+/* 상단 바 */
+.nav { position: fixed; inset: 0 0 auto; z-index: 30; padding-top: env(safe-area-inset-top, 0px); border-bottom: 1px solid transparent; transition: background-color .25s, border-color .25s, backdrop-filter .25s; }
+.nav.scrolled { background: color-mix(in srgb, var(--bg) 78%, transparent); backdrop-filter: saturate(1.6) blur(16px); -webkit-backdrop-filter: saturate(1.6) blur(16px); border-bottom-color: var(--line); }
+.nav.scrolled .nav-pill { background: transparent; border-color: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; }
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 72px; gap: 12px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 800; font-size: 19px; letter-spacing: -0.03em; white-space: nowrap; }
+.brand-mark { width: 32px; height: 32px; border-radius: 10px; background: var(--ink); color: var(--bg); display: grid; place-items: center; flex: none; }
+.nav-pill { display: flex; align-items: center; gap: 4px; padding: 5px; border-radius: 999px; background: var(--glass); border: 1px solid var(--line); backdrop-filter: blur(16px) saturate(1.5); -webkit-backdrop-filter: blur(16px) saturate(1.5); }
+.nav-pill a { text-decoration: none; font-size: 15px; font-weight: 600; color: var(--ink2); padding: 8px 14px; border-radius: 999px; white-space: nowrap; }
+.nav-pill a:hover { color: var(--ink); background: var(--chip); }
+.theme-btn { width: 36px; height: 36px; border-radius: 50%; border: 0; background: transparent; color: var(--ink2); cursor: pointer; display: grid; place-items: center; }
+.theme-btn:hover { background: var(--chip); color: var(--ink); }
+.lang-wrap { position: relative; display: flex; align-items: center; }
+.lang-wrap svg { position: absolute; left: 10px; pointer-events: none; color: var(--ink2); }
+.lang-select { appearance: none; -webkit-appearance: none; font: inherit; font-size: 14px; font-weight: 700; color: var(--ink); background: transparent; border: 0; height: 36px; padding: 0 12px 0 32px; border-radius: 999px; cursor: pointer; }
+.lang-select:hover { background: var(--chip); }
+.lang-select option { color: #0B0C10; }
+@media (max-width: 640px) { .nav-pill a.hide-m { display: none; } }
 
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 10%;
-            background: rgba(15, 15, 15, 0.9);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+/* 히어로 */
+.hero { position: relative; min-height: min(100svh, 920px); display: flex; align-items: center; padding: 120px 0 72px; overflow: hidden; }
+.hero::before { content: ""; position: absolute; inset: 0; background:
+  radial-gradient(40% 50% at 78% 45%, color-mix(in srgb, #FF7A1A 16%, transparent), transparent 70%),
+  radial-gradient(35% 45% at 92% 80%, color-mix(in srgb, #2E7CF6 14%, transparent), transparent 70%),
+  radial-gradient(30% 40% at 60% 15%, color-mix(in srgb, #3DDBA8 14%, transparent), transparent 70%);
+  pointer-events: none; }
+.hero .wrap { position: relative; display: grid; grid-template-columns: 1.05fr 1fr; gap: 40px; align-items: center; width: 100%; }
+.eyebrow { display: inline-flex; align-items: center; gap: 10px; color: var(--ink2); }
+.eyebrow i { width: 8px; height: 8px; border-radius: 50%; background: #3DDBA8; box-shadow: 0 0 0 4px color-mix(in srgb, #3DDBA8 25%, transparent); }
+.hero h1 { font-size: clamp(38px, 5vw, 72px); font-weight: 800; letter-spacing: -0.055em; line-height: 1.06; margin: 22px 0 26px; }
+:lang(ja) .hero h1 { font-size: clamp(32px, 4.3vw, 62px); letter-spacing: -0.03em; line-height: 1.2; }
+:lang(en) .hero h1, :lang(de) .hero h1 { letter-spacing: -0.04em; }
+:lang(de) .hero h1, :lang(en) .hero h1 { font-size: clamp(34px, 4.4vw, 64px); }
+.hero h1 .soft { color: var(--muted); }
+.hero h1 .ln { display: block; }
+:lang(ko) .hero h1 .ln, :lang(ja) .hero h1 .ln, :lang(en) .hero h1 .ln { white-space: nowrap; }
+.hero p { font-size: clamp(17px, 1.8vw, 20px); color: var(--ink2); margin: 0 0 36px; max-width: 30em; }
+.cta { display: inline-flex; align-items: center; gap: 10px; height: 56px; padding: 0 26px; border-radius: 999px; background: var(--ink); color: var(--bg); font-weight: 700; text-decoration: none; transition: transform .2s; }
+.cta:hover { transform: translateY(-2px); }
+.cta.ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--line2); }
+.hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; }
 
-        .logo { font-weight: bold; font-size: 1.2rem; color: var(--primary-orange); }
-        .btn-link { text-decoration: none; }
+/* 궤도 */
+.orbit { --size: min(560px, 44vw); position: relative; width: var(--size); aspect-ratio: 1; justify-self: center; }
+.ring { position: absolute; inset: 0; border-radius: 50%; animation: spin 60s linear infinite; }
+.ring.r2 { inset: 21%; animation-duration: 42s; animation-direction: reverse; }
+.ring::before { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 1.5px dashed var(--line2); }
+.o-item { position: absolute; left: 50%; top: 50%; width: calc(var(--size) * .17); margin: calc(var(--size) * -.085) 0 0 calc(var(--size) * -.085); transform: rotate(var(--a)) translateY(calc(var(--size) * -.5)) rotate(calc(var(--a) * -1)); }
+.ring.r2 .o-item { transform: rotate(var(--a)) translateY(calc(var(--size) * -.29)) rotate(calc(var(--a) * -1)); }
+.o-item a { display: block; border-radius: 24%; animation: spin 60s linear infinite reverse; transition: scale .25s; }
+.ring.r2 .o-item a { animation-duration: 42s; animation-direction: normal; }
+.o-item a:hover, .o-item a:focus-visible { scale: 1.12; }
+.o-item img { width: 100%; height: auto; aspect-ratio: 1; border-radius: 24%; box-shadow: 0 14px 30px -10px rgba(11,12,16,.35), 0 0 0 1px rgba(11,12,16,.06); }
+.orbit-core { position: absolute; inset: 39%; border-radius: 30%; background: var(--ink); color: var(--bg); display: grid; place-items: center; box-shadow: 0 30px 60px -20px rgba(11,12,16,.5); }
+.orbit-core b { font-family: "Pretendard Variable", Pretendard, system-ui, sans-serif; font-size: calc(var(--size) * .055); font-weight: 800; letter-spacing: -0.04em; line-height: 1; text-align: center; }
+.orbit-core b small { display: block; font-family: var(--mono); font-size: .42em; font-weight: 500; opacity: .6; margin-top: 6px; letter-spacing: .1em; }
+.orbit:hover .ring, .orbit:hover .o-item a, .orbit:focus-within .ring, .orbit:focus-within .o-item a { animation-play-state: paused; }
+@keyframes spin { to { rotate: 360deg; } }
+@media (max-width: 900px) {
+  .hero { min-height: 0; padding-top: 112px; }
+  .hero .wrap { grid-template-columns: 1fr; gap: 56px; }
+  .orbit { --size: min(440px, 82vw); }
+}
 
-        .hero {
-            display: flex;
-            align-items: center;
-            padding: 80px 10%;
-            gap: 50px;
-        }
+/* 흐르는 이름 띠 */
+.marquee { border-block: 1px solid var(--line); background: var(--surface); overflow: hidden; padding: 22px 0; }
+.marquee-track { display: flex; width: max-content; animation: slide 48s linear infinite; }
+.marquee span { display: inline-flex; align-items: center; gap: 28px; padding-right: 28px; font-size: clamp(26px, 3.4vw, 40px); font-weight: 800; letter-spacing: -0.04em; white-space: nowrap; }
+.marquee span img { width: 1.15em; height: 1.15em; border-radius: 24%; }
+.marquee span em { font-style: normal; color: var(--line2); font-weight: 400; }
+@keyframes slide { to { transform: translateX(-50%); } }
 
-        .hero-content { flex: 1; }
-        .badge { display: inline-block; padding: 5px 12px; background: #222; border: 1px solid #444; border-radius: 20px; font-size: 0.75rem; color: #00ffaa; margin-bottom: 20px; }
-        .hero h1 { font-size: 3.5rem; line-height: 1.2; margin-bottom: 20px; }
-        .hero p { color: var(--text-gray); margin-bottom: 30px; font-size: 1.1rem; }
-        .btn-primary { padding: 15px 30px; background: var(--primary-orange); border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1rem; }
+/* 앱 목록 */
+.apps { padding: clamp(80px, 11vw, 140px) 0 clamp(60px, 8vw, 100px); }
+.sec-head { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; margin-bottom: 40px; }
+.sec-head h2 { font-size: clamp(34px, 5vw, 60px); font-weight: 800; margin-top: 14px; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; }
+.filters button { font: inherit; font-size: 15px; font-weight: 600; height: 42px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--line2); background: transparent; color: var(--ink2); cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+.filters button span { font-family: var(--mono); font-size: 12px; opacity: .7; }
+.filters button:hover { color: var(--ink); border-color: var(--ink2); }
+.filters button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.filters button[hidden] { display: none; }
 
-        .features { padding: 80px 10%; }
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 25px;
-            margin-top: 50px;
-        }
+.grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 18px; }
+.card { grid-column: span 2; }
+.card.feature { grid-column: span 3; }
+@media (max-width: 1080px) { .grid { grid-template-columns: repeat(2, 1fr); } .card, .card.feature { grid-column: span 1; } }
+@media (max-width: 680px) { .grid { grid-template-columns: 1fr; } }
 
-        .feature-card {
-            background: var(--card-bg);
-            padding: 40px;
-            border-radius: 20px;
-            border: 1px solid #2a2a2a;
-        }
+.card {
+  --mx: 50%; --my: 0%;
+  position: relative; display: flex; flex-direction: column; gap: 18px;
+  padding: 28px; border-radius: 28px; background: var(--surface); border: 1px solid var(--line);
+  box-shadow: var(--shadow); overflow: hidden; isolation: isolate;
+  transition: transform .35s cubic-bezier(.2,.7,.2,1), border-color .35s;
+}
+.card::before { content: ""; position: absolute; inset: 0; z-index: -1; opacity: 0; transition: opacity .35s;
+  background: radial-gradient(420px circle at var(--mx) var(--my), color-mix(in srgb, var(--accent) 22%, transparent), transparent 60%); }
+.card::after { content: ""; position: absolute; z-index: -1; width: 240px; aspect-ratio: 1; right: -90px; top: -90px; border-radius: 50%; background: var(--accent); opacity: .08; }
+.card:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+.card:hover::before { opacity: 1; }
+.card[hidden], .policy-list li[hidden] { display: none; }
+.card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.card-icon { width: 76px; height: 76px; border-radius: 24%; box-shadow: 0 10px 24px -10px color-mix(in srgb, var(--accent) 70%, transparent), 0 0 0 1px rgba(11,12,16,.06); transition: transform .4s cubic-bezier(.2,.7,.2,1); }
+.card:hover .card-icon { transform: rotate(-6deg) scale(1.05); }
+.card.feature .card-icon { width: 88px; height: 88px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+.tag { font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: var(--chip); color: var(--ink2); white-space: nowrap; }
+.tag.kr { background: color-mix(in srgb, #2E7CF6 14%, transparent); color: color-mix(in srgb, #2E7CF6 80%, var(--ink)); }
+.tag.soon { background: color-mix(in srgb, #F2A100 18%, transparent); color: color-mix(in srgb, #B57600 85%, var(--ink)); }
+.tag.global { background: color-mix(in srgb, #3DDBA8 18%, transparent); color: color-mix(in srgb, #0B7A58 85%, var(--ink)); }
+.card h3 { font-size: 26px; font-weight: 800; }
+.card.feature h3 { font-size: 30px; }
+.card h3 small { color: var(--muted); font-weight: 600; font-size: .62em; }
+.tagline { margin: 4px 0 0; font-weight: 700; color: color-mix(in srgb, var(--accent) 78%, var(--ink)); font-size: 15px; }
+.desc { margin: 0; color: var(--ink2); font-size: 16px; flex: 1; }
+.platforms { display: flex; gap: 14px; color: var(--muted); font-size: 13px; font-weight: 600; }
+.platforms span { display: inline-flex; align-items: center; gap: 6px; }
+.platforms svg { width: 15px; height: 15px; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding-top: 18px; border-top: 1px dashed var(--line2); }
+.store { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 14px 0 12px; border-radius: 13px; background: var(--ink); color: var(--bg); text-decoration: none; font-size: 14px; font-weight: 700; transition: transform .15s; white-space: nowrap; }
+.store:hover { transform: translateY(-1px); }
+.store svg { width: 18px; height: 18px; flex: none; }
+.store.off { background: transparent; color: var(--muted); border: 1px dashed var(--line2); cursor: default; }
+.store.off:hover { transform: none; }
+.store.off small { font-weight: 600; font-size: 12px; }
+.more { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; height: 44px; padding: 0 6px 0 14px; text-decoration: none; font-weight: 700; font-size: 15px; color: var(--ink); border-radius: 13px; white-space: nowrap; }
+.more i { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: #fff; font-style: normal; transition: transform .25s; }
+.more:hover i { transform: translateX(3px) rotate(-45deg); }
+.empty { grid-column: 1 / -1; text-align: center; color: var(--muted); padding: 48px 0; }
 
-        .feature-card h3 { font-size: 1.5rem; margin-bottom: 15px; }
-        .feature-card p { color: var(--text-gray); }
+/* 소개 */
+.about { padding: clamp(60px, 8vw, 100px) 0; }
+.about-card { position: relative; overflow: hidden; border-radius: 36px; background: var(--ink); color: var(--bg); padding: clamp(36px, 6vw, 80px); display: grid; grid-template-columns: 1fr 1.2fr; gap: 48px; }
+.about-card h2 { font-size: clamp(32px, 4.6vw, 54px); font-weight: 800; margin-top: 14px; }
+.about-card .lead { color: color-mix(in srgb, var(--bg) 70%, transparent); margin: 20px 0 0; font-size: 18px; }
+.principles { display: grid; gap: 14px; }
+.principle { border: 1px solid color-mix(in srgb, var(--bg) 16%, transparent); border-radius: 22px; padding: 22px 24px; display: grid; grid-template-columns: auto 1fr; gap: 6px 18px; }
+.principle b.n { grid-row: span 2; font-family: var(--mono); font-size: 13px; color: #3DDBA8; padding-top: 4px; }
+.principle h3 { font-size: 20px; }
+.principle p { margin: 0; color: color-mix(in srgb, var(--bg) 66%, transparent); font-size: 15px; }
+.about-card::after { content: ""; position: absolute; width: 420px; aspect-ratio: 1; left: -160px; bottom: -220px; border-radius: 50%; border: 50px solid #3DDBA8; opacity: .08; }
+@media (max-width: 900px) { .about-card { grid-template-columns: 1fr; } }
 
-        .how-it-works { padding: 80px 10%; text-align: center; }
-        .steps { display: flex; justify-content: space-between; margin-top: 60px; gap: 30px; }
-        .step-item { flex: 1; }
-        .step-num { width: 40px; height: 40px; background: var(--primary-orange); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: black; font-weight: bold; }
+/* 문의 */
+.contact { padding: 0 0 clamp(60px, 8vw, 100px); text-align: center; }
+.contact h2 { font-size: clamp(30px, 4.4vw, 50px); font-weight: 800; margin: 14px 0 14px; }
+.contact p { color: var(--ink2); margin: 0 0 28px; }
 
-        .cta-banner {
-            margin: 80px 10%;
-            background: var(--gradient-orange);
-            padding: 60px;
-            border-radius: 30px;
-            text-align: center;
-            color: black;
-        }
+footer { border-top: 1px solid var(--line); padding: 48px 0 calc(48px + env(safe-area-inset-bottom, 0px)); color: var(--ink2); font-size: 14px; }
+footer .wrap { display: grid; grid-template-columns: 1fr 2fr; gap: 32px; }
+footer h4 { margin: 0 0 12px; font-size: 13px; color: var(--muted); font-weight: 600; }
+.policy-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 8px 20px; }
+.policy-list a { text-decoration: none; }
+.policy-list a:hover { color: var(--ink); text-decoration: underline; }
+@media (max-width: 720px) { footer .wrap { grid-template-columns: 1fr; } }
 
-        .cta-banner h2 { font-size: 2.5rem; margin-bottom: 20px; }
-
-        footer { padding: 40px 10%; border-top: 1px solid #222; text-align: center; color: var(--text-gray); font-size: 0.8rem; }
-
-        @media (max-width: 768px) {
-            .hero { flex-direction: column; text-align: center; }
-            .features-grid { grid-template-columns: 1fr; }
-            .steps { flex-direction: column; }
-        }
-    </style>
+/* 나타나는 효과 */
+.js .reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1); transition-delay: var(--d, 0s); }
+.js .reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .ring, .o-item a, .marquee-track { animation: none !important; }
+  .js .reveal { opacity: 1; transform: none; transition: none; }
+  .card, .card-icon, .cta, .store, .more i { transition: none; }
+}
+</style>
 </head>
 <body>
+<script>
+document.documentElement.classList.add('js');
+try { var t = localStorage.getItem('hnh-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 
-<nav>
-    <div class="logo">🏠 AI Floor Noise Log</div>
-</nav>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-play" viewBox="0 0 24 24"><path fill="currentColor" d="M3.6 1.8c-.3.3-.5.8-.5 1.4v17.6c0 .6.2 1.1.5 1.4l.1.1 9.9-9.9v-.2L3.7 1.7l-.1.1zm13.3 13.4-3.3-3.3v-.2l3.3-3.3.1.1 3.9 2.2c1.1.6 1.1 1.7 0 2.3l-3.9 2.2h-.1zm.1-.1L13.6 12 3.6 22c.4.4 1 .4 1.7.1l11.7-7zM17 8.9 5.3 2.2c-.7-.4-1.3-.3-1.7.1l10 10L17 8.9z"/></symbol>
+  <symbol id="i-apple" viewBox="0 0 24 24"><path fill="currentColor" d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8 1.6 0 2 .8 3.4.8 1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.7-1-2.7-4.1zM13.9 4.9c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.1 1.1.1 2.3-.6 3-1.5z"/></symbol>
+  <symbol id="i-android" viewBox="0 0 24 24"><path fill="currentColor" d="M17.6 9.5l1.8-3.1a.4.4 0 0 0-.7-.4l-1.8 3.2A11 11 0 0 0 12 8.2c-1.8 0-3.4.4-4.9 1L5.3 6a.4.4 0 0 0-.7.4l1.8 3.1A10.4 10.4 0 0 0 1 17.8h22a10.4 10.4 0 0 0-5.4-8.3zM7 15.2a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm10 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></symbol>
+</svg>
 
-<section class="hero">
-    <div class="hero-content">
-        <div class="badge">● REAL-TIME MONITORING ACTIVE</div>
-        <h1>Track Floor Noise, the Smart Way</h1>
-        <p>Monitor noise in real-time and capture events with smart recording. Keep your records organized and effortless.</p>
-        <a href="https://play.google.com/store/apps/details?id=com.menew.noiseanalyzer" target="_blank" class="btn-link">
-            <button class="btn-primary">Download on Google Play</button>
-        </a>
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="HNH Labs">
+      <span class="brand-mark" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 64 64"><path d="M14 12v40M30 12v40M14 32h16M50 12v40M34 12v40M34 32h16" stroke="currentColor" stroke-width="7" stroke-linecap="round" fill="none"/></svg></span>
+      HNH Labs
+    </a>
+    <nav class="nav-pill" data-i18n-aria="navLabel" aria-label="주요 메뉴">
+      <a class="hide-m" href="#apps" data-i18n="nav.apps">앱</a>
+      <a class="hide-m" href="#about" data-i18n="nav.about">소개</a>
+      <a class="hide-m" href="#contact" data-i18n="nav.contact">문의</a>
+      <label class="lang-wrap">
+        <span class="sr" data-i18n="langLabel">언어</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>
+        <select class="lang-select" id="langSelect">
+          <option value="ko">한국어</option>
+          <option value="en">English</option>
+          <option value="ja">日本語</option>
+          <option value="de">Deutsch</option>
+        </select>
+      </label>
+      <button class="theme-btn" id="themeBtn" type="button" data-i18n-aria="themeLabel" aria-label="화면 테마 바꾸기">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow mono reveal"><i></i>HNH Labs · Mobile App Studio</span>
+        <h1 class="reveal" style="--d:.05s"><span class="ln" data-i18n="hero.l1">일상의 작은 불편,</span><span class="ln" data-i18n="hero.l2"><span class="soft">앱 하나로</span> 덜어냅니다.</span></h1>
+        <p class="reveal" style="--d:.1s" data-i18n="hero.p">층간소음 기록부터 아파트 사전점검, 환기 타이밍, 음악 감상, 학교생활까지. 하나의 문제를 끝까지 파고드는 앱을 만들어요.</p>
+        <div class="hero-ctas reveal" style="--d:.15s">
+          <a class="cta" href="#apps"><span data-i18n="hero.cta">앱 둘러보기</span> <span aria-hidden="true">↓</span></a>
+          <a class="cta ghost" href="#contact" data-i18n="hero.cta2">문의하기</a>
+        </div>
+      </div>
+      <div class="orbit reveal" style="--d:.1s" role="group" id="orbit" aria-label="HNH Labs apps">
+        <div class="ring r1" id="ring1">
+          <div class="o-item" style="--a:45deg"><a href="#app-noiselog" aria-label="층소일지"><img src="assets/apps/noiselog.png" alt="" width="128" height="128"></a></div>
+          <div class="o-item" style="--a:135deg"><a href="#app-vinylwave" aria-label="Vinyl Wave"><img src="assets/apps/vinylwave.png" alt="" width="128" height="128"></a></div>
+          <div class="o-item" style="--a:225deg"><a href="#app-bannyeo" aria-label="오늘도 반려"><img src="assets/apps/bannyeo.png" alt="" width="128" height="128"></a></div>
+          <div class="o-item" style="--a:315deg"><a href="#app-schoolit" aria-label="스쿨릿"><img src="assets/apps/schoolit.png" alt="" width="128" height="128"></a></div>
+        </div>
+        <div class="ring r2" id="ring2">
+          <div class="o-item" style="--a:0deg"><a href="#app-defectchecker" aria-label="셀프사전점검"><img src="assets/apps/defectchecker.png" alt="" width="128" height="128"></a></div>
+          <div class="o-item" style="--a:120deg"><a href="#app-breeze" aria-label="Breeze"><img src="assets/apps/breeze.png" alt="" width="128" height="128"></a></div>
+          <div class="o-item" style="--a:240deg"><a href="#app-remit" aria-label="Remit"><img src="assets/apps/remit.png" alt="" width="128" height="128"></a></div>
+        </div>
+        <div class="orbit-core" aria-hidden="true"><b>HNH<small>LABS</small></b></div>
+      </div>
     </div>
-</section>
+  </section>
 
-<section class="features">
-    <h2>Advanced Data Analysis</h2>
-    <div class="features-grid">
-        <div class="feature-card">
-            <h3>Real-time Monitoring</h3>
-            <p>Detect and record fluctuations using high-quality sensor data. Track everything from faint footsteps to heavy impacts.</p>
-        </div>
-        <div class="feature-card">
-            <h3>Smart Storage</h3>
-            <p>Optimizes storage by selectively recording only when noise exceeds your set decibel (dB) threshold.</p>
-        </div>
-        <div class="feature-card">
-            <h3>Quick Review</h3>
-            <p>Instantly find noise events with visual graphs and timestamps. Replay recordings with a single touch.</p>
-        </div>
-        <div class="feature-card">
-            <h3>Excel Report Export</h3>
-            <p>Generate professional Excel reports with noise analysis and your personal notes to share with authorities.</p>
-        </div>
-        <div class="feature-card">
-            <h3>AI Analysis</h3>
-            <p>Our AI model automatically analyzes and categorizes recorded sounds for better clarity.</p>
-        </div>
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track" id="marquee">
+      <span><img src="assets/apps/noiselog.png" alt="">층소일지<em>/</em><img src="assets/apps/defectchecker.png" alt="">셀프사전점검<em>/</em><img src="assets/apps/breeze.png" alt="">Breeze<em>/</em><img src="assets/apps/bannyeo.png" alt="">오늘도 반려<em>/</em><img src="assets/apps/vinylwave.png" alt="">Vinyl Wave<em>/</em><img src="assets/apps/remit.png" alt="">Remit<em>/</em><img src="assets/apps/schoolit.png" alt="">스쿨릿<em>/</em></span>
+      <span><img src="assets/apps/noiselog.png" alt="">층소일지<em>/</em><img src="assets/apps/defectchecker.png" alt="">셀프사전점검<em>/</em><img src="assets/apps/breeze.png" alt="">Breeze<em>/</em><img src="assets/apps/bannyeo.png" alt="">오늘도 반려<em>/</em><img src="assets/apps/vinylwave.png" alt="">Vinyl Wave<em>/</em><img src="assets/apps/remit.png" alt="">Remit<em>/</em><img src="assets/apps/schoolit.png" alt="">스쿨릿<em>/</em></span>
     </div>
-</section>
+  </div>
 
-<section class="how-it-works">
-    <h2>How It Works</h2>
-    <div class="steps">
-        <div class="step-item">
-            <div class="step-num">1</div>
-            <h4>Measure</h4>
-            <p>Monitor ambient noise levels in real-time using your smartphone.</p>
+  <section class="apps" id="apps">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="mono reveal" style="color:var(--muted)">Our Apps</span>
+          <h2 class="reveal" data-i18n="apps.title">HNH Labs가 만든 앱</h2>
         </div>
-        <div class="step-item">
-            <div class="step-num">2</div>
-            <h4>Record</h4>
-            <p>Automatically triggers recording when noise exceeds your custom dB limit.</p>
+        <div class="filters reveal" role="group" data-i18n-aria="filterLabel" aria-label="앱 필터">
+          <button type="button" data-filter="all" aria-pressed="true"><b data-i18n="f.all">전체</b> <span></span></button>
+          <button type="button" data-filter="live" aria-pressed="false"><b data-i18n="f.live">출시됨</b> <span></span></button>
+          <button type="button" data-filter="soon" aria-pressed="false"><b data-i18n="f.soon">출시 예정</b> <span></span></button>
+          <button type="button" data-filter="kr" aria-pressed="false"><b data-i18n="f.kr">한국 전용</b> <span></span></button>
+          <button type="button" data-filter="global" aria-pressed="false"><b data-i18n="f.global">전 세계</b> <span></span></button>
         </div>
-        <div class="step-item">
-            <div class="step-num">3</div>
-            <h4>Verify</h4>
-            <p>Review noise clips instantly and leave quick notes for future reference.</p>
+      </div>
+
+      <div class="grid" id="grid">
+        <article class="card feature reveal" id="app-noiselog" data-app="noiselog" data-tags="live global" style="--accent:#FF6A1F">
+          <div class="card-top">
+            <img class="card-icon" src="assets/apps/noiselog.png" alt="" width="88" height="88">
+            <div class="tags"><span class="tag global" data-i18n="t.global">전 세계</span></div>
+          </div>
+          <div>
+            <h3 data-i18n="noiselog.name">층소일지</h3>
+            <p class="tagline" data-i18n="noiselog.tag">자동 층간소음 측정 기록기</p>
+          </div>
+          <p class="desc" data-i18n="noiselog.desc">'쿵' 하는 큰 소리가 날 때만 자동으로 녹음하고, 시간·소음 크기·소리 종류별로 정리해요. 쌓인 기록은 통계와 리포트로 만들어 증거 자료로 쓸 수 있어요.</p>
+          <div class="platforms"><span><svg><use href="#i-android"/></svg>Android</span><span><svg><use href="#i-apple"/></svg>iOS</span></div>
+          <div class="actions">
+            <a class="store" href="https://play.google.com/store/apps/details?id=com.menew.noiseanalyzer" target="_blank" rel="noopener"><svg><use href="#i-play"/></svg>Google Play</a>
+            <a class="store" href="https://apps.apple.com/kr/app/id6823575453" data-appstore-base="https://apps.apple.com/{cc}/app/id6823575453" target="_blank" rel="noopener"><svg><use href="#i-apple"/></svg>App Store</a>
+            <a class="more" href="noiseanalyzer/marketing.html?lang=ko" data-detail="noiseanalyzer/marketing.html?lang={lang}"><span data-i18n="more">상세 보기</span> <i aria-hidden="true">→</i></a>
+          </div>
+        </article>
+
+        <article class="card feature reveal" id="app-defectchecker" data-app="defectchecker" data-tags="live kr" data-region="kr" style="--accent:#1F8F6E; --d:.06s">
+          <div class="card-top">
+            <img class="card-icon" src="assets/apps/defectchecker.png" alt="" width="88" height="88">
+            <div class="tags"><span class="tag kr">한국 전용</span></div>
+          </div>
+          <div>
+            <h3>셀프사전점검</h3>
+            <p class="tagline">신축 아파트 하자 점검 체크리스트</p>
+          </div>
+          <p class="desc">입주 전 사전점검을 업체 없이 직접. 공간별 체크리스트로 확인하고, 하자는 사진과 위치로 기록해 시공사에 낼 PDF 리포트까지 한 번에 정리해요.</p>
+          <div class="platforms"><span><svg><use href="#i-android"/></svg>Android</span><span><svg><use href="#i-apple"/></svg>iOS</span></div>
+          <div class="actions">
+            <a class="store" href="https://play.google.com/store/apps/details?id=com.hnh.defectchecker" target="_blank" rel="noopener"><svg><use href="#i-play"/></svg>Google Play</a>
+            <span class="store off"><svg><use href="#i-apple"/></svg><small>App Store 곧 출시</small></span>
+            <a class="more" href="defectchecker/index.html">상세 보기 <i aria-hidden="true">→</i></a>
+          </div>
+        </article>
+
+        <article class="card reveal" id="app-breeze" data-app="breeze" data-tags="live kr" data-region="kr" style="--accent:#3FBF97">
+          <div class="card-top">
+            <img class="card-icon" src="assets/apps/breeze.png" alt="" width="76" height="76">
+            <div class="tags"><span class="tag kr">한국 전용</span></div>
+          </div>
+          <div>
+            <h3>Breeze</h3>
+            <p class="tagline">오늘 창문 열까, 말까?</p>
+          </div>
+          <p class="desc">복잡한 대기질 수치 대신 지금 할 행동 하나를 크게 보여주는 환기 가이드. 15분 환기 타이머로 딱 알맞게 환기하세요.</p>
+          <div class="platforms"><span><svg><use href="#i-android"/></svg>Android</span></div>
+          <div class="actions">
+            <a class="store" href="https://play.google.com/store/apps/details?id=com.hnh.breeze" target="_blank" rel="noopener"><svg><use href="#i-play"/></svg>Google Play</a>
+            <a class="more" href="breeze/index.html" data-detail="breeze/index.html"><span data-i18n="more">상세 보기</span> <i aria-hidden="true">→</i></a>
+          </div>
+        </article>
+
+        <article class="card reveal" id="app-bannyeo" data-app="bannyeo" data-tags="soon global" style="--accent:#D7343A; --d:.06s">
+          <div class="card-top">
+            <img class="card-icon" src="assets/apps/bannyeo.png" data-i18n-src="bannyeo.icon" alt="" width="76" height="76">
+            <div class="tags"><span class="tag soon" data-i18n="t.soon">출시 예정</span></div>
+          </div>
+          <div>
+            <h3 data-i18n="bannyeo.name">오늘도 반려</h3>
+            <p class="tagline" data-i18n="bannyeo.tag">AI 꼰대 상사의 결재 도장</p>
+          </div>
+          <p class="desc" data-i18n="bannyeo.desc">미루고 싶은 일의 사유서를 올리면 AI 상사가 도장을 '쾅' 찍어 반려하고 한마디 해요. 결국 해내면 '승인' 도장으로 마무리.</p>
+          <div class="platforms"><span><svg><use href="#i-android"/></svg>Android</span></div>
+          <div class="actions">
+            <span class="store off"><svg><use href="#i-play"/></svg><small>Google Play · <span data-i18n="soonShort">곧 출시</span></small></span>
+            <a class="more" href="bannyeo/index.html?lang=ko" data-detail="bannyeo/index.html?lang={lang3}"><span data-i18n="more">상세 보기</span> <i aria-hidden="true">→</i></a>
+          </div>
+        </article>
+
+        <article class="card reveal" id="app-vinylwave" data-app="vinylwave" data-tags="soon global" style="--accent:#E0552E; --d:.12s">
+          <div class="card-top">
+            <img class="card-icon" src="assets/apps/vinylwave.png" alt="" width="76" height="76">
+            <div class="tags"><span class="tag soon" data-i18n="t.soon">출시 예정</span></div>
+          </div>
+          <div>
+            <h3>Vinyl Wave</h3>
+            <p class="tagline" data-i18n="vinylwave.tag">기기 속 음악을 턴테이블 LP처럼</p>
+          </div>
+          <p class="desc" data-i18n="vinylwave.desc">휴대폰의 음악 파일이 앨범마다 레코드 한 장이 돼요. 톤암을 끌어 바늘을 내리고, 따뜻한 크래클 소리와 함께 들어 보세요.</p>
+          <div class="platforms"><span><svg><use href="#i-android"/></svg>Android</span><span><svg><use href="#i-apple"/></svg>iOS</span></div>
+          <div class="actions">
+            <span class="store off"><svg><use href="#i-play"/></svg><small>Google Play · <span data-i18n="soonShort">곧 출시</span></small></span>
+            <span class="store off"><svg><use href="#i-apple"/></svg><small>App Store · <span data-i18n="soonShort">곧 출시</span></small></span>
+            <a class="more" href="vinylwave/index.html?lang=ko" data-detail="vinylwave/index.html?lang={lang3}"><span data-i18n="more">상세 보기</span> <i aria-hidden="true">→</i></a>
+          </div>
+        </article>
+
+        <article class="card reveal" id="app-chaeum" data-app="chaeum" data-tags="soon global" style="--accent:#8A6F52; --d:.06s">
+          <div class="card-top">
+            <img class="card-icon" src="assets/apps/chaeum.png" alt="" width="76" height="76">
+            <div class="tags"><span class="tag soon" data-i18n="t.soon">출시 예정</span></div>
+          </div>
+          <div>
+            <h3 data-i18n="chaeum.name">채움과 비움</h3>
+            <p class="tagline" data-i18n="chaeum.tag">하루 습관 기록</p>
+          </div>
+          <p class="desc" data-i18n="chaeum.desc">할 일 셋, 줄일 습관 셋만 적는 조용한 습관 기록 앱. 하루를 마무리하면 오늘이 먹빛 한 점으로 남아요.</p>
+          <div class="platforms"><span><svg><use href="#i-android"/></svg>Android</span><span><svg><use href="#i-apple"/></svg>iOS</span></div>
+          <div class="actions">
+            <span class="store off"><svg><use href="#i-play"/></svg><small>Google Play · <span data-i18n="soonShort">곧 출시</span></small></span>
+            <span class="store off"><svg><use href="#i-apple"/></svg><small>App Store · <span data-i18n="soonShort">곧 출시</span></small></span>
+            <a class="more" href="chaeum/index.html?lang=ko" data-detail="chaeum/index.html?lang={lang3}"><span data-i18n="more">상세 보기</span> <i aria-hidden="true">→</i></a>
+          </div>
+        </article>
+
+        <article class="card reveal" id="app-remit" data-app="remit" data-tags="live global" style="--accent:#FF5A6E; --d:.06s">
+          <div class="card-top">
+            <img class="card-icon" src="assets/apps/remit.png" alt="" width="88" height="88">
+            <div class="tags"><span class="tag global" data-i18n="t.global">전 세계</span></div>
+          </div>
+          <div>
+            <h3>Remit</h3>
+            <p class="tagline" data-i18n="remit.tag">하루를 관리하는 타이머</p>
+          </div>
+          <p class="desc" data-i18n="remit.desc">공부, 운동, 일처럼 하는 일마다 타이머를 만들고 쓴 시간을 기록해요. 목표 시간을 정해 두면 달성률로 하루를 돌아볼 수 있어요.</p>
+          <div class="platforms"><span><svg><use href="#i-android"/></svg>Android</span></div>
+          <div class="actions">
+            <a class="store" href="https://play.google.com/store/apps/details?id=com.hnh.timer" target="_blank" rel="noopener"><svg><use href="#i-play"/></svg>Google Play</a>
+            <a class="more" href="remit/index.html?lang=ko" data-detail="remit/index.html?lang={lang3}"><span data-i18n="more">상세 보기</span> <i aria-hidden="true">→</i></a>
+          </div>
+        </article>
+
+        <article class="card reveal" id="app-schoolit" data-app="schoolit" data-tags="live kr" data-region="kr" style="--accent:#2E7CF6; --d:.12s">
+          <div class="card-top">
+            <img class="card-icon" src="assets/apps/schoolit.png" alt="" width="88" height="88">
+            <div class="tags"><span class="tag kr">한국 전용</span></div>
+          </div>
+          <div>
+            <h3>스쿨릿 <small>School it</small></h3>
+            <p class="tagline">시간표, 급식, 학사일정</p>
+          </div>
+          <p class="desc">우리 학교와 학년·반만 등록하면 시간표부터 오늘 급식, 학사일정까지 한눈에 확인할 수 있어요.</p>
+          <div class="platforms"><span><svg><use href="#i-android"/></svg>Android</span></div>
+          <div class="actions">
+            <a class="store" href="https://play.google.com/store/apps/details?id=com.hnh.timetable" target="_blank" rel="noopener"><svg><use href="#i-play"/></svg>Google Play</a>
+            <a class="more" href="schoolit/index.html" data-detail="schoolit/index.html"><span data-i18n="more">상세 보기</span> <i aria-hidden="true">→</i></a>
+          </div>
+        </article>
+
+        <p class="empty" id="empty" hidden data-i18n="empty">조건에 맞는 앱이 없어요.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="wrap">
+      <div class="about-card reveal">
+        <div>
+          <span class="mono" style="opacity:.6">About</span>
+          <h2 data-i18n="about.title">작고 단단한 앱을<br>만드는 팀</h2>
+          <p class="lead" data-i18n="about.lead">HNH Labs는 누구나 한 번쯤 겪는 불편 하나를 골라, 가장 쉬운 해결책이 될 때까지 다듬습니다.</p>
         </div>
-        <div class="step-item">
-            <div class="step-num">4</div>
-            <h4>Report</h4>
-            <p>Convert your logged data into an
+        <div class="principles">
+          <div class="principle"><b class="n">01</b><h3 data-i18n="p1.h">한 가지 문제에 집중</h3><p data-i18n="p1.p">기능을 늘리기보다 핵심 한 가지를 가장 빠르게 끝낼 수 있게 만들어요.</p></div>
+          <div class="principle"><b class="n">02</b><h3 data-i18n="p2.h">가능한 한 기기 안에서</h3><p data-i18n="p2.p">회원가입 없이 바로 쓰고, 기록은 되도록 사용자의 기기에 보관해요.</p></div>
+          <div class="principle"><b class="n">03</b><h3 data-i18n="p3.h">끝까지 다듬기</h3><p data-i18n="p3.p">출시 후에도 사용자의 의견을 듣고 계속 고쳐 나가요.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="wrap reveal">
+      <span class="mono" style="color:var(--muted)">Contact</span>
+      <h2 data-i18n="contact.title">제안이나 문의가 있으신가요?</h2>
+      <p data-i18n="contact.p">앱 사용 문의, 제휴, 피드백 모두 환영해요.</p>
+      <a class="cta" href="mailto:black924.menew@gmail.com">black924.menew@gmail.com</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 64 64"><path d="M14 12v40M30 12v40M14 32h16M50 12v40M34 12v40M34 32h16" stroke="currentColor" stroke-width="7" stroke-linecap="round" fill="none"/></svg></span>HNH Labs</a>
+      <p style="margin:14px 0 0">© 2026 HNH Labs. All rights reserved.</p>
+    </div>
+    <div>
+      <h4 data-i18n="privacy">개인정보 처리방침</h4>
+      <ul class="policy-list">
+        <li><a href="privacy_policy.html"><span data-i18n="noiselog.name">층소일지</span> (Android)</a></li>
+        <li><a href="privacy_policy_ios.html"><span data-i18n="noiselog.name">층소일지</span> (iOS)</a></li>
+        <li data-region="kr"><a href="defect_checker_privacy_policy.html">셀프사전점검</a></li>
+        <li data-region="kr"><a href="breeze-privacy-policy.html">Breeze</a></li>
+        <li><a href="vinylwave/privacy.html">Vinyl Wave</a></li>
+        <li><a href="chaeum/privacy.html"><span data-i18n="chaeum.name">채움과 비움</span></a></li>
+        <li><a href="remit_privacy_policy.html">Remit</a></li>
+        <li data-region="kr"><a href="today_school_privacy_policy.html">스쿨릿</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var I18N = {
+    ko: {
+      title: 'HNH Labs',
+      desc: 'HNH Labs는 일상의 작은 불편을 덜어주는 모바일 앱을 만듭니다.',
+      navLabel: '주요 메뉴', langLabel: '언어', themeLabel: '화면 테마 바꾸기', filterLabel: '앱 필터',
+      'nav.apps': '앱', 'nav.about': '소개', 'nav.contact': '문의',
+      'hero.l1': '일상의 작은 불편,', 'hero.l2': '<span class="soft">앱 하나로</span> 덜어냅니다.',
+      'hero.p': '층간소음 기록부터 아파트 사전점검, 환기 타이밍, 음악 감상, 학교생활까지. 하나의 문제를 끝까지 파고드는 앱을 만들어요.',
+      'hero.cta': '앱 둘러보기', 'hero.cta2': '문의하기',
+      'apps.title': 'HNH Labs가 만든 앱',
+      'f.all': '전체', 'f.live': '출시됨', 'f.soon': '출시 예정', 'f.kr': '한국 전용', 'f.global': '전 세계',
+      't.global': '전 세계', 't.soon': '출시 예정', soonShort: '곧 출시', more: '상세 보기', empty: '조건에 맞는 앱이 없어요.',
+      'noiselog.name': '층소일지', 'noiselog.tag': '자동 층간소음 측정 기록기',
+      'noiselog.desc': "'쿵' 하는 큰 소리가 날 때만 자동으로 녹음하고, 시간·소음 크기·소리 종류별로 정리해요. 쌓인 기록은 통계와 리포트로 만들어 증거 자료로 쓸 수 있어요.",
+      'bannyeo.name': '오늘도 반려', 'bannyeo.tag': 'AI 꼰대 상사의 결재 도장', 'bannyeo.icon': 'assets/apps/bannyeo.png',
+      'bannyeo.desc': "미루고 싶은 일의 사유서를 올리면 AI 상사가 도장을 '쾅' 찍어 반려하고 한마디 해요. 결국 해내면 '승인' 도장으로 마무리.",
+      'vinylwave.tag': '기기 속 음악을 턴테이블 LP처럼',
+      'vinylwave.desc': '휴대폰의 음악 파일이 앨범마다 레코드 한 장이 돼요. 톤암을 끌어 바늘을 내리고, 따뜻한 크래클 소리와 함께 들어 보세요.',
+      'chaeum.name': '채움과 비움', 'chaeum.tag': '하루 습관 기록',
+      'chaeum.desc': '할 일 셋, 줄일 습관 셋만 적는 조용한 습관 기록 앱. 하루를 마무리하면 오늘이 먹빛 한 점으로 남아요.',
+      'remit.tag': '하루를 관리하는 타이머',
+      'remit.desc': '공부, 운동, 일처럼 하는 일마다 타이머를 만들고 쓴 시간을 기록해요. 목표 시간을 정해 두면 달성률로 하루를 돌아볼 수 있어요.',
+      'about.title': '작고 단단한 앱을<br>만드는 팀',
+      'about.lead': 'HNH Labs는 누구나 한 번쯤 겪는 불편 하나를 골라, 가장 쉬운 해결책이 될 때까지 다듬습니다.',
+      'p1.h': '한 가지 문제에 집중', 'p1.p': '기능을 늘리기보다 핵심 한 가지를 가장 빠르게 끝낼 수 있게 만들어요.',
+      'p2.h': '가능한 한 기기 안에서', 'p2.p': '회원가입 없이 바로 쓰고, 기록은 되도록 사용자의 기기에 보관해요.',
+      'p3.h': '끝까지 다듬기', 'p3.p': '출시 후에도 사용자의 의견을 듣고 계속 고쳐 나가요.',
+      'contact.title': '제안이나 문의가 있으신가요?', 'contact.p': '앱 사용 문의, 제휴, 피드백 모두 환영해요.',
+      privacy: '개인정보 처리방침', storeCountry: 'kr'
+    },
+    en: {
+      title: 'HNH Labs — Mobile App Studio',
+      desc: 'HNH Labs builds mobile apps that take the friction out of everyday life.',
+      navLabel: 'Main menu', langLabel: 'Language', themeLabel: 'Toggle color theme', filterLabel: 'Filter apps',
+      'nav.apps': 'Apps', 'nav.about': 'About', 'nav.contact': 'Contact',
+      'hero.l1': 'Everyday hassles,', 'hero.l2': '<span class="soft">solved by</span> one app.',
+      'hero.p': 'From logging floor noise to tracking your day and playing music like vinyl, we build apps that go all the way on a single problem.',
+      'hero.cta': 'Explore apps', 'hero.cta2': 'Contact us',
+      'apps.title': 'Apps by HNH Labs',
+      'f.all': 'All', 'f.live': 'Available', 'f.soon': 'Coming soon', 'f.kr': 'Korea only', 'f.global': 'Worldwide',
+      't.global': 'Worldwide', 't.soon': 'Coming soon', soonShort: 'Coming soon', more: 'Learn more', empty: 'No apps match this filter.',
+      'noiselog.name': 'Floor Noise Log', 'noiselog.tag': 'Automatic floor noise recorder',
+      'noiselog.desc': 'Records only when a loud thud happens, then sorts every event by time, level and sound type. Turn your log into statistics and reports you can use as evidence.',
+      'bannyeo.name': 'Denied Again', 'bannyeo.tag': 'Your AI boss’s rejection stamp', 'bannyeo.icon': 'assets/apps/bannyeo-en.png',
+      'bannyeo.desc': 'Submit an excuse for whatever you want to put off, and an AI boss slams a “Denied” stamp on it with a sharp remark. Actually get it done and you earn the “Approved” stamp.',
+      'vinylwave.tag': 'The music on your phone, played like an LP',
+      'vinylwave.desc': 'Every album on your phone becomes a record. Drag the tonearm, drop the needle and listen with a warm crackle.',
+      'chaeum.name': 'Fill & Release', 'chaeum.tag': 'A calm, ink-washed habit log',
+      'chaeum.desc': 'Write just three things to do and three habits to let go. Close the day and it folds into a single dot of ink.',
+      'remit.tag': 'A timer that manages your day',
+      'remit.desc': 'Create a timer for each activity — study, workout, work — and log the time you spend. Set a goal and look back on your day by completion rate.',
+      'about.title': 'A small team building<br>small, solid apps',
+      'about.lead': 'HNH Labs picks one hassle almost everyone runs into and refines the fix until it is the easiest one there is.',
+      'p1.h': 'Focus on one problem', 'p1.p': 'Instead of piling on features, we make the one thing that matters as fast as possible.',
+      'p2.h': 'On your device first', 'p2.p': 'Start without signing up, and keep your records on your own device wherever we can.',
+      'p3.h': 'Keep refining', 'p3.p': 'After launch, we listen to feedback and keep improving.',
+      'contact.title': 'Have an idea or a question?', 'contact.p': 'Support questions, partnerships and feedback are all welcome.',
+      privacy: 'Privacy Policy', storeCountry: 'us'
+    },
+    ja: {
+      title: 'HNH Labs — モバイルアプリスタジオ',
+      desc: 'HNH Labsは、日常の小さな不便を軽くするモバイルアプリを作っています。',
+      navLabel: 'メインメニュー', langLabel: '言語', themeLabel: '表示テーマを切り替え', filterLabel: 'アプリの絞り込み',
+      'nav.apps': 'アプリ', 'nav.about': '紹介', 'nav.contact': 'お問い合わせ',
+      'hero.l1': '日常の小さな不便を、', 'hero.l2': '<span class="soft">アプリひとつで</span>軽く。',
+      'hero.p': '床の騒音の記録から、一日の時間管理、レコードのような音楽体験まで。ひとつの課題をとことん突き詰めるアプリを作っています。',
+      'hero.cta': 'アプリを見る', 'hero.cta2': 'お問い合わせ',
+      'apps.title': 'HNH Labsのアプリ',
+      'f.all': 'すべて', 'f.live': '配信中', 'f.soon': '近日公開', 'f.kr': '韓国のみ', 'f.global': '全世界',
+      't.global': '全世界', 't.soon': '近日公開', soonShort: '近日公開', more: '詳しく見る', empty: '条件に合うアプリがありません。',
+      'noiselog.name': '騒音日記', 'noiselog.tag': '床の騒音を自動で測定・記録',
+      'noiselog.desc': '「ドン」という大きな音がした時だけ自動で録音し、時間・音の大きさ・音の種類ごとに整理します。記録は統計やレポートにして、証拠として使えます。',
+      'bannyeo.name': '今日も却下', 'bannyeo.tag': 'AI上司の決裁ハンコ', 'bannyeo.icon': 'assets/apps/bannyeo-ja.png',
+      'bannyeo.desc': '先延ばししたいことの理由書を出すと、AI上司が「却下」のハンコをドンと押してひと言。やり遂げたら、最後は「承認」のハンコで締めくくり。',
+      'vinylwave.tag': '端末の音楽をLPのように',
+      'vinylwave.desc': '端末の音楽ファイルが、アルバムごとに一枚のレコードに。トーンアームを動かして針を落とし、あたたかいクラックルと一緒に聴けます。',
+      'chaeum.name': '満たすと手放す', 'chaeum.tag': '毎日の習慣記録',
+      'chaeum.desc': 'やること3つと減らす習慣3つだけを書く、静かな習慣記録アプリ。一日をしめくくると、今日が墨色のひと粒に。',
+      'remit.tag': '一日を管理するタイマー',
+      'remit.desc': '勉強、運動、仕事など、やることごとにタイマーを作って使った時間を記録。目標時間を決めれば、達成率で一日を振り返れます。',
+      'about.title': '小さくて頼れる<br>アプリをつくる<br>チーム',
+      'about.lead': 'HNH Labsは、誰もが一度は感じる不便をひとつ選び、いちばん簡単な解決策になるまで磨き上げます。',
+      'p1.h': 'ひとつの課題に集中', 'p1.p': '機能を増やすより、大切なひとつをいちばん速く済ませられるように作ります。',
+      'p2.h': 'できるだけ端末の中で', 'p2.p': '会員登録なしですぐ使え、記録はできるだけユーザーの端末に保存します。',
+      'p3.h': '最後まで磨く', 'p3.p': 'リリース後もユーザーの声を聞き、改善を続けます。',
+      'contact.title': 'ご提案やご質問はありますか？', 'contact.p': 'アプリのお問い合わせ、提携、フィードバック、どれも歓迎です。',
+      privacy: 'プライバシーポリシー', storeCountry: 'jp'
+    },
+    de: {
+      title: 'HNH Labs — Mobile App Studio',
+      desc: 'HNH Labs entwickelt Apps, die kleine Ärgernisse im Alltag lösen.',
+      navLabel: 'Hauptmenü', langLabel: 'Sprache', themeLabel: 'Farbschema wechseln', filterLabel: 'Apps filtern',
+      'nav.apps': 'Apps', 'nav.about': 'Über uns', 'nav.contact': 'Kontakt',
+      'hero.l1': 'Kleine Alltagsärgernisse,', 'hero.l2': '<span class="soft">gelöst mit</span> einer App.',
+      'hero.p': 'Vom Protokollieren von Trittschall über Zeiterfassung bis zu Musik wie von Vinyl – wir bauen Apps, die ein Problem von Grund auf lösen.',
+      'hero.cta': 'Apps entdecken', 'hero.cta2': 'Kontakt',
+      'apps.title': 'Apps von HNH Labs',
+      'f.all': 'Alle', 'f.live': 'Verfügbar', 'f.soon': 'Demnächst', 'f.kr': 'Nur Korea', 'f.global': 'Weltweit',
+      't.global': 'Weltweit', 't.soon': 'Demnächst', soonShort: 'Demnächst', more: 'Mehr erfahren', empty: 'Keine Apps für diesen Filter.',
+      'noiselog.name': 'Lärmprotokoll', 'noiselog.tag': 'Trittschall automatisch messen und protokollieren',
+      'noiselog.desc': 'Nimmt nur auf, wenn es laut poltert, und ordnet jedes Ereignis nach Uhrzeit, Pegel und Geräuschart. Aus dem Protokoll werden Statistiken und Berichte, die du als Nachweis nutzen kannst.',
+      'bannyeo.name': 'Denied Again', 'bannyeo.tag': 'Der Ablehnungsstempel deines KI-Chefs', 'bannyeo.icon': 'assets/apps/bannyeo-en.png',
+      'bannyeo.desc': 'Reich eine Ausrede für das ein, was du aufschieben willst – dein KI-Chef knallt den Stempel „Abgelehnt“ drauf und gibt dir einen Spruch mit. Ziehst du es durch, gibt es am Ende den Stempel „Genehmigt“.',
+      'vinylwave.tag': 'Deine Handy-Musik wie eine LP',
+      'vinylwave.desc': 'Jedes Album auf deinem Handy wird zur Schallplatte. Zieh den Tonarm, setz die Nadel auf und hör mit warmem Knistern.',
+      'chaeum.name': 'Fill & Release', 'chaeum.tag': 'Ein ruhiges Gewohnheitstagebuch',
+      'chaeum.desc': 'Schreib nur drei Dinge auf, die du tun willst, und drei Gewohnheiten, die du loslassen willst. Am Abend wird der Tag zu einem Tuschepunkt.',
+      'remit.tag': 'Ein Timer, der deinen Tag organisiert',
+      'remit.desc': 'Leg für jede Tätigkeit – Lernen, Sport, Arbeit – einen Timer an und erfasse deine Zeit. Mit einem Ziel siehst du am Erfüllungsgrad, wie dein Tag lief.',
+      'about.title': 'Ein kleines Team<br>für solide Apps',
+      'about.lead': 'HNH Labs sucht sich ein Ärgernis aus, das fast jeder kennt, und feilt so lange an der Lösung, bis sie die einfachste ist.',
+      'p1.h': 'Fokus auf ein Problem', 'p1.p': 'Statt Funktionen anzuhäufen, machen wir das Wichtigste so schnell wie möglich erledigt.',
+      'p2.h': 'Zuerst auf deinem Gerät', 'p2.p': 'Ohne Registrierung loslegen – deine Daten bleiben, wo immer möglich, auf deinem Gerät.',
+      'p3.h': 'Immer weiter verbessern', 'p3.p': 'Auch nach dem Launch hören wir auf Feedback und verbessern weiter.',
+      'contact.title': 'Eine Idee oder eine Frage?', 'contact.p': 'Supportanfragen, Kooperationen und Feedback sind willkommen.',
+      privacy: 'Datenschutzerklärung', storeCountry: 'de'
+    }
+  };
+
+  // 궤도·띠에 쓰는 앱 순서. 바깥 고리를 먼저 채운다.
+  var APPS = {
+    noiselog: 'assets/apps/noiselog.png', vinylwave: 'assets/apps/vinylwave.png', bannyeo: 'assets/apps/bannyeo.png',
+    schoolit: 'assets/apps/schoolit.png', defectchecker: 'assets/apps/defectchecker.png', breeze: 'assets/apps/breeze.png', remit: 'assets/apps/remit.png',
+    chaeum: 'assets/apps/chaeum.png'
+  };
+  var ORBIT_ORDER = ['noiselog', 'vinylwave', 'bannyeo', 'schoolit', 'chaeum', 'defectchecker', 'breeze', 'remit'];
+  var MARQUEE_ORDER = ['noiselog', 'defectchecker', 'breeze', 'bannyeo', 'vinylwave', 'chaeum', 'remit', 'schoolit'];
+  var KR_ONLY = { defectchecker: 1, breeze: 1, schoolit: 1 };
+  var NAMES_FIXED = { defectchecker: '셀프사전점검', breeze: 'Breeze', vinylwave: 'Vinyl Wave', remit: 'Remit', schoolit: '스쿨릿' };
+
+  var root = document.documentElement;
+  var cards = [].slice.call(document.querySelectorAll('#grid .card'));
+  var filterBtns = [].slice.call(document.querySelectorAll('.filters button'));
+  var lang = 'ko', filter = 'all';
+
+  function nameOf(id, D) { return D[id + '.name'] || NAMES_FIXED[id]; }
+  function isHiddenRegion(id) { return lang !== 'ko' && KR_ONLY[id]; }
+
+  function el(tag, attrs, html) { var e = document.createElement(tag); for (var k in attrs) e.setAttribute(k, attrs[k]); if (html != null) e.innerHTML = html; return e; }
+
+  function buildOrbit(D) {
+    var ids = ORBIT_ORDER.filter(function (id) { return !isHiddenRegion(id); });
+    // 앱이 적으면 두 고리에 나눠 담아 한쪽이 비지 않게 한다.
+    var cut = ids.length <= 4 ? Math.ceil(ids.length / 2) : Math.ceil(ids.length * 0.6);
+    var outer = ids.slice(0, cut), inner = ids.slice(cut);
+    var r1 = document.getElementById('ring1'), r2 = document.getElementById('ring2');
+    r1.textContent = ''; r2.textContent = '';
+    function put(ring, list, offset) {
+      list.forEach(function (id, i) {
+        var a = offset + 360 / list.length * i;
+        var item = el('div', { 'class': 'o-item', style: '--a:' + a + 'deg' });
+        var link = el('a', { href: '#app-' + id, 'aria-label': nameOf(id, D) });
+        link.appendChild(el('img', { src: id === 'bannyeo' ? D['bannyeo.icon'] : APPS[id], alt: '', width: 128, height: 128 }));
+        item.appendChild(link); ring.appendChild(item);
+      });
+    }
+    put(r1, outer, 45); put(r2, inner, 0);
+  }
+
+  function buildMarquee(D) {
+    var ids = MARQUEE_ORDER.filter(function (id) { return !isHiddenRegion(id); });
+    var html = '';
+    // 앱 수가 적어도 띠가 화면을 꽉 채우도록 반복한다.
+    var reps = ids.length < 7 ? 2 : 1;
+    for (var r = 0; r < reps; r++) ids.forEach(function (id) {
+      var src = id === 'bannyeo' ? D['bannyeo.icon'] : APPS[id];
+      html += '<img src="' + src + '" alt="">' + nameOf(id, D) + '<em>/</em>';
+    });
+    var track = document.getElementById('marquee');
+    track.innerHTML = '<span>' + html + '</span><span>' + html + '</span>';
+  }
+
+  function applyFilter() {
+    var shown = [];
+    cards.forEach(function (c) {
+      var tags = c.dataset.tags.split(' ');
+      var on = !isHiddenRegion(c.dataset.app) && (filter === 'all' || tags.indexOf(filter) > -1);
+      c.hidden = !on; if (on) { shown.push(c); c.classList.add('in'); }
+    });
+    // 보이는 카드 수에 맞춰 넓은 카드(한 줄에 2개)와 좁은 카드(한 줄에 3개)를 섞는다.
+    var n = shown.length;
+    shown.forEach(function (c, i) {
+      var wide;
+      if (lang === 'ko' && filter === 'all') wide = c.dataset.feature === '1';
+      else if (n % 3 === 0) wide = false;
+      else if (n % 3 === 1) wide = n === 1 || n === 4 ? true : i < 2 || i >= n - 2;
+      else wide = i < 2;
+      c.classList.toggle('feature', wide);
+    });
+    document.getElementById('empty').hidden = n > 0;
+  }
+
+  function updateFilterButtons() {
+    filterBtns.forEach(function (b) {
+      var f = b.dataset.filter;
+      // 한국어가 아니면 한국 전용 앱이 없으므로 '한국 전용'과 '전 세계'(= 전체) 필터를 숨긴다.
+      b.hidden = lang !== 'ko' && (f === 'kr' || f === 'global');
+      var count = cards.filter(function (c) { return !isHiddenRegion(c.dataset.app) && (f === 'all' || c.dataset.tags.split(' ').indexOf(f) > -1); }).length;
+      b.querySelector('span').textContent = count;
+    });
+    var cur = filterBtns.filter(function (b) { return b.dataset.filter === filter; })[0];
+    if (!cur || cur.hidden) filter = 'all';
+    filterBtns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.filter === filter ? 'true' : 'false'); });
+  }
+
+  function setLang(l, save) {
+    if (!I18N[l]) l = 'en';
+    lang = l; var D = I18N[l];
+    root.lang = l;
+    document.title = D.title;
+    document.querySelector('meta[name="description"]').content = D.desc;
+    document.querySelectorAll('[data-i18n]').forEach(function (e) { var v = D[e.dataset.i18n]; if (v != null) e.innerHTML = v; });
+    document.querySelectorAll('[data-i18n-aria]').forEach(function (e) { var v = D[e.dataset.i18nAria]; if (v != null) e.setAttribute('aria-label', v); });
+    document.querySelectorAll('[data-i18n-src]').forEach(function (e) { var v = D[e.dataset.i18nSrc]; if (v) e.src = v; });
+    document.querySelectorAll('[data-detail]').forEach(function (a) { a.href = a.dataset.detail.replace('{lang}', l).replace('{lang3}', l === 'de' ? 'en' : l); });
+    document.querySelectorAll('[data-appstore-base]').forEach(function (a) { a.href = a.dataset.appstoreBase.replace('{cc}', D.storeCountry); });
+    cards.forEach(function (c) { var img = c.querySelector('.card-icon'); img.alt = nameOf(c.dataset.app, D); });
+    document.querySelectorAll('.policy-list li[data-region="kr"]').forEach(function (li) { li.hidden = l !== 'ko'; });
+    document.getElementById('langSelect').value = l;
+    buildOrbit(D); buildMarquee(D);
+    updateFilterButtons(); applyFilter();
+    if (save) {
+      try { localStorage.setItem('hnh-lang', l); } catch (e) {}
+      try { var u = new URL(location.href); u.searchParams.set('lang', l); history.replaceState(null, '', u); } catch (e) {}
+    }
+  }
+
+  cards.forEach(function (c) { if (c.classList.contains('feature')) c.dataset.feature = '1'; });
+
+  filterBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      filter = b.dataset.filter;
+      filterBtns.forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      applyFilter();
+    });
+  });
+  document.getElementById('langSelect').addEventListener('change', function (e) { setLang(e.target.value, true); });
+
+  // 처음 언어: 주소의 ?lang → 지난 선택 → 브라우저 언어 → 영어
+  var initial = 'en';
+  try {
+    var q = new URLSearchParams(location.search).get('lang');
+    var saved = localStorage.getItem('hnh-lang');
+    var nav = (navigator.languages && navigator.languages[0] || navigator.language || '').slice(0, 2).toLowerCase();
+    if (q && I18N[q]) initial = q; else if (saved && I18N[saved]) initial = saved; else if (I18N[nav]) initial = nav;
+  } catch (e) {}
+  setLang(initial, false);
+
+  // 스크롤하면 상단 바 뒤를 흐리게
+  var navBar = document.getElementById('nav');
+  function onScroll() { navBar.classList.toggle('scrolled', scrollY > 8); }
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // 테마 전환
+  document.getElementById('themeBtn').addEventListener('click', function () {
+    var sysDark = matchMedia('(prefers-color-scheme: dark)').matches;
+    var cur = root.dataset.theme || (sysDark ? 'dark' : 'light');
+    var next = cur === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try { localStorage.setItem('hnh-theme', next); } catch (e) {}
+  });
+
+  // 카드 위 마우스 빛
+  cards.forEach(function (c) {
+    c.addEventListener('pointermove', function (e) {
+      var r = c.getBoundingClientRect();
+      c.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      c.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
+
+  // 스크롤하면 나타나기
+  var items = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) { items.forEach(function (x) { x.classList.add('in'); }); return; }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { rootMargin: '0px 0px -6% 0px' });
+  items.forEach(function (x) { io.observe(x); });
+})();
+</script>
+</body>
+</html>

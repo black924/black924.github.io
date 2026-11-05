@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="ko" data-l="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>채움과 비움 - 하루 습관 기록</title>
+<meta name="description" content="할 일 셋, 줄일 습관 셋. 하루를 먹빛 한 점으로 남기는 조용한 습관 기록 앱.">
+<meta name="theme-color" content="#26201A">
+<meta property="og:type" content="website">
+<meta property="og:title" content="채움과 비움 - 하루 습관 기록">
+<meta property="og:description" content="할 일 셋, 줄일 습관 셋. 하루를 먹빛 한 점으로 남기는 조용한 습관 기록 앱.">
+<meta property="og:image" content="https://black924.github.io/assets/apps/chaeum.png">
+<link rel="icon" href="../assets/apps/chaeum.png">
+<link rel="apple-touch-icon" href="../assets/apps/chaeum.png">
+<script>
+(function () {
+  var LANGS = ["ko", "en", "ja"], l = 'ko';
+  try {
+    var q = new URLSearchParams(location.search).get('lang');
+    var saved = localStorage.getItem('hnh-lang');
+    var nav = (navigator.languages && navigator.languages[0] || navigator.language || '').slice(0, 2).toLowerCase();
+    if (q && LANGS.indexOf(q) > -1) l = q;
+    else if (q === 'de' && LANGS.indexOf('en') > -1) l = 'en';
+    else if (saved && LANGS.indexOf(saved) > -1) l = saved;
+    else if (LANGS.indexOf(nav) > -1) l = nav;
+    else if (LANGS.length > 1) l = 'en';
+  } catch (e) {}
+  var r = document.documentElement; r.dataset.l = l; r.lang = l; r.classList.add('js');
+})();
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;800&family=Noto+Serif+KR:wght@500;700&family=Noto+Serif+JP:wght@500;700&display=swap">
+<style>
+:root {
+  --accent: #5B4C3B; --deep: #26201A; --soft: #ECE4D6; --paper: #F5F1E9; --glow: #C9B48F;
+  --surface: #fff; --ink: #121318; --ink2: #4B4F58; --muted: #6E727B; --line: rgba(18,19,24,.09);
+  --sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", system-ui, sans-serif;
+  --display: "Noto Serif KR", "Noto Serif JP", serif;
+  --gut: max(20px, env(safe-area-inset-left, 0px));
+  --ratio: 1080 / 2424;
+  color-scheme: light;
+}
+:root:lang(ja) { --sans: "Noto Sans JP", "Hiragino Sans", "Pretendard Variable", system-ui, sans-serif; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 17px; line-height: 1.65; word-break: keep-all; overflow-wrap: anywhere; overflow-x: clip; -webkit-font-smoothing: antialiased; }
+:lang(ja) body, body:lang(ja), .L:lang(ja) { word-break: normal; line-break: strict; }
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+.L { display: none; }
+html[data-l="ko"] .L[lang="ko"], html[data-l="en"] .L[lang="en"], html[data-l="ja"] .L[lang="ja"] { display: block; }
+.wrap { max-width: 1160px; margin: 0 auto; padding: 0 var(--gut); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+h1, h2, h3 { margin: 0; font-family: var(--display); letter-spacing: -0.035em; line-height: 1.18; }
+:lang(ja) h1, :lang(ja) h2, :lang(ja) h3 { letter-spacing: -0.01em; }
+.kicker { font-size: 14px; font-weight: 800; color: var(--accent); letter-spacing: .02em; }
+
+/* 상단 바 */
+.nav { position: fixed; inset: 0 0 auto; z-index: 30; padding-top: env(safe-area-inset-top, 0px); border-bottom: 1px solid transparent; transition: background-color .25s, border-color .25s; }
+.nav.scrolled { background: color-mix(in srgb, var(--paper) 80%, transparent); backdrop-filter: saturate(1.6) blur(16px); -webkit-backdrop-filter: saturate(1.6) blur(16px); border-bottom-color: var(--line); }
+.nav .wrap { display: flex; align-items: center; gap: 12px; height: 64px; }
+.back { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 700; font-size: 15px; color: var(--ink2); padding: 8px 12px 8px 4px; border-radius: 12px; white-space: nowrap; }
+.back:hover { color: var(--ink); }
+.app-id { display: flex; align-items: center; gap: 10px; text-decoration: none; opacity: 0; transform: translateY(6px); transition: opacity .25s, transform .25s; min-width: 0; }
+.app-id img { width: 30px; height: 30px; border-radius: 8px; }
+.app-id b { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nav.scrolled .app-id { opacity: 1; transform: none; }
+.nav-r { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.lang { position: relative; display: flex; align-items: center; }
+.lang svg { position: absolute; left: 10px; width: 16px; height: 16px; pointer-events: none; color: var(--ink2); }
+.lang select { appearance: none; -webkit-appearance: none; font: inherit; font-size: 14px; font-weight: 700; color: var(--ink); background: color-mix(in srgb, var(--surface) 70%, transparent); border: 1px solid var(--line); height: 38px; padding: 0 12px 0 32px; border-radius: 999px; cursor: pointer; }
+.nav-cta { display: inline-flex; align-items: center; height: 38px; padding: 0 16px; border-radius: 999px; background: var(--deep); color: #fff; text-decoration: none; font-weight: 700; font-size: 14px; white-space: nowrap; }
+@media (max-width: 560px) { .back-t { display: none; } .nav-cta { display: none; } }
+
+/* 히어로 */
+.hero { position: relative; padding: 112px 0 72px; overflow: hidden; }
+.hero::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(50% 60% at 80% 40%, color-mix(in srgb, var(--glow) 26%, transparent), transparent 70%),
+              radial-gradient(40% 50% at 10% 0%, color-mix(in srgb, var(--soft) 90%, transparent), transparent 70%); }
+.hero .wrap { position: relative; display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center; }
+.hero-id { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+.hero-id img { width: 64px; height: 64px; border-radius: 24%; box-shadow: 0 12px 28px -12px color-mix(in srgb, var(--accent) 70%, transparent), 0 0 0 1px rgba(0,0,0,.06); }
+.hero-id b { display: block; font-size: 20px; font-weight: 800; letter-spacing: -0.02em; }
+.hero-id span { font-size: 14px; color: var(--muted); font-weight: 600; }
+.pill { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, var(--surface)); padding: 6px 12px; border-radius: 999px; }
+.pill i { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+.hero h1 { font-size: clamp(36px, 5.2vw, 66px); font-weight: 800; margin: 18px 0 20px; }
+:lang(ja) .hero h1 { font-size: clamp(30px, 4.4vw, 56px); line-height: 1.25; }
+.hero h1, :lang(ja) .hero h1 { font-size: clamp(30px, 3.7vw, 48px); line-height: 1.3; }
+.lead { font-size: clamp(16px, 1.7vw, 19px); color: var(--ink2); margin: 0 0 30px; max-width: 32em; }
+.stores { display: flex; flex-wrap: wrap; gap: 10px; }
+.store { display: inline-flex; align-items: center; gap: 10px; min-height: 56px; padding: 0 20px 0 16px; border-radius: 16px; background: var(--deep); color: #fff; text-decoration: none; transition: transform .15s; }
+.store:hover { transform: translateY(-2px); }
+.store svg { width: 22px; height: 22px; flex: none; }
+.store span { display: flex; flex-direction: column; line-height: 1.15; }
+.store small { font-size: 11px; opacity: .75; font-weight: 500; }
+.store b { font-size: 17px; }
+.store.off { background: transparent; color: var(--muted); border: 1.5px dashed color-mix(in srgb, var(--ink) 22%, transparent); cursor: default; }
+.store.off:hover { transform: none; }
+.hero-art { position: relative; height: clamp(440px, 50vw, 600px); }
+.hero-art .shot { position: absolute; width: clamp(190px, 21vw, 260px); }
+.hero-art .h1 { left: 6%; top: 2%; transform: rotate(-5deg); z-index: 2; }
+.hero-art .h2 { right: 4%; top: 12%; transform: rotate(5deg); }
+@media (max-width: 900px) {
+  .hero .wrap { grid-template-columns: 1fr; gap: 28px; }
+  .hero-art { height: auto; aspect-ratio: 1 / 1.1; max-width: 480px; width: 100%; margin: 0 auto; }
+  .hero-art .shot { width: 50%; }
+}
+
+/* 스크린샷 */
+.shot img { width: 100%; aspect-ratio: var(--ratio); object-fit: cover; background: var(--soft); }
+.shot.card img { border-radius: 22px; box-shadow: 0 30px 60px -24px color-mix(in srgb, var(--deep) 55%, transparent), 0 0 0 1px rgba(0,0,0,.05); }
+.shot.frame { padding: 1.4%; border-radius: 12.5% / 5.6%; background: #1C1D21; box-shadow: 0 0 0 1px rgba(0,0,0,.06), 0 30px 60px -24px color-mix(in srgb, var(--deep) 55%, transparent); }
+.shot.frame img { border-radius: 11.4% / 5.1%; }
+
+/* 기능 */
+.features { padding: clamp(56px, 8vw, 96px) 0; }
+.sec-head { margin-bottom: 8px; }
+.feature { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 96px); align-items: center; padding: clamp(36px, 5vw, 64px) 0; }
+.feature:nth-of-type(even) .f-art { order: 2; }
+.f-art { position: relative; display: grid; place-items: center; padding: 40px 0; }
+.f-art::before { content: ""; position: absolute; inset: 0 8%; border-radius: 40px; background: var(--soft); }
+.f-art .shot { position: relative; width: min(300px, 68%); }
+.f-copy h3 { font-size: clamp(28px, 3.6vw, 42px); font-weight: 800; margin: 12px 0 16px; }
+.f-copy p { color: var(--ink2); margin: 0 0 20px; }
+.ticks { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.ticks li { display: flex; gap: 12px; align-items: flex-start; }
+.ticks svg { flex: none; width: 22px; height: 22px; padding: 4px; margin-top: 2px; border-radius: 50%; background: var(--soft); color: var(--accent); }
+@media (max-width: 820px) {
+  .feature { grid-template-columns: 1fr; }
+  .feature:nth-of-type(even) .f-art { order: 0; }
+  .f-art .shot { width: min(260px, 62%); }
+}
+
+/* 포인트 */
+.points-sec { background: var(--deep); color: #fff; padding: clamp(64px, 9vw, 110px) 0; border-radius: clamp(28px, 4vw, 48px); margin: 0 clamp(0px, 1.5vw, 20px); }
+.points-sec h2 { font-size: clamp(30px, 4.4vw, 48px); font-weight: 800; margin-bottom: 36px; }
+.points { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.point { border: 1px solid rgba(255,255,255,.14); border-radius: 22px; padding: 24px; background: rgba(255,255,255,.04); }
+.point b { display: block; font-size: 18px; margin-bottom: 8px; color: var(--glow); }
+.point p { margin: 0; color: rgba(255,255,255,.72); font-size: 15px; }
+@media (max-width: 960px) { .points { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 520px) { .points { grid-template-columns: 1fr; } }
+
+/* 화면 둘러보기 */
+.gallery { padding: clamp(72px, 10vw, 120px) 0 clamp(40px, 6vw, 72px); }
+.g-head { display: flex; justify-content: space-between; align-items: end; gap: 16px; }
+.g-head h2 { font-size: clamp(30px, 4.4vw, 48px); font-weight: 800; }
+.g-btns { display: flex; gap: 8px; }
+.g-btns button { width: 46px; height: 46px; border-radius: 50%; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); font-size: 18px; cursor: pointer; }
+.shots-note { max-width: 1160px; margin: 10px auto 0; padding: 0 var(--gut); color: var(--muted); font-size: 14px; }
+.rail { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 36px var(--gut) 20px; scroll-padding: 0 var(--gut); scrollbar-width: none; }
+.rail::-webkit-scrollbar { display: none; }
+@media (min-width: 1200px) { .rail { padding-left: calc((100vw - 1160px) / 2 + var(--gut)); scroll-padding-left: calc((100vw - 1160px) / 2 + var(--gut)); } }
+.rail figure { flex: none; width: clamp(190px, 21vw, 240px); margin: 0; scroll-snap-align: start; }
+.rail figcaption { margin-top: 14px; text-align: center; font-weight: 700; font-size: 15px; }
+
+/* 마지막 */
+.final { padding: 0 0 clamp(48px, 6vw, 72px); }
+.final-card { position: relative; overflow: hidden; text-align: center; background: var(--surface); border: 1px solid var(--line); border-radius: clamp(28px, 4vw, 44px); padding: clamp(48px, 7vw, 88px) 24px; }
+.final-card::before { content: ""; position: absolute; inset: 0; background: radial-gradient(60% 80% at 50% 0%, color-mix(in srgb, var(--glow) 22%, transparent), transparent 70%); pointer-events: none; }
+.final-icon { position: relative; width: 96px; height: 96px; border-radius: 24%; margin: 0 auto 22px; box-shadow: 0 16px 36px -14px color-mix(in srgb, var(--accent) 70%, transparent); }
+.final-card h2 { position: relative; font-size: clamp(28px, 4vw, 44px); font-weight: 800; margin-bottom: 10px; }
+.final-card p { position: relative; color: var(--ink2); margin: 0 auto 28px; max-width: 30em; }
+.final-card .stores { position: relative; justify-content: center; }
+
+footer { padding: 28px 0 calc(40px + env(safe-area-inset-bottom, 0px)); color: var(--ink2); font-size: 14px; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; }
+footer nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+footer a { text-decoration: none; }
+footer a:hover { color: var(--ink); text-decoration: underline; }
+
+.js .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
+.js .reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js .reveal { opacity: 1; transform: none; transition: none; }
+  .store, .app-id { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="L" lang="ko">
+<header class="nav" data-nav>
+  <div class="wrap">
+    <a class="back" href="../index.html?lang=ko" aria-label="HNH Labs 앱"><span aria-hidden="true">←</span><span class="back-t">HNH Labs</span></a>
+    <a class="app-id" href="#top-ko"><img src="../assets/apps/chaeum.png" alt="" width="32" height="32"><b>채움과 비움</b></a>
+    <div class="nav-r"><label class="lang"><span class="sr">언어</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z" fill="none" stroke="currentColor" stroke-width="2"/></svg><select data-lang-select><option value="ko" selected>한국어</option><option value="en">English</option><option value="ja">日本語</option></select></label><a class="nav-cta" href="#get-ko">곧 출시</a></div>
+  </div>
+</header>
+<main id="top-ko">
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-copy">
+        <div class="hero-id reveal"><img src="../assets/apps/chaeum.png" alt="" width="72" height="72"><div><b>채움과 비움</b><span>Android · iOS · 전 세계</span></div></div>
+        <span class="pill reveal"><i></i>출시 예정</span>
+        <h1 class="reveal">할 일 셋, 줄일 습관 셋<br>하루를 먹빛 한 점으로</h1>
+        <p class="lead reveal">하루에 ‘할 일’ 세 가지와 ‘줄일 습관’ 세 가지만 적는 조용한 습관 기록 앱이에요. 목록을 길게 늘리지 않아도 괜찮아요. 오늘은 그 정도면 충분해요.</p>
+        <div class="stores reveal"><span class="store big off"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3.6 1.8c-.3.3-.5.8-.5 1.4v17.6c0 .6.2 1.1.5 1.4l.1.1 9.9-9.9v-.2L3.7 1.7l-.1.1zm13.3 13.4-3.3-3.3v-.2l3.3-3.3.1.1 3.9 2.2c1.1.6 1.1 1.7 0 2.3l-3.9 2.2h-.1zm.1-.1L13.6 12 3.6 22c.4.4 1 .4 1.7.1l11.7-7zM17 8.9 5.3 2.2c-.7-.4-1.3-.3-1.7.1l10 10L17 8.9z"/></svg><span><small>곧 출시</small><b>Google Play</b></span></span><span class="store big off"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8 1.6 0 2 .8 3.4.8 1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.7-1-2.7-4.1zM13.9 4.9c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.1 1.1.1 2.3-.6 3-1.5z"/></svg><span><small>곧 출시</small><b>App Store</b></span></span></div>
+      </div>
+      <div class="hero-art reveal" aria-hidden="true">
+        <div class="shot frame h2"><img src="img/ko/02.jpg" alt="" width="1080" height="2424" loading="eager"></div>
+        <div class="shot frame h1"><img src="img/ko/01.jpg" alt="" width="1080" height="2424" loading="eager"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="wrap">
+      <div class="sec-head reveal"><span class="kicker">주요 기능</span></div>
+      <article class="feature"><div class="f-art reveal"><div class="shot frame "><img src="img/ko/01.jpg" alt="오늘" width="1080" height="2424" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">01 · 채움 · 비움</span><h3>채우고,<br>비우고</h3><p>오늘 해 볼 작은 일 세 가지와 내려놓고 싶은 습관 세 가지를 적어요.</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>해낸 일을 누르면 동그라미가 먹으로 차오르고 붓질 한 획</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>지킨 습관에는 도장, 놓친 날도 괜찮아요</span></li></ul></div></article><article class="feature"><div class="f-art reveal"><div class="shot frame "><img src="img/ko/03.jpg" alt="하루 마무리" width="1080" height="2424" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">02 · 하루 마무리</span><h3>하루를<br>먹빛 한 점으로</h3><p>밤이 되면 오늘의 기분을 고르고, 쓰고 싶을 때만 한 줄 메모를 남겨요. 많이 해낸 날일수록 먹빛이 진해져요.</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>오늘의 기분 고르기</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>한 줄 메모는 원할 때만</span></li></ul></div></article><article class="feature"><div class="f-art reveal"><div class="shot frame "><img src="img/ko/04.jpg" alt="달력" width="1080" height="2424" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">03 · 기록</span><h3>쌓여 가는<br>나의 하루들</h3><p>한 달의 하루하루가 진하고 옅은 먹빛 점으로 남아요.</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>달력: 한 달을 먹빛 점으로</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>주간 기록: 해낸 일과 잘 지킨 습관</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>연간 기록: 한 해가 한 장의 먹그림으로</span></li></ul></div></article><article class="feature"><div class="f-art reveal"><div class="shot frame "><img src="img/ko/02.jpg" alt="밤" width="1080" height="2424" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">04 · 낮과 밤</span><h3>계절과 시간을<br>닮은 화면</h3><p>낮에는 햇빛과 나뭇잎 그림자가 천천히 움직이고, 밤에는 스탠드 조명이 켜져요.</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>계절에 따라 벚꽃잎·단풍·눈</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>기기를 기울이면 빛의 방향도 따라와요</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>해가 지고 뜨는 시간에 맞춰 테마 자동 전환</span></li></ul></div></article>
+    </div>
+  </section>
+
+  <section class="points-sec">
+    <div class="wrap">
+      <h2 class="reveal">이런 점이 좋아요</h2>
+      <div class="points"><div class="point reveal"><b>부담 없이</b><p>연속 기록이나 순위가 없어요. 놓친 날도 괜찮아요.</p></div><div class="point reveal"><b>원할 때만 알림</b><p>아침·저녁 알림은 켜 둘 때만.</p></div><div class="point reveal"><b>새벽 4시에 새 하루</b><p>늦은 밤 기록도 오늘로 남아요.</p></div><div class="point reveal"><b>기록은 기기에만</b><p>회원가입 없이, 기록은 내 기기에.</p></div></div>
+    </div>
+  </section>
+
+  <section class="gallery">
+    <div class="wrap g-head">
+      <h2 class="reveal">화면 둘러보기</h2>
+      <div class="g-btns"><button type="button" data-dir="-1" aria-label="이전 화면">←</button><button type="button" data-dir="1" aria-label="다음 화면">→</button></div>
+    </div>
+    
+    <div class="rail" tabindex="0"><figure><div class="shot frame "><img src="img/ko/01.jpg" alt="오늘" width="1080" height="2424" loading="lazy"></div><figcaption>오늘</figcaption></figure><figure><div class="shot frame "><img src="img/ko/02.jpg" alt="밤" width="1080" height="2424" loading="lazy"></div><figcaption>밤</figcaption></figure><figure><div class="shot frame "><img src="img/ko/03.jpg" alt="하루 마무리" width="1080" height="2424" loading="lazy"></div><figcaption>하루 마무리</figcaption></figure><figure><div class="shot frame "><img src="img/ko/04.jpg" alt="달력" width="1080" height="2424" loading="lazy"></div><figcaption>달력</figcaption></figure><figure><div class="shot frame "><img src="img/ko/05.jpg" alt="한 주 돌아보기" width="1080" height="2424" loading="lazy"></div><figcaption>한 주 돌아보기</figcaption></figure><figure><div class="shot frame "><img src="img/ko/06.jpg" alt="연간 기록" width="1080" height="2424" loading="lazy"></div><figcaption>연간 기록</figcaption></figure><figure><div class="shot frame "><img src="img/ko/07.jpg" alt="다크" width="1080" height="2424" loading="lazy"></div><figcaption>다크</figcaption></figure></div>
+  </section>
+
+  <section class="final" id="get-ko">
+    <div class="wrap">
+      <div class="final-card reveal">
+        <img class="final-icon" src="../assets/apps/chaeum.png" alt="" width="96" height="96">
+        <h2>곧 만나요</h2>
+        <p>출시되면 이 페이지에서 바로 받을 수 있어요.</p>
+        <div class="stores"><span class="store big off"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3.6 1.8c-.3.3-.5.8-.5 1.4v17.6c0 .6.2 1.1.5 1.4l.1.1 9.9-9.9v-.2L3.7 1.7l-.1.1zm13.3 13.4-3.3-3.3v-.2l3.3-3.3.1.1 3.9 2.2c1.1.6 1.1 1.7 0 2.3l-3.9 2.2h-.1zm.1-.1L13.6 12 3.6 22c.4.4 1 .4 1.7.1l11.7-7zM17 8.9 5.3 2.2c-.7-.4-1.3-.3-1.7.1l10 10L17 8.9z"/></svg><span><small>곧 출시</small><b>Google Play</b></span></span><span class="store big off"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8 1.6 0 2 .8 3.4.8 1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.7-1-2.7-4.1zM13.9 4.9c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.1 1.1.1 2.3-.6 3-1.5z"/></svg><span><small>곧 출시</small><b>App Store</b></span></span></div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="wrap">
+    <span>© 2026 HNH Labs</span>
+    <nav><a href="privacy.html">개인정보 처리방침</a> <a href="terms.html">이용약관</a> <a href="mailto:black924.menew@gmail.com">문의</a> <a href="../index.html?lang=ko">HNH Labs 앱</a></nav>
+  </div>
+</footer>
+</div>
+<div class="L" lang="en">
+<header class="nav" data-nav>
+  <div class="wrap">
+    <a class="back" href="../index.html?lang=en" aria-label="HNH Labs apps"><span aria-hidden="true">←</span><span class="back-t">HNH Labs</span></a>
+    <a class="app-id" href="#top-en"><img src="../assets/apps/chaeum.png" alt="" width="32" height="32"><b>Fill &amp; Release</b></a>
+    <div class="nav-r"><label class="lang"><span class="sr">Language</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z" fill="none" stroke="currentColor" stroke-width="2"/></svg><select data-lang-select><option value="ko">한국어</option><option value="en" selected>English</option><option value="ja">日本語</option></select></label><a class="nav-cta" href="#get-en">Coming soon</a></div>
+  </div>
+</header>
+<main id="top-en">
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-copy">
+        <div class="hero-id reveal"><img src="../assets/apps/chaeum.png" alt="" width="72" height="72"><div><b>Fill &amp; Release</b><span>Android · iOS · Worldwide</span></div></div>
+        <span class="pill reveal"><i></i>Coming soon</span>
+        <h1 class="reveal">Three things to do,<br>three habits to let go</h1>
+        <p class="lead reveal">A habit journal that asks for only six lines a day: three things to fill your day with, and three habits to release. No endless lists. That is enough for today.</p>
+        <div class="stores reveal"><span class="store big off"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3.6 1.8c-.3.3-.5.8-.5 1.4v17.6c0 .6.2 1.1.5 1.4l.1.1 9.9-9.9v-.2L3.7 1.7l-.1.1zm13.3 13.4-3.3-3.3v-.2l3.3-3.3.1.1 3.9 2.2c1.1.6 1.1 1.7 0 2.3l-3.9 2.2h-.1zm.1-.1L13.6 12 3.6 22c.4.4 1 .4 1.7.1l11.7-7zM17 8.9 5.3 2.2c-.7-.4-1.3-.3-1.7.1l10 10L17 8.9z"/></svg><span><small>Coming soon</small><b>Google Play</b></span></span><span class="store big off"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8 1.6 0 2 .8 3.4.8 1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.7-1-2.7-4.1zM13.9 4.9c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.1 1.1.1 2.3-.6 3-1.5z"/></svg><span><small>Coming soon</small><b>App Store</b></span></span></div>
+      </div>
+      <div class="hero-art reveal" aria-hidden="true">
+        <div class="shot frame h2"><img src="img/en/02.jpg" alt="" width="1080" height="2424" loading="eager"></div>
+        <div class="shot frame h1"><img src="img/en/01.jpg" alt="" width="1080" height="2424" loading="eager"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="wrap">
+      <div class="sec-head reveal"><span class="kicker">Features</span></div>
+      <article class="feature"><div class="f-art reveal"><div class="shot frame "><img src="img/en/01.jpg" alt="Today" width="1080" height="2424" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">01 · Fill · Release</span><h3>Fill your day,<br>release a habit</h3><p>Write three small, kind things to do and three habits you want to set down today.</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Tap a done item and the circle fills with ink in one brushstroke</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Stamp the habits you kept — missed days are fine</span></li></ul></div></article><article class="feature"><div class="f-art reveal"><div class="shot frame "><img src="img/en/03.jpg" alt="Closing the day" width="1080" height="2424" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">02 · Close the day</span><h3>Fold each day<br>into a dot of ink</h3><p>At night, pick how the day felt and leave a line only if you wish. The more you kept, the deeper the ink.</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Pick today’s mood</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>A one-line note, only if you want</span></li></ul></div></article><article class="feature"><div class="f-art reveal"><div class="shot frame "><img src="img/en/04.jpg" alt="Calendar" width="1080" height="2424" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">03 · Records</span><h3>Watch your days<br>gather</h3><p>Each day of the month stays as a pale or deep dot of ink.</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Calendar: the month in dots of ink</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Week: what you did and the habit you kept best</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Year: one dot a day becomes an ink painting</span></li></ul></div></article><article class="feature"><div class="f-art reveal"><div class="shot frame "><img src="img/en/02.jpg" alt="Night" width="1080" height="2424" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">04 · Day and night</span><h3>A page that follows<br>the seasons and the hour</h3><p>By day, sunlight and leaf shadows drift across the page. By night, a desk lamp turns on.</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Petals, maple leaves or snow by season</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Tilt your phone and the light follows</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Themes switch at sunset and sunrise</span></li></ul></div></article>
+    </div>
+  </section>
+
+  <section class="points-sec">
+    <div class="wrap">
+      <h2 class="reveal">Why you’ll like it</h2>
+      <div class="points"><div class="point reveal"><b>Gentle by design</b><p>No streaks, no rankings, no guilt for missed days.</p></div><div class="point reveal"><b>Reminders if you want</b><p>Morning and evening, only when turned on.</p></div><div class="point reveal"><b>Days start at 4 a.m.</b><p>Late-night entries still count for today.</p></div><div class="point reveal"><b>Stays on your device</b><p>No sign-up. Your records stay with you.</p></div></div>
+    </div>
+  </section>
+
+  <section class="gallery">
+    <div class="wrap g-head">
+      <h2 class="reveal">Screens</h2>
+      <div class="g-btns"><button type="button" data-dir="-1" aria-label="Previous screen">←</button><button type="button" data-dir="1" aria-label="Next screen">→</button></div>
+    </div>
+    
+    <div class="rail" tabindex="0"><figure><div class="shot frame "><img src="img/en/01.jpg" alt="Today" width="1080" height="2424" loading="lazy"></div><figcaption>Today</figcaption></figure><figure><div class="shot frame "><img src="img/en/02.jpg" alt="Night" width="1080" height="2424" loading="lazy"></div><figcaption>Night</figcaption></figure><figure><div class="shot frame "><img src="img/en/03.jpg" alt="Closing the day" width="1080" height="2424" loading="lazy"></div><figcaption>Closing the day</figcaption></figure><figure><div class="shot frame "><img src="img/en/04.jpg" alt="Calendar" width="1080" height="2424" loading="lazy"></div><figcaption>Calendar</figcaption></figure><figure><div class="shot frame "><img src="img/en/05.jpg" alt="Week in review" width="1080" height="2424" loading="lazy"></div><figcaption>Week in review</figcaption></figure><figure><div class="shot frame "><img src="img/en/06.jpg" alt="Year" width="1080" height="2424" loading="lazy"></div><figcaption>Year</figcaption></figure><figure><div class="shot frame "><img src="img/en/07.jpg" alt="Dark" width="1080" height="2424" loading="lazy"></div><figcaption>Dark</figcaption></figure></div>
+  </section>
+
+  <section class="final" id="get-en">
+    <div class="wrap">
+      <div class="final-card reveal">
+        <img class="final-icon" src="../assets/apps/chaeum.png" alt="" width="96" height="96">
+        <h2>See you soon</h2>
+        <p>Once it launches, you can download it right from this page.</p>
+        <div class="stores"><span class="store big off"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3.6 1.8c-.3.3-.5.8-.5 1.4v17.6c0 .6.2 1.1.5 1.4l.1.1 9.9-9.9v-.2L3.7 1.7l-.1.1zm13.3 13.4-3.3-3.3v-.2l3.3-3.3.1.1 3.9 2.2c1.1.6 1.1 1.7 0 2.3l-3.9 2.2h-.1zm.1-.1L13.6 12 3.6 22c.4.4 1 .4 1.7.1l11.7-7zM17 8.9 5.3 2.2c-.7-.4-1.3-.3-1.7.1l10 10L17 8.9z"/></svg><span><small>Coming soon</small><b>Google Play</b></span></span><span class="store big off"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8 1.6 0 2 .8 3.4.8 1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.7-1-2.7-4.1zM13.9 4.9c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.1 1.1.1 2.3-.6 3-1.5z"/></svg><span><small>Coming soon</small><b>App Store</b></span></span></div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="wrap">
+    <span>© 2026 HNH Labs</span>
+    <nav><a href="privacy.html">Privacy Policy</a> <a href="terms.html">Terms of Use</a> <a href="mailto:black924.menew@gmail.com">Contact</a> <a href="../index.html?lang=en">HNH Labs apps</a></nav>
+  </div>
+</footer>
+</div>
+<div class="L" lang="ja">
+<header class="nav" data-nav>
+  <div class="wrap">
+    <a class="back" href="../index.html?lang=ja" aria-label="HNH Labsのアプリ"><span aria-hidden="true">←</span><span class="back-t">HNH Labs</span></a>
+    <a class="app-id" href="#top-ja"><img src="../assets/apps/chaeum.png" alt="" width="32" height="32"><b>満たすと手放す</b></a>
+    <div class="nav-r"><label class="lang"><span class="sr">言語</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z" fill="none" stroke="currentColor" stroke-width="2"/></svg><select data-lang-select><option value="ko">한국어</option><option value="en">English</option><option value="ja" selected>日本語</option></select></label><a class="nav-cta" href="#get-ja">近日公開</a></div>
+  </div>
+</header>
+<main id="top-ja">
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-copy">
+        <div class="hero-id reveal"><img src="../assets/apps/chaeum.png" alt="" width="72" height="72"><div><b>満たすと手放す</b><span>Android · iOS · 全世界</span></div></div>
+        <span class="pill reveal"><i></i>近日公開</span>
+        <h1 class="reveal">やること3つ、減らす習慣3つ<br>一日を墨色のひと粒に</h1>
+        <p class="lead reveal">一日に「やること」3つと「減らす習慣」3つだけを書く、静かな習慣記録アプリです。リストを長くしなくても大丈夫。今日はそれで十分です。</p>
+        <div class="stores reveal"><span class="store big off"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3.6 1.8c-.3.3-.5.8-.5 1.4v17.6c0 .6.2 1.1.5 1.4l.1.1 9.9-9.9v-.2L3.7 1.7l-.1.1zm13.3 13.4-3.3-3.3v-.2l3.3-3.3.1.1 3.9 2.2c1.1.6 1.1 1.7 0 2.3l-3.9 2.2h-.1zm.1-.1L13.6 12 3.6 22c.4.4 1 .4 1.7.1l11.7-7zM17 8.9 5.3 2.2c-.7-.4-1.3-.3-1.7.1l10 10L17 8.9z"/></svg><span><small>近日公開</small><b>Google Play</b></span></span><span class="store big off"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8 1.6 0 2 .8 3.4.8 1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.7-1-2.7-4.1zM13.9 4.9c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.1 1.1.1 2.3-.6 3-1.5z"/></svg><span><small>近日公開</small><b>App Store</b></span></span></div>
+      </div>
+      <div class="hero-art reveal" aria-hidden="true">
+        <div class="shot frame h2"><img src="img/en/02.jpg" alt="" width="1080" height="2424" loading="eager"></div>
+        <div class="shot frame h1"><img src="img/en/01.jpg" alt="" width="1080" height="2424" loading="eager"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="wrap">
+      <div class="sec-head reveal"><span class="kicker">主な機能</span></div>
+      <article class="feature"><div class="f-art reveal"><div class="shot frame "><img src="img/en/01.jpg" alt="今日" width="1080" height="2424" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">01 · 満たす · 手放す</span><h3>満たして、<br>手放して</h3><p>今日やってみる小さなこと3つと、手放したい習慣3つを書きます。</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>できたことをタップすると、丸が墨で満ちて筆の一画</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>守れた習慣にはハンコ。できなかった日も大丈夫</span></li></ul></div></article><article class="feature"><div class="f-art reveal"><div class="shot frame "><img src="img/en/03.jpg" alt="一日のしめくくり" width="1080" height="2424" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">02 · 一日のしめくくり</span><h3>一日を<br>墨色のひと粒に</h3><p>夜になったら今日の気分を選び、書きたいときだけ一行メモを残します。たくさんできた日ほど墨色が濃くなります。</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>今日の気分を選ぶ</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>一行メモは書きたいときだけ</span></li></ul></div></article><article class="feature"><div class="f-art reveal"><div class="shot frame "><img src="img/en/04.jpg" alt="カレンダー" width="1080" height="2424" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">03 · 記録</span><h3>たまっていく<br>日々</h3><p>ひと月の一日一日が、濃く淡い墨色の点として残ります。</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>カレンダー：ひと月を墨の点で</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>週の記録：できたことと守れた習慣</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>年間記録：一日ひと粒で一年が一枚の墨絵に</span></li></ul></div></article><article class="feature"><div class="f-art reveal"><div class="shot frame "><img src="img/en/02.jpg" alt="夜" width="1080" height="2424" loading="lazy"></div></div><div class="f-copy reveal"><span class="kicker">04 · 昼と夜</span><h3>季節と時間に<br>寄りそう画面</h3><p>昼は日ざしと木の葉の影がゆっくり動き、夜はスタンドの明かりが灯ります。</p><ul class="ticks"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>季節に合わせて桜の花びら・紅葉・雪</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>端末を傾けると光の向きも変わる</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>日の入り・日の出に合わせてテーマを自動切り替え</span></li></ul></div></article>
+    </div>
+  </section>
+
+  <section class="points-sec">
+    <div class="wrap">
+      <h2 class="reveal">ここがうれしい</h2>
+      <div class="points"><div class="point reveal"><b>気負わずに</b><p>連続記録もランキングもありません。</p></div><div class="point reveal"><b>通知は必要なときだけ</b><p>朝と夜の通知はオンにしたときだけ。</p></div><div class="point reveal"><b>一日は朝4時から</b><p>夜ふかしの記録も今日の分に。</p></div><div class="point reveal"><b>記録は端末の中に</b><p>会員登録なし。記録はあなたの端末に。</p></div></div>
+    </div>
+  </section>
+
+  <section class="gallery">
+    <div class="wrap g-head">
+      <h2 class="reveal">画面を見る</h2>
+      <div class="g-btns"><button type="button" data-dir="-1" aria-label="前の画面">←</button><button type="button" data-dir="1" aria-label="次の画面">→</button></div>
+    </div>
+    <p class="shots-note">画面は英語版のものです。</p>
+    <div class="rail" tabindex="0"><figure><div class="shot frame "><img src="img/en/01.jpg" alt="今日" width="1080" height="2424" loading="lazy"></div><figcaption>今日</figcaption></figure><figure><div class="shot frame "><img src="img/en/02.jpg" alt="夜" width="1080" height="2424" loading="lazy"></div><figcaption>夜</figcaption></figure><figure><div class="shot frame "><img src="img/en/03.jpg" alt="一日のしめくくり" width="1080" height="2424" loading="lazy"></div><figcaption>一日のしめくくり</figcaption></figure><figure><div class="shot frame "><img src="img/en/04.jpg" alt="カレンダー" width="1080" height="2424" loading="lazy"></div><figcaption>カレンダー</figcaption></figure><figure><div class="shot frame "><img src="img/en/05.jpg" alt="週のふりかえり" width="1080" height="2424" loading="lazy"></div><figcaption>週のふりかえり</figcaption></figure><figure><div class="shot frame "><img src="img/en/06.jpg" alt="年間記録" width="1080" height="2424" loading="lazy"></div><figcaption>年間記録</figcaption></figure><figure><div class="shot frame "><img src="img/en/07.jpg" alt="ダーク" width="1080" height="2424" loading="lazy"></div><figcaption>ダーク</figcaption></figure></div>
+  </section>
+
+  <section class="final" id="get-ja">
+    <div class="wrap">
+      <div class="final-card reveal">
+        <img class="final-icon" src="../assets/apps/chaeum.png" alt="" width="96" height="96">
+        <h2>もうすぐ公開</h2>
+        <p>公開されたら、このページからすぐにダウンロードできます。</p>
+        <div class="stores"><span class="store big off"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3.6 1.8c-.3.3-.5.8-.5 1.4v17.6c0 .6.2 1.1.5 1.4l.1.1 9.9-9.9v-.2L3.7 1.7l-.1.1zm13.3 13.4-3.3-3.3v-.2l3.3-3.3.1.1 3.9 2.2c1.1.6 1.1 1.7 0 2.3l-3.9 2.2h-.1zm.1-.1L13.6 12 3.6 22c.4.4 1 .4 1.7.1l11.7-7zM17 8.9 5.3 2.2c-.7-.4-1.3-.3-1.7.1l10 10L17 8.9z"/></svg><span><small>近日公開</small><b>Google Play</b></span></span><span class="store big off"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8 1.6 0 2 .8 3.4.8 1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.7-1-2.7-4.1zM13.9 4.9c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.1 1.1.1 2.3-.6 3-1.5z"/></svg><span><small>近日公開</small><b>App Store</b></span></span></div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="wrap">
+    <span>© 2026 HNH Labs</span>
+    <nav><a href="privacy.html">プライバシーポリシー</a> <a href="terms.html">利用規約</a> <a href="mailto:black924.menew@gmail.com">お問い合わせ</a> <a href="../index.html?lang=ja">HNH Labsのアプリ</a></nav>
+  </div>
+</footer>
+</div>
+<script>
+(function () {
+  var root = document.documentElement;
+  var TITLES = {"ko": "채움과 비움 - 하루 습관 기록", "en": "Fill & Release - Daily Habits", "ja": "満たすと手放す - 毎日の習慣記録"}, DESCS = {"ko": "할 일 셋, 줄일 습관 셋. 하루를 먹빛 한 점으로 남기는 조용한 습관 기록 앱.", "en": "Three things to do, three habits to let go. A calm, ink-washed daily habit log.", "ja": "やること3つ、減らす習慣3つ。一日を墨色のひと粒に残す、静かな習慣記録アプリ。"};
+  function apply(l, save) {
+    root.dataset.l = l; root.lang = l;
+    document.title = TITLES[l];
+    document.querySelector('meta[name="description"]').content = DESCS[l];
+    document.querySelectorAll('[data-lang-select]').forEach(function (s) { s.value = l; });
+    if (save) {
+      try { localStorage.setItem('hnh-lang', l); } catch (e) {}
+      try { var u = new URL(location.href); u.searchParams.set('lang', l); history.replaceState(null, '', u); } catch (e) {}
+    }
+    observe(); onScroll();
+  }
+  document.querySelectorAll('[data-lang-select]').forEach(function (s) {
+    s.addEventListener('change', function () { apply(s.value, true); });
+  });
+
+  // 스크롤하면 상단 바 뒤를 흐리게
+  function onScroll() { document.querySelectorAll('[data-nav]').forEach(function (n) { n.classList.toggle('scrolled', scrollY > 8); }); }
+  addEventListener('scroll', onScroll, { passive: true });
+
+  // 화면 둘러보기 버튼
+  document.querySelectorAll('.g-btns button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var rail = b.closest('.gallery').querySelector('.rail');
+      var step = rail.querySelector('figure').offsetWidth + 20;
+      rail.scrollBy({ left: step * 2 * Number(b.dataset.dir), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    });
+  });
+
+  // 나타나는 효과
+  var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) {
+    es.forEach(function (x) { if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); } });
+  }, { rootMargin: '0px 0px -6% 0px' }) : null;
+  function observe() {
+    document.querySelectorAll('.L[lang="' + root.dataset.l + '"] .reveal:not(.in)').forEach(function (x) {
+      if (io) io.observe(x); else x.classList.add('in');
+    });
+  }
+  apply(root.dataset.l || 'ko', false);
+})();
+</script>
+</body>
+</html>
