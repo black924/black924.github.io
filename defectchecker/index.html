@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>셀프사전점검 - 신축 아파트 하자 점검 체크리스트</title>
+<meta name="description" content="신축 아파트 입주 전 사전점검, 업체 없이 혼자서도 꼼꼼하게. 공간별 체크리스트로 확인하고, 하자는 사진과 함께 기록해 PDF 리포트로 정리하세요.">
+<meta name="theme-color" content="#0F2A24">
+<meta property="og:type" content="website">
+<meta property="og:title" content="셀프사전점검 - 신축 아파트 하자 점검 체크리스트">
+<meta property="og:description" content="공간별 체크리스트, 사진 하자 기록, PDF 리포트까지. 회원가입 없이 무료로 쓰는 사전점검 앱.">
+<meta property="og:image" content="https://black924.github.io/defectchecker/img/icon.png">
+<meta property="og:locale" content="ko_KR">
+<link rel="icon" href="img/icon.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root {
+  --bg: #F5F7F6;
+  --surface: #FFFFFF;
+  --ink: #0E1B17;
+  --ink2: #55655F;
+  --line: #E4E9E6;
+  --soft: #EDF1EF;
+  --brand: #0F2A24;
+  --brand2: #16372F;
+  --brand-line: #2C5247;
+  --brand-sub: #A9C9BF;
+  --mint: #3DDBA8;
+  --tint: #E2F6EE;
+  --tint-ink: #0B5A45;
+  --danger: #D13438;
+  --warn-fg: #8F5B00; --warn-bg: #FFF3D6;
+  --info-fg: #2456A6; --info-bg: #E8F0FD;
+  --radius: 22px;
+  --wrap: 1120px;
+  --gut: max(20px, env(safe-area-inset-left, 0px));
+  --font: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--font); font-size: 17px; line-height: 1.65;
+  word-break: keep-all; overflow-wrap: anywhere; overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+.wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gut); }
+.eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: var(--tint-ink); background: var(--tint); padding: 6px 12px; border-radius: 999px; }
+.eyebrow::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--mint); }
+h1, h2, h3 { margin: 0; letter-spacing: -0.03em; line-height: 1.25; }
+h2 { font-size: clamp(28px, 4.4vw, 44px); font-weight: 800; }
+.lead { color: var(--ink2); font-size: clamp(16px, 1.8vw, 19px); }
+
+/* 상단 바 */
+.nav { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--bg) 82%, transparent); backdrop-filter: saturate(1.6) blur(14px); -webkit-backdrop-filter: saturate(1.6) blur(14px); border-bottom: 1px solid transparent; transition: border-color .2s; }
+.nav.scrolled { border-bottom-color: var(--line); }
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+.logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 18px; text-decoration: none; letter-spacing: -0.02em; }
+.logo img { width: 34px; height: 34px; border-radius: 9px; }
+.nav-links { display: flex; align-items: center; gap: 28px; font-size: 15px; font-weight: 600; color: var(--ink2); }
+.nav-links a { text-decoration: none; }
+.nav-links a:hover { color: var(--ink); }
+.nav-cta { background: var(--brand); color: #fff !important; padding: 9px 16px; border-radius: 12px; }
+@media (max-width: 720px) { .nav-links .hide-m { display: none; } }
+
+/* 스토어 버튼 */
+.stores { display: flex; flex-wrap: wrap; gap: 12px; }
+.store { display: inline-flex; align-items: center; gap: 10px; min-height: 56px; padding: 0 22px 0 18px; border-radius: 16px; background: var(--brand); color: #fff; text-decoration: none; transition: transform .15s, background .15s; }
+.store:hover { transform: translateY(-2px); background: #143A31; }
+.store svg { width: 24px; height: 24px; flex: none; }
+.store span { display: flex; flex-direction: column; line-height: 1.15; }
+.store small { font-size: 11px; opacity: .75; font-weight: 500; }
+.store b { font-size: 17px; font-weight: 700; }
+.store.light { background: var(--surface); color: var(--ink); border: 1.5px solid var(--line); }
+.store.light:hover { background: #fff; border-color: #CBD4CF; }
+.store[aria-disabled="true"] { pointer-events: none; opacity: .55; }
+.on-dark .store { background: #fff; color: var(--brand); }
+.on-dark .store.light { background: transparent; color: #fff; border-color: var(--brand-line); }
+
+/* 휴대폰 프레임 (시뮬레이터 스크린샷에 상태바와 다이내믹 아일랜드가 이미 있어 테두리만 그림) */
+.phone { position: relative; width: 100%; aspect-ratio: 660 / 1434; border-radius: 14% / 6.5%; padding: 3.2%; background: #0E1B17; box-shadow: 0 0 0 1.5px #2a3a35 inset, 0 30px 60px -20px rgba(15,42,36,.35), 0 12px 24px -12px rgba(15,42,36,.25); }
+.phone img { width: 100%; height: 100%; object-fit: cover; border-radius: 12% / 5.6%; background: var(--bg); }
+
+/* 히어로 */
+.hero { padding: clamp(40px, 7vw, 88px) 0 clamp(56px, 8vw, 104px); position: relative; }
+.hero .wrap { display: grid; grid-template-columns: 1.05fr 1fr; gap: 48px; align-items: center; }
+.hero h1 { font-size: clamp(38px, 6.2vw, 68px); font-weight: 800; letter-spacing: -0.045em; line-height: 1.14; margin: 20px 0 20px; }
+.hero h1 em { font-style: normal; color: var(--tint-ink); position: relative; white-space: nowrap; }
+.hero h1 em::after { content: ""; position: absolute; left: -2px; right: -2px; bottom: .06em; height: .26em; background: var(--mint); opacity: .35; border-radius: 4px; z-index: -1; }
+.hero .lead { max-width: 30em; margin: 0 0 32px; }
+.hero-note { margin-top: 18px; font-size: 14px; color: var(--ink2); display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.hero-note span::before { content: "✓ "; color: var(--tint-ink); font-weight: 700; }
+.hero-art { position: relative; height: clamp(460px, 52vw, 620px); }
+.hero-art::before { content: ""; position: absolute; inset: 8% 4% 4% 10%; border-radius: 40px; background: radial-gradient(120% 90% at 30% 20%, #1d4a3e 0%, var(--brand) 60%); }
+.hero-art::after { content: ""; position: absolute; width: 46%; aspect-ratio: 1; right: -2%; top: 0; border-radius: 50%; border: 18px solid var(--mint); opacity: .22; }
+.hero-art .phone { position: absolute; width: clamp(200px, 22vw, 268px); }
+.hero-art .p1 { left: 8%; top: 4%; transform: rotate(-5deg); z-index: 2; }
+.hero-art .p2 { right: 6%; top: 15%; transform: rotate(4deg); z-index: 1; }
+.chip-float { position: absolute; z-index: 3; background: var(--surface); border-radius: 16px; padding: 12px 16px; box-shadow: 0 12px 30px -10px rgba(15,42,36,.3); font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 10px; white-space: nowrap; }
+.chip-float i { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-size: 14px; color: #fff; }
+.chip-float.c1 { left: 0; bottom: 10%; }
+.chip-float.c1 i { background: var(--danger); }
+.chip-float.c2 { right: 0; top: 4%; }
+.chip-float.c2 i { background: var(--mint); color: var(--brand); }
+@media (max-width: 900px) {
+  .hero .wrap { grid-template-columns: 1fr; gap: 24px; }
+  .hero-art { height: auto; aspect-ratio: 1 / 1.05; max-width: 520px; width: 100%; margin: 0 auto; }
+  .hero-art .phone { width: 46%; }
+}
+@media (max-width: 420px) { .chip-float { font-size: 12px; padding: 9px 12px; } .chip-float i { width: 22px; height: 22px; font-size: 12px; } }
+
+/* 숫자 */
+.stats { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--surface); }
+.stats .wrap { display: grid; grid-template-columns: repeat(4, 1fr); }
+.stat { padding: 28px 12px; text-align: center; }
+.stat + .stat { border-left: 1px solid var(--line); }
+.stat b { display: block; font-size: clamp(26px, 3.4vw, 36px); font-weight: 800; letter-spacing: -0.03em; color: var(--brand); }
+.stat span { font-size: 14px; color: var(--ink2); }
+@media (max-width: 640px) {
+  .stats .wrap { grid-template-columns: 1fr 1fr; padding: 0; }
+  .stat:nth-child(3) { border-left: 0; }
+  .stat:nth-child(n+3) { border-top: 1px solid var(--line); }
+}
+
+/* 공감 */
+.pain { padding: clamp(72px, 10vw, 120px) 0 24px; text-align: center; }
+.pain h2 { max-width: 16em; margin: 18px auto 18px; }
+.pain .lead { max-width: 34em; margin: 0 auto; }
+@media (max-width: 640px) { .br-d { display: none; } }
+.pain-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 48px; text-align: left; }
+.pain-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; }
+.pain-card q { display: block; font-weight: 700; font-size: 18px; quotes: "“" "”"; margin-bottom: 8px; }
+.pain-card p { margin: 0; color: var(--ink2); font-size: 15px; }
+@media (max-width: 800px) { .pain-list { grid-template-columns: 1fr; } }
+
+/* 기능 */
+.features { padding: clamp(56px, 8vw, 96px) 0; }
+.feature { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 96px); align-items: center; padding: clamp(40px, 6vw, 72px) 0; }
+.feature:nth-child(even) .f-art { order: 2; }
+.f-art { position: relative; display: grid; place-items: center; padding: 40px 0; }
+.f-art::before { content: ""; position: absolute; inset: 0 6%; border-radius: 36px; background: var(--soft); }
+.feature:nth-child(3n+2) .f-art::before { background: var(--tint); }
+.f-art .phone { width: min(300px, 70%); }
+.f-num { font-size: 14px; font-weight: 800; color: var(--tint-ink); letter-spacing: .04em; }
+.feature h3 { font-size: clamp(26px, 3.6vw, 38px); font-weight: 800; margin: 10px 0 16px; }
+.feature p { color: var(--ink2); margin: 0 0 20px; }
+.ticks { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.ticks li { display: flex; gap: 12px; align-items: flex-start; font-size: 16px; }
+.ticks li::before { content: ""; flex: none; width: 22px; height: 22px; margin-top: 2px; border-radius: 50%; background: var(--tint) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230B5A45' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center / 14px no-repeat; }
+.pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+.pill { font-size: 13px; font-weight: 700; padding: 6px 12px; border-radius: 999px; }
+.pill.w { color: var(--warn-fg); background: var(--warn-bg); }
+.pill.i { color: var(--info-fg); background: var(--info-bg); }
+.pill.t { color: var(--tint-ink); background: var(--tint); }
+@media (max-width: 800px) {
+  .feature { grid-template-columns: 1fr; }
+  .feature:nth-child(even) .f-art { order: 0; }
+  .f-art .phone { width: min(260px, 62%); }
+}
+
+/* 사용 순서 */
+.how { background: var(--brand); color: #fff; padding: clamp(72px, 10vw, 120px) 0; border-radius: clamp(28px, 4vw, 48px); margin: 0 clamp(0px, 1.5vw, 20px); }
+.how .eyebrow { background: var(--brand2); color: var(--mint); }
+.how h2 { margin: 18px 0 48px; }
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; counter-reset: s; }
+.step { background: var(--brand2); border: 1px solid var(--brand-line); border-radius: var(--radius); padding: 28px 24px; }
+.step::before { counter-increment: s; content: "0" counter(s); display: block; font-size: 15px; font-weight: 800; color: var(--mint); margin-bottom: 28px; }
+.step h3 { font-size: 20px; margin-bottom: 8px; }
+.step p { margin: 0; color: var(--brand-sub); font-size: 15px; }
+@media (max-width: 900px) { .steps { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 520px) { .steps { grid-template-columns: 1fr; } }
+
+/* 화면 둘러보기 */
+.gallery { padding: clamp(72px, 10vw, 120px) 0 clamp(48px, 6vw, 72px); }
+.gallery-head { display: flex; justify-content: space-between; align-items: end; gap: 16px; flex-wrap: wrap; }
+.gallery-head h2 { margin-top: 18px; }
+.g-btns { display: flex; gap: 8px; }
+.g-btns button { width: 48px; height: 48px; border-radius: 50%; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); font-size: 20px; cursor: pointer; }
+.g-btns button:hover { border-color: #CBD4CF; }
+.rail { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 40px var(--gut) 24px; scroll-padding: 0 var(--gut); scrollbar-width: none; }
+.rail::-webkit-scrollbar { display: none; }
+@media (min-width: 1160px) { .rail { padding-left: calc((100vw - var(--wrap)) / 2 + var(--gut)); scroll-padding-left: calc((100vw - var(--wrap)) / 2 + var(--gut)); } }
+.shot { flex: none; width: clamp(200px, 22vw, 250px); scroll-snap-align: start; margin: 0; }
+.shot figcaption { margin-top: 16px; font-size: 15px; font-weight: 700; text-align: center; }
+
+/* 개인정보 */
+.privacy { padding: clamp(48px, 6vw, 72px) 0; }
+.privacy-card { display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 28px; padding: clamp(28px, 4vw, 44px); }
+.privacy-card .ico { width: 72px; height: 72px; border-radius: 22px; background: var(--tint); display: grid; place-items: center; }
+.privacy-card h2 { font-size: clamp(22px, 3vw, 30px); margin-bottom: 8px; }
+.privacy-card p { margin: 0; color: var(--ink2); }
+@media (max-width: 600px) { .privacy-card { grid-template-columns: 1fr; } }
+
+/* 자주 묻는 질문 */
+.faq { padding: clamp(48px, 6vw, 72px) 0 clamp(72px, 10vw, 120px); }
+.faq .wrap { display: grid; grid-template-columns: 1fr 1.6fr; gap: 48px; }
+.faq h2 { margin-top: 18px; }
+details { border-bottom: 1px solid var(--line); }
+details:first-child { border-top: 1px solid var(--line); }
+summary { list-style: none; cursor: pointer; padding: 22px 40px 22px 0; font-weight: 700; font-size: 18px; position: relative; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; position: absolute; right: 4px; top: 50%; transform: translateY(-50%); font-size: 26px; font-weight: 400; color: var(--ink2); transition: transform .2s; }
+details[open] summary::after { transform: translateY(-50%) rotate(45deg); }
+details p { margin: -6px 0 22px; color: var(--ink2); }
+@media (max-width: 800px) { .faq .wrap { grid-template-columns: 1fr; gap: 24px; } }
+
+/* 마지막 안내 */
+.final { padding: 0 0 clamp(48px, 6vw, 72px); }
+.final-card { position: relative; overflow: hidden; background: var(--brand); color: #fff; border-radius: clamp(28px, 4vw, 44px); padding: clamp(48px, 7vw, 88px) clamp(24px, 5vw, 72px); display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center; }
+.final-card::after { content: ""; position: absolute; width: 380px; aspect-ratio: 1; right: -120px; bottom: -180px; border-radius: 50%; border: 40px solid var(--mint); opacity: .14; }
+.final-card h2 { margin-bottom: 14px; position: relative; z-index: 1; }
+.final-card p { margin: 0; color: var(--brand-sub); position: relative; z-index: 1; }
+.final-card .stores { position: relative; z-index: 1; }
+.final-icon { width: 96px; height: 96px; border-radius: 24px; margin-bottom: 24px; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+@media (max-width: 800px) { .final-card { grid-template-columns: 1fr; } }
+
+footer { padding: 32px 0 calc(40px + env(safe-area-inset-bottom, 0px)); font-size: 14px; color: var(--ink2); }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; }
+footer nav { display: flex; flex-wrap: wrap; gap: 20px; }
+footer a { text-decoration: none; }
+footer a:hover { color: var(--ink); }
+.disclaimer { width: 100%; font-size: 13px; color: #6B7872; }
+
+/* 나타나는 효과: JS가 있을 때만 숨김 */
+.js .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
+.js .reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js .reveal { opacity: 1; transform: none; transition: none; }
+  .store { transition: none; }
+}
+</style>
+</head>
+<body>
+<script>document.documentElement.classList.add('js');</script>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="#top"><img src="img/icon.png" alt="" width="34" height="34">셀프사전점검</a>
+    <nav class="nav-links" aria-label="주요 메뉴">
+      <a class="hide-m" href="#features">기능</a>
+      <a class="hide-m" href="#how">사용 방법</a>
+      <a class="hide-m" href="support.html">고객지원</a>
+      <a class="nav-cta" href="#download">무료 다운로드</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div class="reveal">
+        <span class="eyebrow">신축 아파트 입주 전 사전점검 앱</span>
+        <h1>업체 없이도<br><em>꼼꼼한</em> 사전점검</h1>
+        <p class="lead">공간별 체크리스트를 따라 확인하고, 발견한 하자는 사진과 위치로 기록하세요. 시공사에 낼 PDF 리포트까지 한 번에 정리돼요.</p>
+        <div class="stores">
+          <a class="store" href="https://play.google.com/store/apps/details?id=com.hnh.defectchecker" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.6 1.8c-.3.3-.5.8-.5 1.4v17.6c0 .6.2 1.1.5 1.4l.1.1 9.9-9.9v-.2L3.7 1.7l-.1.1zm13.3 13.4-3.3-3.3v-.2l3.3-3.3.1.1 3.9 2.2c1.1.6 1.1 1.7 0 2.3l-3.9 2.2h-.1zm.1-.1L13.6 12 3.6 22c.4.4 1 .4 1.7.1l11.7-7zM17 8.9 5.3 2.2c-.7-.4-1.3-.3-1.7.1l10 10L17 8.9z"/></svg>
+            <span><small>지금 받기</small><b>Google Play</b></span>
+          </a>
+          <a class="store light" data-appstore href="#" aria-disabled="true">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8 1.6 0 2 .8 3.4.8 1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.7-1-2.7-4.1zM13.9 4.9c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.1 1.1.1 2.3-.6 3-1.5z"/></svg>
+            <span><small data-appstore-label>곧 출시돼요</small><b>App Store</b></span>
+          </a>
+        </div>
+        <div class="hero-note"><span>무료</span><span>회원가입 없음</span><span>인터넷 없이도 동작</span></div>
+      </div>
+      <div class="hero-art reveal" aria-hidden="true">
+        <div class="phone p2"><img src="img/04-checklist.jpg" alt="" width="660" height="1434"></div>
+        <div class="phone p1"><img src="img/01-home.jpg" alt="" width="660" height="1434"></div>
+        <div class="chip-float c2"><i>✓</i>확인 31 / 73</div>
+        <div class="chip-float c1"><i>!</i>균열 (창가 쪽) · 사진 2장</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats" aria-label="앱 요약">
+    <div class="wrap">
+      <div class="stat"><b>11가지</b><span>공간 유형</span></div>
+      <div class="stat"><b>항목별</b><span>확인 방법 안내</span></div>
+      <div class="stat"><b>PDF</b><span>하자 리포트</span></div>
+      <div class="stat"><b>0원</b><span>무료, 가입 없음</span></div>
+    </div>
+  </section>
+
+  <section class="pain">
+    <div class="wrap">
+      <span class="eyebrow reveal">사전점검, 이런 고민 있으셨죠</span>
+      <h2 class="reveal">2~3일 안에 집 전체를 봐야 하는데,<br class="br-d"> 무엇부터 봐야 할지 모르겠다면</h2>
+      <p class="lead reveal">셀프사전점검이 순서를 잡아 드려요. 점검표만 따라가면 놓치는 곳 없이 끝까지 확인할 수 있어요.</p>
+      <div class="pain-list">
+        <div class="pain-card reveal"><q>어디를 봐야 하지?</q><p>공간마다 꼭 확인할 항목과 확인 방법을 미리 준비해 뒀어요.</p></div>
+        <div class="pain-card reveal"><q>사진이 뒤죽박죽이에요</q><p>하자마다 사진, 위치, 유형이 묶여 번호와 함께 저장돼요.</p></div>
+        <div class="pain-card reveal"><q>접수는 어떻게 하죠?</q><p>기록한 하자를 공간별로 정리한 PDF로 바로 공유해요.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <div class="wrap">
+      <article class="feature">
+        <div class="f-art reveal"><div class="phone"><img src="img/02-setup.jpg" alt="점검할 공간을 고르는 화면" width="660" height="1434" loading="lazy"></div></div>
+        <div class="reveal">
+          <div class="f-num">01 · 공간 구성</div>
+          <h3>우리 집 구조에 맞게<br>점검을 시작해요</h3>
+          <p>단지명과 동·호수를 입력하고 점검할 공간을 고르면 준비 끝. 거실, 주방, 방, 욕실부터 드레스룸, 발코니, 현관까지 기본으로 들어가 있어요.</p>
+          <ul class="ticks">
+            <li>방이 여러 개면 같은 공간을 더 추가해요</li>
+            <li>공간 이름은 우리 집에 맞게 바꿀 수 있어요</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="feature">
+        <div class="f-art reveal"><div class="phone"><img src="img/04-checklist.jpg" alt="거실 체크리스트에서 항목별 확인 방법을 보여주는 화면" width="660" height="1434" loading="lazy"></div></div>
+        <div class="reveal">
+          <div class="f-num">02 · 체크리스트</div>
+          <h3>확인 방법까지<br>알려주는 체크리스트</h3>
+          <p>항목을 펼치면 어떻게 확인하는지, 어떤 모습이 하자인지, 사진은 어떻게 찍으면 좋은지 알려 드려요. 처음 해 보는 사전점검도 어렵지 않아요.</p>
+          <ul class="ticks">
+            <li>이상 없음 · 하자 있음 · 해당 없음으로 빠르게 체크</li>
+            <li>천장, 벽, 바닥, 창호·문, 설비별로 골라 보기</li>
+            <li>목록에 없는 항목은 직접 추가</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="feature">
+        <div class="f-art reveal"><div class="phone"><img src="img/05-form.jpg" alt="하자를 사진과 위치로 등록하는 화면" width="660" height="1434" loading="lazy"></div></div>
+        <div class="reveal">
+          <div class="f-num">03 · 하자 기록</div>
+          <h3>사진과 위치로<br>하자를 바로 기록해요</h3>
+          <p>현장에서 한 손으로 찍고 고르면 끝. 하자마다 번호가 붙어서 벽에 붙인 스티커와 맞춰 보기도 쉬워요.</p>
+          <ul class="ticks">
+            <li>하자당 사진 최대 5장</li>
+            <li>면, 세부 위치, 하자 유형, 메모까지 한 번에</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="feature">
+        <div class="f-art reveal"><div class="phone"><img src="img/07-detail.jpg" alt="하자 상세와 보수 진행 상태 화면" width="660" height="1434" loading="lazy"></div></div>
+        <div class="reveal">
+          <div class="f-num">04 · 보수 관리</div>
+          <h3>보수가 끝날 때까지<br>끝까지 챙겨요</h3>
+          <p>접수했는지, 보수를 요청했는지, 보수가 끝났는지 하자마다 상태를 바꿔 가며 관리해요. 공간별 진행률로 남은 일을 한눈에 볼 수 있어요.</p>
+          <div class="pills"><span class="pill w">접수 전</span><span class="pill i">보수 요청</span><span class="pill t">보수 완료</span></div>
+        </div>
+      </article>
+
+      <article class="feature">
+        <div class="f-art reveal"><div class="phone"><img src="img/08-report.jpg" alt="PDF 리포트 내보내기 화면" width="660" height="1434" loading="lazy"></div></div>
+        <div class="reveal">
+          <div class="f-num">05 · PDF 리포트</div>
+          <h3>시공사에 전달할<br>PDF 리포트</h3>
+          <p>기록한 하자를 공간 순서대로 정리한 PDF를 만들어요. 파일로 저장하거나 메신저, 메일로 바로 보낼 수 있어요.</p>
+          <ul class="ticks">
+            <li>사진 포함, 메모 포함을 골라서 만들기</li>
+            <li>공유 버튼 한 번으로 카카오톡, 메일 전송</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="how" id="how">
+    <div class="wrap">
+      <span class="eyebrow reveal">사용 방법</span>
+      <h2 class="reveal">네 단계면 사전점검 끝</h2>
+      <div class="steps">
+        <div class="step reveal"><h3>점검 만들기</h3><p>단지명, 동·호수, 점검일을 넣고 공간을 골라요.</p></div>
+        <div class="step reveal"><h3>항목 확인</h3><p>공간별 체크리스트를 따라 하나씩 확인해요.</p></div>
+        <div class="step reveal"><h3>하자 기록</h3><p>문제를 찾으면 사진을 찍고 위치와 유형을 남겨요.</p></div>
+        <div class="step reveal"><h3>리포트 제출</h3><p>PDF로 내보내 시공사나 하자 접수처에 전달해요.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="gallery" aria-labelledby="gallery-title">
+    <div class="wrap gallery-head">
+      <div>
+        <span class="eyebrow reveal">화면 둘러보기</span>
+        <h2 id="gallery-title" class="reveal">실제 앱 화면이에요</h2>
+      </div>
+      <div class="g-btns">
+        <button type="button" data-dir="-1" aria-label="이전 화면">←</button>
+        <button type="button" data-dir="1" aria-label="다음 화면">→</button>
+      </div>
+    </div>
+    <div class="rail" id="rail" tabindex="0" aria-label="앱 화면 목록">
+      <figure class="shot"><div class="phone"><img src="img/01-home.jpg" alt="홈 화면" width="660" height="1434" loading="lazy"></div><figcaption>진행 중인 점검</figcaption></figure>
+      <figure class="shot"><div class="phone"><img src="img/02-setup.jpg" alt="공간 구성 화면" width="660" height="1434" loading="lazy"></div><figcaption>공간 구성</figcaption></figure>
+      <figure class="shot"><div class="phone"><img src="img/03-spaces.jpg" alt="공간 목록 화면" width="660" height="1434" loading="lazy"></div><figcaption>공간별 진행률</figcaption></figure>
+      <figure class="shot"><div class="phone"><img src="img/04-checklist.jpg" alt="체크리스트 화면" width="660" height="1434" loading="lazy"></div><figcaption>체크리스트</figcaption></figure>
+      <figure class="shot"><div class="phone"><img src="img/05-form.jpg" alt="하자 등록 화면" width="660" height="1434" loading="lazy"></div><figcaption>하자 등록</figcaption></figure>
+      <figure class="shot"><div class="phone"><img src="img/06-list.jpg" alt="하자 목록 화면" width="660" height="1434" loading="lazy"></div><figcaption>하자 목록</figcaption></figure>
+      <figure class="shot"><div class="phone"><img src="img/07-detail.jpg" alt="하자 상세 화면" width="660" height="1434" loading="lazy"></div><figcaption>보수 상태 관리</figcaption></figure>
+      <figure class="shot"><div class="phone"><img src="img/08-report.jpg" alt="리포트 내보내기 화면" width="660" height="1434" loading="lazy"></div><figcaption>PDF 리포트</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="privacy">
+    <div class="wrap">
+      <div class="privacy-card reveal">
+        <div class="ico" aria-hidden="true">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#0B5A45" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <div>
+          <h2>내 기록은 내 기기에만</h2>
+          <p>회원가입도 로그인도 없어요. 점검 기록과 사진은 서버로 보내지 않고 휴대폰에만 저장돼요. 지하 주차장이나 통신이 약한 세대 안에서도 그대로 쓸 수 있어요.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq" id="faq">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow reveal">자주 묻는 질문</span>
+        <h2 class="reveal">궁금한 점이<br>있으신가요?</h2>
+        <p class="lead reveal">더 궁금한 점은 <a href="support.html">고객지원</a>에서 문의해 주세요.</p>
+      </div>
+      <div class="reveal">
+        <details><summary>정말 무료인가요?</summary><p>네, 모든 기능을 무료로 쓸 수 있어요. 앱 운영을 위해 화면 아래에 작은 배너 광고가 나오고, PDF 리포트를 만들기 전에 짧은 광고를 한 번 봐요. 광고를 불러오지 못하면 광고 없이 바로 쓸 수 있어요.</p></details>
+        <details><summary>인터넷이 안 돼도 쓸 수 있나요?</summary><p>네. 점검, 하자 기록, PDF 만들기 모두 인터넷 없이 동작해요. 광고만 인터넷이 필요해요.</p></details>
+        <details><summary>휴대폰을 바꾸면 기록이 옮겨지나요?</summary><p>기록은 기기에만 저장되기 때문에 자동으로 옮겨지지 않아요. 필요한 기록은 PDF 리포트로 내보내 보관해 주세요.</p></details>
+        <details><summary>앱의 판단을 그대로 믿어도 되나요?</summary><p>앱은 점검을 돕는 참고용 기록 도구예요. 하자 여부의 판정과 보수 범위는 시공사와 관련 기준을 따라 주세요.</p></details>
+        <details><summary>안드로이드와 아이폰 모두 쓸 수 있나요?</summary><p>네, Google Play와 App Store에서 받을 수 있어요.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="final" id="download">
+    <div class="wrap">
+      <div class="final-card on-dark reveal">
+        <div>
+          <img class="final-icon" src="img/icon.png" alt="셀프사전점검 앱 아이콘" width="96" height="96">
+          <h2>입주 전 마지막 기회,<br>꼼꼼하게 확인하세요</h2>
+          <p>지금 무료로 받고 사전점검 날 바로 쓰세요.</p>
+        </div>
+        <div class="stores">
+          <a class="store" href="https://play.google.com/store/apps/details?id=com.hnh.defectchecker" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.6 1.8c-.3.3-.5.8-.5 1.4v17.6c0 .6.2 1.1.5 1.4l.1.1 9.9-9.9v-.2L3.7 1.7l-.1.1zm13.3 13.4-3.3-3.3v-.2l3.3-3.3.1.1 3.9 2.2c1.1.6 1.1 1.7 0 2.3l-3.9 2.2h-.1zm.1-.1L13.6 12 3.6 22c.4.4 1 .4 1.7.1l11.7-7zM17 8.9 5.3 2.2c-.7-.4-1.3-.3-1.7.1l10 10L17 8.9z"/></svg>
+            <span><small>지금 받기</small><b>Google Play</b></span>
+          </a>
+          <a class="store light" data-appstore href="#" aria-disabled="true">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8 1.6 0 2 .8 3.4.8 1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.7-1-2.7-4.1zM13.9 4.9c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.1 1.1.1 2.3-.6 3-1.5z"/></svg>
+            <span><small data-appstore-label>곧 출시돼요</small><b>App Store</b></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Haram &amp; Harang</span>
+    <nav aria-label="하단 메뉴">
+      <a href="support.html">고객지원</a>
+      <a href="../defect_checker_privacy_policy.html">개인정보 처리방침</a>
+      <a href="mailto:black924.menew@gmail.com">문의 메일</a>
+    </nav>
+    <p class="disclaimer">셀프사전점검의 기록은 참고용이며 하자 여부의 판정을 보증하지 않습니다. 화면 속 단지명과 하자 사진은 예시입니다.</p>
+  </div>
+</footer>
+
+<script>
+// App Store 출시 후 아래에 주소만 넣으면 두 버튼이 모두 활성화돼요.
+// 예: "https://apps.apple.com/kr/app/id0000000000"
+var APP_STORE_URL = "";
+if (APP_STORE_URL) {
+  document.querySelectorAll('[data-appstore]').forEach(function (a) {
+    a.href = APP_STORE_URL; a.target = '_blank'; a.rel = 'noopener'; a.removeAttribute('aria-disabled');
+  });
+  document.querySelectorAll('[data-appstore-label]').forEach(function (s) { s.textContent = '지금 받기'; });
+}
+
+var nav = document.getElementById('nav');
+addEventListener('scroll', function () { nav.classList.toggle('scrolled', scrollY > 8); }, { passive: true });
+
+var items = document.querySelectorAll('.reveal');
+if ('IntersectionObserver' in window) {
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { rootMargin: '0px 0px -8% 0px' });
+  items.forEach(function (el) { io.observe(el); });
+} else {
+  items.forEach(function (el) { el.classList.add('in'); });
+}
+
+var rail = document.getElementById('rail');
+document.querySelectorAll('.g-btns button').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var step = rail.querySelector('.shot').offsetWidth + 20;
+    rail.scrollBy({ left: step * 2 * Number(b.dataset.dir), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  });
+});
+</script>
+</body>
+</html>
