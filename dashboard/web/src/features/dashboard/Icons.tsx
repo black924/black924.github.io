@@ -32,3 +32,14 @@ export function InfoIcon() {
     </svg>
   );
 }
+
+export function RefreshIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M20 11a8 8 0 0 0-14.6-4.5L4 8" />
+      <path d="M4 4v4h4" />
+      <path d="M4 13a8 8 0 0 0 14.6 4.5L20 16" />
+      <path d="M20 20v-4h-4" />
+    </svg>
+  );
+}

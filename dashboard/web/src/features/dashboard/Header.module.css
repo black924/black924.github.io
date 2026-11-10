@@ -155,3 +155,35 @@
   .email { display: none; }
   .account { padding-right: 5px; }
 }
+
+.refreshBtn {
+  width: 38px;
+  height: 38px;
+  margin-left: 2px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text-3);
+  cursor: pointer;
+}
+
+.refreshBtn:hover:not(:disabled) {
+  color: var(--text);
+  border-color: #2a303b;
+}
+
+.refreshBtn:disabled { cursor: progress; }
+
+.spinning svg { animation: spin 0.9s linear infinite; }
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinning svg { animation: none; opacity: 0.6; }
+}
+
+.syncError { color: var(--down); }

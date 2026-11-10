@@ -2,34 +2,24 @@ import { useAuth } from '../../app/auth';
 import { LogoMark } from '../dashboard/Icons';
 import s from './LoginPage.module.css';
 
-const SOURCES = [
-  { color: 'var(--ad)', name: 'AdMob 미디에이션', desc: 'AdMob 네트워크 · Unity Ads' },
-  { color: 'var(--inapp)', name: 'Google Play', desc: '인앱 · 구독 · 유료앱' },
-  { color: 'var(--ad-light)', name: 'App Store', desc: '인앱 · 구독 · 유료앱' },
-];
-
 export function LoginPage({ denied, error }: { denied: boolean; error?: string }) {
   const { signIn, busy } = useAuth();
 
   return (
     <main className={s.page}>
       <section className={`card ${s.card}`} aria-labelledby="login-title">
-        <LogoMark size={48} />
-        <h1 id="login-title" className={s.title}>
-          모든 앱 수익을
-          <br />한 화면에서.
-        </h1>
-        <p className={s.lead}>HNH Labs 수익 대시보드</p>
+        <div className={s.brandRow}>
+          <LogoMark size={40} />
+          <span className={s.badge}>
+            <ShieldIcon />
+            ADMIN · RESTRICTED
+          </span>
+        </div>
 
-        <ul className={s.sources}>
-          {SOURCES.map((src) => (
-            <li key={src.name}>
-              <span className={s.dot} style={{ background: src.color }} aria-hidden />
-              <span className={s.srcName}>{src.name}</span>
-              <span className={s.srcDesc}>{src.desc}</span>
-            </li>
-          ))}
-        </ul>
+        <h1 id="login-title" className={s.title}>
+          HNH Labs 관리자 콘솔
+        </h1>
+        <p className={s.lead}>승인된 관리자 계정으로 로그인하세요.</p>
 
         {(denied || error) && (
           <p className={s.error} role="alert">
@@ -39,12 +29,33 @@ export function LoginPage({ denied, error }: { denied: boolean; error?: string }
 
         <button type="button" className={s.google} onClick={signIn} disabled={busy} aria-busy={busy}>
           <GoogleG />
-          {busy ? '로그인 창을 확인해 주세요…' : 'Google 계정으로 계속하기'}
+          {busy ? '로그인 창을 확인해 주세요…' : 'Google 계정으로 로그인'}
         </button>
 
-        <p className={s.note}>허용된 본인 계정만 접속할 수 있으며, 리포트 읽기 권한만 요청합니다.</p>
+        <p className={s.note}>
+          <LockIcon />
+          <span>이 페이지는 관리자 전용입니다. 승인되지 않은 계정은 접속할 수 없습니다.</span>
+        </p>
       </section>
+      <p className={s.footer}>© HNH Labs</p>
     </main>
+  );
+}
+
+function ShieldIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M12 3l7 3v6c0 4.2-2.9 7.7-7 9-4.1-1.3-7-4.8-7-9V6l7-3z" />
+    </svg>
+  );
+}
+
+function LockIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <rect x="5" y="11" width="14" height="10" rx="2" />
+      <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+    </svg>
   );
 }
 

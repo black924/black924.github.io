@@ -1,4 +1,5 @@
-import { onRequest } from 'firebase-functions/v2/https';
+import { onCall, onRequest } from 'firebase-functions/v2/https';
+import { handleRequestSync } from './requestSync';
 import { onMessagePublished } from 'firebase-functions/v2/pubsub';
 import { logger } from 'firebase-functions';
 import { storeTodayRates } from './fx/rates';
@@ -45,3 +46,8 @@ export const syncFx = onSchedule({ schedule: 'every day 07:00', timeZone: 'Asia/
   const rates = await storeTodayRates();
   logger.info('fx stored', { currencies: Object.keys(rates).length });
 });
+
+/** Header refresh button: allowlisted users can trigger an AdMob sync right away. */
+export const requestSync = onCall({ region: REGION, secrets: admobSecrets, timeoutSeconds: 120, maxInstances: 2 }, (req) =>
+  handleRequestSync(req, { clientId: ADMOB_OAUTH_CLIENT_ID.value(), clientSecret: ADMOB_OAUTH_CLIENT_SECRET.value() }),
+);

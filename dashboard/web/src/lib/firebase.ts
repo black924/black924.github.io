@@ -1,6 +1,7 @@
 import { initializeApp, type FirebaseApp } from 'firebase/app';
 import { connectAuthEmulator, getAuth, type Auth } from 'firebase/auth';
 import { connectFirestoreEmulator, getFirestore, type Firestore } from 'firebase/firestore';
+import { getFunctions, type Functions } from 'firebase/functions';
 
 const env = import.meta.env;
 const useEmulators = env.VITE_USE_EMULATORS === 'true';
@@ -39,4 +40,13 @@ export function firebaseAuth(): Auth {
 export function firestore(): Firestore {
   init();
   return db!;
+}
+
+let functions: Functions | undefined;
+
+/** Callable functions live in Seoul, next to the rest of the backend. */
+export function firebaseFunctions(): Functions {
+  init();
+  functions ??= getFunctions(app!, 'asia-northeast3');
+  return functions;
 }

@@ -1,6 +1,8 @@
+import { useEffect, useRef, useState } from 'react';
 import { hhmm, kstLongDate } from '../../lib/kst';
+import { requestSync } from '../../data/requestSync';
 import type { Period } from '../../data/types';
-import { LogoMark, LogoutIcon } from './Icons';
+import { LogoMark, LogoutIcon, RefreshIcon } from './Icons';
 import s from './Header.module.css';
 
 const PERIODS: { id: Period; label: string }[] = [
@@ -20,6 +22,7 @@ interface Props {
 }
 
 export function Header({ now, syncedAt, period, onPeriod, email, photoURL, onLogout }: Props) {
+  const sync = useManualSync();
   return (
     <header className={s.header}>
       <div className={s.brand}>
@@ -34,13 +37,26 @@ export function Header({ now, syncedAt, period, onPeriod, email, photoURL, onLog
         <span className={s.live}>
           <span className={s.liveDot} aria-hidden />
           <span className={s.liveLabel}>LIVE</span>
-          {syncedAt ? (
-            <>
-              <span className="num">{hhmm(syncedAt)}</span> 동기화
-            </>
-          ) : (
-            '동기화 전'
-          )}
+          <span aria-live="polite" className={sync.tone === 'error' ? s.syncError : undefined}>
+            {sync.text ??
+              (syncedAt ? (
+                <>
+                  <span className="num">{hhmm(syncedAt)}</span> 동기화
+                </>
+              ) : (
+                '동기화 전'
+              ))}
+          </span>
+          <button
+            type="button"
+            className={`${s.refreshBtn} ${sync.running ? s.spinning : ''}`}
+            aria-label="지금 동기화"
+            title="지금 동기화"
+            onClick={sync.run}
+            disabled={sync.running}
+          >
+            <RefreshIcon />
+          </button>
         </span>
 
         <div className={s.toggle} role="group" aria-label="기간 선택">
@@ -73,4 +89,36 @@ export function Header({ now, syncedAt, period, onPeriod, email, photoURL, onLog
       </div>
     </header>
   );
+}
+
+/** Runs requestSync and shows a short status in place of "HH:MM 동기화" for a few seconds. */
+function useManualSync() {
+  const [running, setRunning] = useState(false);
+  const [msg, setMsg] = useState<{ text: string; tone: 'ok' | 'error' } | null>(null);
+  const timer = useRef<number>();
+  useEffect(() => () => window.clearTimeout(timer.current), []);
+
+  const flash = (text: string, tone: 'ok' | 'error') => {
+    setMsg({ text, tone });
+    window.clearTimeout(timer.current);
+    timer.current = window.setTimeout(() => setMsg(null), 4000);
+  };
+
+  const run = async () => {
+    if (running) return;
+    setRunning(true);
+    setMsg({ text: '갱신 중…', tone: 'ok' });
+    try {
+      const r = await requestSync();
+      if (r.status === 'failed') flash(r.message ?? '갱신 실패', 'error');
+      else if (r.status === 'recent') flash('방금 갱신했습니다', 'ok');
+      else flash('갱신 완료', 'ok');
+    } catch {
+      flash('갱신 실패', 'error');
+    } finally {
+      setRunning(false);
+    }
+  };
+
+  return { running, run, text: msg?.text ?? null, tone: msg?.tone ?? 'ok' };
 }
