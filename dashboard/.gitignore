@@ -1,0 +1,7 @@
+node_modules
+.emulator-data
+*.log
+.env
+.env.*
+!.env.example
+.omc

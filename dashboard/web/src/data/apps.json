@@ -1,0 +1,56 @@
+[
+  {
+    "id": "noiselog",
+    "name": "층소일지",
+    "platform": [
+      "android",
+      "ios"
+    ],
+    "iconColor": "#4F7DFF",
+    "playPackage": "com.menew.noiseanalyzer",
+    "appStoreAppId": "6823575453",
+    "iconUrl": "https://hnh-labs.com/assets/apps/noiselog.png"
+  },
+  {
+    "id": "defectchecker",
+    "name": "셀프사전점검",
+    "platform": [
+      "android",
+      "ios"
+    ],
+    "iconColor": "#3DD6C4",
+    "playPackage": "com.hnh.defectchecker",
+    "appStoreAppId": "6830927493",
+    "iconUrl": "https://hnh-labs.com/assets/apps/defectchecker.png"
+  },
+  {
+    "id": "breeze",
+    "name": "Breeze",
+    "platform": [
+      "android"
+    ],
+    "iconColor": "#8EAEFF",
+    "playPackage": "com.hnh.breeze",
+    "iconUrl": "https://hnh-labs.com/assets/apps/breeze.png"
+  },
+  {
+    "id": "remit",
+    "name": "Remit",
+    "platform": [
+      "android"
+    ],
+    "iconColor": "#FFB547",
+    "playPackage": "com.hnh.timer",
+    "iconUrl": "https://hnh-labs.com/assets/apps/remit.png"
+  },
+  {
+    "id": "schoolit",
+    "name": "스쿨릿",
+    "platform": [
+      "android"
+    ],
+    "iconColor": "#FF9F7A",
+    "playPackage": "com.hnh.timetable",
+    "iconUrl": "https://hnh-labs.com/assets/apps/schoolit.png"
+  }
+]

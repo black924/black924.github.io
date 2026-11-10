@@ -1,0 +1,206 @@
+.wrap {
+  margin-top: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.readout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 16px;
+  min-height: 44px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  background: var(--surface-sunk);
+  border: 1px solid var(--divider);
+  border-radius: var(--radius-box);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.readoutTitle {
+  font-weight: 700;
+  color: var(--text-2);
+}
+
+.partial {
+  font-weight: 400;
+  color: var(--text-faint);
+}
+
+.readoutItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.readoutItem b {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.swatch {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+}
+
+/* Chart grows to fill the card; x labels take the bottom 26px. */
+.chart {
+  position: relative;
+  flex: 1;
+  min-height: 240px;
+}
+
+.yAxis {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 26px;
+  width: 38px;
+  font-size: 11px;
+  color: var(--text-faint);
+}
+
+.yAxis span {
+  position: absolute;
+  right: 0;
+  transform: translateY(-50%);
+  line-height: 14px;
+}
+
+.plot {
+  position: absolute;
+  inset: 0 0 0 48px;
+}
+
+.grid {
+  position: absolute;
+  inset: 0 0 26px 0;
+  pointer-events: none;
+}
+
+.grid span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1px dashed var(--border);
+}
+
+.bars {
+  position: relative;
+  display: flex;
+  height: 100%;
+}
+
+.col {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  cursor: default;
+  outline: none;
+}
+
+.col:focus-visible .bar {
+  outline: 2px solid var(--ad-light);
+  outline-offset: 2px;
+}
+
+.slot {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+/* Comparison period (yesterday / previous 7 days / last month), drawn left of the current bar. */
+.prevBar {
+  flex: 0 0 38%;
+  min-height: 0;
+  border-radius: 5px 5px 2px 2px;
+  background: var(--prev);
+  transition: height 0.3s ease, opacity 0.15s;
+}
+
+.bar {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 2px;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 2px;
+  border-radius: 7px 7px 3px 3px;
+  overflow: hidden;
+  transition: height 0.3s ease;
+}
+
+.bar span {
+  flex-basis: 0;
+  min-height: 1px;
+  transition: opacity 0.15s;
+}
+
+.dim .bar span,
+.dim .prevBar {
+  opacity: 0.42;
+}
+
+.barPartial span {
+  background-image: repeating-linear-gradient(135deg, rgba(7, 8, 11, 0.28) 0 3px, transparent 3px 7px) !important;
+  background-blend-mode: normal;
+}
+
+.xLabel {
+  height: 18px;
+  line-height: 18px;
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--text-faint);
+  text-align: center;
+  white-space: nowrap;
+  overflow: visible;
+}
+
+.xHidden {
+  visibility: hidden;
+}
+
+.empty {
+  position: absolute;
+  inset: 0 0 26px 0;
+  margin: 0;
+  display: grid;
+  place-items: center;
+  color: var(--text-faint);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.swatchPrev { background: var(--prev); }
+
+.up { color: var(--up); display: inline-flex; gap: 2px; }
+.down { color: var(--down); display: inline-flex; gap: 2px; }
+
+.legend {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin: 14px 0 0;
+  padding: 0;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legendNote { color: var(--text-faint); }

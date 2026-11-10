@@ -1,0 +1,20 @@
+rules_version = '2';
+
+// Read: only verified emails listed in config/app.allowedEmails.
+// Write: never from clients. Cloud Functions write with the Admin SDK, which bypasses rules.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isOwner() {
+      return request.auth != null
+        && request.auth.token.email_verified == true
+        && request.auth.token.email is string
+        && request.auth.token.email.lower() in
+             get(/databases/$(database)/documents/config/app).data.allowedEmails;
+    }
+
+    match /{document=**} {
+      allow read: if isOwner();
+      allow write: if false;
+    }
+  }
+}
