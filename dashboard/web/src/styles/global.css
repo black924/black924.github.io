@@ -26,9 +26,22 @@ button {
   color: inherit;
 }
 
+/* No blue tap flash or focus box on click/touch; keyboard focus still gets an outline. */
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
 :focus-visible {
   outline: 2px solid var(--ad-light);
   outline-offset: 2px;
+}
+
+@media (hover: none) {
+  :focus-visible { outline: none; }
 }
 
 .num {

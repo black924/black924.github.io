@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { hhmm, kstLongDate } from '../../lib/kst';
 import { requestSync } from '../../data/requestSync';
 import type { Period } from '../../data/types';
-import { LogoMark, LogoutIcon, RefreshIcon } from './Icons';
+import { ChevronIcon, LogoMark, LogoutIcon, RefreshIcon } from './Icons';
 import s from './Header.module.css';
 
 const PERIODS: { id: Period; label: string }[] = [
@@ -68,11 +68,24 @@ export function Header({ now, syncedAt, period, onPeriod, email, photoURL, onLog
   );
 }
 
-/** LIVE dot + last sync time + manual refresh. On phones only the dot and the button are visible. */
+/**
+ * LIVE dot + last sync time + manual refresh. On phones it floats under the fixed header, on the
+ * right, and can be collapsed to just the expand and refresh buttons.
+ */
 function LiveSync({ syncedAt }: { syncedAt: Date | null }) {
   const sync = useManualSync();
+  const [collapsed, setCollapsed] = useCollapsed();
   return (
-    <span className={s.live}>
+    <span className={`${s.live} ${collapsed ? s.collapsed : ''}`}>
+      <button
+        type="button"
+        className={s.collapseBtn}
+        aria-label={collapsed ? '동기화 정보 펼치기' : '동기화 정보 접기'}
+        aria-expanded={!collapsed}
+        onClick={() => setCollapsed(!collapsed)}
+      >
+        <ChevronIcon />
+      </button>
       <span className={s.liveDot} aria-hidden />
       <span className={s.liveLabel}>LIVE</span>
       <span aria-live="polite" className={`${s.syncText} ${sync.tone === 'error' ? s.syncError : ''}`}>
@@ -97,6 +110,28 @@ function LiveSync({ syncedAt }: { syncedAt: Date | null }) {
       </button>
     </span>
   );
+}
+
+const COLLAPSE_KEY = 'hnh.liveSync.collapsed';
+
+/** Collapsed state of the floating sync pill, remembered per browser when storage is available. */
+function useCollapsed(): [boolean, (v: boolean) => void] {
+  const [collapsed, setState] = useState(() => {
+    try {
+      return localStorage.getItem(COLLAPSE_KEY) === '1';
+    } catch {
+      return false;
+    }
+  });
+  const set = (v: boolean) => {
+    setState(v);
+    try {
+      localStorage.setItem(COLLAPSE_KEY, v ? '1' : '0');
+    } catch {
+      // Storage blocked: keep the in-memory state only.
+    }
+  };
+  return [collapsed, set];
 }
 
 /** Runs requestSync and shows a short status in place of "HH:MM 동기화" for a few seconds. */

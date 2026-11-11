@@ -15,6 +15,7 @@ const BASE: Record<string, { ad: number; inapp: number; paid: number; googleShar
   breeze: { ad: 46_000, inapp: 8_000, paid: 0, googleShare: 1 },
   remit: { ad: 41_000, inapp: 26_000, paid: 0, googleShare: 1 },
   schoolit: { ad: 63_000, inapp: 5_000, paid: 0, googleShare: 1 },
+  bannyeo: { ad: 22_000, inapp: 0, paid: 0, googleShare: 1 },
 };
 
 // Sample products for the fake payment feed.
@@ -144,7 +145,8 @@ function makeDaily(appId: string, date: string, hoursDone: number, minute: numbe
 }
 
 export function makeTransaction(id: string, at: Date, refund = false): Transaction {
-  const app = SEED_APPS[hash(`${id}|app`) % SEED_APPS.length];
+  const payingApps = SEED_APPS.filter((a) => PRODUCTS[a.id]);
+  const app = payingApps[hash(`${id}|app`) % payingApps.length];
   const products = PRODUCTS[app.id];
   const product = products[hash(`${id}|p`) % products.length];
   const store: Store = app.platform.includes('ios') && rand(`${id}|s`) > BASE[app.id].googleShare ? 'apple' : 'google';

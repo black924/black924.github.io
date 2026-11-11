@@ -105,9 +105,11 @@
   outline: none;
 }
 
-.col:focus-visible .bar {
-  outline: 2px solid var(--ad-light);
-  outline-offset: 2px;
+@media (hover: hover) {
+  .col:focus-visible .bar {
+    outline: 2px solid var(--ad-light);
+    outline-offset: 2px;
+  }
 }
 
 .slot {

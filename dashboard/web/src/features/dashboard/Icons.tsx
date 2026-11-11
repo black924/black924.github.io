@@ -43,3 +43,12 @@ export function RefreshIcon() {
     </svg>
   );
 }
+
+/** Points right; rotate with CSS for other directions. */
+export function ChevronIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M9 6l6 6-6 6" />
+    </svg>
+  );
+}

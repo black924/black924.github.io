@@ -78,23 +78,36 @@ export interface OurApp {
   id: string;
   playPackage?: string;
   appStoreAppId?: string;
+  admobAppIds?: string[]; // set in apps.json for AdMob apps not linked to a store yet
 }
 
-/** Maps AdMob app IDs to our apps/{id} by store ID. Unmatched AdMob apps get a stable synthetic id. */
+/** Id used for an AdMob app that matches none of ours. */
+export const syntheticAppId = (admobAppId: string) => `admob_${admobAppId.split('~')[1] ?? admobAppId}`;
+export const isSyntheticAppId = (id: string) => id.startsWith('admob_');
+
+/**
+ * Maps AdMob app IDs to our apps/{id}: by store ID first, then by an AdMob app ID listed on one of
+ * our apps (for apps not linked to a store yet). Unmatched AdMob apps get a stable synthetic id.
+ */
 export function mapApps(admobApps: AdmobApp[], ours: OurApp[]) {
   const byStoreId = new Map<string, string>();
   for (const a of ours) {
     if (a.playPackage) byStoreId.set(a.playPackage, a.id);
     if (a.appStoreAppId) byStoreId.set(a.appStoreAppId, a.id);
   }
+  const byAdmobId = new Map<string, string>();
+  for (const a of ours) {
+    if (isSyntheticAppId(a.id)) continue;
+    for (const id of a.admobAppIds ?? []) byAdmobId.set(id, a.id);
+  }
   const map = new Map<string, string>();
   const unmatched: (AdmobApp & { ourId: string })[] = [];
   for (const app of admobApps) {
-    const ourId = app.storeId ? byStoreId.get(app.storeId) : undefined;
+    const ourId = (app.storeId && byStoreId.get(app.storeId)) || byAdmobId.get(app.appId);
     if (ourId) {
       map.set(app.appId, ourId);
     } else {
-      const synthetic = `admob_${app.appId.split('~')[1] ?? app.appId}`;
+      const synthetic = syntheticAppId(app.appId);
       map.set(app.appId, synthetic);
       unmatched.push({ ...app, ourId: synthetic });
     }
@@ -113,7 +126,7 @@ export interface DailyAd {
 export function aggregateDaily(rows: ReportRow[], appMap: Map<string, string>): Map<string, DailyAd> {
   const out = new Map<string, DailyAd>();
   for (const r of rows) {
-    const appId = appMap.get(r.admobAppId) ?? `admob_${r.admobAppId.split('~')[1] ?? r.admobAppId}`;
+    const appId = appMap.get(r.admobAppId) ?? syntheticAppId(r.admobAppId);
     const key = `${r.date}_${appId}`;
     const cur = out.get(key) ?? { date: r.date, appId, totalMicros: 0, bySource: { admob: 0, unity: 0, other: 0 } };
     cur.totalMicros += r.micros;
@@ -208,7 +221,7 @@ export function groupAdUnits(
 ): Map<string, Record<string, AdUnitStats>> {
   const out = new Map<string, Record<string, AdUnitStats>>();
   for (const r of rows) {
-    const appId = appMap.get(r.admobAppId) ?? `admob_${r.admobAppId.split('~')[1] ?? r.admobAppId}`;
+    const appId = appMap.get(r.admobAppId) ?? syntheticAppId(r.admobAppId);
     const id = `${r.date}_${appId}`;
     const units = out.get(id) ?? {};
     const key = adUnitKey(r.adUnitId);

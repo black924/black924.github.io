@@ -52,5 +52,17 @@
     "iconColor": "#FF9F7A",
     "playPackage": "com.hnh.timetable",
     "iconUrl": "https://hnh-labs.com/assets/apps/schoolit.png"
+  },
+  {
+    "id": "bannyeo",
+    "name": "오늘도 반려",
+    "platform": [
+      "android"
+    ],
+    "iconColor": "#FF7A7A",
+    "admobAppIds": [
+      "ca-app-pub-3172089365303130~5308340956"
+    ],
+    "iconUrl": "https://hnh-labs.com/assets/apps/bannyeo.png"
   }
 ]

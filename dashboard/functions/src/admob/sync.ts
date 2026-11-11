@@ -5,7 +5,7 @@ import { addDays, historyStart, hourKey, kstDateKey, kstParts, toDateParts } fro
 import { ADMOB_REFRESH_TOKEN, readSecret } from '../shared/secrets';
 import { recordSyncError, recordSyncOk } from '../shared/sync';
 import { AD_UNIT_SPEC, AdmobAuthError, accessTokenFromRefresh, generateMediationReport, getAccount, listApps } from './api';
-import { aggregateDaily, groupAdUnits, mapApps, toUnitPlatform, parseAdUnitReport, parseMediationReport, planHourlyAd, type HourlyBase, type OurApp } from './report';
+import { aggregateDaily, groupAdUnits, mapApps, syntheticAppId, toUnitPlatform, parseAdUnitReport, parseMediationReport, planHourlyAd, type HourlyBase, type OurApp } from './report';
 
 const MSG_NOT_CONNECTED = 'AdMob 계정이 연결되지 않았습니다. 연결 버튼을 눌러 주세요.';
 const MSG_AUTH = 'AdMob 연결이 만료되었거나 권한이 없습니다. 다시 연결해 주세요.';
@@ -50,8 +50,30 @@ export async function runAdmobSync(creds: AdmobCreds, now = new Date()): Promise
     const report = parseMediationReport(body);
     if (report.currency && report.currency !== 'KRW') throw new Error(`Report currency ${report.currency}, expected KRW`);
 
-    const ours: OurApp[] = appsSnap.docs.map((d) => ({ id: d.id, playPackage: d.get('playPackage'), appStoreAppId: d.get('appStoreAppId') }));
+    const ours: OurApp[] = appsSnap.docs.map((d) => ({
+      id: d.id,
+      playPackage: d.get('playPackage'),
+      appStoreAppId: d.get('appStoreAppId'),
+      admobAppIds: d.get('admobAppIds'),
+    }));
     const { map, unmatched } = mapApps(admobApps, ours);
+
+    // An AdMob app that used to be unmatched now belongs to one of ours: drop its placeholder app
+    // and daily docs, then redo the whole window so the history moves to the real app.
+    const existingApps = new Set(appsSnap.docs.map((d) => d.id));
+    const stale = [...map].filter(([admobId, ourId]) => ourId !== syntheticAppId(admobId) && existingApps.has(syntheticAppId(admobId)));
+    if (stale.length) {
+      for (const [admobId] of stale) {
+        const id = syntheticAppId(admobId);
+        const docs = await db.collection('daily').where('appId', '==', id).get();
+        const w = db.bulkWriter();
+        docs.docs.forEach((d) => w.delete(d.ref));
+        w.delete(db.doc(`apps/${id}`));
+        await w.close();
+        logger.info('admob placeholder app merged', { id, dailyDocs: docs.size });
+      }
+      if (!full) return runAdmobSync({ ...creds, refreshToken, full: true }, now);
+    }
     const daily = aggregateDaily(report.rows, map);
     const platformByAdmobApp = new Map(admobApps.map((a) => [a.appId, toUnitPlatform(a.platform)]));
     const units = groupAdUnits(parseAdUnitReport(unitBody), map, platformByAdmobApp);

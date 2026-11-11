@@ -87,6 +87,19 @@ describe('mapApps + aggregateDaily', () => {
   });
 });
 
+describe('mapApps by AdMob app id', () => {
+  it('matches an app with no store link through admobAppIds, ignoring placeholder apps', () => {
+    const admobApps = [{ appId: 'ca-app-pub-1~444', platform: 'ANDROID', name: '오늘도반려' }];
+    const ours = [
+      { id: 'admob_444', admobAppIds: ['ca-app-pub-1~444'] },
+      { id: 'bannyeo', admobAppIds: ['ca-app-pub-1~444'] },
+    ];
+    const { map, unmatched } = mapApps(admobApps, ours);
+    expect(map.get('ca-app-pub-1~444')).toBe('bannyeo');
+    expect(unmatched).toEqual([]);
+  });
+});
+
 describe('planHourlyAd', () => {
   it('spreads the first total of the day over elapsed hours, summing exactly', () => {
     const { increments, base } = planHourlyAd(undefined, '2026-11-10', 3, 1001);

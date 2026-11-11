@@ -188,15 +188,17 @@
 
 .syncError { color: var(--down); }
 
-/* Phones: two compact rows in the fixed header (brand + live + account, then the period toggle).
-   Live shows only the dot and the refresh button; the text stays for screen readers. */
+.collapseBtn { display: none; }
+
+/* Phones: two compact rows in the fixed header (brand + account, then the period toggle).
+   Live floats under the header on the right as a collapsible pill. */
 @media (max-width: 640px) {
   .header {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto auto auto;
+    grid-template-columns: minmax(0, 1fr) auto auto;
     grid-template-areas:
-      'brand live account logout'
-      'toggle toggle toggle toggle';
+      'brand account logout'
+      'toggle toggle toggle';
     gap: 8px;
   }
   .controls { display: contents; }
@@ -204,9 +206,43 @@
   .brand svg { width: 30px; height: 30px; }
   .title { font-size: 16px; }
   .date { font-size: 11px; }
-  .live { grid-area: live; margin: 0; gap: 8px; }
+  .account { grid-area: account; min-height: 38px; padding: 0 3px; border: 0; background: transparent; }
+  .iconBtn { grid-area: logout; width: 38px; height: 38px; }
+  .toggle { grid-area: toggle; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .toggleBtn { min-height: 36px; padding: 0 8px; }
+
+  /* Positioned against the sticky header bar, so it follows the header's height. */
+  .live {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 16px;
+    margin: 0;
+    gap: 8px;
+    padding: 3px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    background: rgba(15, 18, 24, 0.82);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  }
   .liveLabel { display: none; }
-  .syncText {
+  .collapseBtn {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text-3);
+    cursor: pointer;
+  }
+  .collapseBtn svg { transition: transform 0.2s; }
+  .refreshBtn { margin-left: 0; }
+  .collapsed .collapseBtn svg { transform: rotate(180deg); }
+  .collapsed .liveDot { display: none; }
+  .collapsed .syncText {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -214,8 +250,4 @@
     clip: rect(0 0 0 0);
     white-space: nowrap;
   }
-  .account { grid-area: account; min-height: 38px; padding: 0 3px; border: 0; background: transparent; }
-  .iconBtn { grid-area: logout; width: 38px; height: 38px; }
-  .toggle { grid-area: toggle; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .toggleBtn { min-height: 36px; padding: 0 8px; }
 }
