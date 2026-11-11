@@ -103,8 +103,8 @@ export async function runAdmobSync(creds: AdmobCreds, now = new Date()): Promise
     }
     await batch.close();
 
-    // Keep only today and yesterday in hourly (CLAUDE.md §4).
-    const old = await db.collection('hourly').where('date', '<', yesterday).get();
+    // Keep today, yesterday and the day before in hourly (CLAUDE.md §4).
+    const old = await db.collection('hourly').where('date', '<', addDays(today, -2)).get();
     if (!old.empty) {
       const del = db.batch();
       old.docs.forEach((d) => del.delete(d.ref));

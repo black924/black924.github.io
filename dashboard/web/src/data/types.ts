@@ -1,6 +1,6 @@
 // Money values are integer KRW micros unless the field says otherwise.
 
-export type Period = 'today' | '7d' | 'month';
+export type Period = 'today' | 'yesterday' | '7d' | 'month';
 export type Platform = 'android' | 'ios';
 export type Store = 'google' | 'apple';
 export type DataStatus = 'estimated' | 'final';

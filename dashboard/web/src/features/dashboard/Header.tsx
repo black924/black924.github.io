@@ -7,6 +7,7 @@ import s from './Header.module.css';
 
 const PERIODS: { id: Period; label: string }[] = [
   { id: 'today', label: '오늘' },
+  { id: 'yesterday', label: '어제' },
   { id: '7d', label: '7일' },
   { id: 'month', label: '이번 달' },
 ];
@@ -22,7 +23,6 @@ interface Props {
 }
 
 export function Header({ now, syncedAt, period, onPeriod, email, photoURL, onLogout }: Props) {
-  const sync = useManualSync();
   return (
     <header className={s.header}>
       <div className={s.brand}>
@@ -34,30 +34,7 @@ export function Header({ now, syncedAt, period, onPeriod, email, photoURL, onLog
       </div>
 
       <div className={s.controls}>
-        <span className={s.live}>
-          <span className={s.liveDot} aria-hidden />
-          <span className={s.liveLabel}>LIVE</span>
-          <span aria-live="polite" className={sync.tone === 'error' ? s.syncError : undefined}>
-            {sync.text ??
-              (syncedAt ? (
-                <>
-                  <span className="num">{hhmm(syncedAt)}</span> 동기화
-                </>
-              ) : (
-                '동기화 전'
-              ))}
-          </span>
-          <button
-            type="button"
-            className={`${s.refreshBtn} ${sync.running ? s.spinning : ''}`}
-            aria-label="지금 동기화"
-            title="지금 동기화"
-            onClick={sync.run}
-            disabled={sync.running}
-          >
-            <RefreshIcon />
-          </button>
-        </span>
+        <LiveSync syncedAt={syncedAt} />
 
         <div className={s.toggle} role="group" aria-label="기간 선택">
           {PERIODS.map((p) => (
@@ -88,6 +65,37 @@ export function Header({ now, syncedAt, period, onPeriod, email, photoURL, onLog
         </button>
       </div>
     </header>
+  );
+}
+
+/** LIVE dot + last sync time + manual refresh. On phones only the dot and the button are visible. */
+function LiveSync({ syncedAt }: { syncedAt: Date | null }) {
+  const sync = useManualSync();
+  return (
+    <span className={s.live}>
+      <span className={s.liveDot} aria-hidden />
+      <span className={s.liveLabel}>LIVE</span>
+      <span aria-live="polite" className={`${s.syncText} ${sync.tone === 'error' ? s.syncError : ''}`}>
+        {sync.text ??
+          (syncedAt ? (
+            <>
+              <span className="num">{hhmm(syncedAt)}</span> 동기화
+            </>
+          ) : (
+            '동기화 전'
+          ))}
+      </span>
+      <button
+        type="button"
+        className={`${s.refreshBtn} ${sync.running ? s.spinning : ''}`}
+        aria-label="지금 동기화"
+        title="지금 동기화"
+        onClick={sync.run}
+        disabled={sync.running}
+      >
+        <RefreshIcon />
+      </button>
+    </span>
   );
 }
 

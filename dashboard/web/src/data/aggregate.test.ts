@@ -156,6 +156,24 @@ describe('comparison bars and app detail', () => {
     expect(b[0]).toMatchObject({ key: '2026-11-04', prev: 3 * M, prevTitle: '10/28' });
   });
 
+  it('shows yesterday as a full hourly day compared with the day before', () => {
+    const r = raw({
+      daily: [daily('2026-11-09', 'a', { ad: 10, inapp: 2 }), daily('2026-11-08', 'a', { ad: 8 }), daily('2026-11-10', 'a', { ad: 99 }, 'estimated')],
+      hourly: [
+        { date: '2026-11-09', hour: 20, ad: 4 * M, inapp: 0, paid: 0 },
+        { date: '2026-11-08', hour: 20, ad: 3 * M, inapp: 0, paid: 0 },
+      ],
+    });
+    const d = buildDashboard(r, 'yesterday', NOW);
+    expect(d.totals).toEqual({ ad: 10 * M, inapp: 2 * M, paid: 0 });
+    expect(d.previousTotal).toBe(8 * M); // full day, no proration
+    expect(d.compareLabel).toBe('그제 대비');
+    expect(d.hasEstimated).toBe(false);
+    expect(d.buckets).toHaveLength(24);
+    expect(d.buckets.some((b) => b.future || b.partial)).toBe(false);
+    expect(d.buckets[20]).toMatchObject({ key: '2026-11-09_20', ad: 4 * M, prev: 3 * M, prevTitle: '그제 20:00–21:00', status: 'final' });
+  });
+
   it('has no grey bars for today when yesterday has no hourly docs', () => {
     const b = buildDashboard(raw({}), 'today', NOW).buckets;
     expect(b.every((x) => x.prev === null)).toBe(true);

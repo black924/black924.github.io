@@ -193,7 +193,7 @@ export function generateSeed(now: Date): RawData {
   }
 
   const hourly: HourlyDoc[] = [];
-  for (const [date, last] of [[yesterday, 23], [today, hour]] as const) {
+  for (const [date, last] of [[addDays(today, -2), 23], [yesterday, 23], [today, hour]] as const) {
     for (let h = 0; h <= last; h++) {
       const doc: HourlyDoc = { date, hour: h, ad: 0, inapp: 0, paid: 0 };
       for (const app of SEED_APPS) {

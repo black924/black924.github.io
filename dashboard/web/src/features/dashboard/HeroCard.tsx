@@ -3,7 +3,7 @@ import type { DashboardData } from '../../data/types';
 import { StackedBars } from './StackedBars';
 import s from './HeroCard.module.css';
 
-const PERIOD_LABEL = { today: '오늘 총수익', '7d': '최근 7일 총수익', month: '이번 달 총수익' } as const;
+const PERIOD_LABEL = { today: '오늘 총수익', yesterday: '어제 총수익', '7d': '최근 7일 총수익', month: '이번 달 총수익' } as const;
 
 export function HeroCard({ data }: { data: DashboardData }) {
   const { totals, previousTotal, period, buckets, hasEstimated } = data;
@@ -52,7 +52,7 @@ export function HeroCard({ data }: { data: DashboardData }) {
         </ul>
       </div>
 
-      <StackedBars buckets={buckets} labelEvery={period === 'today' ? 3 : period === '7d' ? 1 : 5} prevLabel={data.prevLabel} />
+      <StackedBars buckets={buckets} labelEvery={period === 'today' || period === 'yesterday' ? 3 : period === '7d' ? 1 : 5} prevLabel={data.prevLabel} />
     </section>
   );
 }

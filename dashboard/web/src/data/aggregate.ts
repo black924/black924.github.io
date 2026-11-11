@@ -6,6 +6,14 @@ import type {
   StoreSummary, SyncInfo, SyncSource,
 } from './types';
 
+const COMPARE_LABEL: Record<Period, string> = {
+  today: '어제 같은 시간 대비',
+  yesterday: '그제 대비',
+  '7d': '직전 7일 대비',
+  month: '지난달 같은 기간 대비',
+};
+const PREV_LABEL: Record<Period, string> = { today: '어제', yesterday: '그제', '7d': '이전 7일', month: '지난달' };
+
 const SYNC_ORDER: SyncSource[] = ['admob', 'google_play', 'app_store', 'reconcile'];
 
 const zero = (): Split => ({ ad: 0, inapp: 0, paid: 0 });
@@ -34,6 +42,7 @@ export function periodDays(period: Period, now: Date): { days: string[]; prevDay
   const today = kstDateKey(now);
   const p = kstParts(now);
   if (period === 'today') return { days: [today], prevDays: [addDays(today, -1)] };
+  if (period === 'yesterday') return { days: [addDays(today, -1)], prevDays: [addDays(today, -2)] };
   if (period === '7d') {
     const days = Array.from({ length: 7 }, (_, i) => addDays(today, i - 6));
     return { days, prevDays: days.map((d) => addDays(d, -7)) };
@@ -80,26 +89,31 @@ export function buildDashboard(raw: RawData, period: Period, now: Date): Dashboa
   // Chart buckets: the whole period on the axis, with the comparison period as grey bars.
   const dayTotal = (d: string) => (byDate.has(d) ? sum(byDate.get(d)!.split) : null);
   let buckets: Bucket[];
-  if (period === 'today') {
-    const yesterday = prevDays[0];
-    const hours = new Map(raw.hourly.filter((h) => h.date === today).map((h) => [h.hour, h]));
-    const yHours = new Map(raw.hourly.filter((h) => h.date === yesterday).map((h) => [h.hour, h]));
+  if (period === 'today' || period === 'yesterday') {
+    // Hourly chart for one day. Yesterday is complete, so every hour is in the past.
+    const day = days[0];
+    const prevDay = prevDays[0];
+    const isToday = period === 'today';
+    const lastHour = isToday ? hour : 23;
+    const prevName = isToday ? '어제' : '그제';
+    const hours = new Map(raw.hourly.filter((h) => h.date === day).map((h) => [h.hour, h]));
+    const yHours = new Map(raw.hourly.filter((h) => h.date === prevDay).map((h) => [h.hour, h]));
     buckets = Array.from({ length: 24 }, (_, h) => {
-      const doc = h <= hour ? hours.get(h) : undefined;
+      const doc = h <= lastHour ? hours.get(h) : undefined;
       const y = yHours.get(h);
       return {
-        key: `${today}_${pad(h)}`,
+        key: `${day}_${pad(h)}`,
         label: `${h}시`,
         title: `${h}:00–${h + 1}:00`,
-        partial: h === hour,
-        future: h > hour,
-        status: 'estimated' as const,
+        partial: isToday && h === hour,
+        future: h > lastHour,
+        status: dayStatus(day),
         ad: doc?.ad ?? 0,
         inapp: doc?.inapp ?? 0,
         paid: doc?.paid ?? 0,
         // No hourly docs at all for yesterday (e.g. first day after connecting) → no grey bars.
         prev: yHours.size ? (y ? y.ad + y.inapp + y.paid : 0) : null,
-        prevTitle: `어제 ${h}:00–${h + 1}:00`,
+        prevTitle: `${prevName} ${h}:00–${h + 1}:00`,
       };
     });
   } else {
@@ -151,6 +165,8 @@ export function buildDashboard(raw: RawData, period: Period, now: Date): Dashboa
     } else {
       previousTotal = Math.round(sum(byDate.get(yesterday)?.split ?? zero()) * dayFraction(now));
     }
+  } else if (period === 'yesterday') {
+    previousTotal = sum(byDate.get(prevDays[0])?.split ?? zero());
   } else {
     prevDays.forEach((d, i) => {
       const t = sum(byDate.get(d)?.split ?? zero());
@@ -223,8 +239,8 @@ export function buildDashboard(raw: RawData, period: Period, now: Date): Dashboa
     buckets,
     totals,
     previousTotal,
-    compareLabel: period === 'today' ? '어제 같은 시간 대비' : period === '7d' ? '직전 7일 대비' : '지난달 같은 기간 대비',
-    prevLabel: period === 'today' ? '어제' : period === '7d' ? '이전 7일' : '지난달',
+    compareLabel: COMPARE_LABEL[period],
+    prevLabel: PREV_LABEL[period],
     hasEstimated: buckets.some((b) => !b.future && b.status === 'estimated') || current.some((d) => d.status === 'estimated'),
     adSources,
     stores: { google: store('google'), apple: store('apple') },

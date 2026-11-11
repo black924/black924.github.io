@@ -134,7 +134,7 @@ export function useFirestoreRaw(now: Date): { raw: RawData | null; error: string
         onError('daily'),
       ),
       onSnapshot(
-        query(collection(db, 'hourly'), where('date', '>=', addDays(to, -1))),
+        query(collection(db, 'hourly'), where('date', '>=', addDays(to, -2))),
         (s) => set('hourly')(s.docs.map(toHourly)),
         onError('hourly'),
       ),
