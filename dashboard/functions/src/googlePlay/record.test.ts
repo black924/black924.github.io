@@ -28,7 +28,7 @@ run('recordPlayTransaction (emulator)', () => {
   afterAll(async () => {
     const refs = [
       'daily/2020-01-01_test_app', 'hourly/2020-01-01_12', 'transactions/gp_TEST.order.1', 'transactions/gp_refund_TEST',
-      'rtdnEvents/m1', 'rtdnEvents/m2', 'rtdnEvents/m3',
+      'rtdnEvents/m1', 'rtdnEvents/m2', 'rtdnEvents/m3', 'rtdnEvents/m4', 'transactions/gp_TEST.test.1',
     ];
     await Promise.all(refs.map((r) => db.doc(r).delete()));
   });
@@ -47,5 +47,13 @@ run('recordPlayTransaction (emulator)', () => {
     const refund = { ...base, id: 'gp_refund_TEST', type: 'refund' as const, amountMicros: -4_400_000_000, amountKrwMicros: -4_400_000_000 };
     expect(await recordPlayTransaction(db, 'm3', refund)).toBe('recorded');
     expect((await daily()).get('inapp.google')).toBe(0);
+  });
+
+  it('records a test purchase in transactions only, leaving revenue untouched', async () => {
+    const test = { ...base, id: 'gp_TEST.test.1', orderId: 'TEST.test.1', test: true };
+    expect(await recordPlayTransaction(db, 'm4', test)).toBe('recorded');
+    expect((await db.doc('transactions/gp_TEST.test.1').get()).get('test')).toBe(true);
+    expect((await daily()).get('inapp.google')).toBe(0);
+    expect((await db.doc('hourly/2020-01-01_12').get()).get('inapp')).toBe(0);
   });
 });

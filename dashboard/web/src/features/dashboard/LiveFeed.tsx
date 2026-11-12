@@ -30,7 +30,7 @@ export function LiveFeed({ items, appsById, now }: { items: Transaction[]; appsB
           const orig = originalAmount(t);
           const refund = t.type === 'refund';
           return (
-            <li key={t.id} className={s.feedItem}>
+            <li key={t.id} className={`${s.feedItem} ${t.test ? s.feedTest : ''}`}>
               <span className={`${s.storeMark} ${t.store === 'google' ? s.gp : s.as}`} title={t.store === 'google' ? 'Google Play' : 'App Store'}>
                 {t.store === 'google' ? 'GP' : 'AS'}
               </span>
@@ -40,11 +40,12 @@ export function LiveFeed({ items, appsById, now }: { items: Transaction[]; appsB
                   <span className={s.feedAppName}>{app?.name ?? t.appId}</span>
                 </span>
                 <span className={s.feedProduct}>
+                  {t.test && <span className={`est ${s.testTag}`} title="테스트 결제는 수익에 포함되지 않습니다">테스트</span>}
                   {TYPE_LABEL[t.type]} · {t.productName}
                 </span>
               </span>
               <span className={s.feedRight}>
-                <span className={`num ${s.feedAmt} ${refund ? s.refund : ''}`}>{formatKrw(t.amountKrwMicros)}</span>
+                <span className={`num ${s.feedAmt} ${refund && !t.test ? s.refund : ''}`}>{t.test && t.amountKrwMicros === 0 ? '—' : formatKrw(t.amountKrwMicros)}</span>
                 <span className={s.feedTime}>
                   {orig && <span className="num">{orig} · </span>}
                   {relativeTime(t.occurredAt, now)}

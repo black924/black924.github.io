@@ -21,10 +21,28 @@ async function toKrw(micros: number, currency: string, at: Date) {
   return currency === 'KRW' ? micros : toKrwMicros(micros, await krwPerUnit(currency, kstDateKey(at)));
 }
 
-async function chargeTransaction(appId: string, orderId: string, type: 'subscription' | 'inapp', productId: string, order: Order) {
-  const { currency, grossMicros, netMicros } = orderAmounts(order);
-  const occurredAt = order.createTime ? new Date(order.createTime) : new Date();
-  const line = order.lineItems?.[0];
+/**
+ * The order, or null for a test purchase whose order the Orders API cannot return
+ * (TODO(verify): whether orders.get serves license-tester orders). Test purchases are still shown, without an amount.
+ */
+async function orderFor(pkg: string, orderId: string, test: boolean): Promise<Order | null> {
+  try {
+    return await getOrder(pkg, orderId);
+  } catch (e) {
+    if (test && e instanceof PlayApiError && !e.retryable) {
+      logger.info('play rtdn: test order not available', { pkg, status: e.status });
+      return null;
+    }
+    throw e;
+  }
+}
+
+async function chargeTransaction(
+  appId: string, orderId: string, type: 'subscription' | 'inapp', productId: string, order: Order | null, test: boolean, eventTime: Date,
+) {
+  const { currency, grossMicros, netMicros } = order ? orderAmounts(order) : { currency: 'KRW', grossMicros: 0, netMicros: 0 };
+  const occurredAt = order?.createTime ? new Date(order.createTime) : eventTime;
+  const line = order?.lineItems?.[0];
   const tx: PlayTransaction = {
     id: orderDocId('gp', orderId),
     appId,
@@ -38,6 +56,7 @@ async function chargeTransaction(appId: string, orderId: string, type: 'subscrip
     netMicros,
     netKrwMicros: await toKrw(netMicros, currency, occurredAt),
     occurredAt,
+    ...(test ? { test: true } : {}),
   };
   return tx;
 }
@@ -70,52 +89,61 @@ export async function handlePlayRtdn(messageId: string, json: unknown): Promise<
     }
 
     const appId = await appIdFor(pkg);
+    const eventTime = new Date(Number(n.eventTimeMillis) || Date.now());
     let tx: PlayTransaction | null = null;
 
     if (action.kind === 'subscriptionCharge') {
       const sub = await getSubscription(pkg, action.token);
-      if (sub.testPurchase) return void logger.info('play rtdn: test subscription skipped', { pkg });
+      const test = Boolean(sub.testPurchase);
       const item = sub.lineItems?.find((l) => l.latestSuccessfulOrderId) ?? sub.lineItems?.[0];
       const orderId = item?.latestSuccessfulOrderId ?? sub.latestOrderId;
       if (!orderId) return void logger.warn('play rtdn: subscription without order id', { pkg });
-      tx = await chargeTransaction(appId, orderId, 'subscription', item?.productId ?? '', await getOrder(pkg, orderId));
+      const order = await orderFor(pkg, orderId, test);
+      tx = await chargeTransaction(appId, orderId, 'subscription', item?.productId ?? '', order, test, eventTime);
     } else if (action.kind === 'inappCharge') {
       const p = await getProduct(pkg, action.sku, action.token);
       if (p.purchaseState !== 0) return void logger.info('play rtdn: not purchased yet', { pkg, state: p.purchaseState });
-      if (p.purchaseType === 0) return void logger.info('play rtdn: test purchase skipped', { pkg });
       if (!p.orderId) return void logger.info('play rtdn: purchase without order (promo/rewarded)', { pkg });
-      tx = await chargeTransaction(appId, p.orderId, 'inapp', action.sku, await getOrder(pkg, p.orderId));
+      const test = p.purchaseType === 0;
+      const order = await orderFor(pkg, p.orderId, test);
+      tx = await chargeTransaction(appId, p.orderId, 'inapp', action.sku, order, test, eventTime);
     } else {
       // Refund: record the amount refunded since the last refund we recorded for this order.
-      const order = await getOrder(pkg, action.orderId);
-      const { currency } = orderAmounts(order);
-      const refunded = refundedGrossMicros(order);
+      // A refund of a test purchase is a test refund too, so it stays out of revenue.
+      const original = await db.doc(`transactions/${orderDocId('gp', action.orderId)}`).get();
+      const test = original.get('test') === true;
+      const order = await orderFor(pkg, action.orderId, test);
       const prior = await db.collection('transactions').where('orderId', '==', action.orderId).where('type', '==', 'refund').get();
       const already = prior.docs.reduce((a, d) => a + Math.abs(d.get('amountMicros') ?? 0), 0);
+      const currency = order ? orderAmounts(order).currency : (original.get('currency') ?? 'KRW');
+      const refunded = order ? refundedGrossMicros(order) : 0;
+      const originalGross = order ? orderAmounts(order).grossMicros : Math.abs(original.get('amountMicros') ?? 0);
       let delta = refunded - already;
       if (refunded === 0 && !action.partial && already === 0) {
         // Order history not updated yet: assume a full refund of the original payment.
-        delta = orderAmounts(order).grossMicros;
+        delta = originalGross;
       }
-      if (delta <= 0) return void logger.info('play rtdn: refund already recorded', { pkg });
-      const occurredAt = new Date(Number(n.eventTimeMillis) || Date.now());
-      const line = order.lineItems?.[0];
+      // A test order without an amount still shows its refund once.
+      if (delta <= 0 && !(test && !order && prior.empty)) return void logger.info('play rtdn: refund already recorded', { pkg });
+      const occurredAt = eventTime;
+      const line = order?.lineItems?.[0];
       tx = {
         id: orderDocId('gp_refund', `${action.orderId}_${n.eventTimeMillis}`),
         appId,
-        productId: line?.productId ?? '',
-        productName: line?.productTitle || line?.productId || '',
+        productId: line?.productId ?? original.get('productId') ?? '',
+        productName: line?.productTitle || line?.productId || original.get('productName') || '',
         type: 'refund',
         orderId: action.orderId,
         currency,
         amountMicros: -delta,
         amountKrwMicros: -(await toKrw(delta, currency, occurredAt)),
         occurredAt,
+        ...(test ? { test: true } : {}),
       };
     }
 
     const result = await recordPlayTransaction(db, messageId, tx);
-    logger.info('play rtdn: processed', { pkg, kind: action.kind, result });
+    logger.info('play rtdn: processed', { pkg, kind: action.kind, result, test: tx.test === true });
     await recordSyncOk('google_play');
   } catch (e) {
     if (e instanceof PlayApiError) {

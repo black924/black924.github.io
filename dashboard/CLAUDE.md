@@ -59,7 +59,7 @@
 - 실시간: **Real-time Developer Notifications (RTDN)** → Pub/Sub 토픽 → `onMessagePublished` Function
   - 알림에는 금액이 없다. `purchaseToken`으로 주문 번호를 찾고, **금액은 Orders API `orders.get`**에서 얻는다
     - 구독: `purchases.subscriptionsv2.get` → `lineItems[].latestSuccessfulOrderId`
-    - 인앱: `purchases.products.get` → `orderId` (`purchaseState` 0만, `purchaseType` 0=테스트는 제외)
+    - 인앱: `purchases.products.get` → `orderId` (`purchaseState` 0만). `purchaseType` 0(테스트)·구독 `testPurchase`는 `test: true`로 피드에만 기록하고 `daily`·`hourly`에는 더하지 않는다 (테스트 주문의 금액을 못 받으면 0원으로 기록)
     - 주문: `orders.get` → `total`, `tax`, `developerRevenueInBuyerCurrency`, `createTime`, 환불은 `orderHistory.refundEvent`/`partialRefundEvents`
   - 매출로 기록하는 알림: 구독 1 RECOVERED · 2 RENEWED · 4 PURCHASED, 인앱 1 PURCHASED, `voidedPurchaseNotification`(환불, 음수)
   - 금액 기준: **gross = total − tax** (세금 제외, 스토어 수수료 포함). net(`developerRevenueInBuyerCurrency`)도 거래에 함께 저장
@@ -118,6 +118,7 @@ transactions/{id}                   // 실시간 결제 피드
   amountMicros, currency, amountKrwMicros            // gross (세금 제외)
   netMicros?, netKrwMicros?, orderId?
   occurredAt, source: "rtdn"|"asn"|"report"
+  test?: true                                       // 라이선스 테스터 결제: 피드에만 표시, 수익·환불 집계 제외
 
 rtdnEvents/{messageId}              // Play 알림 중복 처리 방지 (처리 완료 표시)
   receivedAt, txId

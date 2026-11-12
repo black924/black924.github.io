@@ -94,7 +94,7 @@ describe('buildDashboard', () => {
     const refund = { ...makeTransaction('r1', NOW, true), store: 'google' as const, amountKrwMicros: -4400 * M };
     const r = raw({
       daily: [daily('2026-11-10', 'a', { inapp: 700, paid: 200 }, 'estimated')],
-      refundsThisMonth: [refund],
+      refundsThisMonth: [refund, { ...refund, id: 'r2', test: true }],
       subscribers: { google: 5 },
     });
     const { stores } = buildDashboard(r, 'today', NOW);

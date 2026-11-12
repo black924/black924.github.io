@@ -68,6 +68,7 @@ export interface Transaction {
   amountKrwMicros: number; // negative for refunds
   occurredAt: Date;
   source: 'rtdn' | 'asn' | 'report';
+  test: boolean; // license-tester purchase: in the feed only, never in revenue
 }
 
 export type SyncSource = 'admob' | 'google_play' | 'app_store' | 'reconcile';

@@ -197,7 +197,7 @@ export function buildDashboard(raw: RawData, period: Period, now: Date): Dashboa
 
   // Stores
   const store = (s: Store): StoreSummary => {
-    const refunds = raw.refundsThisMonth.filter((t) => t.store === s);
+    const refunds = raw.refundsThisMonth.filter((t) => t.store === s && !t.test);
     return {
       amount: current.reduce((acc, d) => acc + d.inapp[s] + d.paid[s], 0),
       activeSubscribers: raw.subscribers[s] ?? null,

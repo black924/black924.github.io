@@ -81,6 +81,7 @@ function toTransaction(s: QueryDocumentSnapshot): Transaction {
     amountKrwMicros: num(d.amountKrwMicros),
     occurredAt: date(d.occurredAt),
     source: d.source,
+    test: d.test === true,
   };
 }
 

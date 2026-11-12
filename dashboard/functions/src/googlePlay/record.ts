@@ -1,6 +1,6 @@
 // Idempotent write of one Play payment: the transaction doc, daily and hourly increments, and the
 // processed-message marker happen in one Firestore transaction, so a redelivered Pub/Sub message or a
-// second notification for the same order never double-counts.
+// second notification for the same order never double-counts. Test purchases only get the transaction doc.
 import { FieldValue, Timestamp, type Firestore } from 'firebase-admin/firestore';
 import { hourKey, kstDateKey, kstParts } from '../shared/kst';
 
@@ -17,6 +17,8 @@ export interface PlayTransaction {
   netMicros?: number;
   netKrwMicros?: number;
   occurredAt: Date;
+  /** License-tester purchase: shown in the live feed, never added to daily/hourly revenue. */
+  test?: boolean;
 }
 
 export type RecordResult = 'recorded' | 'duplicate-message' | 'duplicate-order';
@@ -48,7 +50,9 @@ export async function recordPlayTransaction(db: Firestore, messageId: string, tx
       ...(tx.netMicros !== undefined ? { netMicros: tx.netMicros, netKrwMicros: tx.netKrwMicros } : {}),
       occurredAt: Timestamp.fromDate(tx.occurredAt),
       source: 'rtdn',
+      ...(tx.test ? { test: true } : {}),
     });
+    if (tx.test) return 'recorded';
 
     // Subscriptions and refunds of in-app/subscription purchases count toward "inapp" (CLAUDE.md §4).
     const inc = FieldValue.increment(tx.amountKrwMicros);

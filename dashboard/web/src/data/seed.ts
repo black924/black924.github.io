@@ -164,6 +164,7 @@ export function makeTransaction(id: string, at: Date, refund = false): Transacti
     amountKrwMicros: sign * (usd ? Math.round(product.usd * SEED_USD_KRW) : product.won) * MICROS_PER_UNIT,
     occurredAt: at,
     source: store === 'google' ? 'rtdn' : 'asn',
+    test: false,
   };
 }
 
