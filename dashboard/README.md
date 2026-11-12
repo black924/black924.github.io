@@ -117,7 +117,7 @@ No secrets: the Play API is called as the Functions runtime service account `801
    → Enable, Topic name `projects/auto-posting-a970b/topics/play-rtdn`,
    Notification content **Get all notifications for subscriptions and one-time products** → **Save changes** → **Send test notification**.
 
-A test notification shows up as `sync/google_play.lastTestAt`. Test purchases (license testers) are skipped on purpose.
+A test notification shows up as `sync/google_play.lastTestAt`. Test purchases (license testers) show in the live feed tagged "테스트" but are never added to revenue.
 Amounts: gross = order total − tax (net is stored too), converted to KRW with the `fx` rate of the payment date (KST).
 
 ## Deploy

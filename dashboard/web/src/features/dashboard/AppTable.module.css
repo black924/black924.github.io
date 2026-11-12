@@ -1,4 +1,7 @@
 .scroll {
+  /* Contains absolutely positioned children (.sr-only in the change labels); without it they
+     sit relative to the page and widen it past the viewport on mobile. */
+  position: relative;
   overflow-x: auto;
   margin: 0 -22px -8px;
   padding: 0 22px 8px;
