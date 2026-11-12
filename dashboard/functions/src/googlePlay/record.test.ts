@@ -2,7 +2,7 @@
 import { afterAll, describe, expect, it } from 'vitest';
 import { initializeApp } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
-import { recordPlayTransaction, type PlayTransaction } from './record';
+import { recordPlayTransaction, recordStoreTransaction, type PlayTransaction } from './record';
 
 const host = process.env.FIRESTORE_EMULATOR_HOST;
 const run = host ? describe : describe.skip;
@@ -29,6 +29,7 @@ run('recordPlayTransaction (emulator)', () => {
     const refs = [
       'daily/2020-01-01_test_app', 'hourly/2020-01-01_12', 'transactions/gp_TEST.order.1', 'transactions/gp_refund_TEST',
       'rtdnEvents/m1', 'rtdnEvents/m2', 'rtdnEvents/m3', 'rtdnEvents/m4', 'transactions/gp_TEST.test.1',
+      'asnEvents/a1', 'transactions/as_TEST.1', 'daily/2020-01-01_test_ios',
     ];
     await Promise.all(refs.map((r) => db.doc(r).delete()));
   });
@@ -55,5 +56,15 @@ run('recordPlayTransaction (emulator)', () => {
     expect((await db.doc('transactions/gp_TEST.test.1').get()).get('test')).toBe(true);
     expect((await daily()).get('inapp.google')).toBe(0);
     expect((await db.doc('hourly/2020-01-01_12').get()).get('inapp')).toBe(0);
+  });
+
+  it('records App Store payments under inapp.apple with store and source', async () => {
+    const tx = { ...base, id: 'as_TEST.1', appId: 'test_ios', orderId: 'TEST.1', amountKrwMicros: 1_100_000_000 };
+    expect(await recordStoreTransaction(db, { store: 'apple', source: 'asn', eventPath: 'asnEvents/a1' }, tx)).toBe('recorded');
+    const t = await db.doc('transactions/as_TEST.1').get();
+    expect([t.get('store'), t.get('source')]).toEqual(['apple', 'asn']);
+    const d = await db.doc('daily/2020-01-01_test_ios').get();
+    expect(d.get('inapp')).toEqual({ google: 0, apple: 1_100_000_000 });
+    expect((await db.doc('hourly/2020-01-01_12').get()).get('inapp')).toBe(1_100_000_000);
   });
 });

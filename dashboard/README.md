@@ -2,7 +2,7 @@
 
 See `CLAUDE.md` for architecture and milestones. Live: https://auto-posting-a970b.web.app
 
-Done so far: **1 (UI + mock data)**, **2 (auth)**, **3 (Firestore data)**, **4 (AdMob)**, **5 (Google Play — code deployed, needs the Play Console setup below)**.
+Done so far: **1 (UI + mock data)**, **2 (auth)**, **3 (Firestore data)**, **4 (AdMob)**, **5 (Google Play)**, **6 (App Store notifications — needs the App Store Connect setup below)**.
 
 ## Local development (emulators, no real project needed)
 
@@ -119,6 +119,26 @@ No secrets: the Play API is called as the Functions runtime service account `801
 
 A test notification shows up as `sync/google_play.lastTestAt`. Test purchases (license testers) show in the live feed tagged "테스트" but are never added to revenue.
 Amounts: gross = order total − tax (net is stored too), converted to KRW with the `fx` rate of the payment date (KST).
+
+## App Store setup (milestone 6)
+
+Function: `appStoreWebhook` (HTTPS). No secrets: payloads are verified with Apple's public root certificate
+(`functions/certs/AppleRootCA-G3.cer`, SHA-256 `63:34:3A:BF:…:3E:91:79`, from apple.com/certificateauthority).
+
+1. Deploy, then sync the app list so notifications map to apps (`appStoreBundleId` in `web/src/data/apps.json`):
+   ```bash
+   sh scripts/firebase.sh deploy --only functions:appStoreWebhook --project auto-posting-a970b
+   node scripts/set-apps.mjs auto-posting-a970b
+   ```
+2. App Store Connect → each iOS app → **App Information** → **App Store Server Notifications**:
+   Production Server URL and Sandbox Server URL both
+   `https://asia-northeast3-auto-posting-a970b.cloudfunctions.net/appStoreWebhook`, **Version 2** → Save.
+3. Make a sandbox purchase (Sandbox Apple Account or TestFlight). It shows in the live feed tagged "테스트"
+   and is never added to revenue. Apple's TEST notification (App Store Server API `requestTestNotification`)
+   needs an API key, so it is optional; it shows up as `sync/app_store.lastTestAt`.
+
+Amounts are the App Store Connect price (`price` milliunits × 1000, may include VAT) converted to KRW at the
+payment date's `fx` rate. Paid-app downloads send no notification; they come from the Sales report (milestone 7).
 
 ## Deploy
 

@@ -1,10 +1,11 @@
-// Idempotent write of one Play payment: the transaction doc, daily and hourly increments, and the
-// processed-message marker happen in one Firestore transaction, so a redelivered Pub/Sub message or a
-// second notification for the same order never double-counts. Test purchases only get the transaction doc.
+// Idempotent write of one store payment (Google Play or App Store): the transaction doc, daily and hourly
+// increments, and the processed-notification marker happen in one Firestore transaction, so a redelivered
+// notification or a second notification for the same order never double-counts.
+// Test purchases only get the transaction doc.
 import { FieldValue, Timestamp, type Firestore } from 'firebase-admin/firestore';
 import { hourKey, kstDateKey, kstParts } from '../shared/kst';
 
-export interface PlayTransaction {
+export interface StoreTransaction {
   id: string; // transactions/{id}
   appId: string;
   productId: string;
@@ -21,12 +22,23 @@ export interface PlayTransaction {
   test?: boolean;
 }
 
+export type PlayTransaction = StoreTransaction;
+
 export type RecordResult = 'recorded' | 'duplicate-message' | 'duplicate-order';
 
-export async function recordPlayTransaction(db: Firestore, messageId: string, tx: PlayTransaction): Promise<RecordResult> {
+export function recordPlayTransaction(db: Firestore, messageId: string, tx: StoreTransaction): Promise<RecordResult> {
+  return recordStoreTransaction(db, { store: 'google', source: 'rtdn', eventPath: `rtdnEvents/${messageId}` }, tx);
+}
+
+export async function recordStoreTransaction(
+  db: Firestore,
+  where: { store: 'google' | 'apple'; source: 'rtdn' | 'asn'; eventPath: string },
+  tx: StoreTransaction,
+): Promise<RecordResult> {
+  const { store, source } = where;
   const date = kstDateKey(tx.occurredAt);
   const hour = kstParts(tx.occurredAt).hour;
-  const eventRef = db.doc(`rtdnEvents/${messageId}`);
+  const eventRef = db.doc(where.eventPath);
   const txRef = db.doc(`transactions/${tx.id}`);
   const dailyRef = db.doc(`daily/${date}_${tx.appId}`);
   const hourlyRef = db.doc(`hourly/${hourKey(date, hour)}`);
@@ -38,7 +50,7 @@ export async function recordPlayTransaction(db: Firestore, messageId: string, tx
     if (existing.exists) return 'duplicate-order';
 
     t.create(txRef, {
-      store: 'google',
+      store,
       appId: tx.appId,
       productId: tx.productId,
       productName: tx.productName,
@@ -49,7 +61,7 @@ export async function recordPlayTransaction(db: Firestore, messageId: string, tx
       amountKrwMicros: tx.amountKrwMicros,
       ...(tx.netMicros !== undefined ? { netMicros: tx.netMicros, netKrwMicros: tx.netKrwMicros } : {}),
       occurredAt: Timestamp.fromDate(tx.occurredAt),
-      source: 'rtdn',
+      source,
       ...(tx.test ? { test: true } : {}),
     });
     if (tx.test) return 'recorded';
@@ -57,13 +69,13 @@ export async function recordPlayTransaction(db: Firestore, messageId: string, tx
     // Subscriptions and refunds of in-app/subscription purchases count toward "inapp" (CLAUDE.md §4).
     const inc = FieldValue.increment(tx.amountKrwMicros);
     if (daily.exists) {
-      t.update(dailyRef, { 'inapp.google': inc, updatedAt: Timestamp.now() });
+      t.update(dailyRef, { [`inapp.${store}`]: inc, updatedAt: Timestamp.now() });
     } else {
       t.set(dailyRef, {
         date,
         appId: tx.appId,
         ad: { totalMicros: 0, bySource: { admob: 0, unity: 0, other: 0 } },
-        inapp: { google: tx.amountKrwMicros, apple: 0 },
+        inapp: { google: 0, apple: 0, [store]: tx.amountKrwMicros },
         paid: { google: 0, apple: 0 },
         status: 'estimated',
         updatedAt: Timestamp.now(),

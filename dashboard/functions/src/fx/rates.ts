@@ -1,6 +1,7 @@
 import { FieldPath } from 'firebase-admin/firestore';
 import { db } from '../shared/firestore';
 import { addDays, kstDateKey } from '../shared/kst';
+import { toKrwMicros } from '../shared/money';
 import { fetchFrankfurter } from './frankfurter';
 
 /** Fetches today's rates and stores fx/{KST date} as { USD: 1350.63, JPY: 8.71, ..., source, rateDate }. */
@@ -27,4 +28,9 @@ export async function krwPerUnit(currency: string, dateKey: string): Promise<num
   const v = fresh[cur];
   if (typeof v !== 'number' || v <= 0) throw new Error(`No FX rate for ${cur}`);
   return v;
+}
+
+/** `micros` of `currency` → KRW micros at the fx rate of `at`'s KST date. */
+export async function toKrwAt(micros: number, currency: string, at: Date): Promise<number> {
+  return currency.toUpperCase() === 'KRW' ? micros : toKrwMicros(micros, await krwPerUnit(currency, kstDateKey(at)));
 }

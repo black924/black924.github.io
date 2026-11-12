@@ -4,6 +4,7 @@ import { onMessagePublished } from 'firebase-functions/v2/pubsub';
 import { logger } from 'firebase-functions';
 import { storeTodayRates } from './fx/rates';
 import { handlePlayRtdn } from './googlePlay/handler';
+import { handleAppStoreWebhook } from './appStore/handler';
 import { onSchedule } from 'firebase-functions/v2/scheduler';
 import { handleCallback, handleStart } from './admob/oauth';
 import { runAdmobSync } from './admob/sync';
@@ -39,6 +40,14 @@ export const onPlayRtdn = onMessagePublished(
     }
     await handlePlayRtdn(event.data.message.messageId, json);
   },
+);
+
+/**
+ * App Store Server Notifications V2 (Production and Sandbox URL in App Store Connect).
+ * Public URL: anyone can POST, but only payloads signed by Apple are accepted.
+ */
+export const appStoreWebhook = onRequest({ region: REGION, timeoutSeconds: 60, maxInstances: 2 }, (req, res) =>
+  handleAppStoreWebhook(req, res),
 );
 
 /** Daily exchange rates (Frankfurter) → fx/{KST date}. */

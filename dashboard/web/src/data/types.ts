@@ -16,6 +16,7 @@ export interface AppInfo {
   admobAppId?: string;
   playPackage?: string;
   appStoreAppId?: string;
+  appStoreBundleId?: string; // matches App Store notifications to the app
 }
 
 export interface StoreAmounts {

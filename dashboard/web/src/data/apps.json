@@ -9,7 +9,8 @@
     "iconColor": "#4F7DFF",
     "playPackage": "com.menew.noiseanalyzer",
     "appStoreAppId": "6823575453",
-    "iconUrl": "https://hnh-labs.com/assets/apps/noiselog.png"
+    "iconUrl": "https://hnh-labs.com/assets/apps/noiselog.png",
+    "appStoreBundleId": "com.menew.noiseanalyzer"
   },
   {
     "id": "defectchecker",
@@ -21,7 +22,8 @@
     "iconColor": "#3DD6C4",
     "playPackage": "com.hnh.defectchecker",
     "appStoreAppId": "6830927493",
-    "iconUrl": "https://hnh-labs.com/assets/apps/defectchecker.png"
+    "iconUrl": "https://hnh-labs.com/assets/apps/defectchecker.png",
+    "appStoreBundleId": "com.hnh.defectchecker"
   },
   {
     "id": "breeze",

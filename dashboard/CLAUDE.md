@@ -70,9 +70,14 @@
 - 유료앱(다운로드 결제)은 RTDN이 오지 않으므로 **보정 층에서만** 집계된다.
 
 ### 3-3. App Store (인앱·구독·유료앱)
-- 실시간: **App Store Server Notifications V2** → HTTPS Function (`/webhooks/appstore`)
-  - `signedPayload`(JWS)는 반드시 Apple 인증서 체인으로 **서명 검증** 후 처리 (`@apple/app-store-server-library` 사용)
-  - 처리 이벤트: `SUBSCRIBED`, `DID_RENEW`, `ONE_TIME_CHARGE`, `REFUND`, `DID_FAIL_TO_RENEW`, `EXPIRED`
+- 실시간: **App Store Server Notifications V2** → HTTPS Function `appStoreWebhook`
+  - `signedPayload`(JWS)는 반드시 Apple 인증서 체인으로 **서명 검증** 후 처리 (`@apple/app-store-server-library` `SignedDataVerifier`, 루트 인증서 `functions/certs/AppleRootCA-G3.cer`). 검증 실패는 400, Firestore에 쓰지 않는다
+  - 서명 전 페이로드에서 bundleId·environment만 읽어 검증기를 고르고, 검증기가 서명된 값과 일치하는지 다시 확인한다. Production·Sandbox만 받는다
+  - 금액 이벤트: `SUBSCRIBED`, `DID_RENEW`, `ONE_TIME_CHARGE` → 결제, `REFUND` → 환불(음수, `revocationPercentage` 반영). 나머지(`DID_FAIL_TO_RENEW`, `EXPIRED` 등)는 무시
+  - 금액: `price`(밀리 단위) × 1000 = micros. Apple은 세금 필드를 주지 않아 부가세 포함일 수 있다 → 보정 층에서 바로잡는다
+  - **Sandbox 환경 = 테스트 결제** → `test: true`로 피드에만 기록
+  - 중복 방지: `asnEvents/{notificationUUID}`, 거래 문서 `transactions/as_{transactionId}`
+  - 앱 매칭: `apps.appStoreBundleId`
 - 확정(보정): **App Store Connect API — Sales and Trends 리포트**(일간 SALES), 필요 시 Finance 리포트
   - 보통 하루 늦게 나온다.
 - 인증: App Store Connect API 키(`.p8`, Key ID, Issuer ID) → Secret Manager
@@ -95,7 +100,7 @@ config/app
   baseCurrency: "KRW"
 
 apps/{appId}
-  name, platform: ("android"|"ios")[], admobAppIds?: string[], playPackage?, appStoreAppId?, iconColor, iconUrl?
+  name, platform: ("android"|"ios")[], admobAppIds?: string[], playPackage?, appStoreAppId?, appStoreBundleId?, iconColor, iconUrl?
   // 앱 목록 원본: web/src/data/apps.json → scripts/set-apps.mjs 로 반영. iconUrl은 hnh-labs.com/assets/apps/*.png
 
 daily/{YYYY-MM-DD}_{appId}
@@ -121,6 +126,9 @@ transactions/{id}                   // 실시간 결제 피드
   test?: true                                       // 라이선스 테스터 결제: 피드에만 표시, 수익·환불 집계 제외
 
 rtdnEvents/{messageId}              // Play 알림 중복 처리 방지 (처리 완료 표시)
+  receivedAt, txId
+
+asnEvents/{notificationUUID}        // App Store 알림 중복 처리 방지
   receivedAt, txId
 
 subscribers/{store}                 // google | apple — 스토어별 결제 카드의 활성 구독자 수

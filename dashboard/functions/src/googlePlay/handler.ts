@@ -1,8 +1,6 @@
 import { logger } from 'firebase-functions';
-import { krwPerUnit } from '../fx/rates';
+import { toKrwAt as toKrw } from '../fx/rates';
 import { db } from '../shared/firestore';
-import { kstDateKey } from '../shared/kst';
-import { toKrwMicros } from '../shared/money';
 import { recordSyncError, recordSyncOk } from '../shared/sync';
 import { orderAmounts, refundedGrossMicros } from './amounts';
 import { PlayApiError, getOrder, getProduct, getSubscription, type Order } from './api';
@@ -15,10 +13,6 @@ const MSG_FAILED = 'Google Play 결제 알림 처리 중 오류가 났습니다.
 async function appIdFor(packageName: string): Promise<string> {
   const snap = await db.collection('apps').where('playPackage', '==', packageName).limit(1).get();
   return snap.empty ? `gp_${packageName.replace(/[^A-Za-z0-9_-]/g, '_')}` : snap.docs[0].id;
-}
-
-async function toKrw(micros: number, currency: string, at: Date) {
-  return currency === 'KRW' ? micros : toKrwMicros(micros, await krwPerUnit(currency, kstDateKey(at)));
 }
 
 /**
