@@ -144,6 +144,8 @@ export interface AppRow extends Split {
   app: AppInfo;
   stores: Record<Store, number>; // in-app + paid per store
   adUnits: AdUnitRow[]; // summed over the period, highest earnings first
+  /** Same numbers for the comparison window (same elapsed time); null = no data for this app then. */
+  prev: { ad: number; stores: Record<Store, number>; adUnits: AdUnitRow[] } | null;
 }
 
 export interface DashboardData {

@@ -192,4 +192,30 @@ describe('comparison bars and app detail', () => {
     ]);
     expect(row.stores).toEqual({ google: 4 * M, apple: 2 * M });
   });
+
+  it('gives each app the comparison-window numbers, prorating the day that matches today', () => {
+    const unit = (req: number, won: number) => ({ name: '홈 배너', platform: 'android' as const, format: 'banner', requests: req, matchedRequests: req, impressions: req, clicks: 0, earningsMicros: won * M });
+    const d9 = daily('2026-11-09', 'a', { ad: 48, inapp: 24 });
+    d9.ad.units = { u1: unit(480, 48) };
+    const d8 = daily('2026-11-08', 'a', { ad: 10 });
+    d8.ad.units = { u1: unit(100, 10) };
+    const today = daily('2026-11-10', 'a', { ad: 5 }, 'estimated');
+    const r = raw({ daily: [d8, d9, today] });
+
+    // 14:30 KST = 14.5/24 of yesterday counts.
+    const t = buildDashboard(r, 'today', NOW).appRows[0].prev!;
+    expect(t.ad).toBe(29 * M);
+    expect(t.stores).toEqual({ google: 14.5 * M, apple: 0 });
+    expect(t.adUnits.map((u) => [u.key, u.requests, u.earningsMicros])).toEqual([['u1', 290, 29 * M]]);
+
+    // Yesterday vs the day before: whole days.
+    const y = buildDashboard(r, 'yesterday', NOW).appRows[0].prev!;
+    expect(y.ad).toBe(10 * M);
+    expect(y.adUnits[0].requests).toBe(100);
+  });
+
+  it('has no comparison numbers for an app without data in the previous window', () => {
+    const r = raw({ daily: [daily('2026-11-10', 'a', { ad: 5 }, 'estimated')] });
+    expect(buildDashboard(r, 'today', NOW).appRows[0].prev).toBeNull();
+  });
 });

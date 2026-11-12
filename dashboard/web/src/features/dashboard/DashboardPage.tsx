@@ -86,7 +86,7 @@ function Body({ data, userEmail }: { data: DashboardData; userEmail: string }) {
           <SyncStatus items={data.sync} now={data.now} userEmail={userEmail} />
         </div>
 
-        <AppTable rows={data.appRows} estimated={data.hasEstimated} />
+        <AppTable rows={data.appRows} estimated={data.hasEstimated} compareLabel={data.compareLabel} />
       </main>
 
       <footer className={s.footer}>

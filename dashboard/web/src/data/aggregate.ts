@@ -66,6 +66,19 @@ export function dailyWindow(now: Date): { from: string; to: string } {
   return { from: d13 < lastMonthStart ? d13 : lastMonthStart, to };
 }
 
+/** Adds one daily doc's ad units into `units`, scaling the counts by `weight` (1 = whole day). */
+function addUnits(units: Map<string, AdUnitRow>, d: DailyDoc, weight: number) {
+  for (const [key, u] of Object.entries(d.ad.units ?? {})) {
+    const cur = units.get(key) ?? { key, name: u.name, platform: u.platform, format: u.format, requests: 0, matchedRequests: 0, impressions: 0, clicks: 0, earningsMicros: 0 };
+    cur.requests += Math.round(u.requests * weight);
+    cur.matchedRequests += Math.round(u.matchedRequests * weight);
+    cur.impressions += Math.round(u.impressions * weight);
+    cur.clicks += Math.round(u.clicks * weight);
+    cur.earningsMicros += Math.round(u.earningsMicros * weight);
+    units.set(key, cur);
+  }
+}
+
 /** Share of the current KST day that has elapsed, 0..1. */
 function dayFraction(now: Date): number {
   return (now.getTime() - kstStartOfDay(now).getTime()) / 86_400_000;
@@ -195,7 +208,7 @@ export function buildDashboard(raw: RawData, period: Period, now: Date): Dashboa
 
   // Apps (include apps with no revenue yet, and unknown appIds found in daily docs)
   const appsById: Record<string, AppInfo> = Object.fromEntries(raw.apps.map((a) => [a.id, a]));
-  const emptyRow = (app: AppInfo): AppRow => ({ app, ...zero(), stores: { google: 0, apple: 0 }, adUnits: [] });
+  const emptyRow = (app: AppInfo): AppRow => ({ app, ...zero(), stores: { google: 0, apple: 0 }, adUnits: [], prev: null });
   const rows = new Map<string, AppRow>(raw.apps.map((a) => [a.id, emptyRow(a)]));
   const unitsByApp = new Map<string, Map<string, AdUnitRow>>();
   for (const d of current) {
@@ -210,20 +223,32 @@ export function buildDashboard(raw: RawData, period: Period, now: Date): Dashboa
     row.stores.google += d.inapp.google + d.paid.google;
     row.stores.apple += d.inapp.apple + d.paid.apple;
     const units = unitsByApp.get(d.appId) ?? new Map<string, AdUnitRow>();
-    for (const [key, u] of Object.entries(d.ad.units ?? {})) {
-      const cur = units.get(key) ?? { key, name: u.name, platform: u.platform, format: u.format, requests: 0, matchedRequests: 0, impressions: 0, clicks: 0, earningsMicros: 0 };
-      cur.requests += u.requests;
-      cur.matchedRequests += u.matchedRequests;
-      cur.impressions += u.impressions;
-      cur.clicks += u.clicks;
-      cur.earningsMicros += u.earningsMicros;
-      units.set(key, cur);
-    }
+    addUnits(units, d, 1);
     unitsByApp.set(d.appId, units);
   }
   for (const [appId, units] of unitsByApp) {
     rows.get(appId)!.adUnits = [...units.values()].sort((a, b) => b.earningsMicros - a.earningsMicros || b.impressions - a.impressions);
   }
+
+  // Same app numbers for the comparison window. Like previousTotal, the day that matches today
+  // only counts the share of the day that has elapsed (yesterday's comparison counts whole days).
+  const lastPrev = prevDays[prevDays.length - 1];
+  const prevWeight = (date: string) => (period !== 'yesterday' && date === lastPrev ? dayFraction(now) : 1);
+  const prevDaySet = new Set(prevDays);
+  const prevUnitsByApp = new Map<string, Map<string, AdUnitRow>>();
+  for (const d of raw.daily) {
+    const row = rows.get(d.appId);
+    if (!row || !prevDaySet.has(d.date)) continue;
+    const w = prevWeight(d.date);
+    const p = (row.prev ??= { ad: 0, stores: { google: 0, apple: 0 }, adUnits: [] });
+    p.ad += Math.round(d.ad.totalMicros * w);
+    p.stores.google += Math.round((d.inapp.google + d.paid.google) * w);
+    p.stores.apple += Math.round((d.inapp.apple + d.paid.apple) * w);
+    const units = prevUnitsByApp.get(d.appId) ?? new Map<string, AdUnitRow>();
+    addUnits(units, d, w);
+    prevUnitsByApp.set(d.appId, units);
+  }
+  for (const [appId, units] of prevUnitsByApp) rows.get(appId)!.prev!.adUnits = [...units.values()];
   const appRows = [...rows.values()].sort((a, b) => sum(b) - sum(a) || a.app.name.localeCompare(b.app.name));
 
   // Sync status: always list every source; missing docs mean "not connected yet".

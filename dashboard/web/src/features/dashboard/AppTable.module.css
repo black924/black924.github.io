@@ -224,3 +224,16 @@
 }
 
 .platformCell { color: var(--text-3) !important; }
+
+/* Change vs the comparison window, under each number in the app detail. */
+.delta {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--text-faint);
+}
+.deltaUp { color: var(--up); }
+.deltaDown { color: var(--down); }
+.deltaFlat, .deltaNew { color: var(--text-muted); }

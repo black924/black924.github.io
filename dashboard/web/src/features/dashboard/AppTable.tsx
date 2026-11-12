@@ -1,5 +1,5 @@
 import { Fragment, useState } from 'react';
-import { formatKrw, share } from '../../lib/format';
+import { formatKrw, percentChange, share } from '../../lib/format';
 import type { AdUnitRow, AppRow } from '../../data/types';
 import { AppIcon } from './AppIcon';
 import s from './AppTable.module.css';
@@ -20,11 +20,40 @@ const FORMAT_LABEL: Record<string, string> = {
 const formatLabel = (f: string) => FORMAT_LABEL[f.toLowerCase().replace(/[\s-]/g, '_')] ?? (f || '—');
 
 const int = new Intl.NumberFormat('ko-KR');
-const rate = (num: number, den: number) => (den > 0 ? `${((num / den) * 100).toFixed(1)}%` : '—');
+/** Rate as 0-100, or null without a denominator. */
+const ratio = (num: number, den: number) => (den > 0 ? (num / den) * 100 : null);
+const rate = (num: number, den: number) => {
+  const r = ratio(num, den);
+  return r === null ? '—' : `${r.toFixed(1)}%`;
+};
 /** eCPM in won micros: earnings per 1,000 impressions. */
-const ecpm = (u: AdUnitRow) => (u.impressions > 0 ? formatKrw(Math.round((u.earningsMicros * 1000) / u.impressions)) : '—');
+const ecpmMicros = (earnings: number, impressions: number) => (impressions > 0 ? Math.round((earnings * 1000) / impressions) : null);
+const ecpm = (earnings: number, impressions: number) => {
+  const v = ecpmMicros(earnings, impressions);
+  return v === null ? '—' : formatKrw(v);
+};
 
-export function AppTable({ rows, estimated }: { rows: AppRow[]; estimated: boolean }) {
+interface UnitTotals {
+  requests: number;
+  matched: number;
+  impressions: number;
+  earnings: number;
+}
+const sumUnits = (units: AdUnitRow[]): UnitTotals =>
+  units.reduce(
+    (a, u) => ({
+      requests: a.requests + u.requests,
+      matched: a.matched + u.matchedRequests,
+      impressions: a.impressions + u.impressions,
+      earnings: a.earnings + u.earningsMicros,
+    }),
+    { requests: 0, matched: 0, impressions: 0, earnings: 0 },
+  );
+// A unit with no rows in the comparison window counts as zero there (shown as "신규").
+const NO_UNITS: UnitTotals = { requests: 0, matched: 0, impressions: 0, earnings: 0 };
+const toTotals = (u: AdUnitRow): UnitTotals => ({ requests: u.requests, matched: u.matchedRequests, impressions: u.impressions, earnings: u.earningsMicros });
+
+export function AppTable({ rows, estimated, compareLabel }: { rows: AppRow[]; estimated: boolean; compareLabel: string }) {
   const [open, setOpen] = useState<Set<string>>(() => new Set());
   const toggle = (id: string) =>
     setOpen((prev) => {
@@ -111,7 +140,7 @@ export function AppTable({ rows, estimated }: { rows: AppRow[]; estimated: boole
                   {isOpen && (
                     <tr className={s.detailRow} id={detailId}>
                       <td colSpan={6}>
-                        <AppDetail row={r} />
+                        <AppDetail row={r} compareLabel={compareLabel} />
                       </td>
                     </tr>
                   )}
@@ -138,32 +167,23 @@ export function AppTable({ rows, estimated }: { rows: AppRow[]; estimated: boole
 type Tab = 'all' | 'android' | 'ios';
 const TAB_LABEL: Record<Tab, string> = { all: '전체', android: 'Android', ios: 'iOS' };
 
-function AppDetail({ row }: { row: AppRow }) {
+function AppDetail({ row, compareLabel }: { row: AppRow; compareLabel: string }) {
   const tabs: Tab[] = row.app.platform.length > 1 ? ['all', ...row.app.platform] : [];
   const [tab, setTab] = useState<Tab>('all');
-  const units = tab === 'all' ? row.adUnits : row.adUnits.filter((u) => u.platform === tab);
+  const inTab = (u: AdUnitRow) => tab === 'all' || u.platform === tab;
+  const units = row.adUnits.filter(inTab);
   const unknownPlatform = tab !== 'all' && row.adUnits.some((u) => u.platform === '');
+  const prev = row.prev;
+  const prevUnits = new Map((prev?.adUnits ?? []).filter(inTab).map((u) => [u.key, toTotals(u)]));
 
-  const total = units.reduce(
-    (a, u) => ({
-      requests: a.requests + u.requests,
-      matched: a.matched + u.matchedRequests,
-      impressions: a.impressions + u.impressions,
-      earnings: a.earnings + u.earningsMicros,
-    }),
-    { requests: 0, matched: 0, impressions: 0, earnings: 0 },
-  );
+  const total = sumUnits(units);
+  const prevTotal = prev ? sumUnits(prev.adUnits.filter(inTab)) : null;
   // "전체" uses the app's ad total (all ad sources); platform tabs sum their ad units.
   const adAmount = tab === 'all' ? row.ad : total.earnings;
-  const store =
-    tab === 'android'
-      ? [{ name: 'Google Play', amount: row.stores.google }]
-      : tab === 'ios'
-        ? [{ name: 'App Store', amount: row.stores.apple }]
-        : [
-            { name: 'Google Play', amount: row.stores.google },
-            { name: 'App Store', amount: row.stores.apple },
-          ];
+  const prevAd = prev ? (tab === 'all' ? prev.ad : prevTotal!.earnings) : null;
+  const google = { name: 'Google Play', amount: row.stores.google, prev: prev?.stores.google ?? null };
+  const apple = { name: 'App Store', amount: row.stores.apple, prev: prev?.stores.apple ?? null };
+  const store = tab === 'android' ? [google] : tab === 'ios' ? [apple] : [google, apple];
   const panelId = `app-tabpanel-${row.app.id}`;
 
   return (
@@ -192,11 +212,13 @@ function AppDetail({ row }: { row: AppRow }) {
           <div className={s.summaryBox}>
             <span className={s.summaryLabel}>광고 수익</span>
             <span className={`num ${s.summaryValue}`}>{formatKrw(adAmount)}</span>
+            <Delta cur={adAmount} prev={prevAd} prevText={prevAd === null ? '' : formatKrw(prevAd)} />
           </div>
           {store.map((st) => (
             <div key={st.name} className={s.summaryBox}>
               <span className={s.summaryLabel}>{st.name} 결제</span>
               <span className={`num ${s.summaryValue}`}>{formatKrw(st.amount)}</span>
+              <Delta cur={st.amount} prev={st.prev} prevText={st.prev === null ? '' : formatKrw(st.prev)} />
             </div>
           ))}
         </div>
@@ -229,12 +251,7 @@ function AppDetail({ row }: { row: AppRow }) {
                   <th scope="row" className={s.unitName}>{u.name}</th>
                   {tab === 'all' && tabs.length > 0 && <td className={s.platformCell}>{u.platform ? TAB_LABEL[u.platform] : '—'}</td>}
                   <td>{formatLabel(u.format)}</td>
-                  <td className={`num ${s.r}`}>{int.format(u.requests)}</td>
-                  <td className={`num ${s.r}`}>{rate(u.matchedRequests, u.requests)}</td>
-                  <td className={`num ${s.r}`}>{int.format(u.impressions)}</td>
-                  <td className={`num ${s.r}`}>{rate(u.impressions, u.matchedRequests)}</td>
-                  <td className={`num ${s.r}`}>{ecpm(u)}</td>
-                  <td className={`num ${s.r} ${s.total}`}>{formatKrw(u.earningsMicros)}</td>
+                  <MetricCells cur={toTotals(u)} prev={prev ? prevUnits.get(u.key) ?? NO_UNITS : null} />
                 </tr>
               ))}
             </tbody>
@@ -244,14 +261,7 @@ function AppDetail({ row }: { row: AppRow }) {
                   <th scope="row">합계</th>
                   {tab === 'all' && tabs.length > 0 && <td />}
                   <td />
-                  <td className={`num ${s.r}`}>{int.format(total.requests)}</td>
-                  <td className={`num ${s.r}`}>{rate(total.matched, total.requests)}</td>
-                  <td className={`num ${s.r}`}>{int.format(total.impressions)}</td>
-                  <td className={`num ${s.r}`}>{rate(total.impressions, total.matched)}</td>
-                  <td className={`num ${s.r}`}>
-                    {total.impressions > 0 ? formatKrw(Math.round((total.earnings * 1000) / total.impressions)) : '—'}
-                  </td>
-                  <td className={`num ${s.r} ${s.total}`}>{formatKrw(total.earnings)}</td>
+                  <MetricCells cur={total} prev={prevTotal} />
                 </tr>
               </tfoot>
             )}
@@ -260,8 +270,73 @@ function AppDetail({ row }: { row: AppRow }) {
       </div>
       <p className={s.note}>
         일치율 = 일치 요청 ÷ 요청, 노출률 = 노출 ÷ 일치 요청, eCPM = 수익 ÷ 노출 × 1,000. 기간 합계로 계산합니다.
+        ▲▼는 {compareLabel}이며, 비율은 %p(퍼센트포인트) 차이입니다.
       </p>
     </div>
+  );
+}
+
+/** The six number cells of an ad-unit row (or total), each with its change vs the comparison window. */
+function MetricCells({ cur, prev }: { cur: UnitTotals; prev: UnitTotals | null }) {
+  const matchRate = ratio(cur.matched, cur.requests);
+  const showRate = ratio(cur.impressions, cur.matched);
+  const e = ecpmMicros(cur.earnings, cur.impressions);
+  const pMatch = prev && ratio(prev.matched, prev.requests);
+  const pShow = prev && ratio(prev.impressions, prev.matched);
+  const pE = prev && ecpmMicros(prev.earnings, prev.impressions);
+  const pct = (r: number | null | undefined) => (r == null ? '' : `${r.toFixed(1)}%`);
+  return (
+    <>
+      <td className={`num ${s.r}`}>
+        {int.format(cur.requests)}
+        <Delta cur={cur.requests} prev={prev?.requests ?? null} prevText={prev ? int.format(prev.requests) : ''} />
+      </td>
+      <td className={`num ${s.r}`}>
+        {rate(cur.matched, cur.requests)}
+        <Delta cur={matchRate} prev={pMatch ?? null} prevText={pct(pMatch)} points />
+      </td>
+      <td className={`num ${s.r}`}>
+        {int.format(cur.impressions)}
+        <Delta cur={cur.impressions} prev={prev?.impressions ?? null} prevText={prev ? int.format(prev.impressions) : ''} />
+      </td>
+      <td className={`num ${s.r}`}>
+        {rate(cur.impressions, cur.matched)}
+        <Delta cur={showRate} prev={pShow ?? null} prevText={pct(pShow)} points />
+      </td>
+      <td className={`num ${s.r}`}>
+        {ecpm(cur.earnings, cur.impressions)}
+        <Delta cur={e} prev={pE ?? null} prevText={pE == null ? '' : formatKrw(pE)} />
+      </td>
+      <td className={`num ${s.r} ${s.total}`}>
+        {formatKrw(cur.earnings)}
+        <Delta cur={cur.earnings} prev={prev?.earnings ?? null} prevText={prev ? formatKrw(prev.earnings) : ''} />
+      </td>
+    </>
+  );
+}
+
+/**
+ * "▲ 12.3%" under a value. `points` = the values are rates, so show the %p difference instead.
+ * Shows nothing when there is nothing to compare with, and "신규" when the previous value was 0.
+ */
+function Delta({ cur, prev, prevText, points = false }: { cur: number | null; prev: number | null; prevText: string; points?: boolean }) {
+  if (cur === null || prev === null) return <span className={s.delta} aria-hidden>&nbsp;</span>;
+  const title = `이전 ${prevText}`;
+  if (!points && prev === 0) {
+    return cur > 0 ? <span className={`${s.delta} ${s.deltaNew}`} title={title}>신규</span> : <span className={s.delta} aria-hidden>&nbsp;</span>;
+  }
+  const change = points ? cur - prev : percentChange(cur, prev)!;
+  const shown = Math.abs(change).toFixed(1);
+  const unit = points ? '%p' : '%';
+  if (shown === '0.0') return <span className={`${s.delta} ${s.deltaFlat}`} title={title}>0.0{unit}</span>;
+  const up = change > 0;
+  return (
+    <span className={`${s.delta} ${up ? s.deltaUp : s.deltaDown}`} title={title}>
+      <span aria-hidden>{up ? '▲' : '▼'}</span>
+      {shown}
+      {unit}
+      <span className="sr-only">{up ? ' 증가' : ' 감소'}</span>
+    </span>
   );
 }
 
