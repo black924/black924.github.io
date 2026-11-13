@@ -126,6 +126,7 @@ export function buildDashboard(raw: RawData, period: Period, now: Date): Dashboa
         paid: doc?.paid ?? 0,
         // No hourly docs at all for yesterday (e.g. first day after connecting) → no grey bars.
         prev: yHours.size ? (y ? y.ad + y.inapp + y.paid : 0) : null,
+        prevSplit: yHours.size ? (y ? { ad: y.ad, inapp: y.inapp, paid: y.paid } : zero()) : null,
         prevTitle: `${prevName} ${h}:00–${h + 1}:00`,
       };
     });
@@ -153,6 +154,7 @@ export function buildDashboard(raw: RawData, period: Period, now: Date): Dashboa
         status: dayStatus(d),
         ...(d <= today ? byDate.get(d)?.split ?? zero() : zero()),
         prev: p ? dayTotal(p) : null,
+        prevSplit: p && byDate.has(p) ? { ...byDate.get(p)!.split } : null,
         prevTitle: p ? shortDay(p) : '',
       };
     });

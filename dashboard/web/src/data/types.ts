@@ -120,6 +120,7 @@ export interface Bucket extends Split {
   future: boolean; // not reached yet (only the comparison bar is drawn)
   status: DataStatus;
   prev: number | null; // comparison period total; null = no data for that window
+  prevSplit: Split | null; // the same, per revenue type (null exactly when prev is null)
   prevTitle: string;
 }
 

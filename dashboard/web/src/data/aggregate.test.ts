@@ -174,6 +174,16 @@ describe('comparison bars and app detail', () => {
     expect(d.buckets[20]).toMatchObject({ key: '2026-11-09_20', ad: 4 * M, prev: 3 * M, prevTitle: '그제 20:00–21:00', status: 'final' });
   });
 
+  it('splits every comparison bar by revenue type, summing to the comparison total', () => {
+    const seed = generateSeed(NOW);
+    for (const period of ['today', 'yesterday', '7d', 'month'] as const) {
+      for (const b of buildDashboard(seed, period, NOW).buckets) {
+        expect(b.prevSplit === null).toBe(b.prev === null);
+        if (b.prevSplit) expect(b.prevSplit.ad + b.prevSplit.inapp + b.prevSplit.paid).toBe(b.prev);
+      }
+    }
+  });
+
   it('has no grey bars for today when yesterday has no hourly docs', () => {
     const b = buildDashboard(raw({}), 'today', NOW).buckets;
     expect(b.every((x) => x.prev === null)).toBe(true);
