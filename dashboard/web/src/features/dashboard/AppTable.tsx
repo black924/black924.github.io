@@ -82,10 +82,10 @@ export function AppTable({ rows, estimated, compareLabel }: { rows: AppRow[]; es
           <thead>
             <tr>
               <th scope="col">앱</th>
+              <th scope="col" className={s.r}>합계</th>
               <th scope="col" className={s.r}>광고</th>
               <th scope="col" className={s.r}>인앱·구독</th>
               <th scope="col" className={s.r}>유료앱</th>
-              <th scope="col" className={s.r}>합계</th>
               <th scope="col" className={s.shareCol}>비중</th>
             </tr>
           </thead>
@@ -124,10 +124,10 @@ export function AppTable({ rows, estimated, compareLabel }: { rows: AppRow[]; es
                         </span>
                       </button>
                     </th>
+                    <td className={`num ${s.r} ${s.total}`}>{formatKrw(t)}</td>
                     <td className={`num ${s.r}`}>{formatKrw(r.ad)}</td>
                     <td className={`num ${s.r} ${r.inapp ? '' : s.zero}`}>{formatKrw(r.inapp)}</td>
                     <td className={`num ${s.r} ${r.paid ? '' : s.zero}`}>{formatKrw(r.paid)}</td>
-                    <td className={`num ${s.r} ${s.total}`}>{formatKrw(t)}</td>
                     <td className={s.shareCol}>
                       <span className={s.share}>
                         <span className={s.track}>
@@ -151,10 +151,10 @@ export function AppTable({ rows, estimated, compareLabel }: { rows: AppRow[]; es
           <tfoot>
             <tr>
               <th scope="row">합계</th>
+              <td className={`num ${s.r} ${s.total}`}>{formatKrw(grand)}</td>
               <td className={`num ${s.r}`}>{formatKrw(sum.ad)}</td>
               <td className={`num ${s.r}`}>{formatKrw(sum.inapp)}</td>
               <td className={`num ${s.r}`}>{formatKrw(sum.paid)}</td>
-              <td className={`num ${s.r} ${s.total}`}>{formatKrw(grand)}</td>
               <td className={s.shareCol} />
             </tr>
           </tfoot>
