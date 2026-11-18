@@ -317,6 +317,7 @@ try { var t = localStorage.getItem('hnh-theme'); if (t) document.documentElement
         <div class="ring r2" id="ring2">
           <div class="o-item" style="--a:0deg"><a href="#app-defectchecker" aria-label="셀프사전점검"><img src="assets/apps/defectchecker.png" alt="" width="128" height="128"></a></div>
           <div class="o-item" style="--a:120deg"><a href="#app-breeze" aria-label="Breeze"><img src="assets/apps/breeze.png" alt="" width="128" height="128"></a></div>
+          <div class="o-item" style="--a:300deg"><a href="#app-pockle" aria-label="Pockle"><img src="assets/apps/pockle.png" alt="" width="128" height="128"></a></div>
           <div class="o-item" style="--a:240deg"><a href="#app-remit" aria-label="Remit"><img src="assets/apps/remit.png" alt="" width="128" height="128"></a></div>
         </div>
         <div class="orbit-core" aria-hidden="true"><svg class="core-symbol" viewBox="0 0 1024 1024" aria-hidden="true"><g transform="translate(-73.8 862.0) scale(0.9588)"><path d="M77 0V-730H202V-550L199 -448Q209 -500 248.0 -530.0Q287 -560 347 -560Q428 -560 476.5 -506.0Q525 -452 525 -361V0H400V-346Q400 -397 373.5 -424.5Q347 -452 302 -452Q255 -452 228.5 -424.0Q202 -396 202 -344V0Z" fill="currentColor"/><rect x="645" y="-730" width="500" height="730" fill="var(--cursor)"/></g></svg></div>
@@ -326,8 +327,8 @@ try { var t = localStorage.getItem('hnh-theme'); if (t) document.documentElement
 
   <div class="marquee" aria-hidden="true">
     <div class="marquee-track" id="marquee">
-      <span><img src="assets/apps/noiselog.png" alt="">층소일지<em>/</em><img src="assets/apps/defectchecker.png" alt="">셀프사전점검<em>/</em><img src="assets/apps/breeze.png" alt="">Breeze<em>/</em><img src="assets/apps/bannyeo.png" alt="">오늘도 반려<em>/</em><img src="assets/apps/vinylwave.png" alt="">Vinyl Wave<em>/</em><img src="assets/apps/remit.png" alt="">Remit<em>/</em><img src="assets/apps/schoolit.png" alt="">스쿨릿<em>/</em></span>
-      <span><img src="assets/apps/noiselog.png" alt="">층소일지<em>/</em><img src="assets/apps/defectchecker.png" alt="">셀프사전점검<em>/</em><img src="assets/apps/breeze.png" alt="">Breeze<em>/</em><img src="assets/apps/bannyeo.png" alt="">오늘도 반려<em>/</em><img src="assets/apps/vinylwave.png" alt="">Vinyl Wave<em>/</em><img src="assets/apps/remit.png" alt="">Remit<em>/</em><img src="assets/apps/schoolit.png" alt="">스쿨릿<em>/</em></span>
+      <span><img src="assets/apps/noiselog.png" alt="">층소일지<em>/</em><img src="assets/apps/defectchecker.png" alt="">셀프사전점검<em>/</em><img src="assets/apps/breeze.png" alt="">Breeze<em>/</em><img src="assets/apps/bannyeo.png" alt="">오늘도 반려<em>/</em><img src="assets/apps/vinylwave.png" alt="">Vinyl Wave<em>/</em><img src="assets/apps/remit.png" alt="">Remit<em>/</em><img src="assets/apps/pockle.png" alt="">Pockle<em>/</em><img src="assets/apps/schoolit.png" alt="">스쿨릿<em>/</em></span>
+      <span><img src="assets/apps/noiselog.png" alt="">층소일지<em>/</em><img src="assets/apps/defectchecker.png" alt="">셀프사전점검<em>/</em><img src="assets/apps/breeze.png" alt="">Breeze<em>/</em><img src="assets/apps/bannyeo.png" alt="">오늘도 반려<em>/</em><img src="assets/apps/vinylwave.png" alt="">Vinyl Wave<em>/</em><img src="assets/apps/remit.png" alt="">Remit<em>/</em><img src="assets/apps/pockle.png" alt="">Pockle<em>/</em><img src="assets/apps/schoolit.png" alt="">스쿨릿<em>/</em></span>
     </div>
   </div>
 
@@ -471,6 +472,41 @@ try { var t = localStorage.getItem('hnh-theme'); if (t) document.documentElement
           </div>
         </article>
 
+        <article class="card reveal" id="app-pockle" data-app="pockle" data-tags="soon global" style="--accent:#111114; --d:.06s">
+          <div class="card-top">
+            <img class="card-icon" src="assets/apps/pockle.png" alt="" width="76" height="76">
+            <div class="tags"><span class="tag soon" data-i18n="t.soon">출시 예정</span></div>
+          </div>
+          <div>
+            <h3>Pockle <small>포클</small></h3>
+            <p class="tagline" data-i18n="pockle.tag">공유하면 하루가 쌓이는 기록 앱</p>
+          </div>
+          <p class="desc" data-i18n="pockle.desc">링크·글·사진·파일을 공유하면 날짜별 타임라인에 모여요. 사진 속 글자는 기기에서 읽고, 서버도 계정도 없어요.</p>
+          <div class="platforms"><span><svg><use href="#i-android"/></svg>Android</span><span><svg><use href="#i-apple"/></svg>iOS</span></div>
+          <div class="actions">
+            <span class="store off"><svg><use href="#i-play"/></svg><small>Google Play · <span data-i18n="soonShort">곧 출시</span></small></span>
+            <span class="store off"><svg><use href="#i-apple"/></svg><small>App Store · <span data-i18n="soonShort">곧 출시</span></small></span>
+            <a class="more" href="pockle/index.html?lang=ko" data-detail="pockle/index.html?lang={lang3}"><span data-i18n="more">상세 보기</span> <i aria-hidden="true">→</i></a>
+          </div>
+        </article>
+
+        <article class="card reveal" id="app-liquidframe" data-app="liquidframe" data-tags="soon global" style="--accent:#1C8FD6; --d:.12s">
+          <div class="card-top">
+            <img class="card-icon" src="assets/apps/liquidframe.png" alt="" width="76" height="76">
+            <div class="tags"><span class="tag soon" data-i18n="t.soon">출시 예정</span></div>
+          </div>
+          <div>
+            <h3>Liquid Frame</h3>
+            <p class="tagline" data-i18n="liquidframe.tag">기울이면 출렁이는 물 배경화면</p>
+          </div>
+          <p class="desc" data-i18n="liquidframe.desc">폰을 기울이고 흔들면 화면 속 물이 진짜처럼 출렁여요. 러버덕·진주, 내 사진으로 만든 아크릴 참이 물 위를 떠다니는 라이브 배경화면.</p>
+          <div class="platforms"><span><svg><use href="#i-android"/></svg>Android</span></div>
+          <div class="actions">
+            <span class="store off"><svg><use href="#i-play"/></svg><small>Google Play · <span data-i18n="soonShort">곧 출시</span></small></span>
+            <a class="more" href="liquidframe/index.html?lang=ko" data-detail="liquidframe/index.html?lang={lang}"><span data-i18n="more">상세 보기</span> <i aria-hidden="true">→</i></a>
+          </div>
+        </article>
+
         <article class="card reveal" id="app-schoolit" data-app="schoolit" data-tags="live kr" data-region="kr" style="--accent:#2E7CF6; --d:.12s">
           <div class="card-top">
             <img class="card-icon" src="assets/apps/schoolit.png" alt="" width="88" height="88">
@@ -536,6 +572,8 @@ try { var t = localStorage.getItem('hnh-theme'); if (t) document.documentElement
         <li><a href="vinylwave/privacy.html">Vinyl Wave</a></li>
         <li><a href="chaeum/privacy.html"><span data-i18n="chaeum.name">채움과 비움</span></a></li>
         <li><a href="remit_privacy_policy.html">Remit</a></li>
+        <li><a href="pockle/privacy.html">Pockle</a> · <a href="pockle/terms.html">Terms</a></li>
+        <li><a href="liquidframe/privacy.html">Liquid Frame</a> · <a href="liquidframe/terms.html">Terms</a></li>
         <li data-region="kr"><a href="today_school_privacy_policy.html">스쿨릿</a></li>
       </ul>
     </div>
@@ -566,6 +604,10 @@ try { var t = localStorage.getItem('hnh-theme'); if (t) document.documentElement
       'chaeum.desc': '할 일 셋, 줄일 습관 셋만 적는 조용한 습관 기록 앱. 하루를 마무리하면 오늘이 먹빛 한 점으로 남아요.',
       'remit.tag': '하루를 관리하는 타이머',
       'remit.desc': '공부, 운동, 일처럼 하는 일마다 타이머를 만들고 쓴 시간을 기록해요. 목표 시간을 정해 두면 달성률로 하루를 돌아볼 수 있어요.',
+      'pockle.tag': '공유하면 하루가 쌓이는 기록 앱',
+      'pockle.desc': '링크·글·사진·파일을 공유하면 날짜별 타임라인에 모여요. 사진 속 글자는 기기에서 읽고, 서버도 계정도 없어요.',
+      'liquidframe.tag': '기울이면 출렁이는 물 배경화면',
+      'liquidframe.desc': '폰을 기울이고 흔들면 화면 속 물이 진짜처럼 출렁여요. 러버덕·진주, 내 사진으로 만든 아크릴 참이 물 위를 떠다니는 라이브 배경화면.',
       'about.title': '작고 단단한 앱을<br>만드는 팀',
       'about.lead': 'HNH Labs는 누구나 한 번쯤 겪는 불편 하나를 골라, 가장 쉬운 해결책이 될 때까지 다듬습니다.',
       'p1.h': '한 가지 문제에 집중', 'p1.p': '기능을 늘리기보다 핵심 한 가지를 가장 빠르게 끝낼 수 있게 만들어요.',
@@ -595,6 +637,10 @@ try { var t = localStorage.getItem('hnh-theme'); if (t) document.documentElement
       'chaeum.desc': 'Write just three things to do and three habits to let go. Close the day and it folds into a single dot of ink.',
       'remit.tag': 'A timer that manages your day',
       'remit.desc': 'Create a timer for each activity — study, workout, work — and log the time you spend. Set a goal and look back on your day by completion rate.',
+      'pockle.tag': 'Share it, and your day piles up',
+      'pockle.desc': 'Share links, text, photos and files and they gather on a daily timeline. Text in photos is read on-device — no server, no account.',
+      'liquidframe.tag': 'A live wallpaper of sloshing water',
+      'liquidframe.desc': 'Tilt and shake your phone and the water sloshes like the real thing. Rubber ducks, pearls and acrylic charms made from your own photos float along.',
       'about.title': 'A small team building<br>small, solid apps',
       'about.lead': 'HNH Labs picks one hassle almost everyone runs into and refines the fix until it is the easiest one there is.',
       'p1.h': 'Focus on one problem', 'p1.p': 'Instead of piling on features, we make the one thing that matters as fast as possible.',
@@ -624,6 +670,10 @@ try { var t = localStorage.getItem('hnh-theme'); if (t) document.documentElement
       'chaeum.desc': 'やること3つと減らす習慣3つだけを書く、静かな習慣記録アプリ。一日をしめくくると、今日が墨色のひと粒に。',
       'remit.tag': '一日を管理するタイマー',
       'remit.desc': '勉強、運動、仕事など、やることごとにタイマーを作って使った時間を記録。目標時間を決めれば、達成率で一日を振り返れます。',
+      'pockle.tag': '共有すれば1日が積み重なる記録アプリ',
+      'pockle.desc': 'リンク・テキスト・写真・ファイルを共有すると日付ごとのタイムラインに集まります。写真の文字は端末内で読み取り、サーバーもアカウントもありません。',
+      'liquidframe.tag': '傾けると揺れる水のライブ壁紙',
+      'liquidframe.desc': 'スマホを傾けたり振ったりすると、画面の水が本物のように揺れます。ラバーダックや真珠、自分の写真で作ったアクリルチャームが水に浮かびます。',
       'about.title': '小さくて頼れる<br>アプリをつくる<br>チーム',
       'about.lead': 'HNH Labsは、誰もが一度は感じる不便をひとつ選び、いちばん簡単な解決策になるまで磨き上げます。',
       'p1.h': 'ひとつの課題に集中', 'p1.p': '機能を増やすより、大切なひとつをいちばん速く済ませられるように作ります。',
@@ -653,6 +703,10 @@ try { var t = localStorage.getItem('hnh-theme'); if (t) document.documentElement
       'chaeum.desc': 'Schreib nur drei Dinge auf, die du tun willst, und drei Gewohnheiten, die du loslassen willst. Am Abend wird der Tag zu einem Tuschepunkt.',
       'remit.tag': 'Ein Timer, der deinen Tag organisiert',
       'remit.desc': 'Leg für jede Tätigkeit – Lernen, Sport, Arbeit – einen Timer an und erfasse deine Zeit. Mit einem Ziel siehst du am Erfüllungsgrad, wie dein Tag lief.',
+      'pockle.tag': 'Teilen – und dein Tag sammelt sich',
+      'pockle.desc': 'Teile Links, Texte, Fotos und Dateien – sie sammeln sich auf einer Tages-Timeline. Text in Fotos wird auf dem Gerät gelesen, ohne Server und Konto.',
+      'liquidframe.tag': 'Live-Hintergrund mit schwappendem Wasser',
+      'liquidframe.desc': 'Neige und schüttle dein Handy – das Wasser schwappt wie echtes. Quietscheentchen, Perlen und Acryl-Anhänger aus deinen Fotos treiben darin.',
       'about.title': 'Ein kleines Team<br>für solide Apps',
       'about.lead': 'HNH Labs sucht sich ein Ärgernis aus, das fast jeder kennt, und feilt so lange an der Lösung, bis sie die einfachste ist.',
       'p1.h': 'Fokus auf ein Problem', 'p1.p': 'Statt Funktionen anzuhäufen, machen wir das Wichtigste so schnell wie möglich erledigt.',
@@ -666,13 +720,13 @@ try { var t = localStorage.getItem('hnh-theme'); if (t) document.documentElement
   // 궤도·띠에 쓰는 앱 순서. 바깥 고리를 먼저 채운다.
   var APPS = {
     noiselog: 'assets/apps/noiselog.png', vinylwave: 'assets/apps/vinylwave.png', bannyeo: 'assets/apps/bannyeo.png',
-    schoolit: 'assets/apps/schoolit.png', defectchecker: 'assets/apps/defectchecker.png', breeze: 'assets/apps/breeze.png', remit: 'assets/apps/remit.png',
-    chaeum: 'assets/apps/chaeum.png'
+    schoolit: 'assets/apps/schoolit.png', defectchecker: 'assets/apps/defectchecker.png', breeze: 'assets/apps/breeze.png', remit: 'assets/apps/remit.png', pockle: 'assets/apps/pockle.png',
+    chaeum: 'assets/apps/chaeum.png', liquidframe: 'assets/apps/liquidframe.png'
   };
-  var ORBIT_ORDER = ['noiselog', 'vinylwave', 'bannyeo', 'schoolit', 'chaeum', 'defectchecker', 'breeze', 'remit'];
-  var MARQUEE_ORDER = ['noiselog', 'defectchecker', 'breeze', 'bannyeo', 'vinylwave', 'chaeum', 'remit', 'schoolit'];
+  var ORBIT_ORDER = ['noiselog', 'vinylwave', 'liquidframe', 'bannyeo', 'schoolit', 'chaeum', 'defectchecker', 'breeze', 'pockle', 'remit'];
+  var MARQUEE_ORDER = ['noiselog', 'defectchecker', 'breeze', 'bannyeo', 'vinylwave', 'liquidframe', 'chaeum', 'pockle', 'remit', 'schoolit'];
   var KR_ONLY = { defectchecker: 1, breeze: 1, schoolit: 1 };
-  var NAMES_FIXED = { defectchecker: '셀프사전점검', breeze: 'Breeze', vinylwave: 'Vinyl Wave', remit: 'Remit', schoolit: '스쿨릿' };
+  var NAMES_FIXED = { defectchecker: '셀프사전점검', breeze: 'Breeze', vinylwave: 'Vinyl Wave', remit: 'Remit', pockle: 'Pockle', liquidframe: 'Liquid Frame', schoolit: '스쿨릿' };
 
   var root = document.documentElement;
   var cards = [].slice.call(document.querySelectorAll('#grid .card'));
