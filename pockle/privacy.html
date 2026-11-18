@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ko" data-l="ko" data-title-ko="Pockle(포클) 개인정보처리방침" data-title-en="Pockle Privacy Policy" data-title-ja="Pockle プライバシーポリシー">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pockle(포클) 개인정보처리방침</title>
+<meta name="description" content="Pockle(포클) 개인정보처리방침">
+<meta name="theme-color" content="#000000">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Pockle(포클) 개인정보처리방침">
+<meta property="og:description" content="Pockle(포클) 개인정보처리방침">
+<meta property="og:image" content="https://hnh-labs.com/assets/apps/pockle.png">
+<link rel="icon" href="../assets/apps/pockle.png">
+<link rel="apple-touch-icon" href="../assets/apps/pockle.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="style.css">
+<script src="app.js"></script>
+</head>
+<body>
+<header class="nav"><div class="wrap">
+<a class="home" href="../index.html">HNH Labs</a>
+<a class="brand" href="index.html"><img src="../assets/apps/pockle.png" alt="" width="28" height="28"><span>Pockle</span></a>
+<div class="r">
+<a class="l" href="index.html#features"><span class="L" lang="ko">기능</span><span class="L" lang="en">Features</span><span class="L" lang="ja">機能</span></a>
+<a class="l" href="index.html#privacy"><span class="L" lang="ko">프라이버시</span><span class="L" lang="en">Privacy</span><span class="L" lang="ja">プライバシー</span></a>
+<select id="lang" aria-label="Language"><option value="ko">한국어</option><option value="en">English</option><option value="ja">日本語</option></select>
+</div></div></header>
+<main class="doc"><div class="L" lang="ko"><h1>Pockle(포클) 개인정보처리방침</h1>
+<p class="sub">시행일: 2026년 11월 18일 · 개발·운영: HNH Labs(에이치앤에이치랩스)</p>
+<p>Pockle(이하 “앱”)은 공유한 링크·글·사진·파일을 하루 단위로 기록하는 앱입니다. 앱에는 회원 가입과 자체 서버가 없으며, 이용자가 저장한 기록은 이용자의 기기 안에만 보관됩니다. 개발자는 이용자의 기록을 수집하거나 볼 수 없습니다.</p>
+<div class="note"><p><strong>요약</strong> 광고 SDK를 쓰지 않고 광고 식별자도 읽지 않습니다. 이용자가 <strong>직접 켠 경우에만</strong> 오류 정보와 익명 사용 통계를 Google Firebase로 보냅니다. 기본은 꺼져 있고, 저장한 기록의 내용은 어떤 경우에도 보내지 않습니다.</p></div>
+<h2>1. 기기 안에만 저장되는 정보</h2>
+<p>아래 정보는 앱이 동작하려고 이용자의 기기에 만들며, 개발자나 제3자에게 전송되지 않습니다.</p>
+<ul><li>이용자가 공유·붙여넣기·촬영·선택해 저장한 링크, 글, 사진, 파일과 그 제목·메모·분류·폴더</li><li>사진에서 인식한 글자, 감지한 날짜·주소·전화번호·코드·바코드, 스마트 카드(쿠폰·예약·이벤트) 정보</li><li>검색어(최근 검색어 최대 10개), 앱 설정, 구독 상태(마지막으로 확인한 값)</li></ul>
+<p>글자 인식·언어 감지·번역은 기기 안에서 처리합니다(iOS는 Apple Vision·Translation, Android는 Google ML Kit. 일부 Android 모델은 Google Play 서비스가 기기로 내려받으며, 이때 이용자의 사진이나 글자는 전송되지 않습니다). 인식한 글자는 있는 그대로 저장되므로 카드번호·계좌번호 같은 숫자도 포함될 수 있고, 내보내기 파일과 백업에도 그대로 들어갈 수 있습니다.</p>
+<h3>수집하지 않는 정보</h3>
+<p>회원 정보, 이름·이메일·전화번호, 저장한 링크·글·사진·파일·메모·검색어, 인식한 글자, 광고 식별자는 수집하지 않습니다.</p>
+<h2>2. 앱이 하는 네트워크 통신</h2>
+<p>앱은 아래 경우에만 인터넷을 사용합니다. 이 밖의 통신은 하지 않습니다.</p>
+<ul>
+<li><strong>링크 정보 가져오기:</strong> 이용자가 저장한 링크의 제목·대표 이미지를 가져오려고 해당 웹사이트에 요청을 한 번 보냅니다. 사이트 아이콘을 가져오려고 같은 사이트에 한 번 더 요청할 수 있습니다. 요청 주소에서는 <code>utm_*</code>, <code>si</code>, <code>igsh</code> 같은 추적 파라미터를 먼저 지우고, 쿠키를 쓰지 않습니다. 이때 해당 웹사이트는 이용자의 IP 주소와 요청 사실을 알 수 있으며, 그 처리는 해당 사이트의 방침을 따릅니다. 제3자 아이콘·분석 서비스는 쓰지 않습니다.</li>
+<li><strong>오류·사용 통계(선택, 기본 꺼짐):</strong> 첫 실행 화면이나 설정 &gt; 진단의 “오류·사용 통계 보내기”를 이용자가 켠 경우에만 Google Firebase(Analytics, Crashlytics)로 보냅니다. 켜기 전에는 전송하지 않으며, 끄면 이후 전송이 멈춥니다. 보내는 정보는 다음뿐입니다: ① 앱이 비정상 종료될 때의 오류 기록(스택 트레이스)과 그때의 기기 상태(기기 모델, OS 버전, 앱 버전, 메모리·저장 공간 등), ② 기능 사용 통계(기록을 저장했다는 사실과 그 종류·경로[공유/클립보드], 결제 화면을 열었다는 사실, 구매 결과), 앱 실행·사용 시간, 언어·대략적인 지역(국가 수준), ③ Firebase가 앱 설치마다 만드는 임의의 식별자(앱 인스턴스 ID). 이 정보는 이용자를 직접 식별하지 못하며 이름·이메일과 연결하지 않습니다. 목적은 오류 원인 파악과 앱 개선입니다. 보유 기간은 사용 통계 최대 14개월, 오류 정보 90일이며 그 뒤 자동으로 삭제됩니다.</li>
+<li><strong>결제:</strong> PRO 구매는 Apple App Store 또는 Google Play가 처리합니다. 개발자는 이용자의 결제 수단·이름·이메일을 받지 않고, 스토어가 알려주는 구매 상태만 확인합니다.</li>
+<li><strong>백업(선택):</strong> iOS에서 자동 백업을 켜면 이용자 본인의 iCloud Drive 앱 컨테이너에 백업 파일이 저장됩니다. 파일 내보내기는 이용자가 고른 위치에 저장됩니다. 개발자는 이 파일에 접근할 수 없습니다. 암호화를 선택하면 이용자의 비밀번호로 암호화되며, 비밀번호를 잊으면 복원할 수 없습니다.</li>
+</ul>
+<h2>3. 접근 권한</h2>
+<p>권한은 필요한 순간에만 묻고, 먼저 앱 안에서 이유를 안내합니다. 연락처·위치·마이크 권한은 요청하지 않습니다.</p>
+<ul><li><strong>알림(선택):</strong> 스마트 카드의 만료·일정 알림을 기기에서 예약하는 데만 씁니다.</li><li><strong>카메라(선택):</strong> “찍어서 저장”을 누를 때만 씁니다(Android는 시스템 카메라 앱을 사용해 앱이 카메라 권한을 갖지 않습니다).</li><li><strong>사진:</strong> 시스템 사진 선택기로 이용자가 고른 사진만 받으며 사진 보관함 전체에는 접근하지 않습니다. iOS의 “사진 추가만” 권한은 사진 저장 때만 안내됩니다.</li><li><strong>캘린더:</strong> “캘린더에 추가”는 시스템 일정 편집 화면을 열어 이용자가 직접 저장하며, 앱이 캘린더를 읽지 않습니다.</li><li><strong>클립보드:</strong> 변경이 감지되면 종류만 확인해 카드로 묻고, 이용자가 “추가”를 누르기 전에는 내용을 읽지 않습니다. 자동으로 저장하지 않습니다.</li></ul>
+<h2>4. 보관과 삭제</h2>
+<p>이미 전송된 오류·사용 통계의 삭제를 원하시면 아래 문의처로 요청해 주세요(앱 설치별 식별자를 알려 주셔야 찾을 수 있습니다). 기록은 이용자의 기기에 저장되며 앱을 삭제하면 함께 삭제됩니다. 설정 &gt; 저장 공간에서 기간을 골라 지우거나 모든 데이터를 삭제할 수 있습니다. 이때 PRO 권한·테마·언어 설정과 이미 만들어 둔 백업 파일은 지워지지 않습니다. 개발자 쪽에는 삭제할 이용자 정보가 없습니다.</p>
+<h2>5. 제3자 제공·국외 이전</h2>
+<p>개발자는 이용자의 저장 기록을 수집하지 않으며 판매하거나 광고 목적으로 제3자에게 제공하지 않습니다. 2항의 오류·사용 통계를 이용자가 켠 경우에 한해 아래와 같이 국외로 이전됩니다.</p>
+<ul><li>이전받는 자: Google LLC (Firebase) · <a href="https://firebase.google.com/support/privacy">firebase.google.com/support/privacy</a></li><li>이전 국가: 미국 등 Google 데이터센터 소재 국가</li><li>이전 일시 및 방법: 기능을 켠 상태에서 앱을 사용할 때 수시로, 네트워크를 통한 암호화 전송</li><li>이전 항목: 2항의 오류 정보·사용 통계·앱 인스턴스 ID</li><li>보유 기간: 사용 통계 최대 14개월, 오류 정보 90일</li></ul>
+<p>국외 이전을 원하지 않으면 해당 스위치를 끄시면 됩니다. 스토어 결제와 iCloud 백업은 각각 Apple·Google이 자체 방침에 따라 처리합니다.</p>
+<h2>6. 아동의 개인정보</h2>
+<p>앱은 아동을 대상으로 하지 않으며, 만 14세 미만 아동의 정보를 별도로 수집하지 않습니다.</p>
+<h2>7. 방침의 변경</h2>
+<p>방침이 바뀌면 이 페이지에 시행일과 함께 게시합니다. 수집 항목이 늘어나는 변경은 적용 전에 먼저 알립니다.</p>
+<h2>8. 문의</h2>
+<p><a href="mailto:support@hnh-labs.com">support@hnh-labs.com</a></p>
+<h2>변경 이력</h2>
+<ul><li>2026-11-18: 선택형 오류·사용 통계(Firebase) 추가</li><li>2026-11-18: 최초 게시</li></ul></div><div class="L" lang="en"><h1>Pockle Privacy Policy</h1>
+<p class="sub">Effective date: November 18, 2026 · Developed and operated by HNH Labs</p>
+<p>Pockle (“the app”) records the links, text, photos and files you share, one day at a time. The app has no accounts and no servers of its own. What you save stays on your device. The developer cannot collect or see your records.</p>
+<div class="note"><p><strong>In short:</strong> the app uses no advertising SDK and never reads the advertising ID. Only <strong>if you turn it on yourself</strong>, it sends crash information and anonymous usage statistics to Google Firebase. It is off by default, and the content of what you save is never sent.</p></div>
+<h2>1. Information stored only on your device</h2>
+<p>The following is created on your device so the app can work. It is not sent to the developer or any third party.</p>
+<ul><li>Links, text, photos and files you share, paste, take or pick, with their titles, notes, categories and folders</li><li>Text recognized in photos, detected dates, addresses, phone numbers, codes and barcodes, and smart card (coupon, booking, event) data</li><li>Search terms (up to 10 recent), app settings, and your last-known subscription status</li></ul>
+<p>Text recognition, language detection and translation run on your device (Apple Vision and Translation on iOS; Google ML Kit on Android — some Android models are downloaded to your device by Google Play services, and your photos and text are not sent in the process). Recognized text is stored as-is, so it may include numbers such as card or account numbers, and these can appear in exported files and backups.</p>
+<h3>What we do not collect</h3>
+<p>Account details, your name, email or phone number, the links, text, photos, files, notes and searches you save, recognized text, and the advertising ID.</p>
+<h2>2. Network requests the app makes</h2>
+<p>The app uses the internet only in the cases below and makes no other requests.</p>
+<ul>
+<li><strong>Fetching link details:</strong> to get the title and main image of a link you saved, the app sends one request to that website, and may send one more to the same site to get its icon. Tracking parameters such as <code>utm_*</code>, <code>si</code> and <code>igsh</code> are removed from the address first, and cookies are not used. That website can see your IP address and the request, under its own policy. No third-party icon or analytics service is used.</li>
+<li><strong>Crash reports and usage stats (optional, off by default):</strong> only if you switch on “Share crash reports and usage stats” on the first-run screen or in Settings &gt; Diagnostics, the app sends data to Google Firebase (Analytics and Crashlytics). Nothing is sent before you turn it on, and turning it off stops further sending. The data is limited to: (1) a crash record (stack trace) and the device state at that time (device model, OS and app version, memory and storage), (2) feature-usage counts (that an entry was saved and its type and route [share/clipboard], that the purchase screen was opened, the purchase result), app launch and usage time, language and approximate region (country level), and (3) a random identifier Firebase creates for each app install (app instance ID). This does not directly identify you and is not linked to your name or email. The purpose is to find the cause of errors and improve the app. Retention: usage statistics up to 14 months, crash information 90 days, then deleted automatically.</li>
+<li><strong>Payments:</strong> PRO purchases are handled by the Apple App Store or Google Play. The developer receives no payment method, name or email — the app only checks the purchase status reported by the store.</li>
+<li><strong>Backup (optional):</strong> if you turn on automatic backup on iOS, backup files are stored in the app container of your own iCloud Drive. File exports are saved wherever you choose. The developer cannot access these files. If you enable encryption, files are encrypted with your password; if you forget it, they cannot be restored.</li>
+</ul>
+<h2>3. Permissions</h2>
+<p>Permissions are requested only when needed, after an explanation inside the app. The app does not request contacts, location or microphone access.</p>
+<ul><li><strong>Notifications (optional):</strong> used only to schedule smart card reminders on your device.</li><li><strong>Camera (optional):</strong> used only when you tap “Take photo” (on Android the system camera app is used, so the app holds no camera permission).</li><li><strong>Photos:</strong> the app receives only the photos you choose in the system photo picker and has no access to your whole library. On iOS, “add photos only” access is explained only when saving a photo.</li><li><strong>Calendar:</strong> “Add to calendar” opens the system event editor and you save it yourself; the app does not read your calendar.</li><li><strong>Clipboard:</strong> when a change is detected, the app checks only its type and asks via a card. It does not read the content until you tap “Add”, and never saves automatically.</li></ul>
+<h2>4. Retention and deletion</h2>
+<p>To have crash or usage data that was already sent deleted, contact us below (we will need the per-install identifier to find it). Records are stored on your device and are deleted when you uninstall the app. In Settings &gt; Storage you can delete by period or delete all data; your PRO entitlement, theme and language settings and any backup files you already made are not removed. The developer holds no user data to delete.</p>
+<h2>5. Third-party sharing and transfers abroad</h2>
+<p>The developer does not collect the records you save and does not sell them or give them to third parties for advertising. Only if you turn on the crash and usage setting in section 2, the following is transferred abroad.</p>
+<ul><li>Recipient: Google LLC (Firebase) · <a href="https://firebase.google.com/support/privacy">firebase.google.com/support/privacy</a></li><li>Countries: the United States and other countries with Google data centers</li><li>When and how: from time to time while you use the app with the setting on, sent encrypted over the network</li><li>Items: the crash information, usage statistics and app instance ID in section 2</li><li>Retention: usage statistics up to 14 months, crash information 90 days</li></ul>
+<p>If you do not want this transfer, keep the switch off. Store payments and iCloud backup are processed by Apple and Google under their own policies.</p>
+<h2>6. Children</h2>
+<p>The app is not directed at children and does not knowingly collect information from children under 14.</p>
+<h2>7. Changes</h2>
+<p>If this policy changes, the new version is posted here with its effective date. Changes that add collected data will be announced before they apply.</p>
+<h2>8. Contact</h2>
+<p><a href="mailto:support@hnh-labs.com">support@hnh-labs.com</a></p>
+<h2>Revision history</h2>
+<ul><li>2026-11-18: Added optional crash and usage reporting (Firebase)</li><li>2026-11-18: First published</li></ul></div><div class="L" lang="ja"><h1>Pockle（ポックル）プライバシーポリシー</h1>
+<p class="sub">施行日：2026年11月18日 · 開発・運営：HNH Labs</p>
+<p>Pockle（以下「本アプリ」）は、共有したリンク・テキスト・写真・ファイルを1日ごとに記録するアプリです。本アプリにはアカウントも独自のサーバーもなく、保存した記録はお使いの端末内にのみ保管されます。開発者がお客様の記録を収集したり閲覧したりすることはできません。</p>
+<div class="note"><p><strong>要約</strong> 広告SDKは使用せず、広告IDも読み取りません。お客様が<strong>ご自身でオンにした場合のみ</strong>、エラー情報と匿名の利用統計をGoogle Firebaseに送信します。初期設定はオフで、保存した記録の内容はいかなる場合も送信しません。</p></div>
+<h2>1. 端末内にのみ保存される情報</h2>
+<p>以下は本アプリが動作するために端末内に作成され、開発者や第三者には送信されません。</p>
+<ul><li>共有・貼り付け・撮影・選択して保存したリンク、テキスト、写真、ファイルと、そのタイトル・メモ・カテゴリ・フォルダ</li><li>写真から認識した文字、検出した日付・住所・電話番号・コード・バーコード、スマートカード（クーポン・予約・イベント）の情報</li><li>検索ワード（最近の10件まで）、アプリ設定、購読状態（最後に確認した値）</li></ul>
+<p>文字認識・言語検出・翻訳は端末内で処理されます（iOSはApple VisionとTranslation、AndroidはGoogle ML Kit。一部のAndroidモデルはGoogle Playサービスが端末にダウンロードしますが、その際に写真や文字は送信されません）。認識した文字はそのまま保存されるため、カード番号や口座番号などの数字が含まれる場合があり、書き出しファイルやバックアップにもそのまま含まれることがあります。</p>
+<h3>収集しない情報</h3>
+<p>アカウント情報、氏名・メールアドレス・電話番号、保存したリンク・テキスト・写真・ファイル・メモ・検索ワード、認識した文字、広告IDは収集しません。</p>
+<h2>2. 本アプリが行うネットワーク通信</h2>
+<p>本アプリは次の場合にのみインターネットを使用し、これ以外の通信は行いません。</p>
+<ul>
+<li><strong>リンク情報の取得：</strong> 保存したリンクのタイトルとメイン画像を取得するため、そのウェブサイトに1回リクエストを送ります。サイトのアイコン取得のため、同じサイトにもう1回送ることがあります。アドレスから<code>utm_*</code>・<code>si</code>・<code>igsh</code>などの追跡パラメータを先に取り除き、Cookieは使用しません。この際、該当のウェブサイトはIPアドレスとリクエストを知ることができ、その取り扱いは当該サイトの方針に従います。第三者のアイコン・分析サービスは使用しません。</li>
+<li><strong>エラー・利用統計（任意、初期設定はオフ）：</strong> 初回起動画面または設定＞診断の「エラー・利用統計を送信」をお客様がオンにした場合のみ、Google Firebase（AnalyticsとCrashlytics）にデータを送信します。オンにするまで送信せず、オフにするとそれ以降の送信は止まります。送信するのは次の情報のみです：①アプリが異常終了したときのエラー記録（スタックトレース）とその時の端末の状態（機種、OSとアプリのバージョン、メモリ・保存容量など）、②機能の利用統計（記録を保存した事実とその種類・経路［共有／クリップボード］、購入画面を開いた事実、購入結果）、アプリの起動・利用時間、言語・おおよその地域（国レベル）、③Firebaseがアプリのインストールごとに作る無作為の識別子（アプリインスタンスID）。これらはお客様を直接特定せず、氏名やメールアドレスとは結びつけません。目的はエラー原因の把握とアプリの改善です。保管期間は利用統計が最長14か月、エラー情報が90日で、その後自動的に削除されます。</li>
+<li><strong>決済：</strong> PROの購入はApple App StoreまたはGoogle Playが処理します。開発者は支払い方法・氏名・メールアドレスを受け取らず、ストアが通知する購入状態のみを確認します。</li>
+<li><strong>バックアップ（任意）：</strong> iOSで自動バックアップをオンにすると、ご自身のiCloud Driveのアプリコンテナにバックアップファイルが保存されます。ファイルの書き出しはお客様が選んだ場所に保存されます。開発者はこれらのファイルにアクセスできません。暗号化を選ぶとお客様のパスワードで暗号化され、パスワードを忘れると復元できません。</li>
+</ul>
+<h2>3. アクセス権限</h2>
+<p>権限は必要なときにのみ、アプリ内で理由を説明してから求めます。連絡先・位置情報・マイクの権限は求めません。</p>
+<ul><li><strong>通知（任意）：</strong> スマートカードの期限・予定の通知を端末内で予約するためだけに使用します。</li><li><strong>カメラ（任意）：</strong> 「撮影して保存」を押したときのみ使用します（Androidはシステムのカメラアプリを使うため、本アプリはカメラ権限を持ちません）。</li><li><strong>写真：</strong> システムの写真選択画面でお客様が選んだ写真のみを受け取り、ライブラリ全体にはアクセスしません。iOSの「写真の追加のみ」権限は、写真を保存するときにのみ案内します。</li><li><strong>カレンダー：</strong> 「カレンダーに追加」はシステムの予定編集画面を開き、お客様自身が保存します。本アプリがカレンダーを読み取ることはありません。</li><li><strong>クリップボード：</strong> 変更を検知すると種類のみを確認してカードで尋ね、「追加」を押すまで内容は読みません。自動保存もしません。</li></ul>
+<h2>4. 保管と削除</h2>
+<p>すでに送信されたエラー・利用統計の削除をご希望の場合は、下記までご連絡ください（見つけるためにインストールごとの識別子が必要です）。記録は端末内に保存され、アプリを削除すると一緒に削除されます。設定＞保存容量で期間を選んで削除、またはすべてのデータを削除できます。その際、PROの権限・テーマ・言語設定、すでに作成したバックアップファイルは削除されません。開発者側には削除すべき利用者情報がありません。</p>
+<h2>5. 第三者提供・国外移転</h2>
+<p>開発者はお客様が保存した記録を収集せず、販売したり広告目的で第三者に提供したりしません。2項のエラー・利用統計をお客様がオンにした場合に限り、次のとおり国外に移転されます。</p>
+<ul><li>移転先：Google LLC（Firebase） · <a href="https://firebase.google.com/support/privacy">firebase.google.com/support/privacy</a></li><li>移転先の国：米国などGoogleのデータセンター所在国</li><li>移転の時期と方法：設定をオンにして本アプリを使用している間、随時、ネットワーク経由の暗号化送信</li><li>移転する項目：2項のエラー情報・利用統計・アプリインスタンスID</li><li>保管期間：利用統計は最長14か月、エラー情報は90日</li></ul>
+<p>国外移転を希望しない場合は、スイッチをオフのままにしてください。ストア決済とiCloudバックアップは、それぞれAppleとGoogleが各社の方針に従って処理します。</p>
+<h2>6. お子様の個人情報</h2>
+<p>本アプリはお子様を対象としておらず、14歳未満のお子様の情報を個別に収集することはありません。</p>
+<h2>7. 方針の変更</h2>
+<p>本方針を変更する場合は、施行日とともにこのページに掲載します。収集項目が増える変更は、適用前に先にお知らせします。</p>
+<h2>8. お問い合わせ</h2>
+<p><a href="mailto:support@hnh-labs.com">support@hnh-labs.com</a></p>
+<h2>変更履歴</h2>
+<ul><li>2026-11-18：任意のエラー・利用統計（Firebase）を追加</li><li>2026-11-18：初版公開</li></ul></div></main>
+<footer><div class="wrap">
+<div>© 2026 HNH Labs · <a href="mailto:support@hnh-labs.com">support@hnh-labs.com</a></div>
+<nav>
+<a href="privacy.html"><span class="L" lang="ko">개인정보처리방침</span><span class="L" lang="en">Privacy Policy</span><span class="L" lang="ja">プライバシーポリシー</span></a>
+<a href="terms.html"><span class="L" lang="ko">이용약관</span><span class="L" lang="en">Terms of Use</span><span class="L" lang="ja">利用規約</span></a>
+<a href="../index.html">HNH Labs</a>
+</nav></div></footer>
+</body></html>

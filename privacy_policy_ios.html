@@ -72,7 +72,7 @@
 <!--
   iOS 전용 개인정보 처리방침. 공통 문서(privacy_policy.html)와 같은 테마를 쓰고, iOS 앱이 실제로 다루는 정보만 적었다.
   출시 전에 아래 항목을 실제 운영 정책과 대조해 확정할 것:
-  - 시행일(2026-11-05)
+  - 시행일(2026-11-12)
   - 서버 위치/국외 이전 문구(Firebase, Supabase 리전), 보유 기간
   - 개인정보 보호책임자(성명/연락처)를 따로 명시할지 여부
   - 커뮤니티/프로모션 코드/Google 로그인은 이 문서에 넣지 않았다. 해당 기능을 켜기 전에 내용을 추가해야 한다.
@@ -95,13 +95,14 @@
     <!-- ko -->
     <div id="section-ko" class="content-section active" lang="ko">
         <h1>개인정보 처리방침</h1>
-        <p><strong>시행일: 2026년 11월 5일</strong></p>
+        <p><strong>시행일: 2026년 11월 12일</strong></p>
         <p>'층소일지(자동 층간 소음 측정 기록기)'(이하 '앱')의 iPhone용 앱은 HNH Labs가 운영하며, 사용자의 개인정보를 소중하게 생각하고 관련 법령을 준수합니다. 이 방침은 iOS 앱이 어떤 정보를 어떤 목적으로 다루는지 설명합니다.</p>
         <h2>1. 기기에만 저장되는 정보</h2>
         <ul>
             <li>마이크로 측정한 소리, 녹음 파일, 측정 기록, 메모, 설정은 이 기기에만 저장되며 서버로 전송되지 않습니다.</li>
             <li>마이크는 사용자가 측정하는 동안에만 사용합니다. 기본값에서는 앱이 화면에 있는 동안에만 측정하며, 설정에서 "백그라운드 녹음"을 켜면 앱이 백그라운드에 있거나 화면이 잠겨 있어도 측정을 이어 갑니다. 이때 iOS가 마이크 사용 표시를 보여 줍니다.</li>
             <li>녹음 파일은 앱 폴더에 저장되며 파일 앱에서 확인할 수 있습니다. 파일을 어디로 공유할지는 사용자가 결정합니다.</li>
+            <li>광고 제거 상품의 구매 여부는 App Store(StoreKit)에서 확인해 이 기기에만 저장합니다.</li>
         </ul>
         <h2>2. 서버로 전송되는 정보</h2>
         <ul>
@@ -128,34 +129,42 @@
             <li>Google Firebase (Analytics, Crashlytics, Remote Config)</li>
             <li>Google AdMob 및 User Messaging Platform (광고 및 동의 관리)</li>
             <li>Supabase (웹페이지 실시간 공유)</li>
+            <li>Apple App Store (인앱 구매 결제 처리)</li>
             <li>각 서비스는 자체 개인정보 처리방침에 따라 정보를 처리합니다. 이 서비스들의 서버는 사용자가 거주하는 국가 밖(예: 미국)에 있을 수 있어, 정보가 국외로 이전될 수 있습니다.</li>
         </ul>
-        <h2>6. 보관 및 삭제</h2>
+        <h2>6. 인앱 구매</h2>
+        <ul>
+            <li>광고 제거 상품의 결제는 Apple App Store가 처리하며, 결제 과정의 정보에는 Apple의 개인정보 처리방침이 적용됩니다. 운영자는 결제 수단이나 Apple 계정 정보를 받지 않습니다.</li>
+            <li>구매는 Apple 계정에 연결되며, 앱을 다시 설치하거나 다른 기기에서 '구매 복원'으로 되살릴 수 있습니다. 이때 Apple 계정 로그인을 요청할 수 있습니다.</li>
+            <li>환불은 Apple을 통해 요청하며, 환불된 구매는 광고 제거가 해제됩니다.</li>
+        </ul>
+        <h2>7. 보관 및 삭제</h2>
         <ul>
             <li>기기에 저장된 정보는 앱 또는 개별 기록을 삭제하면 함께 삭제됩니다.</li>
             <li>실시간 공유 데이터는 측정을 마치거나 공유를 끄면 삭제됩니다.</li>
         </ul>
-        <h2>7. 아동</h2>
+        <h2>8. 아동</h2>
         <p>이 앱은 만 14세 미만 아동을 대상으로 하지 않습니다.</p>
-        <h2>8. 이용자의 권리</h2>
+        <h2>9. 이용자의 권리</h2>
         <p>개인정보의 열람, 정정, 삭제, 처리 정지를 요청할 수 있습니다. 대부분은 앱에서 직접 할 수 있으며, 그 외에는 아래 이메일로 문의해 주세요.</p>
-        <h2>9. 방침의 변경</h2>
+        <h2>10. 방침의 변경</h2>
         <p>방침이 바뀌면 이 페이지와 시행일을 갱신합니다.</p>
         <h2>변경 이력</h2>
-<ul><li>2026-11-05: 운영자 이름을 Haram &amp; Harang에서 HNH Labs로, 문의 이메일을 support@hnh-labs.com으로 변경</li><li>2026-10-13: 이전 버전</li></ul>
+<ul><li>2026-11-12: 광고 제거 인앱 구매 관련 내용 추가 (기기 저장 정보, 인앱 구매, 제3자 서비스)</li><li>2026-11-05: 운영자 이름을 Haram &amp; Harang에서 HNH Labs로, 문의 이메일을 support@hnh-labs.com으로 변경</li><li>2026-10-13: 이전 버전</li></ul>
         <div class="footer">문의: HNH Labs (support@hnh-labs.com)</div>
     </div>
 
     <!-- en -->
     <div id="section-en" class="content-section" lang="en">
         <h1>Privacy Policy</h1>
-        <p><strong>Effective Date: November 5, 2026</strong></p>
+        <p><strong>Effective Date: November 12, 2026</strong></p>
         <p>The iPhone version of 'Floor Noise Log' (the "App") is operated by HNH Labs. We value your privacy and comply with applicable laws. This policy explains what information the iOS app handles and why.</p>
         <h2>1. Information that stays on your device</h2>
         <ul>
             <li>Sounds captured by the microphone, recordings, measurement history, notes and settings are stored only on your device and are not uploaded.</li>
             <li>The microphone is used only while you measure. By default, measurement happens only while the app is on screen. If you turn on "Background Recording" in Settings, the app can keep measuring while it is in the background or the screen is locked; iOS shows its microphone indicator while this happens.</li>
             <li>Recordings are kept in the app's folder, which you can see in the Files app. You decide where to share them.</li>
+            <li>Whether you have purchased the ad removal product is checked with the App Store (StoreKit) and stored only on this device.</li>
         </ul>
         <h2>2. Information sent to servers</h2>
         <ul>
@@ -182,34 +191,42 @@
             <li>Google Firebase (Analytics, Crashlytics, Remote Config)</li>
             <li>Google AdMob and User Messaging Platform (ads and consent)</li>
             <li>Supabase (live sharing on a web page)</li>
+            <li>Apple App Store (in-app purchase payment processing)</li>
             <li>Each service processes information under its own privacy policy. Their servers may be located outside your country (for example, in the United States), so information may be transferred internationally.</li>
         </ul>
-        <h2>6. Retention and deletion</h2>
+        <h2>6. In-app purchases</h2>
+        <ul>
+            <li>Payment for the ad removal product is processed by the Apple App Store, and Apple's Privacy Policy applies to information handled during payment. The operator does not receive your payment method or Apple Account details.</li>
+            <li>Purchases are linked to your Apple Account and can be recovered with 'Restore Purchases' after reinstalling or on another device. You may be asked to sign in to your Apple Account.</li>
+            <li>Refunds are requested through Apple. Ad removal ends if the purchase is refunded.</li>
+        </ul>
+        <h2>7. Retention and deletion</h2>
         <ul>
             <li>Data on your device is removed when you delete the app or individual records.</li>
             <li>Live sharing data is deleted when you stop measuring or turn sharing off.</li>
         </ul>
-        <h2>7. Children</h2>
+        <h2>8. Children</h2>
         <p>This app is not directed to children under 14.</p>
-        <h2>8. Your rights</h2>
+        <h2>9. Your rights</h2>
         <p>You can request access, correction, deletion or restriction of your information. Most of this can be done in the app; for anything else, contact us at the email below.</p>
-        <h2>9. Changes to this policy</h2>
+        <h2>10. Changes to this policy</h2>
         <p>If this policy changes, we will update this page and the effective date.</p>
         <h2>Revision history</h2>
-<ul><li>2026-11-05: Operator name changed from Haram &amp; Harang to HNH Labs; contact email changed to support@hnh-labs.com</li><li>2026-10-13: Previous version</li></ul>
+<ul><li>2026-11-12: Added information on the in-app purchase to remove ads (on-device data, in-app purchases, third-party services)</li><li>2026-11-05: Operator name changed from Haram &amp; Harang to HNH Labs; contact email changed to support@hnh-labs.com</li><li>2026-10-13: Previous version</li></ul>
         <div class="footer">Contact: HNH Labs (support@hnh-labs.com)</div>
     </div>
 
     <!-- ja -->
     <div id="section-ja" class="content-section" lang="ja">
         <h1>個人情報保護方針</h1>
-        <p><strong>施行日: 2026年11月5日</strong></p>
+        <p><strong>施行日: 2026年11月12日</strong></p>
         <p>「騒音日記」（以下「アプリ」）のiPhone版は HNH Labs が運営しており、ユーザーの個人情報を大切に考え、関連法令を遵守します。本方針は、iOS版アプリがどのような情報をどのような目的で扱うかを説明します。</p>
         <h2>1. 端末内にのみ保存される情報</h2>
         <ul>
             <li>マイクで取得した音、録音ファイル、測定履歴、メモ、設定は、この端末内にのみ保存され、アップロードされることはありません。</li>
             <li>マイクは、ユーザーが測定している間のみ使用します。初期設定では、アプリが画面に表示されている間のみ測定します。設定で「バックグラウンド録音」をオンにすると、アプリがバックグラウンドにあるときや画面がロックされているときも測定を続けます。その間、iOSがマイク使用中の表示を行います。</li>
             <li>録音ファイルはアプリのフォルダに保存され、「ファイル」アプリで確認できます。共有先はユーザーが決定します。</li>
+            <li>広告削除商品の購入有無はApp Store（StoreKit）で確認し、この端末内にのみ保存します。</li>
         </ul>
         <h2>2. サーバーに送信される情報</h2>
         <ul>
@@ -236,34 +253,42 @@
             <li>Google Firebase（Analytics、Crashlytics、Remote Config）</li>
             <li>Google AdMob および User Messaging Platform（広告と同意管理）</li>
             <li>Supabase（ウェブページでのリアルタイム共有）</li>
+            <li>Apple App Store（アプリ内購入の決済処理）</li>
             <li>各サービスは、それぞれのプライバシーポリシーに従って情報を処理します。これらのサーバーはお住まいの国の外（例：米国）にある場合があり、情報が国外に移転されることがあります。</li>
         </ul>
-        <h2>6. 保管と削除</h2>
+        <h2>6. アプリ内購入</h2>
+        <ul>
+            <li>広告削除商品の決済はApple App Storeが処理し、決済時の情報にはAppleのプライバシーポリシーが適用されます。運営者は支払い方法やAppleアカウントの情報を受け取りません。</li>
+            <li>購入はAppleアカウントに紐づき、再インストール後や別の端末でも「購入を復元」で復元できます。その際、Appleアカウントへのサインインを求められる場合があります。</li>
+            <li>返金はAppleを通じてリクエストします。返金された購入は広告削除が解除されます。</li>
+        </ul>
+        <h2>7. 保管と削除</h2>
         <ul>
             <li>端末内のデータは、アプリまたは個々の記録を削除すると消去されます。</li>
             <li>リアルタイム共有のデータは、測定を終了するか共有をオフにすると削除されます。</li>
         </ul>
-        <h2>7. お子様</h2>
+        <h2>8. お子様</h2>
         <p>このアプリは14歳未満のお子様を対象としていません。</p>
-        <h2>8. ユーザーの権利</h2>
+        <h2>9. ユーザーの権利</h2>
         <p>個人情報の開示、訂正、削除、処理の停止を請求できます。多くの操作はアプリ内で行えます。それ以外は下記のメールアドレスまでお問い合わせください。</p>
-        <h2>9. 本方針の変更</h2>
+        <h2>10. 本方針の変更</h2>
         <p>本方針を変更する場合は、このページと施行日を更新します。</p>
         <h2>改定履歴</h2>
-<ul><li>2026-11-05: 運営者名を Haram &amp; Harang から HNH Labs に、お問い合わせメールを support@hnh-labs.com に変更</li><li>2026-10-13: 旧版</li></ul>
+<ul><li>2026-11-12: 広告削除のアプリ内購入に関する内容を追加（端末内の情報、アプリ内購入、第三者サービス）</li><li>2026-11-05: 運営者名を Haram &amp; Harang から HNH Labs に、お問い合わせメールを support@hnh-labs.com に変更</li><li>2026-10-13: 旧版</li></ul>
         <div class="footer">お問い合わせ: HNH Labs (support@hnh-labs.com)</div>
     </div>
 
     <!-- de -->
     <div id="section-de" class="content-section" lang="de">
         <h1>Datenschutzerklärung</h1>
-        <p><strong>In Kraft seit: 5. November 2026</strong></p>
+        <p><strong>In Kraft seit: 12. November 2026</strong></p>
         <p>Die iPhone-Version von „Lärmprotokoll“ (die „App“) wird von HNH Labs betrieben. Wir schätzen Ihre Privatsphäre und halten uns an die geltenden Gesetze. Diese Erklärung beschreibt, welche Informationen die iOS-App verarbeitet und wozu.</p>
         <h2>1. Daten, die auf Ihrem Gerät bleiben</h2>
         <ul>
             <li>Vom Mikrofon erfasste Geräusche, Aufnahmen, Messverlauf, Notizen und Einstellungen werden nur auf Ihrem Gerät gespeichert und nicht hochgeladen.</li>
             <li>Das Mikrofon wird nur verwendet, während Sie messen. Standardmäßig wird nur gemessen, solange die App auf dem Bildschirm ist. Wenn Sie in den Einstellungen „Hintergrundaufnahme“ aktivieren, kann die App weiter messen, während sie im Hintergrund ist oder der Bildschirm gesperrt ist; iOS zeigt dabei seine Mikrofonanzeige.</li>
             <li>Aufnahmen werden im Ordner der App gespeichert, den Sie in der Dateien-App sehen können. Sie entscheiden, wohin Sie sie teilen.</li>
+            <li>Ob Sie das Produkt zum Entfernen der Werbung gekauft haben, wird beim App Store (StoreKit) geprüft und nur auf diesem Gerät gespeichert.</li>
         </ul>
         <h2>2. An Server gesendete Daten</h2>
         <ul>
@@ -290,34 +315,42 @@
             <li>Google Firebase (Analytics, Crashlytics, Remote Config)</li>
             <li>Google AdMob und User Messaging Platform (Werbung und Einwilligung)</li>
             <li>Supabase (Live-Freigabe auf einer Webseite)</li>
+            <li>Apple App Store (Zahlungsabwicklung für In-App-Käufe)</li>
             <li>Jeder Dienst verarbeitet Informationen nach seiner eigenen Datenschutzerklärung. Die Server können sich außerhalb Ihres Landes befinden (z. B. in den USA), sodass Informationen international übermittelt werden können.</li>
         </ul>
-        <h2>6. Speicherung und Löschung</h2>
+        <h2>6. In-App-Käufe</h2>
+        <ul>
+            <li>Die Zahlung für das Produkt zum Entfernen der Werbung wird vom Apple App Store abgewickelt; für die dabei verarbeiteten Daten gilt die Datenschutzrichtlinie von Apple. Der Betreiber erhält weder Ihre Zahlungsdaten noch Angaben zu Ihrem Apple Account.</li>
+            <li>Käufe sind mit Ihrem Apple Account verknüpft und können nach einer Neuinstallation oder auf einem anderen Gerät mit „Käufe wiederherstellen“ wiederhergestellt werden. Dabei werden Sie möglicherweise gebeten, sich bei Ihrem Apple Account anzumelden.</li>
+            <li>Erstattungen werden über Apple beantragt. Bei einer Erstattung wird die Werbung wieder angezeigt.</li>
+        </ul>
+        <h2>7. Speicherung und Löschung</h2>
         <ul>
             <li>Daten auf Ihrem Gerät werden entfernt, wenn Sie die App oder einzelne Aufnahmen löschen.</li>
             <li>Daten der Live-Freigabe werden gelöscht, wenn Sie die Messung beenden oder die Freigabe ausschalten.</li>
         </ul>
-        <h2>7. Kinder</h2>
+        <h2>8. Kinder</h2>
         <p>Diese App richtet sich nicht an Kinder unter 14 Jahren.</p>
-        <h2>8. Ihre Rechte</h2>
+        <h2>9. Ihre Rechte</h2>
         <p>Sie können Auskunft, Berichtigung, Löschung oder Einschränkung der Verarbeitung Ihrer Daten verlangen. Vieles lässt sich direkt in der App erledigen; für alles Weitere wenden Sie sich an die unten genannte E-Mail-Adresse.</p>
-        <h2>9. Änderungen</h2>
+        <h2>10. Änderungen</h2>
         <p>Wenn sich diese Erklärung ändert, aktualisieren wir diese Seite und das Datum des Inkrafttretens.</p>
         <h2>Änderungsverlauf</h2>
-<ul><li>2026-11-05: Name des Betreibers von Haram &amp; Harang in HNH Labs geändert; Kontakt-E-Mail in support@hnh-labs.com geändert</li><li>2026-10-13: Vorherige Fassung</li></ul>
+<ul><li>2026-11-12: Angaben zum In-App-Kauf zum Entfernen der Werbung ergänzt (Daten auf dem Gerät, In-App-Käufe, Drittanbieter-Dienste)</li><li>2026-11-05: Name des Betreibers von Haram &amp; Harang in HNH Labs geändert; Kontakt-E-Mail in support@hnh-labs.com geändert</li><li>2026-10-13: Vorherige Fassung</li></ul>
         <div class="footer">Kontakt: HNH Labs (support@hnh-labs.com)</div>
     </div>
 
     <!-- fr -->
     <div id="section-fr" class="content-section" lang="fr">
         <h1>Politique de Confidentialité</h1>
-        <p><strong>Date d'effet : 5 novembre 2026</strong></p>
+        <p><strong>Date d'effet : 12 novembre 2026</strong></p>
         <p>La version iPhone de « Journal du Bruit » (l'« App ») est exploitée par HNH Labs. Nous respectons votre vie privée et les lois applicables. Cette politique explique quelles informations l'app iOS traite et pourquoi.</p>
         <h2>1. Données qui restent sur votre appareil</h2>
         <ul>
             <li>Les sons captés par le micro, les enregistrements, l'historique des mesures, les notes et les réglages sont stockés uniquement sur votre appareil et ne sont pas envoyés.</li>
             <li>Le micro n'est utilisé que pendant que vous mesurez. Par défaut, la mesure n'a lieu que lorsque l'app est à l'écran. Si vous activez « Enregistrement en arrière-plan » dans les Réglages, l'app peut continuer à mesurer en arrière-plan ou écran verrouillé ; iOS affiche alors son indicateur d'utilisation du micro.</li>
             <li>Les enregistrements sont conservés dans le dossier de l'app, visible dans l'app Fichiers. Vous décidez où les partager.</li>
+            <li>L'achat du produit de suppression des publicités est vérifié auprès de l'App Store (StoreKit) et enregistré uniquement sur cet appareil.</li>
         </ul>
         <h2>2. Données envoyées à des serveurs</h2>
         <ul>
@@ -344,34 +377,42 @@
             <li>Google Firebase (Analytics, Crashlytics, Remote Config)</li>
             <li>Google AdMob et User Messaging Platform (publicité et consentement)</li>
             <li>Supabase (partage en direct sur une page web)</li>
+            <li>Apple App Store (traitement des paiements des achats intégrés)</li>
             <li>Chaque service traite les informations selon sa propre politique de confidentialité. Leurs serveurs peuvent se trouver hors de votre pays (par exemple aux États-Unis) ; les informations peuvent donc être transférées à l'international.</li>
         </ul>
-        <h2>6. Conservation et suppression</h2>
+        <h2>6. Achats intégrés</h2>
+        <ul>
+            <li>Le paiement du produit de suppression des publicités est traité par l'App Store d'Apple ; les informations traitées lors du paiement sont soumises à la Politique de confidentialité d'Apple. L'exploitant ne reçoit ni votre moyen de paiement ni les informations de votre compte Apple.</li>
+            <li>Les achats sont liés à votre compte Apple et peuvent être récupérés avec « Restaurer les achats » après une réinstallation ou sur un autre appareil. Il peut vous être demandé de vous connecter à votre compte Apple.</li>
+            <li>Les remboursements se demandent auprès d'Apple. En cas de remboursement, les publicités réapparaissent.</li>
+        </ul>
+        <h2>7. Conservation et suppression</h2>
         <ul>
             <li>Les données de votre appareil sont supprimées lorsque vous supprimez l'app ou des enregistrements individuels.</li>
             <li>Les données de partage en direct sont supprimées lorsque vous arrêtez la mesure ou désactivez le partage.</li>
         </ul>
-        <h2>7. Enfants</h2>
+        <h2>8. Enfants</h2>
         <p>Cette app ne s'adresse pas aux enfants de moins de 14 ans.</p>
-        <h2>8. Vos droits</h2>
+        <h2>9. Vos droits</h2>
         <p>Vous pouvez demander l'accès, la rectification, la suppression ou la limitation du traitement de vos informations. La plupart de ces actions sont possibles dans l'app ; pour le reste, contactez-nous à l'adresse e-mail ci-dessous.</p>
-        <h2>9. Modifications</h2>
+        <h2>10. Modifications</h2>
         <p>Si cette politique change, nous mettrons à jour cette page et la date d'effet.</p>
         <h2>Historique des modifications</h2>
-<ul><li>2026-11-05: Nom de l’exploitant modifié de Haram &amp; Harang en HNH Labs ; e-mail de contact remplacé par support@hnh-labs.com</li><li>2026-10-13: Version précédente</li></ul>
+<ul><li>2026-11-12: Ajout d’informations sur l’achat intégré pour supprimer les publicités (données sur l’appareil, achats intégrés, services tiers)</li><li>2026-11-05: Nom de l’exploitant modifié de Haram &amp; Harang en HNH Labs ; e-mail de contact remplacé par support@hnh-labs.com</li><li>2026-10-13: Version précédente</li></ul>
         <div class="footer">Contact : HNH Labs (support@hnh-labs.com)</div>
     </div>
 
     <!-- es -->
     <div id="section-es" class="content-section" lang="es">
         <h1>Política de Privacidad</h1>
-        <p><strong>Fecha de vigencia: 5 de noviembre de 2026</strong></p>
+        <p><strong>Fecha de vigencia: 12 de noviembre de 2026</strong></p>
         <p>La versión para iPhone de «Registro de Ruidos» (la «App») está operada por HNH Labs. Valoramos su privacidad y cumplimos las leyes aplicables. Esta política explica qué información trata la app de iOS y con qué fin.</p>
         <h2>1. Datos que permanecen en su dispositivo</h2>
         <ul>
             <li>Los sonidos captados por el micrófono, las grabaciones, el historial de mediciones, las notas y los ajustes se almacenan solo en su dispositivo y no se suben.</li>
             <li>El micrófono solo se usa mientras usted mide. De forma predeterminada, la medición solo ocurre mientras la app está en pantalla. Si activa «Grabación en segundo plano» en Ajustes, la app puede seguir midiendo en segundo plano o con la pantalla bloqueada; iOS muestra su indicador de uso del micrófono.</li>
             <li>Las grabaciones se guardan en la carpeta de la app, que puede ver en la app Archivos. Usted decide dónde compartirlas.</li>
+            <li>Si ha comprado el producto para quitar anuncios se comprueba con App Store (StoreKit) y se guarda solo en este dispositivo.</li>
         </ul>
         <h2>2. Datos enviados a servidores</h2>
         <ul>
@@ -398,34 +439,42 @@
             <li>Google Firebase (Analytics, Crashlytics, Remote Config)</li>
             <li>Google AdMob y User Messaging Platform (publicidad y consentimiento)</li>
             <li>Supabase (uso compartido en directo en una página web)</li>
+            <li>Apple App Store (procesamiento de pagos de compras integradas)</li>
             <li>Cada servicio trata la información conforme a su propia política de privacidad. Sus servidores pueden estar fuera de su país (por ejemplo, en Estados Unidos), por lo que la información puede transferirse internacionalmente.</li>
         </ul>
-        <h2>6. Conservación y eliminación</h2>
+        <h2>6. Compras integradas</h2>
+        <ul>
+            <li>El pago del producto para quitar anuncios lo procesa el App Store de Apple, y a la información tratada durante el pago se aplica la Política de Privacidad de Apple. El operador no recibe su método de pago ni los datos de su cuenta de Apple.</li>
+            <li>Las compras están vinculadas a su cuenta de Apple y se pueden recuperar con «Restaurar compras» tras reinstalar la app o en otro dispositivo. Es posible que se le pida iniciar sesión en su cuenta de Apple.</li>
+            <li>Los reembolsos se solicitan a través de Apple. Si la compra se reembolsa, los anuncios vuelven a mostrarse.</li>
+        </ul>
+        <h2>7. Conservación y eliminación</h2>
         <ul>
             <li>Los datos de su dispositivo se eliminan cuando borra la app o registros individuales.</li>
             <li>Los datos del uso compartido en directo se eliminan cuando detiene la medición o desactiva el uso compartido.</li>
         </ul>
-        <h2>7. Menores</h2>
+        <h2>8. Menores</h2>
         <p>Esta app no está dirigida a menores de 14 años.</p>
-        <h2>8. Sus derechos</h2>
+        <h2>9. Sus derechos</h2>
         <p>Puede solicitar el acceso, la rectificación, la eliminación o la limitación del tratamiento de su información. Gran parte puede hacerse en la app; para lo demás, contáctenos en el correo electrónico indicado abajo.</p>
-        <h2>9. Cambios en esta política</h2>
+        <h2>10. Cambios en esta política</h2>
         <p>Si esta política cambia, actualizaremos esta página y la fecha de vigencia.</p>
         <h2>Historial de cambios</h2>
-<ul><li>2026-11-05: Nombre del operador cambiado de Haram &amp; Harang a HNH Labs; correo de contacto cambiado a support@hnh-labs.com</li><li>2026-10-13: Versión anterior</li></ul>
+<ul><li>2026-11-12: Se añadió información sobre la compra integrada para quitar anuncios (datos en el dispositivo, compras integradas, servicios de terceros)</li><li>2026-11-05: Nombre del operador cambiado de Haram &amp; Harang a HNH Labs; correo de contacto cambiado a support@hnh-labs.com</li><li>2026-10-13: Versión anterior</li></ul>
         <div class="footer">Contacto: HNH Labs (support@hnh-labs.com)</div>
     </div>
 
     <!-- pt -->
     <div id="section-pt" class="content-section" lang="pt">
         <h1>Política de Privacidade</h1>
-        <p><strong>Data de vigência: 5 de novembro de 2026</strong></p>
+        <p><strong>Data de vigência: 12 de novembro de 2026</strong></p>
         <p>A versão para iPhone do «Diário de Ruído» (o «App») é operada por HNH Labs. Valorizamos a sua privacidade e cumprimos as leis aplicáveis. Esta política explica quais informações o app para iOS trata e por quê.</p>
         <h2>1. Dados que ficam no seu dispositivo</h2>
         <ul>
             <li>Os sons captados pelo microfone, as gravações, o histórico de medições, as notas e as configurações ficam armazenados somente no seu dispositivo e não são enviados.</li>
             <li>O microfone só é usado enquanto você mede. Por padrão, a medição acontece somente enquanto o app está na tela. Se você ativar «Gravação em segundo plano» em Ajustes, o app pode continuar medindo em segundo plano ou com a tela bloqueada; o iOS mostra o indicador de uso do microfone.</li>
             <li>As gravações ficam na pasta do app, que você pode ver no app Arquivos. Você decide para onde compartilhá-las.</li>
+            <li>A compra do produto para remover anúncios é verificada na App Store (StoreKit) e armazenada apenas neste dispositivo.</li>
         </ul>
         <h2>2. Dados enviados a servidores</h2>
         <ul>
@@ -452,34 +501,42 @@
             <li>Google Firebase (Analytics, Crashlytics, Remote Config)</li>
             <li>Google AdMob e User Messaging Platform (publicidade e consentimento)</li>
             <li>Supabase (compartilhamento ao vivo em página da web)</li>
+            <li>Apple App Store (processamento de pagamentos de compras no app)</li>
             <li>Cada serviço trata as informações conforme sua própria política de privacidade. Os servidores podem estar fora do seu país (por exemplo, nos Estados Unidos), de modo que as informações podem ser transferidas internacionalmente.</li>
         </ul>
-        <h2>6. Retenção e exclusão</h2>
+        <h2>6. Compras no app</h2>
+        <ul>
+            <li>O pagamento do produto para remover anúncios é processado pela App Store da Apple, e às informações tratadas durante o pagamento aplica-se a Política de Privacidade da Apple. O operador não recebe seu meio de pagamento nem os dados da sua conta Apple.</li>
+            <li>As compras ficam vinculadas à sua conta Apple e podem ser recuperadas com "Restaurar compras" após reinstalar o app ou em outro dispositivo. Pode ser solicitado que você inicie sessão na sua conta Apple.</li>
+            <li>Reembolsos são solicitados pela Apple. Se a compra for reembolsada, os anúncios voltam a aparecer.</li>
+        </ul>
+        <h2>7. Retenção e exclusão</h2>
         <ul>
             <li>Os dados do seu dispositivo são removidos quando você exclui o app ou registros individuais.</li>
             <li>Os dados do compartilhamento ao vivo são excluídos quando você encerra a medição ou desativa o compartilhamento.</li>
         </ul>
-        <h2>7. Crianças</h2>
+        <h2>8. Crianças</h2>
         <p>Este app não é direcionado a crianças com menos de 14 anos.</p>
-        <h2>8. Seus direitos</h2>
+        <h2>9. Seus direitos</h2>
         <p>Você pode solicitar acesso, correção, exclusão ou restrição do tratamento das suas informações. Grande parte pode ser feita no app; para o restante, entre em contato pelo e-mail abaixo.</p>
-        <h2>9. Alterações nesta política</h2>
+        <h2>10. Alterações nesta política</h2>
         <p>Se esta política mudar, atualizaremos esta página e a data de vigência.</p>
         <h2>Histórico de alterações</h2>
-<ul><li>2026-11-05: Nome do operador alterado de Haram &amp; Harang para HNH Labs; e-mail de contato alterado para support@hnh-labs.com</li><li>2026-10-13: Versão anterior</li></ul>
+<ul><li>2026-11-12: Adicionadas informações sobre a compra no app para remover anúncios (dados no dispositivo, compras no app, serviços de terceiros)</li><li>2026-11-05: Nome do operador alterado de Haram &amp; Harang para HNH Labs; e-mail de contato alterado para support@hnh-labs.com</li><li>2026-10-13: Versão anterior</li></ul>
         <div class="footer">Contato: HNH Labs (support@hnh-labs.com)</div>
     </div>
 
     <!-- it -->
     <div id="section-it" class="content-section" lang="it">
         <h1>Informativa sulla Privacy</h1>
-        <p><strong>Data di entrata in vigore: 5 novembre 2026</strong></p>
+        <p><strong>Data di entrata in vigore: 12 novembre 2026</strong></p>
         <p>La versione per iPhone di «Diario dei Rumori» (l'«App») è gestita da HNH Labs. Rispettiamo la tua privacy e le leggi applicabili. Questa informativa spiega quali informazioni tratta l'app per iOS e perché.</p>
         <h2>1. Dati che restano sul tuo dispositivo</h2>
         <ul>
             <li>I suoni acquisiti dal microfono, le registrazioni, la cronologia delle misurazioni, le note e le impostazioni sono memorizzati solo sul tuo dispositivo e non vengono caricati.</li>
             <li>Il microfono viene usato solo mentre misuri. Per impostazione predefinita, la misurazione avviene solo mentre l'app è sullo schermo. Se attivi «Registrazione in background» nelle Impostazioni, l'app può continuare a misurare in background o con lo schermo bloccato; iOS mostra il proprio indicatore di uso del microfono.</li>
             <li>Le registrazioni sono conservate nella cartella dell'app, visibile nell'app File. Sei tu a decidere dove condividerle.</li>
+            <li>L'acquisto del prodotto per rimuovere la pubblicità viene verificato tramite l'App Store (StoreKit) e salvato solo su questo dispositivo.</li>
         </ul>
         <h2>2. Dati inviati ai server</h2>
         <ul>
@@ -506,34 +563,42 @@
             <li>Google Firebase (Analytics, Crashlytics, Remote Config)</li>
             <li>Google AdMob e User Messaging Platform (pubblicità e consenso)</li>
             <li>Supabase (condivisione in tempo reale su una pagina web)</li>
+            <li>Apple App Store (elaborazione dei pagamenti degli acquisti in-app)</li>
             <li>Ogni servizio tratta le informazioni secondo la propria informativa sulla privacy. I loro server possono trovarsi fuori dal tuo paese (ad esempio negli Stati Uniti), quindi le informazioni possono essere trasferite a livello internazionale.</li>
         </ul>
-        <h2>6. Conservazione ed eliminazione</h2>
+        <h2>6. Acquisti in-app</h2>
+        <ul>
+            <li>Il pagamento del prodotto per rimuovere la pubblicità è gestito dall'App Store di Apple; alle informazioni trattate durante il pagamento si applica l'Informativa sulla privacy di Apple. Il gestore non riceve il tuo metodo di pagamento né i dati del tuo account Apple.</li>
+            <li>Gli acquisti sono collegati al tuo account Apple e possono essere recuperati con "Ripristina acquisti" dopo una reinstallazione o su un altro dispositivo. Potrebbe esserti chiesto di accedere al tuo account Apple.</li>
+            <li>I rimborsi si richiedono tramite Apple. Se l'acquisto viene rimborsato, la pubblicità torna a essere mostrata.</li>
+        </ul>
+        <h2>7. Conservazione ed eliminazione</h2>
         <ul>
             <li>I dati sul tuo dispositivo vengono rimossi quando elimini l'app o singole registrazioni.</li>
             <li>I dati della condivisione in tempo reale vengono cancellati quando termini la misurazione o disattivi la condivisione.</li>
         </ul>
-        <h2>7. Minori</h2>
+        <h2>8. Minori</h2>
         <p>Questa app non è rivolta ai minori di 14 anni.</p>
-        <h2>8. I tuoi diritti</h2>
+        <h2>9. I tuoi diritti</h2>
         <p>Puoi richiedere l'accesso, la rettifica, la cancellazione o la limitazione del trattamento delle tue informazioni. Gran parte può essere fatta nell'app; per il resto, contattaci all'indirizzo email qui sotto.</p>
-        <h2>9. Modifiche</h2>
+        <h2>10. Modifiche</h2>
         <p>Se questa informativa cambia, aggiorneremo questa pagina e la data di entrata in vigore.</p>
         <h2>Cronologia delle modifiche</h2>
-<ul><li>2026-11-05: Nome del gestore cambiato da Haram &amp; Harang a HNH Labs; e-mail di contatto cambiata in support@hnh-labs.com</li><li>2026-10-13: Versione precedente</li></ul>
+<ul><li>2026-11-12: Aggiunte informazioni sull'acquisto in-app per rimuovere la pubblicità (dati sul dispositivo, acquisti in-app, servizi di terze parti)</li><li>2026-11-05: Nome del gestore cambiato da Haram &amp; Harang a HNH Labs; e-mail di contatto cambiata in support@hnh-labs.com</li><li>2026-10-13: Versione precedente</li></ul>
         <div class="footer">Contatti: HNH Labs (support@hnh-labs.com)</div>
     </div>
 
     <!-- zh -->
     <div id="section-zh" class="content-section" lang="zh-Hans">
         <h1>隐私政策</h1>
-        <p><strong>生效日期：2026年11月5日</strong></p>
+        <p><strong>生效日期：2026年11月12日</strong></p>
         <p>“楼层噪音日志”（以下简称“应用”）iPhone 版由 HNH Labs 运营。我们重视您的隐私并遵守相关法律。本政策说明 iOS 应用处理哪些信息以及用途。</p>
         <h2>1. 仅保存在您设备上的信息</h2>
         <ul>
             <li>通过麦克风采集的声音、录音文件、测量记录、备注和设置仅保存在您的设备上，不会被上传。</li>
             <li>麦克风仅在您测量期间使用。默认情况下，仅在应用显示在屏幕上时进行测量。如果您在设置中开启“后台录音”，应用在后台或屏幕锁定时也可以继续测量；此时 iOS 会显示麦克风使用指示。</li>
             <li>录音文件保存在应用的文件夹中，您可以在“文件”应用中查看。分享到哪里由您决定。</li>
+            <li>是否已购买移除广告商品，通过 App Store（StoreKit）确认，并仅保存在本设备上。</li>
         </ul>
         <h2>2. 发送到服务器的信息</h2>
         <ul>
@@ -560,34 +625,42 @@
             <li>Google Firebase（Analytics、Crashlytics、Remote Config）</li>
             <li>Google AdMob 与 User Messaging Platform（广告与同意管理）</li>
             <li>Supabase（网页实时共享）</li>
+            <li>Apple App Store（应用内购买的支付处理）</li>
             <li>各服务按其自身的隐私政策处理信息。这些服务的服务器可能位于您所在国家/地区之外（例如美国），因此信息可能会跨境传输。</li>
         </ul>
-        <h2>6. 保存与删除</h2>
+        <h2>6. 应用内购买</h2>
+        <ul>
+            <li>移除广告商品的支付由 Apple App Store 处理，支付过程中的信息适用 Apple 的隐私政策。运营者不会获取您的支付方式或 Apple 账户信息。</li>
+            <li>购买与您的 Apple 账户关联，重新安装应用或在其他设备上可通过“恢复购买”恢复，届时可能需要登录 Apple 账户。</li>
+            <li>退款需通过 Apple 申请。已退款的购买将取消移除广告。</li>
+        </ul>
+        <h2>7. 保存与删除</h2>
         <ul>
             <li>删除应用或单条记录时，设备上的数据会一并删除。</li>
             <li>结束测量或关闭共享后，实时共享的数据会被删除。</li>
         </ul>
-        <h2>7. 儿童</h2>
+        <h2>8. 儿童</h2>
         <p>本应用不面向 14 岁以下儿童。</p>
-        <h2>8. 您的权利</h2>
+        <h2>9. 您的权利</h2>
         <p>您可以申请查阅、更正、删除或限制处理您的信息。大部分操作可在应用内完成；其他情况请通过下方邮箱联系我们。</p>
-        <h2>9. 政策变更</h2>
+        <h2>10. 政策变更</h2>
         <p>如本政策发生变更，我们会更新本页面和生效日期。</p>
         <h2>修订记录</h2>
-<ul><li>2026-11-05: 运营者名称由 Haram &amp; Harang 变更为 HNH Labs，联系邮箱变更为 support@hnh-labs.com</li><li>2026-10-13: 旧版</li></ul>
+<ul><li>2026-11-12: 新增移除广告应用内购买的相关内容（设备上的信息、应用内购买、第三方服务）</li><li>2026-11-05: 运营者名称由 Haram &amp; Harang 变更为 HNH Labs，联系邮箱变更为 support@hnh-labs.com</li><li>2026-10-13: 旧版</li></ul>
         <div class="footer">联系方式：HNH Labs (support@hnh-labs.com)</div>
     </div>
 
     <!-- hi -->
     <div id="section-hi" class="content-section" lang="hi">
         <h1>गोपनीयता नीति</h1>
-        <p><strong>प्रभावी तिथि: 5 नवंबर 2026</strong></p>
+        <p><strong>प्रभावी तिथि: 12 नवंबर 2026</strong></p>
         <p>“फ्लोर शोर लॉग” (“ऐप”) का iPhone संस्करण HNH Labs द्वारा संचालित है। हम आपकी गोपनीयता को महत्व देते हैं और लागू कानूनों का पालन करते हैं। यह नीति बताती है कि iOS ऐप कौन-सी जानकारी किस उद्देश्य से संभालता है।</p>
         <h2>1. जो जानकारी आपके डिवाइस पर ही रहती है</h2>
         <ul>
             <li>माइक्रोफ़ोन से ली गई आवाज़ें, रिकॉर्डिंग, माप का इतिहास, नोट्स और सेटिंग्स केवल आपके डिवाइस पर सहेजी जाती हैं और अपलोड नहीं की जातीं।</li>
             <li>माइक्रोफ़ोन का उपयोग केवल तभी होता है जब आप माप रहे हों। डिफ़ॉल्ट रूप से माप केवल तब होता है जब ऐप स्क्रीन पर हो। यदि आप सेटिंग्स में “बैकग्राउंड रिकॉर्डिंग” चालू करते हैं, तो ऐप बैकग्राउंड में या स्क्रीन लॉक होने पर भी माप जारी रख सकता है; तब iOS अपना माइक्रोफ़ोन संकेतक दिखाता है।</li>
             <li>रिकॉर्डिंग ऐप के फ़ोल्डर में रखी जाती हैं, जिन्हें आप “फ़ाइलें” ऐप में देख सकते हैं। उन्हें कहाँ साझा करना है, यह आप तय करते हैं।</li>
+            <li>विज्ञापन हटाने वाला उत्पाद खरीदा गया है या नहीं, यह App Store (StoreKit) से जाँचा जाता है और केवल इसी डिवाइस पर सहेजा जाता है।</li>
         </ul>
         <h2>2. सर्वर पर भेजी जाने वाली जानकारी</h2>
         <ul>
@@ -614,21 +687,28 @@
             <li>Google Firebase (Analytics, Crashlytics, Remote Config)</li>
             <li>Google AdMob और User Messaging Platform (विज्ञापन और सहमति)</li>
             <li>Supabase (वेब पेज पर लाइव शेयरिंग)</li>
+            <li>Apple App Store (इन-ऐप खरीदारी का भुगतान प्रसंस्करण)</li>
             <li>प्रत्येक सेवा जानकारी को अपनी गोपनीयता नीति के अनुसार संसाधित करती है। उनके सर्वर आपके देश के बाहर (उदाहरण के लिए अमेरिका में) हो सकते हैं, इसलिए जानकारी अंतरराष्ट्रीय स्तर पर स्थानांतरित हो सकती है।</li>
         </ul>
-        <h2>6. भंडारण और हटाना</h2>
+        <h2>6. इन-ऐप खरीदारी</h2>
+        <ul>
+            <li>विज्ञापन हटाने वाले उत्पाद का भुगतान Apple App Store द्वारा संसाधित किया जाता है, और भुगतान के दौरान संसाधित जानकारी पर Apple की गोपनीयता नीति लागू होती है। संचालक को आपके भुगतान का तरीका या Apple खाते की जानकारी नहीं मिलती।</li>
+            <li>खरीदारी आपके Apple खाते से जुड़ी होती है और ऐप दोबारा इंस्टॉल करने पर या किसी दूसरे डिवाइस पर 'खरीदारी बहाल करें' से वापस पाई जा सकती है। इसके लिए आपसे Apple खाते में साइन इन करने को कहा जा सकता है।</li>
+            <li>रिफ़ंड Apple के माध्यम से माँगा जाता है। रिफ़ंड की गई खरीदारी पर विज्ञापन फिर से दिखने लगते हैं।</li>
+        </ul>
+        <h2>7. भंडारण और हटाना</h2>
         <ul>
             <li>ऐप या अलग-अलग रिकॉर्ड हटाने पर आपके डिवाइस का डेटा हट जाता है।</li>
             <li>माप समाप्त करने या शेयरिंग बंद करने पर लाइव शेयरिंग का डेटा हटा दिया जाता है।</li>
         </ul>
-        <h2>7. बच्चे</h2>
+        <h2>8. बच्चे</h2>
         <p>यह ऐप 14 वर्ष से कम उम्र के बच्चों के लिए नहीं है।</p>
-        <h2>8. आपके अधिकार</h2>
+        <h2>9. आपके अधिकार</h2>
         <p>आप अपनी जानकारी तक पहुँच, सुधार, हटाने या प्रसंस्करण पर रोक का अनुरोध कर सकते हैं। इनमें से अधिकांश ऐप में किया जा सकता है; बाकी के लिए नीचे दिए ईमेल पर संपर्क करें।</p>
-        <h2>9. नीति में बदलाव</h2>
+        <h2>10. नीति में बदलाव</h2>
         <p>यदि यह नीति बदलती है, तो हम इस पेज और प्रभावी तिथि को अपडेट करेंगे।</p>
         <h2>संशोधन इतिहास</h2>
-<ul><li>2026-11-05: संचालक का नाम Haram &amp; Harang से बदलकर HNH Labs किया गया; संपर्क ईमेल बदलकर support@hnh-labs.com किया गया</li><li>2026-10-13: पिछला संस्करण</li></ul>
+<ul><li>2026-11-12: विज्ञापन हटाने वाली इन-ऐप खरीदारी से जुड़ी जानकारी जोड़ी गई (डिवाइस पर जानकारी, इन-ऐप खरीदारी, तृतीय-पक्ष सेवाएँ)</li><li>2026-11-05: संचालक का नाम Haram &amp; Harang से बदलकर HNH Labs किया गया; संपर्क ईमेल बदलकर support@hnh-labs.com किया गया</li><li>2026-10-13: पिछला संस्करण</li></ul>
         <div class="footer">संपर्क: HNH Labs (support@hnh-labs.com)</div>
     </div>
 </div>
