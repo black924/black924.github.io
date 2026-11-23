@@ -77,5 +77,15 @@
     "appStoreAppId": "6838185268",
     "iconUrl": "https://hnh-labs.com/assets/apps/vinylwave.png",
     "appStoreBundleId": "com.hnh.vinylwave"
+  },
+  {
+    "id": "liquidframe",
+    "name": "Liquid Frame",
+    "platform": [
+      "android"
+    ],
+    "iconColor": "#1C8FD6",
+    "playPackage": "com.hnh.liquidframe",
+    "iconUrl": "https://hnh-labs.com/assets/apps/liquidframe.png"
   }
 ]

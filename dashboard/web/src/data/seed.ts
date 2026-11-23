@@ -17,6 +17,7 @@ const BASE: Record<string, { ad: number; inapp: number; paid: number; googleShar
   schoolit: { ad: 63_000, inapp: 5_000, paid: 0, googleShare: 1 },
   bannyeo: { ad: 22_000, inapp: 0, paid: 0, googleShare: 1 },
   vinylwave: { ad: 0, inapp: 18_000, paid: 0, googleShare: 0 },
+  liquidframe: { ad: 0, inapp: 0, paid: 12_000, googleShare: 1 },
 };
 
 // Sample products for the fake payment feed.
