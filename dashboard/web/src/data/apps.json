@@ -1,0 +1,81 @@
+[
+  {
+    "id": "noiselog",
+    "name": "층소일지",
+    "platform": [
+      "android",
+      "ios"
+    ],
+    "iconColor": "#4F7DFF",
+    "playPackage": "com.menew.noiseanalyzer",
+    "appStoreAppId": "6823575453",
+    "iconUrl": "https://hnh-labs.com/assets/apps/noiselog.png",
+    "appStoreBundleId": "com.menew.noiseanalyzer"
+  },
+  {
+    "id": "defectchecker",
+    "name": "셀프사전점검",
+    "platform": [
+      "android",
+      "ios"
+    ],
+    "iconColor": "#3DD6C4",
+    "playPackage": "com.hnh.defectchecker",
+    "appStoreAppId": "6830927493",
+    "iconUrl": "https://hnh-labs.com/assets/apps/defectchecker.png",
+    "appStoreBundleId": "com.hnh.defectchecker"
+  },
+  {
+    "id": "breeze",
+    "name": "Breeze",
+    "platform": [
+      "android"
+    ],
+    "iconColor": "#8EAEFF",
+    "playPackage": "com.hnh.breeze",
+    "iconUrl": "https://hnh-labs.com/assets/apps/breeze.png"
+  },
+  {
+    "id": "remit",
+    "name": "Remit",
+    "platform": [
+      "android"
+    ],
+    "iconColor": "#FFB547",
+    "playPackage": "com.hnh.timer",
+    "iconUrl": "https://hnh-labs.com/assets/apps/remit.png"
+  },
+  {
+    "id": "schoolit",
+    "name": "스쿨릿",
+    "platform": [
+      "android"
+    ],
+    "iconColor": "#FF9F7A",
+    "playPackage": "com.hnh.timetable",
+    "iconUrl": "https://hnh-labs.com/assets/apps/schoolit.png"
+  },
+  {
+    "id": "bannyeo",
+    "name": "오늘도 반려",
+    "platform": [
+      "android"
+    ],
+    "iconColor": "#FF7A7A",
+    "admobAppIds": [
+      "ca-app-pub-3172089365303130~5308340956"
+    ],
+    "iconUrl": "https://hnh-labs.com/assets/apps/bannyeo.png"
+  },
+  {
+    "id": "vinylwave",
+    "name": "Vinyl Wave",
+    "platform": [
+      "ios"
+    ],
+    "iconColor": "#E0552E",
+    "appStoreAppId": "6838185268",
+    "iconUrl": "https://hnh-labs.com/assets/apps/vinylwave.png",
+    "appStoreBundleId": "com.hnh.vinylwave"
+  }
+]

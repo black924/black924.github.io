@@ -1,0 +1,31 @@
+:root {
+  --bg: #07080b;
+  --surface: #0f1218;
+  --surface-sunk: #0a0c11;
+  --border: #1e232d;
+  --divider: #1a1f28;
+  --text: #eceff4;
+  --text-2: #c9cfda;
+  --text-3: #a8b0be;
+  --text-muted: #8a93a3;
+  --text-faint: #7d8696; /* darkest allowed text color (4.5:1) */
+
+  --ad: #4f7dff;
+  --ad-light: #8eaeff;
+  --inapp: #ffb547;
+  --paid: #3dd6c4;
+  --other: #4a5468;
+  --prev: #3a4150; /* comparison-period bars */
+
+  --up: #3fd68f;
+  --up-bg: rgba(63, 214, 143, 0.12);
+  --down: #ff7a7a;
+  --down-bg: rgba(255, 122, 122, 0.12);
+
+  --radius-card: 20px;
+  --radius-box: 12px;
+  --radius-pill: 999px;
+
+  --font-body: 'Noto Sans KR', system-ui, -apple-system, sans-serif;
+  --font-num: 'Space Grotesk', 'Noto Sans KR', system-ui, sans-serif;
+}

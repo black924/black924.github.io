@@ -1,0 +1,15 @@
+.img {
+  flex: none;
+  display: block;
+  object-fit: cover;
+  background: var(--surface-sunk);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.mark {
+  flex: none;
+  display: grid;
+  place-items: center;
+  color: #07080b;
+  font-weight: 700;
+}
