@@ -8,6 +8,10 @@
 //   Proceeds Reason       "Rate After One Year" when a subscription earns the reduced commission
 // Columns are looked up by header name, so report versions that add or reorder columns still parse.
 
+import { decimalToMicros } from '../shared/money';
+
+export { decimalToMicros };
+
 export type SalesKind = 'inapp' | 'paid';
 
 export interface SalesRow {
@@ -27,17 +31,6 @@ const COL = {
   currency: 'Currency of Proceeds',
   reason: 'Proceeds Reason',
 } as const;
-
-/** "1.23", "-0.7", "12" → micros, with integer math. Rounds past 6 decimals (half away from zero). */
-export function decimalToMicros(v: string): number {
-  const s = v.trim().replace(/,/g, '');
-  const m = /^(-?)(\d*)(?:\.(\d*))?$/.exec(s);
-  if (!m || (m[2] === '' && !m[3])) throw new Error(`Unexpected decimal: ${v}`);
-  const frac = (m[3] ?? '').padEnd(7, '0');
-  let micros = BigInt(m[2] || '0') * 1_000_000n + BigInt(frac.slice(0, 6));
-  if (Number(frac[6]) >= 5) micros += 1n;
-  return Number(m[1] ? -micros : micros);
-}
 
 /** Parses the tab-separated report. Rows without proceeds (free downloads, updates) are dropped. */
 export function parseSalesReport(tsv: string): SalesRow[] {

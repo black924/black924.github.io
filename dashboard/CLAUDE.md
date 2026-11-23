@@ -65,7 +65,10 @@
   - 금액 기준: **gross = total − tax** (세금 제외, 스토어 수수료 포함). net(`developerRevenueInBuyerCurrency`)도 거래에 함께 저장
   - Pub/Sub 토픽 `play-rtdn`, 함수는 `retry: true`. 401/403/5xx는 재시도, 잘못된 토큰(400/404)은 오류 기록 후 종료
   - Play API 인증: Functions 런타임 서비스 계정을 Play Console 사용자로 초대(재무 데이터 보기, 주문·구독 관리 권한), 스코프 `androidpublisher`
-- 확정(보정): Play Console **재무 리포트(Cloud Storage 버킷 `pubsite_prod_...`)**의 `earnings` / `sales` CSV를 매일 읽어 확정 금액으로 덮어쓰기
+- 확정(보정): Play Console **Sales 리포트** `gs://{config/app.playReportBucket}/sales/salesreport_YYYYMM.zip`(월 단위 CSV, 3~7일 지연)을 매일 읽어 덮어쓰기. 구현: `functions/src/googlePlay/salesReport.ts`, `functions/src/reconcile/googlePlay.ts`, ZIP·CSV는 `shared/files.ts`(의존성 없음, UTF-16/8 자동 판별)
+  - 열은 헤더 이름으로 찾는다. gross = `Item Price`(세금 제외, 비어 있으면 Charged Amount − Taxes Collected). `Financial Status` charged → +, refund·partial refund → −(파일 부호와 무관), 그 외는 건너뛰고 로그
+  - 날짜 = `Order Charged Timestamp`(UNIX 초)의 KST. `Product Type` "Paid app" → paid, 나머지 → inapp. 앱 매칭 `Package ID` → `apps.playPackage`(없으면 RTDN과 같은 `gp_{package}`)
+  - D-10~D-1 중 **파일의 가장 최근 주문 시각보다 앞선 KST 날짜만** 확정한다(아직 안 채워진 날을 0으로 덮지 않기 위해). net(수수료 차감)은 Sales 리포트에 없어 저장하지 않는다
 - 인증: 서비스 계정 (Play Console에서 권한 부여)
 - 유료앱(다운로드 결제)은 RTDN이 오지 않으므로 **보정 층에서만** 집계된다.
 
@@ -102,6 +105,7 @@ config/app
   timezone: "Asia/Seoul"
   revenueBasis: "gross" | "net"
   baseCurrency: "KRW"
+  playReportBucket?: string            // Play 재무 리포트 버킷 (gs://pubsite_prod_rev_… 또는 id)
   appleSmallBusiness?: boolean          // App Store Small Business Program (수수료 15%) — Sales 리포트 gross 계산용
 
 apps/{appId}
@@ -143,7 +147,7 @@ subscribers/{store}                 // google | apple — 스토어별 결제 �
 sync/{source}                       // admob | google_play | app_store | reconcile
   state: "ok"|"error"|"scheduled", lastRunAt, lastError?, warning?
   // admob 전용: connected, hourlyBase {date, totalMicros}, account {publisherId, reportingTimeZone, currencyCode}
-  // reconcile 전용: appStore { [date]: "reconciled" | "zeroed" | "not-ready" }
+  // reconcile 전용: appStore { [date]: "reconciled" | "zeroed" | "not-ready" }, googlePlay { reconciled: [dates], pending: [dates] }
 
 fx/{YYYY-MM-DD}
   USD, JPY, ... (1 단위당 KRW)
@@ -166,7 +170,7 @@ fx/{YYYY-MM-DD}
 | `requestSync` | Callable (HTTPS) | 헤더 새로고침 버튼. allowlist·이메일 인증 재확인 후 AdMob 동기화 즉시 실행. 직전 실행 60초 이내면 건너뜀 |
 | `onPlayRtdn` | Pub/Sub | Play 결제 알림 → `transactions`, `daily`(estimated) |
 | `appStoreWebhook` | HTTPS | ASN V2 서명 검증 → `transactions`, `daily`(estimated) |
-| `reconcileDaily` | 스케줄 매일 04:00 KST | App Store Sales 리포트로 D-1~D-3 보정 (Play 재무 리포트는 아직) |
+| `reconcileDaily` | 스케줄 매일 04:00 KST | App Store Sales 리포트(D-1~D-3) + Play Sales 리포트(D-10~D-1 중 리포트가 다 채운 날) 보정. 스토어별로 따로 실행 |
 | `syncFx` | 스케줄 매일 | 환율 저장 |
 
 공통: 실패 시 `sync/{source}`에 에러 기록, 재시도 가능하게 작성. 로그에 토큰·결제 원문을 남기지 않는다.
@@ -288,4 +292,3 @@ fx/{YYYY-MM-DD}
 ## 11. 아직 정하지 않은 것
 
 - 국가별 수익, 월 목표 진행률 화면 추가 여부
-- Play 재무 리포트 버킷 접근을 서비스 계정으로 할지, 사용자 OAuth로 할지

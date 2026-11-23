@@ -44,3 +44,14 @@ export function toKrwMicros(amountMicros: number, krwPerUnit: number): number {
   const q = product >= 0n ? (product + half) / 1_000_000n : (product - half) / 1_000_000n;
   return Number(q);
 }
+
+/** "1.23", "-0.7", "12" → micros, with integer math. Rounds past 6 decimals (half away from zero). */
+export function decimalToMicros(v: string): number {
+  const s = v.trim().replace(/,/g, '');
+  const m = /^(-?)(\d*)(?:\.(\d*))?$/.exec(s);
+  if (!m || (m[2] === '' && !m[3])) throw new Error(`Unexpected decimal: ${v}`);
+  const frac = (m[3] ?? '').padEnd(7, '0');
+  let micros = BigInt(m[2] || '0') * 1_000_000n + BigInt(frac.slice(0, 6));
+  if (Number(frac[6]) >= 5) micros += 1n;
+  return Number(m[1] ? -micros : micros);
+}

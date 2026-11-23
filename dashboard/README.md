@@ -2,7 +2,7 @@
 
 See `CLAUDE.md` for architecture and milestones. Live: https://auto-posting-a970b.web.app
 
-Done so far: **1 (UI + mock data)**, **2 (auth)**, **3 (Firestore data)**, **4 (AdMob)**, **5 (Google Play)**, **6 (App Store notifications — needs the App Store Connect setup below)**, **7 (App Store Sales report only; Play financial report pending)**.
+Done so far: **1 (UI + mock data)**, **2 (auth)**, **3 (Firestore data)**, **4 (AdMob)**, **5 (Google Play)**, **6 (App Store notifications — needs the App Store Connect setup below)**, **7 (daily reconciliation: App Store Sales report + Play Sales report)**.
 
 ## Local development (emulators, no real project needed)
 
@@ -172,6 +172,22 @@ Proceeds are converted to KRW with the `fx` rate of the report date; currencies 
 and listed as a warning on the 일일 보정 row. Results per date are in `sync/reconcile.appStore`
 (`reconciled` / `zeroed` / `not-ready`). In-app rows are mapped to apps by the parent app's SKU
 → bundle id (`GET /v1/apps`) → `apps.appStoreBundleId`.
+
+## Google Play Sales report (milestone 7, Play part)
+
+Also in `reconcileDaily`. It downloads `gs://<bucket>/sales/salesreport_YYYYMM.zip` (monthly CSV, Google
+posts it 3–7 days late) for the months covering D-10..D-1 and overwrites `daily.inapp.google` / `paid.google`
+for the KST days the file fully covers (days before the newest order in the file). Later days keep their
+RTDN estimates until a later run. Paid-app downloads (e.g. Liquid Frame) only appear through this report.
+
+1. Play Console → **Download reports → Financial** → **Copy Cloud Storage URI** (`gs://pubsite_prod_rev_…`).
+2. Firebase console → Firestore → `config/app` → add field `playReportBucket` (string) = that URI or the bucket id.
+3. The Functions service account (already a Play Console user) needs **View financial data** set to **Global**
+   (Play Console → Users and permissions → the service account → Account permissions).
+
+Amounts: gross = **Item Price** (tax excluded; Charged Amount − Taxes Collected when blank), refund rows negative,
+dated by **Order Charged Timestamp** in KST, converted with that day's `fx` rate. Results: `sync/reconcile.googlePlay`
+(`reconciled` / `pending` dates). Rows with other statuses are skipped and logged.
 
 ## Deploy
 

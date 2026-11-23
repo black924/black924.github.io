@@ -7,7 +7,7 @@ const META: Record<SyncSource, { name: string; method: string }> = {
   admob: { name: 'AdMob 미디에이션', method: 'API 폴링 · 30분' },
   google_play: { name: 'Google Play', method: 'RTDN 실시간 + 재무 리포트' },
   app_store: { name: 'App Store', method: 'ASN V2 실시간 + Sales 리포트' },
-  reconcile: { name: '일일 보정', method: '매일 04:00 KST · D-1~D-3 확정' },
+  reconcile: { name: '일일 보정', method: '매일 04:00 KST · App Store D-1~D-3, Play 리포트 반영분' },
 };
 
 const CONNECT_URL = import.meta.env.VITE_ADMOB_CONNECT_URL;

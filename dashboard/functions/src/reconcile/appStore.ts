@@ -5,7 +5,6 @@
 // Day boundary: Apple names report days in its own reporting time zone (TODO(verify): Pacific Time per
 // common use; the docs don't state it) and the report has no hours, so report day D is written to the KST
 // key D. Notification estimates for D may have sat a few hours off; the totals over days still match.
-import { Timestamp } from 'firebase-admin/firestore';
 import { logger } from 'firebase-functions';
 import { krwPerUnit } from '../fx/rates';
 import { db } from '../shared/firestore';
@@ -13,6 +12,7 @@ import { addDays, kstDateKey } from '../shared/kst';
 import { toKrwMicros } from '../shared/money';
 import { AscError, ascToken, fetchDailySales, listAppSkus, type AscCredentials } from '../appStore/connect';
 import { parseSalesReport, totalSales, type SalesTotal } from '../appStore/salesReport';
+import { writeStoreDay } from './daily';
 
 /** A missing report this many days back (or older) means no sales, not "not generated yet". */
 const NO_REPORT_MEANS_ZERO_AFTER_DAYS = 3;
@@ -50,39 +50,6 @@ export async function toAppAmounts(
     byApp.set(appId, a);
   }
   return { byApp, missingFx: [...missingFx] };
-}
-
-/** Overwrites Apple amounts for one date: every app in `byApp`, and zero for apps that had Apple estimates. */
-async function writeDay(date: string, byApp: Map<string, AppleDayAmounts>, reportDate: string | null) {
-  const existing = await db.collection('daily').where('date', '==', date).get();
-  const had = existing.docs
-    .filter((d) => (d.get('inapp.apple') ?? 0) !== 0 || (d.get('paid.apple') ?? 0) !== 0 || d.get('reconciled.apple'))
-    .map((d) => d.get('appId') as string);
-  const ids = new Set([...byApp.keys(), ...had]);
-  const exists = new Set(existing.docs.map((d) => d.id));
-  const now = Timestamp.now();
-  const batch = db.batch();
-  for (const appId of ids) {
-    const a = byApp.get(appId) ?? { inapp: 0, paid: 0, inappNet: 0, paidNet: 0 };
-    const ref = db.doc(`daily/${date}_${appId}`);
-    const reconciled = { at: now, reportDate, inappNet: a.inappNet, paidNet: a.paidNet };
-    if (exists.has(ref.id)) {
-      batch.update(ref, { 'inapp.apple': a.inapp, 'paid.apple': a.paid, 'reconciled.apple': reconciled, updatedAt: now });
-    } else {
-      batch.set(ref, {
-        date,
-        appId,
-        ad: { totalMicros: 0, bySource: { admob: 0, unity: 0, other: 0 } },
-        inapp: { google: 0, apple: a.inapp },
-        paid: { google: 0, apple: a.paid },
-        status: 'estimated',
-        reconciled: { apple: reconciled },
-        updatedAt: now,
-      });
-    }
-  }
-  await batch.commit();
-  return ids.size;
 }
 
 async function appIdResolver(token: string) {
@@ -128,14 +95,14 @@ export async function reconcileAppStore(c: AscCredentials, from: string, to: str
         dates[date] = 'not-ready';
         continue;
       }
-      await writeDay(date, new Map(), null);
+      await writeStoreDay('apple', date, new Map(), { reportDate: null });
       dates[date] = 'zeroed';
       continue;
     }
     const totals = totalSales(parseSalesReport(report.tsv), smallBusiness);
     const { byApp, missingFx: miss } = await toAppAmounts(totals, date, resolve);
     miss.forEach((m) => missingFx.add(m));
-    const n = await writeDay(date, byApp, date);
+    const n = await writeStoreDay('apple', date, byApp, { reportDate: date });
     dates[date] = 'reconciled';
     logger.info('app store reconciled', { date, apps: n, rows: totals.length });
   }
