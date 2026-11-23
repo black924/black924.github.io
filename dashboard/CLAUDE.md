@@ -78,9 +78,13 @@
   - **Sandbox 환경 = 테스트 결제** → `test: true`로 피드에만 기록
   - 중복 방지: `asnEvents/{notificationUUID}`, 거래 문서 `transactions/as_{transactionId}`
   - 앱 매칭: `apps.appStoreBundleId`
-- 확정(보정): **App Store Connect API — Sales and Trends 리포트**(일간 SALES), 필요 시 Finance 리포트
-  - 보통 하루 늦게 나온다.
-- 인증: App Store Connect API 키(`.p8`, Key ID, Issuer ID) → Secret Manager
+- 확정(보정): **App Store Connect API — `GET /v1/salesReports`** (SALES / SUMMARY / DAILY, version `1_0`, gzip TSV). 구현: `functions/src/appStore/{connect,salesReport}.ts`, `functions/src/reconcile/appStore.ts`
+  - 보통 하루 늦게 나온다. 리포트가 없으면 404 → 3일 이상 지난 날짜면 매출 0으로 확정, 아니면 다음 실행에 다시 시도
+  - 열은 헤더 이름으로 찾는다. 금액 = `Developer Proceeds`(단위당, 세금·수수료 제외) × `Units`(환불은 음수)
+  - gross(세금 제외·수수료 포함) = proceeds ÷ 0.70, `Proceeds Reason` "Rate After One Year" 또는 `config/app.appleSmallBusiness == true`면 ÷ 0.85. net은 proceeds 그대로 `reconciled.apple`에 저장
+  - `Parent Identifier`가 있으면 인앱·구독(부모 앱 SKU), 없으면 유료앱 다운로드. 앱 매칭: SKU → `GET /v1/apps`의 bundleId → `apps.appStoreBundleId` (없으면 웹훅과 같은 `as_{bundleId}`, 그것도 없으면 `as_sku_{SKU}`)
+  - 리포트 날짜 D는 KST 키 D에 그대로 쓴다(리포트에 시간이 없음). 환율은 리포트 날짜의 `fx`
+- 인증: App Store Connect API 팀 키(Sales 권한, ES256 JWT, 15분 만료) → Secret `ASC_KEY_ID`, `ASC_ISSUER_ID`, `ASC_PRIVATE_KEY`(.p8 내용), `ASC_VENDOR_NUMBER`
 
 ### 3-4. 환율
 - 기준 통화: KRW. 원 통화 금액도 함께 저장한다.
@@ -98,6 +102,7 @@ config/app
   timezone: "Asia/Seoul"
   revenueBasis: "gross" | "net"
   baseCurrency: "KRW"
+  appleSmallBusiness?: boolean          // App Store Small Business Program (수수료 15%) — Sales 리포트 gross 계산용
 
 apps/{appId}
   name, platform: ("android"|"ios")[], admobAppIds?: string[], playPackage?, appStoreAppId?, appStoreBundleId?, iconColor, iconUrl?
@@ -111,6 +116,7 @@ daily/{YYYY-MM-DD}_{appId}
   inapp:  { google, apple }                                   // KRW micros
   paid:   { google, apple }                                   // KRW micros
   status: "estimated" | "final"
+  reconciled?: { apple?: { at, reportDate, inappNet, paidNet } }   // 스토어 리포트로 보정된 날. 이후 같은 날의 결제 알림은 daily에 더하지 않는다
   updatedAt
 
 hourly/{YYYY-MM-DD}_{HH}            // 오늘·어제 화면의 시간대별 차트용 (최근 3일만 유지)
@@ -137,6 +143,7 @@ subscribers/{store}                 // google | apple — 스토어별 결제 �
 sync/{source}                       // admob | google_play | app_store | reconcile
   state: "ok"|"error"|"scheduled", lastRunAt, lastError?, warning?
   // admob 전용: connected, hourlyBase {date, totalMicros}, account {publisherId, reportingTimeZone, currencyCode}
+  // reconcile 전용: appStore { [date]: "reconciled" | "zeroed" | "not-ready" }
 
 fx/{YYYY-MM-DD}
   USD, JPY, ... (1 단위당 KRW)
@@ -159,7 +166,7 @@ fx/{YYYY-MM-DD}
 | `requestSync` | Callable (HTTPS) | 헤더 새로고침 버튼. allowlist·이메일 인증 재확인 후 AdMob 동기화 즉시 실행. 직전 실행 60초 이내면 건너뜀 |
 | `onPlayRtdn` | Pub/Sub | Play 결제 알림 → `transactions`, `daily`(estimated) |
 | `appStoreWebhook` | HTTPS | ASN V2 서명 검증 → `transactions`, `daily`(estimated) |
-| `reconcileDaily` | 스케줄 매일 04:00 KST | Play 재무 리포트 + App Store Sales 리포트로 D-1~D-3 확정 |
+| `reconcileDaily` | 스케줄 매일 04:00 KST | App Store Sales 리포트로 D-1~D-3 보정 (Play 재무 리포트는 아직) |
 | `syncFx` | 스케줄 매일 | 환율 저장 |
 
 공통: 실패 시 `sync/{source}`에 에러 기록, 재시도 가능하게 작성. 로그에 토큰·결제 원문을 남기지 않는다.

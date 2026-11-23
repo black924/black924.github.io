@@ -66,5 +66,16 @@
       "ca-app-pub-3172089365303130~5308340956"
     ],
     "iconUrl": "https://hnh-labs.com/assets/apps/bannyeo.png"
+  },
+  {
+    "id": "vinylwave",
+    "name": "Vinyl Wave",
+    "platform": [
+      "ios"
+    ],
+    "iconColor": "#E0552E",
+    "appStoreAppId": "6838185268",
+    "iconUrl": "https://hnh-labs.com/assets/apps/vinylwave.png",
+    "appStoreBundleId": "com.hnh.vinylwave"
   }
 ]

@@ -8,6 +8,12 @@ export const ADMOB_OAUTH_CLIENT_ID = defineSecret('ADMOB_OAUTH_CLIENT_ID');
 export const ADMOB_OAUTH_CLIENT_SECRET = defineSecret('ADMOB_OAUTH_CLIENT_SECRET');
 export const ADMOB_REFRESH_TOKEN = 'ADMOB_REFRESH_TOKEN'; // runtime-managed
 
+// App Store Connect API (Users and Access → Integrations → Team Keys) and Sales and Trends vendor number.
+export const ASC_KEY_ID = defineSecret('ASC_KEY_ID');
+export const ASC_ISSUER_ID = defineSecret('ASC_ISSUER_ID');
+export const ASC_PRIVATE_KEY = defineSecret('ASC_PRIVATE_KEY'); // .p8 file contents
+export const ASC_VENDOR_NUMBER = defineSecret('ASC_VENDOR_NUMBER');
+
 const BASE = 'https://secretmanager.googleapis.com/v1';
 
 function projectId(): string {

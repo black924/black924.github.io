@@ -68,6 +68,8 @@ export async function recordStoreTransaction(
 
     // Subscriptions and refunds of in-app/subscription purchases count toward "inapp" (CLAUDE.md §4).
     const inc = FieldValue.increment(tx.amountKrwMicros);
+    // A day the store report already corrected keeps the report's amount (a late notification would double it).
+    if (daily.exists && daily.get(`reconciled.${store}`)) return 'recorded';
     if (daily.exists) {
       t.update(dailyRef, { [`inapp.${store}`]: inc, updatedAt: Timestamp.now() });
     } else {

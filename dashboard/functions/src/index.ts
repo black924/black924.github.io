@@ -2,6 +2,7 @@ import { onCall, onRequest } from 'firebase-functions/v2/https';
 import { handleRequestSync } from './requestSync';
 import { onMessagePublished } from 'firebase-functions/v2/pubsub';
 import { logger } from 'firebase-functions';
+import { FieldValue } from 'firebase-admin/firestore';
 import { storeTodayRates } from './fx/rates';
 import { handlePlayRtdn } from './googlePlay/handler';
 import { handleAppStoreWebhook } from './appStore/handler';
@@ -9,7 +10,12 @@ import { onSchedule } from 'firebase-functions/v2/scheduler';
 import { handleCallback, handleStart } from './admob/oauth';
 import { runAdmobSync } from './admob/sync';
 import { REGION } from './shared/region';
-import { ADMOB_OAUTH_CLIENT_ID, ADMOB_OAUTH_CLIENT_SECRET } from './shared/secrets';
+import { appStoreErrorMessage, reconcileAppStore } from './reconcile/appStore';
+import { addDays, kstDateKey } from './shared/kst';
+import { recordSyncError, recordSyncOk } from './shared/sync';
+import {
+  ADMOB_OAUTH_CLIENT_ID, ADMOB_OAUTH_CLIENT_SECRET, ASC_ISSUER_ID, ASC_KEY_ID, ASC_PRIVATE_KEY, ASC_VENDOR_NUMBER,
+} from './shared/secrets';
 
 const admobSecrets = [ADMOB_OAUTH_CLIENT_ID, ADMOB_OAUTH_CLIENT_SECRET];
 
@@ -59,4 +65,33 @@ export const syncFx = onSchedule({ schedule: 'every day 07:00', timeZone: 'Asia/
 /** Header refresh button: allowlisted users can trigger an AdMob sync right away. */
 export const requestSync = onCall({ region: REGION, secrets: admobSecrets, timeoutSeconds: 120, maxInstances: 2 }, (req) =>
   handleRequestSync(req, { clientId: ADMOB_OAUTH_CLIENT_ID.value(), clientSecret: ADMOB_OAUTH_CLIENT_SECRET.value() }),
+);
+
+const ascSecrets = [ASC_KEY_ID, ASC_ISSUER_ID, ASC_PRIVATE_KEY, ASC_VENDOR_NUMBER];
+
+/**
+ * Daily correction layer (CLAUDE.md §3): App Store Sales report for D-1..D-3 overwrites the notification
+ * estimates. D-1 is usually not published yet at 04:00 KST and is picked up the next day.
+ * TODO: Google Play financial report.
+ */
+export const reconcileDaily = onSchedule(
+  { schedule: 'every day 04:00', timeZone: 'Asia/Seoul', region: REGION, secrets: ascSecrets, timeoutSeconds: 300, retryCount: 1 },
+  async () => {
+    const today = kstDateKey(new Date());
+    try {
+      const r = await reconcileAppStore(
+        { keyId: ASC_KEY_ID.value(), issuerId: ASC_ISSUER_ID.value(), privateKey: ASC_PRIVATE_KEY.value(), vendorNumber: ASC_VENDOR_NUMBER.value() },
+        addDays(today, -3),
+        addDays(today, -1),
+      );
+      const warning = r.missingFx.length ? `환율이 없어 제외한 통화: ${r.missingFx.join(', ')}` : FieldValue.delete();
+      await recordSyncOk('reconcile', { appStore: r.dates, warning });
+      await recordSyncOk('app_store', { lastReportAt: new Date() });
+      logger.info('reconcile done', r);
+    } catch (e) {
+      logger.error('reconcile: app store failed', { message: (e as Error).message });
+      await recordSyncError('reconcile', appStoreErrorMessage(e));
+      throw e; // let Scheduler retry once
+    }
+  },
 );

@@ -29,7 +29,7 @@ run('recordPlayTransaction (emulator)', () => {
     const refs = [
       'daily/2020-01-01_test_app', 'hourly/2020-01-01_12', 'transactions/gp_TEST.order.1', 'transactions/gp_refund_TEST',
       'rtdnEvents/m1', 'rtdnEvents/m2', 'rtdnEvents/m3', 'rtdnEvents/m4', 'transactions/gp_TEST.test.1',
-      'asnEvents/a1', 'transactions/as_TEST.1', 'daily/2020-01-01_test_ios',
+      'asnEvents/a1', 'transactions/as_TEST.1', 'asnEvents/a2', 'transactions/as_TEST.2', 'daily/2020-01-01_test_ios',
     ];
     await Promise.all(refs.map((r) => db.doc(r).delete()));
   });
@@ -66,5 +66,13 @@ run('recordPlayTransaction (emulator)', () => {
     const d = await db.doc('daily/2020-01-01_test_ios').get();
     expect(d.get('inapp')).toEqual({ google: 0, apple: 1_100_000_000 });
     expect((await db.doc('hourly/2020-01-01_12').get()).get('inapp')).toBe(1_100_000_000);
+  });
+
+  it('leaves a day the Sales report already reconciled untouched (late notification)', async () => {
+    await db.doc('daily/2020-01-01_test_ios').update({ 'inapp.apple': 900_000_000, 'reconciled.apple': { reportDate: '2020-01-01' } });
+    const late = { ...base, id: 'as_TEST.2', appId: 'test_ios', orderId: 'TEST.2', amountKrwMicros: 1_100_000_000 };
+    expect(await recordStoreTransaction(db, { store: 'apple', source: 'asn', eventPath: 'asnEvents/a2' }, late)).toBe('recorded');
+    expect((await db.doc('transactions/as_TEST.2').get()).exists).toBe(true);
+    expect((await db.doc('daily/2020-01-01_test_ios').get()).get('inapp.apple')).toBe(900_000_000);
   });
 });

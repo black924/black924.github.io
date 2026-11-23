@@ -2,7 +2,7 @@
 
 See `CLAUDE.md` for architecture and milestones. Live: https://auto-posting-a970b.web.app
 
-Done so far: **1 (UI + mock data)**, **2 (auth)**, **3 (Firestore data)**, **4 (AdMob)**, **5 (Google Play)**, **6 (App Store notifications — needs the App Store Connect setup below)**.
+Done so far: **1 (UI + mock data)**, **2 (auth)**, **3 (Firestore data)**, **4 (AdMob)**, **5 (Google Play)**, **6 (App Store notifications — needs the App Store Connect setup below)**, **7 (App Store Sales report only; Play financial report pending)**.
 
 ## Local development (emulators, no real project needed)
 
@@ -138,7 +138,40 @@ Function: `appStoreWebhook` (HTTPS). No secrets: payloads are verified with Appl
    needs an API key, so it is optional; it shows up as `sync/app_store.lastTestAt`.
 
 Amounts are the App Store Connect price (`price` milliunits × 1000, may include VAT) converted to KRW at the
-payment date's `fx` rate. Paid-app downloads send no notification; they come from the Sales report (milestone 7).
+payment date's `fx` rate. Paid-app downloads send no notification; they come from the Sales report (below).
+
+## App Store Connect API — daily Sales report (milestone 7, App Store part)
+
+Function: `reconcileDaily` (every day 04:00 KST). It downloads the daily Summary Sales report for D-1..D-3
+and overwrites `daily/{date}_{appId}.inapp.apple` / `paid.apple` with the report's amounts
+(`reconciled.apple` marks the day; later notifications for that day are then not added again).
+D-1 is usually not published yet at 04:00 and is filled the next day. A day with no report 3+ days later is set to 0.
+
+| Secret (Secret Manager) | Where it comes from |
+|---|---|
+| `ASC_KEY_ID` | App Store Connect → **Users and Access → Integrations → App Store Connect API → Team Keys** → generate a key with role **Sales** (or Finance) → Key ID |
+| `ASC_ISSUER_ID` | same page, **Issuer ID** above the key list |
+| `ASC_PRIVATE_KEY` | the downloaded `AuthKey_XXXX.p8` file contents (download is possible only once) |
+| `ASC_VENDOR_NUMBER` | App Store Connect → **Sales and Trends** → Reports → vendor number in the top-left menu (8 digits) |
+
+```bash
+for S in ASC_KEY_ID ASC_ISSUER_ID ASC_VENDOR_NUMBER; do
+  firebase functions:secrets:set $S --project auto-posting-a970b          # prompts for the value
+done
+firebase functions:secrets:set ASC_PRIVATE_KEY --project auto-posting-a970b --data-file ~/Downloads/AuthKey_XXXX.p8
+sh scripts/firebase.sh deploy --only functions:reconcileDaily --project auto-posting-a970b
+gcloud scheduler jobs run firebase-schedule-reconcileDaily-asia-northeast3 --location asia-northeast3 --project auto-posting-a970b  # optional: run now
+```
+
+Amounts: the report gives **Developer Proceeds** (after tax and Apple's commission). The dashboard's gross
+(tax excluded, commission included) is derived as proceeds ÷ 0.70, or ÷ 0.85 for "Rate After One Year"
+subscriptions and for **App Small Business Program** members. If you're in the program, set it once in
+Firebase console → Firestore → `config/app` → add field `appleSmallBusiness` (boolean) = `true`.
+
+Proceeds are converted to KRW with the `fx` rate of the report date; currencies without a rate are skipped
+and listed as a warning on the 일일 보정 row. Results per date are in `sync/reconcile.appStore`
+(`reconciled` / `zeroed` / `not-ready`). In-app rows are mapped to apps by the parent app's SKU
+→ bundle id (`GET /v1/apps`) → `apps.appStoreBundleId`.
 
 ## Deploy
 
