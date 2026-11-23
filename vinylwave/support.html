@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="ko" data-l="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>고객지원 - Vinyl Wave</title>
+<meta name="description" content="Vinyl Wave 고객지원. 문의 방법과 자주 묻는 질문을 안내합니다.">
+<meta name="theme-color" content="#22170F">
+<link rel="icon" href="../assets/apps/vinylwave.png">
+<link rel="apple-touch-icon" href="../assets/apps/vinylwave.png">
+<script>
+(function () {
+  var LANGS = ["ko", "en", "ja"], l = 'ko';
+  try {
+    var q = new URLSearchParams(location.search).get('lang');
+    var saved = localStorage.getItem('hnh-lang');
+    var nav = (navigator.languages && navigator.languages[0] || navigator.language || '').slice(0, 2).toLowerCase();
+    if (q && LANGS.indexOf(q) > -1) l = q;
+    else if (saved && LANGS.indexOf(saved) > -1) l = saved;
+    else if (LANGS.indexOf(nav) > -1) l = nav;
+    else l = 'en';
+  } catch (e) {}
+  var r = document.documentElement; r.dataset.l = l; r.lang = l;
+})();
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;800&display=swap">
+<style>
+:root {
+  --accent: #C94420; --deep: #22170F; --soft: #F8E8DE; --paper: #F7F3EE; --glow: #FF8A5B;
+  --surface: #fff; --ink: #121318; --ink2: #4B4F58; --muted: #6E727B; --line: rgba(18,19,24,.09);
+  --sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", system-ui, sans-serif;
+  --gut: max(20px, env(safe-area-inset-left, 0px));
+  color-scheme: light;
+}
+:root:lang(ja) { --sans: "Noto Sans JP", "Hiragino Sans", "Pretendard Variable", system-ui, sans-serif; }
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.7; word-break: keep-all; overflow-wrap: anywhere; -webkit-font-smoothing: antialiased; }
+:lang(ja) body, body:lang(ja), .L:lang(ja) { word-break: normal; line-break: strict; }
+a { color: var(--accent); }
+.L { display: none; }
+html[data-l="ko"] .L[lang="ko"], html[data-l="en"] .L[lang="en"], html[data-l="ja"] .L[lang="ja"] { display: block; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 var(--gut); }
+h1, h2, h3 { margin: 0; letter-spacing: -0.03em; line-height: 1.3; }
+:lang(ja) h1, :lang(ja) h2 { letter-spacing: -0.01em; }
+
+.nav { padding-top: env(safe-area-inset-top, 0px); }
+.nav .wrap { display: flex; align-items: center; gap: 12px; height: 64px; }
+.logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 17px; color: var(--ink); text-decoration: none; min-width: 0; }
+.logo img { width: 32px; height: 32px; border-radius: 8px; }
+.nav-r { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.lang { position: relative; display: flex; align-items: center; }
+.lang svg { position: absolute; left: 10px; width: 16px; height: 16px; pointer-events: none; color: var(--ink2); }
+.lang select { appearance: none; -webkit-appearance: none; font: inherit; font-size: 14px; font-weight: 700; color: var(--ink); background: var(--surface); border: 1px solid var(--line); height: 38px; padding: 0 12px 0 32px; border-radius: 999px; cursor: pointer; }
+.back { font-size: 15px; font-weight: 700; color: var(--ink2); text-decoration: none; white-space: nowrap; }
+.back:hover { color: var(--ink); }
+@media (max-width: 480px) { .back { display: none; } }
+
+.head { background: var(--deep); color: #fff; border-radius: 28px; padding: clamp(32px, 6vw, 52px) clamp(24px, 5vw, 44px); margin-top: 8px; position: relative; overflow: hidden; }
+.head::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(60% 90% at 100% 0%, color-mix(in srgb, var(--glow) 34%, transparent), transparent 70%); }
+.head::after { content: ""; position: absolute; width: 260px; aspect-ratio: 1; right: -90px; top: -120px; border-radius: 50%; background: repeating-radial-gradient(circle, rgba(255,255,255,.10) 0 1px, transparent 1px 7px); opacity: .7; }
+.head > * { position: relative; z-index: 1; }
+.head h1 { font-size: clamp(28px, 5vw, 38px); font-weight: 800; margin-bottom: 10px; }
+.head p { margin: 0 0 24px; color: rgba(255,255,255,.74); max-width: 32em; }
+.mail { display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 22px; border-radius: 16px; background: #fff; color: var(--deep); font-weight: 700; text-decoration: none; }
+.mail:hover { background: var(--soft); }
+.head small { display: block; margin-top: 14px; color: rgba(255,255,255,.6); font-size: 14px; }
+
+section { margin-top: 44px; }
+section > h2 { font-size: 22px; font-weight: 800; margin-bottom: 16px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 8px 24px; }
+.tips { list-style: none; margin: 0; padding: 16px 0; display: grid; gap: 12px; }
+.tips li { display: flex; gap: 12px; }
+.tips li b { flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--soft); color: var(--accent); display: grid; place-items: center; font-size: 13px; margin-top: 1px; }
+
+details { border-bottom: 1px solid var(--line); }
+details:last-child { border-bottom: 0; }
+summary { list-style: none; cursor: pointer; padding: 18px 36px 18px 0; font-weight: 700; font-size: 17px; position: relative; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; position: absolute; right: 2px; top: 50%; transform: translateY(-50%); font-size: 24px; font-weight: 400; color: var(--ink2); transition: transform .2s; }
+details[open] summary::after { transform: translateY(-50%) rotate(45deg); }
+details p, details ul { margin: -4px 0 18px; color: var(--ink2); }
+details ul { padding-left: 20px; }
+details li + li { margin-top: 4px; }
+@media (prefers-reduced-motion: reduce) { summary::after { transition: none; } }
+
+.info { display: grid; grid-template-columns: 120px 1fr; gap: 10px 16px; padding: 18px 0; margin: 0; }
+.info dt { color: var(--muted); font-size: 15px; }
+.info dd { margin: 0; font-weight: 600; }
+@media (max-width: 480px) { .info { grid-template-columns: 1fr; gap: 2px; } .info dd { margin-bottom: 10px; } }
+
+footer { margin: 56px 0 0; padding: 24px 0 calc(40px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--line); font-size: 14px; color: var(--ink2); }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 20px; justify-content: space-between; }
+footer nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+footer a { color: var(--ink2); text-decoration: none; }
+footer a:hover { color: var(--ink); text-decoration: underline; }
+</style>
+</head>
+<body>
+<!-- App Store Connect / Google Play의 "지원 URL"에 넣는 페이지: https://hnh-labs.com/vinylwave/support.html -->
+
+<!-- 한국어 -->
+<div class="L" lang="ko">
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="index.html?lang=ko"><img src="../assets/apps/vinylwave.png" alt="" width="32" height="32">Vinyl Wave</a>
+    <div class="nav-r">
+      <a class="back" href="index.html?lang=ko">앱 소개 →</a>
+      <label class="lang"><span class="sr">언어</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z" fill="none" stroke="currentColor" stroke-width="2"/></svg><select data-lang-select><option value="ko" selected>한국어</option><option value="en">English</option><option value="ja">日本語</option></select></label>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="head">
+    <h1>고객지원</h1>
+    <p>Vinyl Wave를 쓰다가 불편한 점이나 궁금한 점이 있으면 메일로 알려 주세요. 보통 영업일 기준 2~3일 안에 답장 드려요.</p>
+    <a class="mail" href="mailto:support@hnh-labs.com?subject=%5BVinyl%20Wave%5D%20%EB%AC%B8%EC%9D%98">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+      메일로 문의하기
+    </a>
+    <small>support@hnh-labs.com</small>
+  </div>
+
+  <section>
+    <h2>문의할 때 알려 주시면 좋아요</h2>
+    <div class="card">
+      <ul class="tips">
+        <li><b>1</b><span>사용 중인 기기와 OS 버전 (예: Galaxy S25, Android 16 / iPhone 16, iOS 26)</span></li>
+        <li><b>2</b><span>앱 버전 (Google Play 또는 App Store의 앱 정보에서 확인)</span></li>
+        <li><b>3</b><span>문제가 생긴 화면과 상황, 재생이 안 되는 경우 파일 형식(예: MP3, FLAC)</span></li>
+        <li><b>4</b><span>가능하면 스크린샷이나 화면 녹화</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>자주 묻는 질문</h2>
+    <div class="card">
+      <details>
+        <summary>스트리밍 음악도 들을 수 있나요?</summary>
+        <p>아니요. Vinyl Wave는 휴대폰에 저장된 음악 파일을 턴테이블처럼 재생하는 앱이에요. 음악을 판매하거나 스트리밍하지 않으며, 저작권 보호(DRM)가 걸린 파일은 재생할 수 없어요.</p>
+      </details>
+      <details>
+        <summary>라이브러리에 음악이 보이지 않아요.</summary>
+        <ul>
+          <li>음악 및 오디오 접근을 허용해야 기기에 있는 음악 파일을 찾을 수 있어요. 거부했다면 기기 설정 &gt; 앱 &gt; Vinyl Wave에서 권한을 허용해 주세요.</li>
+          <li>권한을 허용하고 싶지 않다면 앱에서 폴더를 직접 선택해 음악을 가져올 수 있어요.</li>
+          <li>DRM이 적용된 파일이나 스트리밍 앱에서 내려받은 파일은 표시되지 않을 수 있어요.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>알림 영역에 재생 컨트롤이 나오지 않아요.</summary>
+        <p>재생 중인 곡과 컨트롤은 알림으로 표시돼요. 기기 설정에서 Vinyl Wave의 알림을 허용해 주세요.</p>
+      </details>
+      <details>
+        <summary>크래클 소리 없이 원음으로 듣고 싶어요.</summary>
+        <p>사운드 설정에서 퓨어 모드를 켜면 크래클과 표면 노이즈 없이 원음 그대로 들을 수 있어요.</p>
+      </details>
+      <details>
+        <summary>앨범 아트가 없는 앨범은 어떻게 보이나요?</summary>
+        <p>아트워크가 없는 앨범은 앨범 정보로 레코드 레이블을 자동으로 만들어 보여 줘요. 음악 파일의 태그(제목, 아티스트, 앨범)를 정리해 두면 더 깔끔하게 표시돼요.</p>
+      </details>
+      <details>
+        <summary>Vinyl Wave Pro는 무엇이 다른가요?</summary>
+        <p>Pro에서는 Walnut Heritage, Midnight Noir, Clear Acrylic 프리미엄 테마와 덱 꾸미기(슬립매트·레코드 색), 상세 사운드 설정, 앰비언트 모드·화면보호기 등을 쓸 수 있어요. 월간·연간 구독과 한 번 결제하는 평생 이용권이 있고, 가격은 스토어 구매 화면에 표시돼요.</p>
+      </details>
+      <details>
+        <summary>구독은 어떻게 해지하나요?</summary>
+        <ul>
+          <li>Android: Google Play 앱 &gt; 프로필 &gt; 결제 및 정기 결제 &gt; 정기 결제에서 해지할 수 있어요.</li>
+          <li>iPhone: 설정 &gt; 내 이름 &gt; 구독에서 해지할 수 있어요.</li>
+          <li>현재 기간이 끝나기 최소 24시간 전에 해지해야 다음 결제가 되지 않아요. 앱을 삭제해도 구독은 해지되지 않아요.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>환불을 받고 싶어요.</summary>
+        <p>결제는 Google Play 또는 App Store가 처리하기 때문에 환불도 각 스토어의 정책에 따라요. Google Play는 Play 스토어의 주문 내역에서, App Store는 <a href="https://reportaproblem.apple.com" rel="noopener">reportaproblem.apple.com</a>에서 요청할 수 있어요.</p>
+      </details>
+      <details>
+        <summary>휴대폰을 바꿨는데 Pro가 적용되지 않아요.</summary>
+        <p>앱은 스토어가 알려주는 구매 상태로 Pro를 확인해요. 구매할 때와 같은 Google Play 또는 Apple 계정으로 로그인했는지 확인해 주세요. 그래도 적용되지 않으면 구매 영수증과 함께 메일로 알려 주세요.</p>
+      </details>
+      <details>
+        <summary>앱을 지우면 라이브러리와 설정이 남나요?</summary>
+        <p>크레이트, 재생 위치, 테마 같은 설정과 앱으로 가져온 음악 파일은 기기 안에만 저장되기 때문에 앱을 삭제하면 함께 삭제돼요. 원본 음악 파일은 별도로 백업해 두세요.</p>
+      </details>
+      <details>
+        <summary>내 음악 정보가 서버로 전송되나요?</summary>
+        <p>아니요. 곡 제목, 파일 이름, 음악 파일 자체는 수집하지 않아요. 앱 개선을 위한 사용 통계와 오류 정보만 Firebase로 수집하며, 자세한 내용은 <a href="privacy.html?lang=ko#ko">개인정보 처리방침</a>에서 확인할 수 있어요.</p>
+      </details>
+    </div>
+  </section>
+
+  <section>
+    <h2>앱 정보</h2>
+    <div class="card">
+      <dl class="info">
+        <dt>앱 이름</dt><dd>Vinyl Wave</dd>
+        <dt>지원 기기</dt><dd>Android, iPhone</dd>
+        <dt>개발</dt><dd>HNH Labs</dd>
+        <dt>문의</dt><dd><a href="mailto:support@hnh-labs.com">support@hnh-labs.com</a></dd>
+        <dt>정책</dt><dd><a href="privacy.html?lang=ko#ko">개인정보 처리방침</a> · <a href="tac.html?lang=ko#ko">이용약관</a></dd>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 HNH Labs</span>
+    <nav><a href="index.html?lang=ko">앱 소개</a> <a href="privacy.html?lang=ko#ko">개인정보 처리방침</a> <a href="tac.html?lang=ko#ko">이용약관</a></nav>
+  </div>
+</footer>
+</div>
+
+<!-- English -->
+<div class="L" lang="en">
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="index.html?lang=en"><img src="../assets/apps/vinylwave.png" alt="" width="32" height="32">Vinyl Wave</a>
+    <div class="nav-r">
+      <a class="back" href="index.html?lang=en">About the app →</a>
+      <label class="lang"><span class="sr">Language</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z" fill="none" stroke="currentColor" stroke-width="2"/></svg><select data-lang-select><option value="ko">한국어</option><option value="en" selected>English</option><option value="ja">日本語</option></select></label>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="head">
+    <h1>Support</h1>
+    <p>If something isn’t working or you have a question about Vinyl Wave, send us an email. We usually reply within 2–3 business days.</p>
+    <a class="mail" href="mailto:support@hnh-labs.com?subject=%5BVinyl%20Wave%5D%20Support">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+      Email us
+    </a>
+    <small>support@hnh-labs.com</small>
+  </div>
+
+  <section>
+    <h2>Helpful details to include</h2>
+    <div class="card">
+      <ul class="tips">
+        <li><b>1</b><span>Your device and OS version (e.g. Pixel 9, Android 16 / iPhone 16, iOS 26)</span></li>
+        <li><b>2</b><span>The app version (shown on the app’s Google Play or App Store page)</span></li>
+        <li><b>3</b><span>What happened and on which screen, plus the file format if a track won’t play (e.g. MP3, FLAC)</span></li>
+        <li><b>4</b><span>A screenshot or screen recording, if possible</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>FAQ</h2>
+    <div class="card">
+      <details>
+        <summary>Can I play music from streaming services?</summary>
+        <p>No. Vinyl Wave plays the music files stored on your phone, like a turntable. It doesn’t sell or stream music, and files protected by DRM can’t be played.</p>
+      </details>
+      <details>
+        <summary>My music doesn’t show up in the library.</summary>
+        <ul>
+          <li>Vinyl Wave needs access to music and audio to find files on your device. If you denied it, allow it in your device Settings &gt; Apps &gt; Vinyl Wave.</li>
+          <li>If you’d rather not grant access, you can pick a folder in the app and import music from it.</li>
+          <li>DRM-protected files and downloads from streaming apps may not appear.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>Playback controls don’t appear in notifications.</summary>
+        <p>The current track and controls are shown as a notification. Allow notifications for Vinyl Wave in your device settings.</p>
+      </details>
+      <details>
+        <summary>I want the original sound without crackle.</summary>
+        <p>Turn on Pure mode in the sound settings to hear your music as-is, without crackle or surface noise.</p>
+      </details>
+      <details>
+        <summary>What about albums without artwork?</summary>
+        <p>Vinyl Wave creates a record label from the album details. Tidy tags (title, artist, album) in your files make it look even better.</p>
+      </details>
+      <details>
+        <summary>What do I get with Vinyl Wave Pro?</summary>
+        <p>Pro unlocks the Walnut Heritage, Midnight Noir and Clear Acrylic premium themes, deck customization (slipmat and record colors), detailed sound settings, ambient mode and screensaver, and more. It’s available as a monthly or yearly subscription or a one-time lifetime purchase; prices are shown on the store’s purchase screen.</p>
+      </details>
+      <details>
+        <summary>How do I cancel my subscription?</summary>
+        <ul>
+          <li>Android: Google Play app &gt; Profile &gt; Payments &amp; subscriptions &gt; Subscriptions.</li>
+          <li>iPhone: Settings &gt; your name &gt; Subscriptions.</li>
+          <li>Cancel at least 24 hours before the current period ends to avoid the next charge. Deleting the app doesn’t cancel the subscription.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>How do I get a refund?</summary>
+        <p>Payments are handled by Google Play or the App Store, so refunds follow each store’s policy. Request one from your order history in Google Play, or at <a href="https://reportaproblem.apple.com" rel="noopener">reportaproblem.apple.com</a> for the App Store.</p>
+      </details>
+      <details>
+        <summary>Pro isn’t active on my new phone.</summary>
+        <p>Vinyl Wave checks Pro using the purchase status your store provides. Make sure you’re signed in with the same Google Play or Apple account you bought it with. If it still doesn’t work, email us with your receipt.</p>
+      </details>
+      <details>
+        <summary>Is my library kept if I delete the app?</summary>
+        <p>Crates, playback position, themes and other settings, along with music imported into the app, are stored only on your device and are removed when you delete the app. Keep backups of your original music files.</p>
+      </details>
+      <details>
+        <summary>Is my music information sent to a server?</summary>
+        <p>No. Track titles, file names and the music files themselves are never collected. Only usage statistics and crash reports are collected through Firebase to improve the app. See the <a href="privacy.html?lang=en#en">Privacy Policy</a> for details.</p>
+      </details>
+    </div>
+  </section>
+
+  <section>
+    <h2>App info</h2>
+    <div class="card">
+      <dl class="info">
+        <dt>App</dt><dd>Vinyl Wave</dd>
+        <dt>Devices</dt><dd>Android, iPhone</dd>
+        <dt>Developer</dt><dd>HNH Labs</dd>
+        <dt>Contact</dt><dd><a href="mailto:support@hnh-labs.com">support@hnh-labs.com</a></dd>
+        <dt>Policies</dt><dd><a href="privacy.html?lang=en#en">Privacy Policy</a> · <a href="tac.html?lang=en#en">Terms of Use</a></dd>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 HNH Labs</span>
+    <nav><a href="index.html?lang=en">About the app</a> <a href="privacy.html?lang=en#en">Privacy Policy</a> <a href="tac.html?lang=en#en">Terms of Use</a></nav>
+  </div>
+</footer>
+</div>
+
+<!-- 日本語 -->
+<div class="L" lang="ja">
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="index.html?lang=ja"><img src="../assets/apps/vinylwave.png" alt="" width="32" height="32">Vinyl Wave</a>
+    <div class="nav-r">
+      <a class="back" href="index.html?lang=ja">アプリ紹介 →</a>
+      <label class="lang"><span class="sr">言語</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z" fill="none" stroke="currentColor" stroke-width="2"/></svg><select data-lang-select><option value="ko">한국어</option><option value="en">English</option><option value="ja" selected>日本語</option></select></label>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="head">
+    <h1>サポート</h1>
+    <p>Vinyl Wave の使い方でお困りのことやご質問があれば、メールでお知らせください。通常、2〜3営業日以内にご返信します。</p>
+    <a class="mail" href="mailto:support@hnh-labs.com?subject=%5BVinyl%20Wave%5D%20%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+      メールで問い合わせる
+    </a>
+    <small>support@hnh-labs.com</small>
+  </div>
+
+  <section>
+    <h2>お問い合わせの際にお知らせください</h2>
+    <div class="card">
+      <ul class="tips">
+        <li><b>1</b><span>ご利用の端末とOSのバージョン（例：Pixel 9・Android 16 / iPhone 16・iOS 26）</span></li>
+        <li><b>2</b><span>アプリのバージョン（Google Play または App Store のアプリ情報で確認できます）</span></li>
+        <li><b>3</b><span>問題が起きた画面と状況、再生できない場合はファイル形式（例：MP3、FLAC）</span></li>
+        <li><b>4</b><span>可能であればスクリーンショットや画面収録</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>よくある質問</h2>
+    <div class="card">
+      <details>
+        <summary>ストリーミングの音楽も聴けますか？</summary>
+        <p>いいえ。Vinyl Wave は端末に保存された音楽ファイルをターンテーブルのように再生するアプリです。音楽の販売やストリーミングは行っておらず、著作権保護（DRM）がかかったファイルは再生できません。</p>
+      </details>
+      <details>
+        <summary>ライブラリに音楽が表示されません。</summary>
+        <ul>
+          <li>端末の音楽ファイルを探すには、音楽とオーディオへのアクセスを許可する必要があります。拒否した場合は、端末の設定 &gt; アプリ &gt; Vinyl Wave から許可してください。</li>
+          <li>アクセスを許可したくない場合は、アプリでフォルダを直接選んで音楽を読み込めます。</li>
+          <li>DRM付きのファイルやストリーミングアプリでダウンロードしたファイルは表示されないことがあります。</li>
+        </ul>
+      </details>
+      <details>
+        <summary>通知に再生コントロールが表示されません。</summary>
+        <p>再生中の曲とコントロールは通知に表示されます。端末の設定で Vinyl Wave の通知を許可してください。</p>
+      </details>
+      <details>
+        <summary>クラックルなしの原音で聴きたいです。</summary>
+        <p>サウンド設定でピュアモードをオンにすると、クラックルや表面ノイズなしで原音のまま聴けます。</p>
+      </details>
+      <details>
+        <summary>アートワークのないアルバムはどう表示されますか？</summary>
+        <p>アルバム情報からレコードのレーベルを自動で作成して表示します。音楽ファイルのタグ（タイトル、アーティスト、アルバム）を整えておくと、よりきれいに表示されます。</p>
+      </details>
+      <details>
+        <summary>Vinyl Wave Pro では何ができますか？</summary>
+        <p>Walnut Heritage、Midnight Noir、Clear Acrylic のプレミアムテーマ、デッキのカスタマイズ（スリップマット・レコードの色）、詳細なサウンド設定、アンビエントモード・スクリーンセーバーなどが使えます。月額・年額のサブスクリプションと、一度の購入で使える買い切りプランがあり、価格はストアの購入画面に表示されます。</p>
+      </details>
+      <details>
+        <summary>サブスクリプションの解約方法は？</summary>
+        <ul>
+          <li>Android：Google Play アプリ &gt; プロフィール &gt; お支払いと定期購入 &gt; 定期購入 から解約できます。</li>
+          <li>iPhone：設定 &gt; ユーザ名 &gt; サブスクリプション から解約できます。</li>
+          <li>次回の請求を止めるには、現在の期間が終わる24時間以上前に解約してください。アプリを削除してもサブスクリプションは解約されません。</li>
+        </ul>
+      </details>
+      <details>
+        <summary>返金を受けたいです。</summary>
+        <p>お支払いは Google Play または App Store が処理するため、返金も各ストアのポリシーに従います。Google Play は注文履歴から、App Store は <a href="https://reportaproblem.apple.com" rel="noopener">reportaproblem.apple.com</a> からリクエストできます。</p>
+      </details>
+      <details>
+        <summary>機種変更したら Pro が反映されません。</summary>
+        <p>アプリはストアから届く購入状況で Pro を確認します。購入時と同じ Google Play または Apple のアカウントでサインインしているかご確認ください。それでも反映されない場合は、購入時のレシートを添えてメールでお知らせください。</p>
+      </details>
+      <details>
+        <summary>アプリを削除するとライブラリや設定は残りますか？</summary>
+        <p>クレート、再生位置、テーマなどの設定と、アプリに読み込んだ音楽ファイルは端末内にのみ保存されるため、アプリを削除すると一緒に削除されます。元の音楽ファイルは別途バックアップしておいてください。</p>
+      </details>
+      <details>
+        <summary>音楽の情報がサーバーに送られますか？</summary>
+        <p>いいえ。曲名、ファイル名、音楽ファイルそのものは収集しません。アプリ改善のための利用統計とクラッシュ情報のみを Firebase で収集します。詳しくは<a href="privacy.html?lang=ja#ja">プライバシーポリシー</a>をご覧ください。</p>
+      </details>
+    </div>
+  </section>
+
+  <section>
+    <h2>アプリ情報</h2>
+    <div class="card">
+      <dl class="info">
+        <dt>アプリ名</dt><dd>Vinyl Wave</dd>
+        <dt>対応端末</dt><dd>Android、iPhone</dd>
+        <dt>開発</dt><dd>HNH Labs</dd>
+        <dt>お問い合わせ</dt><dd><a href="mailto:support@hnh-labs.com">support@hnh-labs.com</a></dd>
+        <dt>ポリシー</dt><dd><a href="privacy.html?lang=ja#ja">プライバシーポリシー</a> · <a href="tac.html?lang=ja#ja">利用規約</a></dd>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 HNH Labs</span>
+    <nav><a href="index.html?lang=ja">アプリ紹介</a> <a href="privacy.html?lang=ja#ja">プライバシーポリシー</a> <a href="tac.html?lang=ja#ja">利用規約</a></nav>
+  </div>
+</footer>
+</div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var TITLES = { ko: "고객지원 - Vinyl Wave", en: "Support - Vinyl Wave", ja: "サポート - Vinyl Wave" };
+  var DESCS = { ko: "Vinyl Wave 고객지원. 문의 방법과 자주 묻는 질문을 안내합니다.", en: "Vinyl Wave support: how to contact us and answers to common questions.", ja: "Vinyl Wave のサポート。お問い合わせ方法とよくある質問をご案内します。" };
+  function apply(l, save) {
+    root.dataset.l = l; root.lang = l;
+    document.title = TITLES[l];
+    document.querySelector('meta[name="description"]').content = DESCS[l];
+    document.querySelectorAll('[data-lang-select]').forEach(function (s) { s.value = l; });
+    if (save) {
+      try { localStorage.setItem('hnh-lang', l); } catch (e) {}
+      try { var u = new URL(location.href); u.searchParams.set('lang', l); history.replaceState(null, '', u); } catch (e) {}
+    }
+  }
+  document.querySelectorAll('[data-lang-select]').forEach(function (s) {
+    s.addEventListener('change', function () { apply(s.value, true); });
+  });
+  apply(root.dataset.l || 'ko', false);
+})();
+</script>
+<noscript><style>.L[lang="ko"] { display: block; }</style></noscript>
+</body>
+</html>
