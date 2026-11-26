@@ -114,20 +114,19 @@ export interface PropertyStreams {
   map: Map<string, StreamApp>;
 }
 
-const cache = new Map<string, { at: number; value: PropertyStreams }>();
+const cache = new Map<string, { at: number; streams: Stream[] }>();
 
-/** Streams change rarely: cached per property in the instance for an hour. */
+/** Streams change rarely, so they are cached per property for an hour; the app list is read every time. */
 export async function streamApps(propertyId: string): Promise<PropertyStreams> {
   const hit = cache.get(propertyId);
-  if (hit && Date.now() - hit.at < 3_600_000) return hit.value;
-  const [streams, apps] = await Promise.all([listStreams(propertyId), db.collection('apps').get()]);
+  const fresh = hit && Date.now() - hit.at < 3_600_000;
+  const [streams, apps] = await Promise.all([fresh ? hit.streams : listStreams(propertyId), db.collection('apps').get()]);
+  if (!fresh) cache.set(propertyId, { at: Date.now(), streams });
   const map = streamAppMap(
     streams,
     apps.docs.map((d) => ({ id: d.id, playPackage: d.get('playPackage'), appStoreBundleId: d.get('appStoreBundleId') })),
   );
-  const value = { streams, map };
-  cache.set(propertyId, { at: Date.now(), value });
-  return value;
+  return { streams, map };
 }
 
 /** config/app.ga4PropertyIds (array) and/or ga4PropertyId (string, may be comma separated) → numeric ids. */

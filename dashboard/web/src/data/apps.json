@@ -71,12 +71,14 @@
     "id": "vinylwave",
     "name": "Vinyl Wave",
     "platform": [
+      "android",
       "ios"
     ],
     "iconColor": "#E0552E",
     "appStoreAppId": "6838185268",
     "iconUrl": "https://hnh-labs.com/assets/apps/vinylwave.png",
-    "appStoreBundleId": "com.hnh.vinylwave"
+    "appStoreBundleId": "com.hnh.vinylwave",
+    "playPackage": "com.hnh.vinylwave"
   },
   {
     "id": "liquidframe",
