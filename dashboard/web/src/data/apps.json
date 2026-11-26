@@ -65,7 +65,8 @@
     "admobAppIds": [
       "ca-app-pub-3172089365303130~5308340956"
     ],
-    "iconUrl": "https://hnh-labs.com/assets/apps/bannyeo.png"
+    "iconUrl": "https://hnh-labs.com/assets/apps/bannyeo.png",
+    "playPackage": "com.hnh.requestdenied"
   },
   {
     "id": "vinylwave",
@@ -89,5 +90,15 @@
     "iconColor": "#1C8FD6",
     "playPackage": "com.hnh.liquidframe",
     "iconUrl": "https://hnh-labs.com/assets/apps/liquidframe.png"
+  },
+  {
+    "id": "pockle",
+    "name": "Pockle",
+    "platform": [
+      "android"
+    ],
+    "iconColor": "#6B7AFF",
+    "playPackage": "com.hnh.pockle",
+    "iconUrl": "https://hnh-labs.com/assets/apps/pockle.png"
   }
 ]
