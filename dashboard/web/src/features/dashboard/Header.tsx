@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { hhmm, kstLongDate } from '../../lib/kst';
 import { requestSync } from '../../data/requestSync';
+import { navigate } from '../../app/router';
 import type { Period } from '../../data/types';
 import { ChevronIcon, LogoMark, LogoutIcon, RefreshIcon } from './Icons';
 import s from './Header.module.css';
@@ -12,31 +13,60 @@ const PERIODS: { id: Period; label: string }[] = [
   { id: 'month', label: '이번 달' },
 ];
 
+export type Screen = 'revenue' | 'analytics';
+
+const SCREENS: { id: Screen; path: string; label: string; title: string }[] = [
+  { id: 'revenue', path: '/', label: '수익', title: '수익 대시보드' },
+  { id: 'analytics', path: '/analytics', label: '사용자', title: '사용자 분석' },
+];
+
 interface Props {
+  screen: Screen;
   now: Date;
-  syncedAt: Date | null;
-  period: Period;
-  onPeriod: (p: Period) => void;
+  /** Revenue screen only: LIVE sync pill and period toggle. */
+  syncedAt?: Date | null;
+  period?: Period;
+  onPeriod?: (p: Period) => void;
   email: string;
   photoURL: string | null;
   onLogout: () => void;
 }
 
-export function Header({ now, syncedAt, period, onPeriod, email, photoURL, onLogout }: Props) {
+export function Header({ screen, now, syncedAt, period, onPeriod, email, photoURL, onLogout }: Props) {
+  const current = SCREENS.find((x) => x.id === screen)!;
   return (
     <header className={s.header}>
       <div className={s.brand}>
         <LogoMark size={36} />
         <div>
-          <h1 className={s.title}>수익 대시보드</h1>
+          <h1 className={s.title}>{current.title}</h1>
           <p className={s.date}>{kstLongDate(now)}</p>
         </div>
       </div>
 
-      <div className={s.controls}>
-        <LiveSync syncedAt={syncedAt} />
+      <nav className={`${s.toggle} ${s.nav}`} aria-label="화면 이동">
+        {SCREENS.map((x) => (
+          <a
+            key={x.id}
+            href={x.path}
+            className={s.toggleBtn}
+            aria-current={x.id === screen ? 'page' : undefined}
+            onClick={(e) => {
+              if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+              e.preventDefault();
+              if (x.id !== screen) navigate(x.path);
+            }}
+          >
+            {x.label}
+          </a>
+        ))}
+      </nav>
 
-        <div className={s.toggle} role="group" aria-label="기간 선택">
+      <div className={s.controls}>
+        {onPeriod && <LiveSync syncedAt={syncedAt ?? null} />}
+
+        {onPeriod && (
+        <div className={`${s.toggle} ${s.periods}`} role="group" aria-label="기간 선택">
           {PERIODS.map((p) => (
             <button
               key={p.id}
@@ -49,6 +79,7 @@ export function Header({ now, syncedAt, period, onPeriod, email, photoURL, onLog
             </button>
           ))}
         </div>
+        )}
 
         <div className={s.account}>
           {photoURL ? (

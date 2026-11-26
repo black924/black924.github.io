@@ -94,7 +94,16 @@
   color: var(--text-2);
 }
 
-.toggleBtn[aria-pressed='true'] {
+.nav { margin-right: auto; }
+
+.nav .toggleBtn {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.toggleBtn[aria-pressed='true'],
+.toggleBtn[aria-current='page'] {
   background: #1b2029;
   color: var(--text);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
@@ -198,6 +207,7 @@
     grid-template-columns: minmax(0, 1fr) auto auto;
     grid-template-areas:
       'brand account logout'
+      'nav nav nav'
       'toggle toggle toggle';
     gap: 8px;
   }
@@ -208,7 +218,9 @@
   .date { font-size: 11px; }
   .account { grid-area: account; min-height: 38px; padding: 0 3px; border: 0; background: transparent; }
   .iconBtn { grid-area: logout; width: 38px; height: 38px; }
-  .toggle { grid-area: toggle; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .periods { grid-area: toggle; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .nav { grid-area: nav; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0; }
+  .nav .toggleBtn { justify-content: center; }
   .toggleBtn { min-height: 36px; padding: 0 8px; }
 
   /* Positioned against the sticky header bar, so it follows the header's height. */

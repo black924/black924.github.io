@@ -189,6 +189,20 @@ Amounts: gross = **Item Price** (tax excluded; Charged Amount − Taxes Collecte
 dated by **Order Charged Timestamp** in KST, converted with that day's `fx` rate. Results: `sync/reconcile.googlePlay`
 (`reconciled` / `pending` dates). Rows with other statuses are skipped and logged.
 
+## Google Analytics 4 — user screen (`/analytics`)
+
+The Analytics screen reads the GA4 property that Firebase Analytics feeds. The property can be in a different
+Google account from this Firebase project.
+
+1. **GA4** (analytics.google.com, the account that owns the property) → Admin → Property access management →
+   **+ Add users** → `80162414599-compute@developer.gserviceaccount.com`, role **Viewer**.
+2. **This project**: enable **Google Analytics Data API** and **Google Analytics Admin API**
+   (`gcloud services enable analyticsdata.googleapis.com analyticsadmin.googleapis.com --project auto-posting-a970b`).
+3. Firebase console → Firestore → `config/app` → add string field `ga4PropertyId` (Admin → Property settings → Property ID).
+
+No secrets. The open page calls `requestAnalytics` once a minute; the function refreshes `realtime/now` (≥ 50 s apart)
+and `analytics/daily` (≥ 30 min apart). Apps are matched by the stream's package name / bundle id.
+
 ## Deploy
 
 ```bash

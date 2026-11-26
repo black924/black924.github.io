@@ -30,6 +30,7 @@ export function DashboardPage({ user }: { user: SessionUser }) {
       <div className={`${s.headerBar} ${scrolled ? s.scrolled : ''}`}>
         <div className={s.headerInner}>
           <Header
+        screen="revenue"
         now={data?.now ?? new Date()}
         syncedAt={data?.lastSyncAt ?? null}
         period={period}
@@ -55,7 +56,7 @@ export function DashboardPage({ user }: { user: SessionUser }) {
 }
 
 /** True once the page has scrolled, i.e. content is sliding under the fixed header. */
-function useScrolled(threshold = 4) {
+export function useScrolled(threshold = 4) {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > threshold);

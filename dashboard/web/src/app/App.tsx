@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { LoginPage } from '../features/auth/LoginPage';
 import { DashboardPage } from '../features/dashboard/DashboardPage';
+import { AnalyticsPage } from '../features/analytics/AnalyticsPage';
 import { AuthProvider, useAuth } from './auth';
 import { navigate, useLocation } from './router';
 
@@ -28,6 +29,7 @@ function AuthGuard() {
     return <LoginPage denied={state.denied || previewDenied} error={state.error} />;
   }
   if (onLogin) return null;
+  if (path === '/analytics') return <AnalyticsPage user={state.user} />;
   return <DashboardPage user={state.user} />;
 }
 

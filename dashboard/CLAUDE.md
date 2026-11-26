@@ -95,6 +95,14 @@
 - 원화 환산은 결제일(KST) 기준 가장 최근 `fx` 문서(최대 10일 전까지)를 쓰고, 없으면 즉시 받아 저장한다. 환산은 정수 연산(BigInt)으로 한다
 - 표시 기준은 설정값 `revenueBasis: "gross" | "net"`. 기본 `gross` = **세금 뺀 판매액(수수료 미차감)**
 
+### 3-5. Google Analytics 4 (사용자 화면)
+- Firebase Analytics가 쌓는 GA4 속성(`config/app.ga4PropertyId`, 다른 Google 계정에 있어도 됨)을 서버가 읽는다. 구현: `functions/src/analytics/`
+- 인증: Functions 런타임 서비스 계정을 GA4 속성의 **뷰어**로 추가, 스코프 `analytics.readonly`. 대시보드 프로젝트에서 Analytics Data API·Analytics Admin API 사용 설정. 새 Secret 없음
+- 실시간: Data API `runRealtimeReport`(지난 30분) — 전체(차원 없음, 중복 제거), `minutesAgo`, `streamId × countryId`, `countryId` → `realtime/now`
+- 일별: `runReport` 최근 60일 `date`(+`streamId`) × `activeUsers`(DAU)·`active28DayUsers`(MAU로 표시)·`newUsers` → `analytics/daily`. 날짜는 GA4 속성 시간대(`timeZone` 함께 저장)
+- 앱 매칭: Admin API `dataStreams.list`의 Android `packageName` / iOS `bundleId` → `apps.playPackage` / `apps.appStoreBundleId`. 매칭 안 된 스트림은 `ga_{streamId}`. 앱별 값은 Android·iOS 스트림의 합(전체 합계와 다를 수 있음)
+- 호출: 사용자 화면이 열려 있고 보이는 동안 1분마다 Callable `requestAnalytics`. 서버는 실시간 50초, 일별 30분 간격 이내면 건너뜀(스케줄 없음 — 아무도 안 볼 때 호출하지 않는다)
+
 ---
 
 ## 4. Firestore 데이터 모델
@@ -106,6 +114,7 @@ config/app
   revenueBasis: "gross" | "net"
   baseCurrency: "KRW"
   playReportBucket?: string            // Play 재무 리포트 버킷 (gs://pubsite_prod_rev_… 또는 id)
+  ga4PropertyId?: string               // Firebase Analytics가 쌓는 GA4 속성 ID (숫자 문자열)
   appleSmallBusiness?: boolean          // App Store Small Business Program (수수료 15%) — Sales 리포트 gross 계산용
 
 apps/{appId}
@@ -151,6 +160,15 @@ sync/{source}                       // admob | google_play | app_store | reconci
 
 fx/{YYYY-MM-DD}
   USD, JPY, ... (1 단위당 KRW)
+
+realtime/now                        // GA4 지난 30분
+  activeUsers, perMinute: number[30]  // [0] = 지금
+  apps: [{ appId, name, users, android, ios, countries: [{ name: ISO 국가 코드, users }] }]
+  countries: [{ name, users }], state: "ok"|"error", error, updatedAt
+
+analytics/daily                     // GA4 최근 60일
+  timeZone, total: [{ date, dau, mau, newUsers }], apps: { [appId]: 같은 배열 }, names: { [appId]: 스트림 이름 }
+  state, error, updatedAt
 ```
 
 - 보안 규칙: 읽기는 `request.auth.token.email in get(/config/app).allowedEmails` 이고 `email_verified == true`일 때만. **쓰기는 클라이언트 전부 금지** (Functions는 Admin SDK로 씀).
@@ -172,6 +190,7 @@ fx/{YYYY-MM-DD}
 | `appStoreWebhook` | HTTPS | ASN V2 서명 검증 → `transactions`, `daily`(estimated) |
 | `reconcileDaily` | 스케줄 매일 04:00 KST | App Store Sales 리포트(D-1~D-3) + Play Sales 리포트(D-10~D-1 중 리포트가 다 채운 날) 보정. 스토어별로 따로 실행 |
 | `syncFx` | 스케줄 매일 | 환율 저장 |
+| `requestAnalytics` | Callable (HTTPS) | 사용자 화면이 1분마다 호출. allowlist 확인 후 GA4 실시간·일별 → `realtime/now`, `analytics/daily` |
 
 공통: 실패 시 `sync/{source}`에 에러 기록, 재시도 가능하게 작성. 로그에 토큰·결제 원문을 남기지 않는다.
 
@@ -201,6 +220,12 @@ fx/{YYYY-MM-DD}
 - `status: "estimated"` 데이터는 숫자 옆에 작은 "추정" 표시 또는 흐린 처리
 - Firestore `onSnapshot`으로 구독해서 새 결제가 들어오면 새로고침 없이 반영
 - 반응형: 1280px 이상 2열, 그 아래는 카드가 한 줄씩 쌓임. 모바일 폭에서 가로 스크롤이 생기면 안 됨 (표 영역 제외)
+
+### 6-3. 사용자 분석 `/analytics`
+- 헤더의 `수익 | 사용자` 메뉴로 수익 대시보드(`/`)와 오간다. 기간 토글·LIVE 동기화는 수익 화면에만
+- 실시간 사용자 카드(지난 30분 합계 + 분당 막대 + 국가별, 국가명은 `Intl.DisplayNames` 한국어)
+- 앱 선택(`전체` + 앱) → KPI 3개(DAU·MAU(28일)·신규, 어제 기준, 7일 전 같은 요일 대비 증감) + DAU·MAU 꺾은선 그래프 2개(최근 30일, 호버 시 값·전일 대비·7일 전 대비)
+- 앱별 표: 실시간(Android·iOS 나눔), 실시간 국가 상위 3, DAU·MAU와 증감, DAU 14일 스파크라인
 
 ---
 

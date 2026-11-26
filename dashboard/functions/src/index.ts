@@ -1,5 +1,6 @@
 import { onCall, onRequest } from 'firebase-functions/v2/https';
 import { handleRequestSync } from './requestSync';
+import { handleRequestAnalytics } from './analytics/request';
 import { onMessagePublished } from 'firebase-functions/v2/pubsub';
 import { logger } from 'firebase-functions';
 import { FieldValue } from 'firebase-admin/firestore';
@@ -68,6 +69,9 @@ export const syncFx = onSchedule({ schedule: 'every day 07:00', timeZone: 'Asia/
 export const requestSync = onCall({ region: REGION, secrets: admobSecrets, timeoutSeconds: 120, maxInstances: 2 }, (req) =>
   handleRequestSync(req, { clientId: ADMOB_OAUTH_CLIENT_ID.value(), clientSecret: ADMOB_OAUTH_CLIENT_SECRET.value() }),
 );
+
+/** Analytics screen: the open page calls this about once a minute (GA4 realtime ≥ 50 s apart, daily ≥ 30 min). */
+export const requestAnalytics = onCall({ region: REGION, timeoutSeconds: 60, maxInstances: 2 }, (req) => handleRequestAnalytics(req));
 
 const ascSecrets = [ASC_KEY_ID, ASC_ISSUER_ID, ASC_PRIVATE_KEY, ASC_VENDOR_NUMBER];
 
