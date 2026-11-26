@@ -66,7 +66,14 @@ export function realtimeApps(res: ReportResponse, streams: Map<string, StreamApp
     .sort((x, y) => y.users - x.users);
 }
 
-export async function syncRealtime(propertyId: string, streams: Map<string, StreamApp>): Promise<void> {
+export interface RealtimeData {
+  activeUsers: number;
+  perMinute: number[];
+  apps: RealtimeApp[];
+  countries: [string, number][];
+}
+
+export async function fetchRealtime(propertyId: string, streams: Map<string, StreamApp>): Promise<RealtimeData> {
   const users = [{ name: 'activeUsers' }];
   const [all, minutes, byStreamCountry, byCountry] = await Promise.all([
     runRealtimeReport(propertyId, { metrics: users }),
@@ -74,13 +81,39 @@ export async function syncRealtime(propertyId: string, streams: Map<string, Stre
     runRealtimeReport(propertyId, { dimensions: [{ name: 'streamId' }, { name: 'countryId' }], metrics: users, limit: '1000' }),
     runRealtimeReport(propertyId, { dimensions: [{ name: 'countryId' }], metrics: users, limit: '50' }),
   ]);
-  await db.doc('realtime/now').set({
+  return {
     activeUsers: total(all),
     perMinute: perMinute(minutes),
     apps: realtimeApps(byStreamCountry, streams),
-    countries: topCounts((byCountry.rows ?? []).map((r) => [dimension(r) || '(not set)', metric(r)]), 10),
-    state: 'ok',
-    error: null,
-    updatedAt: Timestamp.now(),
-  });
+    countries: (byCountry.rows ?? []).map((r) => [dimension(r) || '(not set)', metric(r)]),
+  };
+}
+
+/** Several GA4 properties (one per Firebase project) into one view. Different properties never share users. */
+export function mergeRealtime(parts: RealtimeData[]) {
+  const countries = new Map<string, number>();
+  const apps = new Map<string, RealtimeApp & { all: Map<string, number> }>();
+  for (const p of parts) {
+    for (const [c, n] of p.countries) countries.set(c, (countries.get(c) ?? 0) + n);
+    for (const a of p.apps) {
+      const m = apps.get(a.appId) ?? { ...a, users: 0, android: 0, ios: 0, countries: [], all: new Map<string, number>() };
+      m.users += a.users;
+      m.android += a.android;
+      m.ios += a.ios;
+      for (const c of a.countries) m.all.set(c.name, (m.all.get(c.name) ?? 0) + c.users);
+      apps.set(a.appId, m);
+    }
+  }
+  return {
+    activeUsers: parts.reduce((x, p) => x + p.activeUsers, 0),
+    perMinute: Array.from({ length: MINUTES }, (_, i) => parts.reduce((x, p) => x + (p.perMinute[i] ?? 0), 0)),
+    apps: [...apps.values()]
+      .map(({ all, ...a }) => ({ ...a, countries: topCounts(all, 5) }))
+      .sort((x, y) => y.users - x.users),
+    countries: topCounts(countries, 10),
+  };
+}
+
+export async function writeRealtime(parts: RealtimeData[], error: string | null): Promise<void> {
+  await db.doc('realtime/now').set({ ...mergeRealtime(parts), state: error ? 'error' : 'ok', error, updatedAt: Timestamp.now() });
 }

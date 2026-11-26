@@ -96,7 +96,7 @@
 - 표시 기준은 설정값 `revenueBasis: "gross" | "net"`. 기본 `gross` = **세금 뺀 판매액(수수료 미차감)**
 
 ### 3-5. Google Analytics 4 (사용자 화면)
-- Firebase Analytics가 쌓는 GA4 속성(`config/app.ga4PropertyId`, 다른 Google 계정에 있어도 됨)을 서버가 읽는다. 구현: `functions/src/analytics/`
+- Firebase Analytics가 쌓는 GA4 속성들을 서버가 읽는다. Firebase 프로젝트마다 속성이 하나라 여러 개일 수 있다 → `config/app.ga4PropertyIds`(배열) 또는 `ga4PropertyId`(쉼표 구분). 다른 Google 계정에 있어도 됨. 속성별로 받아 합친다(속성끼리는 사용자가 겹치지 않음). 구현: `functions/src/analytics/`
 - 인증: Functions 런타임 서비스 계정을 GA4 속성의 **뷰어**로 추가, 스코프 `analytics.readonly`. 대시보드 프로젝트에서 Analytics Data API·Analytics Admin API 사용 설정. 새 Secret 없음
 - 실시간: Data API `runRealtimeReport`(지난 30분) — 전체(차원 없음, 중복 제거), `minutesAgo`, `streamId × countryId`, `countryId` → `realtime/now`
 - 일별: `runReport` 최근 60일 `date`(+`streamId`) × `activeUsers`(DAU)·`active28DayUsers`(MAU로 표시)·`newUsers` → `analytics/daily`. 날짜는 GA4 속성 시간대(`timeZone` 함께 저장)
@@ -114,7 +114,7 @@ config/app
   revenueBasis: "gross" | "net"
   baseCurrency: "KRW"
   playReportBucket?: string            // Play 재무 리포트 버킷 (gs://pubsite_prod_rev_… 또는 id)
-  ga4PropertyId?: string               // Firebase Analytics가 쌓는 GA4 속성 ID (숫자 문자열)
+  ga4PropertyIds?: string[]            // Firebase Analytics가 쌓는 GA4 속성 ID들 (숫자 문자열). ga4PropertyId(쉼표 구분)도 읽음
   appleSmallBusiness?: boolean          // App Store Small Business Program (수수료 15%) — Sales 리포트 gross 계산용
 
 apps/{appId}
@@ -168,6 +168,7 @@ realtime/now                        // GA4 지난 30분
 
 analytics/daily                     // GA4 최근 60일
   timeZone, total: [{ date, dau, mau, newUsers }], apps: { [appId]: 같은 배열 }, names: { [appId]: 스트림 이름 }
+  streams: [{ propertyId, id, name, platform, appKey, appId }]   // 앱 매칭 확인용
   state, error, updatedAt
 ```
 

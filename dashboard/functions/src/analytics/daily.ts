@@ -54,21 +54,58 @@ export function appSeries(res: ReportResponse, streams: Map<string, StreamApp>):
   return { series, names };
 }
 
-export async function syncAnalyticsDaily(propertyId: string, streams: Map<string, StreamApp>): Promise<void> {
+export interface DailyData {
+  timeZone: string | null;
+  total: DayPoint[];
+  series: Record<string, DayPoint[]>;
+  names: Record<string, string>;
+}
+
+export async function fetchDaily(propertyId: string, streams: Map<string, StreamApp>): Promise<DailyData> {
   const dateRanges = [{ startDate: `${DAYS - 1}daysAgo`, endDate: 'today' }];
   const [timeZone, all, perStream] = await Promise.all([
     propertyTimeZone(propertyId),
     runReport(propertyId, { dateRanges, dimensions: [{ name: 'date' }], metrics: METRICS, limit: '1000' }),
     runReport(propertyId, { dateRanges, dimensions: [{ name: 'date' }, { name: 'streamId' }], metrics: METRICS, limit: '10000' }),
   ]);
-  const { series, names } = appSeries(perStream, streams);
-  await db.doc('analytics/daily').set({
-    timeZone,
-    total: totalSeries(all),
-    apps: series,
+  return { timeZone, total: totalSeries(all), ...appSeries(perStream, streams) };
+}
+
+function addSeries(into: Map<string, DayPoint>, points: DayPoint[]) {
+  for (const p of points) {
+    const q = into.get(p.date) ?? point(p.date, { dau: 0, mau: 0, newUsers: 0 });
+    q.dau += p.dau;
+    q.mau += p.mau;
+    q.newUsers += p.newUsers;
+    into.set(p.date, q);
+  }
+}
+
+const sorted = (m: Map<string, DayPoint>) => [...m.values()].sort((a, b) => a.date.localeCompare(b.date));
+
+/** Several GA4 properties into one view: totals and same-app series are summed per date. */
+export function mergeDaily(parts: DailyData[]) {
+  const total = new Map<string, DayPoint>();
+  const apps = new Map<string, Map<string, DayPoint>>();
+  const names: Record<string, string> = {};
+  for (const p of parts) {
+    addSeries(total, p.total);
+    for (const [appId, points] of Object.entries(p.series)) {
+      const m = apps.get(appId) ?? new Map<string, DayPoint>();
+      addSeries(m, points);
+      apps.set(appId, m);
+    }
+    for (const [k, v] of Object.entries(p.names)) names[k] ??= v;
+  }
+  const zones = [...new Set(parts.map((p) => p.timeZone).filter(Boolean))];
+  return {
+    timeZone: zones.length === 1 ? zones[0] : zones.length ? zones.join(', ') : null,
+    total: sorted(total),
+    apps: Object.fromEntries([...apps].map(([k, m]) => [k, sorted(m)])),
     names,
-    state: 'ok',
-    error: null,
-    updatedAt: Timestamp.now(),
-  });
+  };
+}
+
+export async function writeDaily(parts: DailyData[], streams: object[], error: string | null): Promise<void> {
+  await db.doc('analytics/daily').set({ ...mergeDaily(parts), streams, state: error ? 'error' : 'ok', error, updatedAt: Timestamp.now() });
 }

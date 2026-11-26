@@ -92,3 +92,35 @@ describe('GA4 daily parsing', () => {
     expect(names.noiselog).toBe('Noise Android');
   });
 });
+
+import { propertyIds } from './ga4';
+import { mergeRealtime } from './realtime';
+import { mergeDaily } from './daily';
+
+describe('several GA4 properties', () => {
+  it('reads property ids from the array and the comma separated string', () => {
+    expect(propertyIds({ ga4PropertyIds: ['1', 'properties/2', 'x'], ga4PropertyId: '3, 1' })).toEqual(['1', '2', '3']);
+    expect(propertyIds({})).toEqual([]);
+  });
+
+  it('sums realtime parts', () => {
+    const a = { activeUsers: 2, perMinute: [1, 1], apps: [{ appId: 'x', name: 'X', users: 2, android: 2, ios: 0, countries: [{ name: 'KR', users: 2 }] }], countries: [['KR', 2]] as [string, number][] };
+    const b = { activeUsers: 3, perMinute: [0, 2], apps: [{ appId: 'y', name: 'Y', users: 3, android: 0, ios: 3, countries: [{ name: 'JP', users: 3 }] }], countries: [['KR', 1], ['JP', 2]] as [string, number][] };
+    const m = mergeRealtime([a, b]);
+    expect(m.activeUsers).toBe(5);
+    expect(m.perMinute.slice(0, 2)).toEqual([1, 3]);
+    expect(m.apps.map((x) => x.appId)).toEqual(['y', 'x']);
+    expect(m.countries).toEqual([{ name: 'KR', users: 3 }, { name: 'JP', users: 2 }]);
+  });
+
+  it('sums daily totals per date', () => {
+    const d = (date: string, dau: number) => ({ date, dau, mau: dau * 10, newUsers: 0 });
+    const m = mergeDaily([
+      { timeZone: 'Asia/Seoul', total: [d('2026-11-25', 5)], series: { x: [d('2026-11-25', 5)] }, names: {} },
+      { timeZone: 'Asia/Seoul', total: [d('2026-11-24', 1), d('2026-11-25', 2)], series: { y: [d('2026-11-25', 2)] }, names: { y: 'Y' } },
+    ]);
+    expect(m.total).toEqual([d('2026-11-24', 1), { date: '2026-11-25', dau: 7, mau: 70, newUsers: 0 }]);
+    expect(Object.keys(m.apps)).toEqual(['x', 'y']);
+    expect(m.timeZone).toBe('Asia/Seoul');
+  });
+});

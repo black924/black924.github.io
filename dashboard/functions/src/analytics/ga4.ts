@@ -109,18 +109,35 @@ export function streamAppMap(streams: Stream[], apps: { id: string; playPackage?
   return out;
 }
 
-let cache: { propertyId: string; at: number; map: Map<string, StreamApp> } | null = null;
+export interface PropertyStreams {
+  streams: Stream[];
+  map: Map<string, StreamApp>;
+}
 
-/** Streams change rarely: cached in the instance for an hour. */
-export async function streamApps(propertyId: string): Promise<Map<string, StreamApp>> {
-  if (cache && cache.propertyId === propertyId && Date.now() - cache.at < 3_600_000) return cache.map;
+const cache = new Map<string, { at: number; value: PropertyStreams }>();
+
+/** Streams change rarely: cached per property in the instance for an hour. */
+export async function streamApps(propertyId: string): Promise<PropertyStreams> {
+  const hit = cache.get(propertyId);
+  if (hit && Date.now() - hit.at < 3_600_000) return hit.value;
   const [streams, apps] = await Promise.all([listStreams(propertyId), db.collection('apps').get()]);
   const map = streamAppMap(
     streams,
     apps.docs.map((d) => ({ id: d.id, playPackage: d.get('playPackage'), appStoreBundleId: d.get('appStoreBundleId') })),
   );
-  cache = { propertyId, at: Date.now(), map };
-  return map;
+  const value = { streams, map };
+  cache.set(propertyId, { at: Date.now(), value });
+  return value;
+}
+
+/** config/app.ga4PropertyIds (array) and/or ga4PropertyId (string, may be comma separated) → numeric ids. */
+export function propertyIds(config: { ga4PropertyIds?: unknown; ga4PropertyId?: unknown }): string[] {
+  const raw: unknown[] = [
+    ...(Array.isArray(config.ga4PropertyIds) ? config.ga4PropertyIds : []),
+    ...(typeof config.ga4PropertyId === 'string' ? config.ga4PropertyId.split(',') : []),
+  ];
+  const ids = raw.filter((v): v is string => typeof v === 'string').map((v) => v.trim().replace(/^properties\//, ''));
+  return [...new Set(ids.filter((v) => /^\d+$/.test(v)))];
 }
 
 export const metric = (r: ReportRow, i = 0) => Number(r.metricValues?.[i]?.value ?? 0) || 0;

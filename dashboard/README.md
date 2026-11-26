@@ -198,7 +198,9 @@ Google account from this Firebase project.
    **+ Add users** → `80162414599-compute@developer.gserviceaccount.com`, role **Viewer**.
 2. **This project**: enable **Google Analytics Data API** and **Google Analytics Admin API**
    (`gcloud services enable analyticsdata.googleapis.com analyticsadmin.googleapis.com --project auto-posting-a970b`).
-3. Firebase console → Firestore → `config/app` → add string field `ga4PropertyId` (Admin → Property settings → Property ID).
+3. Firebase console → Firestore → `config/app` → array field `ga4PropertyIds` with each property id (Admin → Property
+   settings → Property ID). Each Firebase project has its own property, so add one per project and repeat step 1 for each.
+   A comma separated string field `ga4PropertyId` also works.
 
 No secrets. The open page calls `requestAnalytics` once a minute; the function refreshes `realtime/now` (≥ 50 s apart)
 and `analytics/daily` (≥ 30 min apart). Apps are matched by the stream's package name / bundle id.
