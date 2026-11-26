@@ -113,6 +113,12 @@ function Body({ realtime, daily, today }: { realtime: Realtime | null; daily: An
           </h2>
           <LineChart points={chartDays.map((p) => ({ date: p.date, value: p.mau }))} color="var(--paid)" label="MAU" />
         </section>
+        <section className="card" aria-labelledby="new-title">
+          <h2 id="new-title" className="card-title">
+            새 사용자 추이 <span className="card-sub">최근 {CHART_DAYS}일 · 일별 신규 사용자</span>
+          </h2>
+          <LineChart points={chartDays.map((p) => ({ date: p.date, value: p.newUsers }))} color="var(--inapp)" label="새 사용자" />
+        </section>
       </div>
 
       <AppUsersTable appIds={appIds} nameOf={nameOf} realtime={realtime} daily={daily} lastDay={lastDay} />
