@@ -89,7 +89,7 @@
         <ul>
             <li><strong>사용자 식별 및 계정 연동:</strong> Google 계정을 통한 로그인 및 회원 관리, 데이터 동기화</li>
             <li>소음 측정 및 분석 (데시벨 측정 및 시각화)</li>
-            <li>소음 측정 중 영상 함께 녹화 (사용자가 켠 경우에만 동작하는 선택 기능)</li>
+            <li>소음 측정 중 영상 녹화 (사용자가 켠 경우에만 동작하는 선택 기능)</li>
             <li>데이터 관리 (기록 저장 및 리스트 제공)</li>
             <li>서비스 개선 (오류 분석 및 맞춤형 광고 제공)</li>
             <li>광고 제거 인앱 구매 처리 및 구매 복원</li>
@@ -98,7 +98,7 @@
         <ul>
             <li><strong>계정 정보 (Google 로그인 시):</strong> 이메일 주소, 프로필 이름/사진, 고유 사용자 ID (UID)</li>
             <li>마이크 접근: 소음 측정을 위한 필수 권한 (데이터 외부 전송 없음)</li>
-            <li>카메라 접근 (선택): 설정 &gt; 실험실의 '영상 함께 녹화'를 켠 경우에만 요청하고 사용합니다. 측정하는 동안 카메라 영상을 녹화해 기기의 동영상 폴더(Movies/NoiseAnalyzer)에 저장합니다. 화면이 꺼지거나 다른 앱을 쓰는 동안에도 녹화가 이어지도록 포그라운드 서비스(상단 알림 표시)로 동작합니다. 영상은 외부 서버로 전송되지 않으며, 백업에서 '영상 포함'을 고른 경우에만 백업 파일(기기 또는 사용자 본인의 Google Drive)에 담깁니다. 녹화 범위에 다른 사람이 찍히지 않도록 유의해 주세요.</li>
+            <li>카메라 접근 (선택): 설정 &gt; 실험실의 '영상 녹화'를 켠 경우에만 요청하고 사용합니다. 측정하는 동안 카메라 영상을 녹화해 기기의 동영상 폴더(Movies/NoiseAnalyzer)에 저장합니다. 화면이 꺼지거나 다른 앱을 쓰는 동안에도 녹화가 이어지도록 포그라운드 서비스(상단 알림 표시)로 동작합니다. 영상은 외부 서버로 전송되지 않으며, 백업에서 '영상 포함'을 고른 경우에만 백업 파일(기기 또는 사용자 본인의 Google Drive)에 담깁니다. 녹화 범위에 다른 사람이 찍히지 않도록 유의해 주세요.</li>
             <li>저장공간 접근: 데이터 로컬 저장 및 엑셀 내보내기</li>
             <li>기기 및 광고 ID: 맞춤형 광고 및 크래시 분석용</li>
             <li>구매 정보: 광고 제거 상품의 구매 여부를 Google Play에서 확인해 기기에만 저장합니다. 카드 번호 등 결제 수단 정보는 앱이나 운영자가 받지 않습니다.</li>
@@ -117,7 +117,7 @@
             <li>구매 여부는 Google 계정에 연결되며, 앱을 다시 설치하거나 다른 기기에서도 '구매 복원'으로 확인할 수 있습니다. 환불된 구매는 광고 제거가 해제됩니다.</li>
         </ul>
         <h2>변경 이력</h2>
-<ul><li>2026-11-24: 카메라 권한 관련 내용 추가 (영상 함께 녹화 기능의 수집 목적, 권한, 저장 위치, 백업)</li><li>2026-11-12: 광고 제거 인앱 구매 관련 내용 추가 (수집 항목, 제3자 서비스, 인앱 구매 항목)</li><li>2026-11-05: 운영자 이름을 Haram &amp; Harang에서 HNH Labs로, 문의 이메일을 support@hnh-labs.com으로 변경</li><li>2026-05-21: 이전 버전</li></ul>
+<ul><li>2026-11-24: 카메라 권한 관련 내용 추가 (영상 녹화 기능의 수집 목적, 권한, 저장 위치, 백업)</li><li>2026-11-12: 광고 제거 인앱 구매 관련 내용 추가 (수집 항목, 제3자 서비스, 인앱 구매 항목)</li><li>2026-11-05: 운영자 이름을 Haram &amp; Harang에서 HNH Labs로, 문의 이메일을 support@hnh-labs.com으로 변경</li><li>2026-05-21: 이전 버전</li></ul>
         <div class="footer">문의: HNH Labs(support@hnh-labs.com)</div>
     </div>
 
@@ -139,7 +139,7 @@
         <ul>
             <li><strong>Account Information (Google Sign-In):</strong> Email address, profile name/picture, and unique User ID (UID).</li>
             <li>Microphone: Essential for measurement (Data is NOT sent to servers)</li>
-            <li>Camera (optional): Requested and used only when you turn on 'Record video too' in Settings &gt; Labs. While measuring, camera video is recorded and saved to your device's video folder (Movies/NoiseAnalyzer). It runs as a foreground service (with a notification) so recording continues while the screen is off or you use other apps. Videos are NOT sent to servers and are included in a backup file (on your device or your own Google Drive) only if you choose 'Include videos' when backing up. Please take care not to record other people.</li>
+            <li>Camera (optional): Requested and used only when you turn on 'Record video' in Settings &gt; Labs. While measuring, camera video is recorded and saved to your device's video folder (Movies/NoiseAnalyzer). It runs as a foreground service (with a notification) so recording continues while the screen is off or you use other apps. Videos are NOT sent to servers and are included in a backup file (on your device or your own Google Drive) only if you choose 'Include videos' when backing up. Please take care not to record other people.</li>
             <li>Storage: Local data storage and Excel export</li>
             <li>Device/Ad ID: For personalized ads and crash analysis</li>
             <li>Purchase information: Whether you have purchased the ad removal product is checked with Google Play and stored only on your device. Neither the App nor the operator receives your card number or other payment method details.</li>
@@ -180,7 +180,7 @@
         <ul>
             <li><strong>アカウント情報（Googleログイン時）：</strong> メールアドレス、プロフィール名・写真、固有ユーザーID（UID）</li>
             <li>マイクアクセス：騒音測定に必須（外部送信なし）</li>
-            <li>カメラアクセス（任意）：設定 &gt; ラボの「動画も録画」をオンにした場合のみ要求・使用します。測定中にカメラ映像を録画し、端末の動画フォルダ（Movies/NoiseAnalyzer）に保存します。画面がオフのときや他のアプリを使用中も録画が続くよう、フォアグラウンドサービス（通知を表示）として動作します。動画は外部サーバーに送信されず、バックアップ時に「動画を含める」を選んだ場合のみバックアップファイル（端末またはご自身のGoogleドライブ）に含まれます。録画範囲に他の人が映らないようご注意ください。</li>
+            <li>カメラアクセス（任意）：設定 &gt; ラボの「動画録画」をオンにした場合のみ要求・使用します。測定中にカメラ映像を録画し、端末の動画フォルダ（Movies/NoiseAnalyzer）に保存します。画面がオフのときや他のアプリを使用中も録画が続くよう、フォアグラウンドサービス（通知を表示）として動作します。動画は外部サーバーに送信されず、バックアップ時に「動画を含める」を選んだ場合のみバックアップファイル（端末またはご自身のGoogleドライブ）に含まれます。録画範囲に他の人が映らないようご注意ください。</li>
             <li>ストレージアクセス：データのローカル保存およびExcel書き出し</li>
             <li>端末および広告ID：パーソナライズ広告およびクラッシュ分析用</li>
             <li>購入情報：広告削除商品の購入有無をGoogle Playで確認し、端末内にのみ保存します。カード番号などの支払い方法の情報は、アプリおよび運営者は受け取りません。</li>
@@ -221,7 +221,7 @@
         <ul>
             <li><strong>Kontoinformationen (Google Sign-In):</strong> E-Mail-Adresse, Profilname/-bild und eindeutige Benutzer-ID (UID).</li>
             <li>Mikrofon: Erforderlich für die Messung (KEINE externe Übertragung)</li>
-            <li>Kamera (optional): Wird nur angefordert und verwendet, wenn Sie unter Einstellungen &gt; Labor „Auch Video aufnehmen“ einschalten. Während der Messung wird das Kamerabild aufgenommen und im Videoordner Ihres Geräts (Movies/NoiseAnalyzer) gespeichert. Damit die Aufnahme auch bei ausgeschaltetem Bildschirm oder in anderen Apps weiterläuft, arbeitet sie als Vordergrunddienst (mit Benachrichtigung). Videos werden NICHT an Server übertragen und nur dann in eine Sicherungsdatei (auf dem Gerät oder in Ihrem eigenen Google Drive) aufgenommen, wenn Sie bei der Sicherung „Videos einschließen“ wählen. Bitte achten Sie darauf, keine anderen Personen aufzunehmen.</li>
+            <li>Kamera (optional): Wird nur angefordert und verwendet, wenn Sie unter Einstellungen &gt; Labor „Video aufnehmen“ einschalten. Während der Messung wird das Kamerabild aufgenommen und im Videoordner Ihres Geräts (Movies/NoiseAnalyzer) gespeichert. Damit die Aufnahme auch bei ausgeschaltetem Bildschirm oder in anderen Apps weiterläuft, arbeitet sie als Vordergrunddienst (mit Benachrichtigung). Videos werden NICHT an Server übertragen und nur dann in eine Sicherungsdatei (auf dem Gerät oder in Ihrem eigenen Google Drive) aufgenommen, wenn Sie bei der Sicherung „Videos einschließen“ wählen. Bitte achten Sie darauf, keine anderen Personen aufzunehmen.</li>
             <li>Speicher: Lokale Datenspeicherung und Excel-Export</li>
             <li>Geräte-/Werbe-ID: Für personalisierte Werbung und Fehlerberichte</li>
             <li>Kaufinformationen: Ob Sie das Produkt zum Entfernen der Werbung gekauft haben, wird bei Google Play geprüft und nur auf Ihrem Gerät gespeichert. Weder die App noch der Betreiber erhalten Ihre Kartennummer oder andere Zahlungsdaten.</li>
@@ -262,7 +262,7 @@
         <ul>
             <li><strong>Informations sur le compte (Google Sign-In) :</strong> Adresse e-mail, nom/photo de profil et identifiant d'utilisateur unique (UID).</li>
             <li>Microphone : Essentiel pour la mesure (PAS de transmission externe)</li>
-            <li>Caméra (facultatif) : demandée et utilisée uniquement si vous activez « Enregistrer aussi la vidéo » dans Paramètres &gt; Laboratoire. Pendant la mesure, la vidéo de la caméra est enregistrée dans le dossier vidéo de votre appareil (Movies/NoiseAnalyzer). Elle fonctionne comme un service au premier plan (avec une notification) afin que l’enregistrement continue écran éteint ou dans d’autres applications. Les vidéos ne sont PAS envoyées à des serveurs et ne sont incluses dans un fichier de sauvegarde (sur l’appareil ou votre propre Google Drive) que si vous choisissez « Inclure les vidéos ». Veillez à ne pas filmer d’autres personnes.</li>
+            <li>Caméra (facultatif) : demandée et utilisée uniquement si vous activez « Enregistrer la vidéo » dans Paramètres &gt; Laboratoire. Pendant la mesure, la vidéo de la caméra est enregistrée dans le dossier vidéo de votre appareil (Movies/NoiseAnalyzer). Elle fonctionne comme un service au premier plan (avec une notification) afin que l’enregistrement continue écran éteint ou dans d’autres applications. Les vidéos ne sont PAS envoyées à des serveurs et ne sont incluses dans un fichier de sauvegarde (sur l’appareil ou votre propre Google Drive) que si vous choisissez « Inclure les vidéos ». Veillez à ne pas filmer d’autres personnes.</li>
             <li>Stockage : Stockage local des données et export Excel</li>
             <li>ID de l'appareil/Publicité : Pour les pubs personnalisées et l'analyse des plantages</li>
             <li>Informations d'achat : l'achat du produit de suppression des publicités est vérifié auprès de Google Play et enregistré uniquement sur votre appareil. Ni l'App ni l'exploitant ne reçoivent votre numéro de carte ou d'autres données de paiement.</li>
@@ -303,7 +303,7 @@
         <ul>
             <li><strong>Información de la cuenta (Google Sign-In):</strong> Dirección de correo electrónico, nombre/foto de perfil e ID de usuario único (UID).</li>
             <li>Micrófono: Esencial para la medición (SIN transmisión externa)</li>
-            <li>Cámara (opcional): solo se solicita y usa si activa «Grabar también vídeo» en Ajustes &gt; Laboratorio. Durante la medición se graba el vídeo de la cámara y se guarda en la carpeta de vídeos del dispositivo (Movies/NoiseAnalyzer). Funciona como un servicio en primer plano (con notificación) para que la grabación continúe con la pantalla apagada o mientras usa otras apps. Los vídeos NO se envían a servidores y solo se incluyen en un archivo de copia de seguridad (en el dispositivo o en su propio Google Drive) si elige «Incluir vídeos». Procure no grabar a otras personas.</li>
+            <li>Cámara (opcional): solo se solicita y usa si activa «Grabar vídeo» en Ajustes &gt; Laboratorio. Durante la medición se graba el vídeo de la cámara y se guarda en la carpeta de vídeos del dispositivo (Movies/NoiseAnalyzer). Funciona como un servicio en primer plano (con notificación) para que la grabación continúe con la pantalla apagada o mientras usa otras apps. Los vídeos NO se envían a servidores y solo se incluyen en un archivo de copia de seguridad (en el dispositivo o en su propio Google Drive) si elige «Incluir vídeos». Procure no grabar a otras personas.</li>
             <li>Almacenamiento: Guardado local de datos y exportación a Excel</li>
             <li>ID de dispositivo/publicidad: Para anuncios personalizados y análisis de fallos</li>
             <li>Información de compra: si ha comprado el producto para quitar anuncios se comprueba con Google Play y se guarda solo en su dispositivo. Ni la App ni el operador reciben el número de tarjeta ni otros datos del método de pago.</li>

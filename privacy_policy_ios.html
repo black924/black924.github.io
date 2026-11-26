@@ -72,7 +72,7 @@
 <!--
   iOS 전용 개인정보 처리방침. 공통 문서(privacy_policy.html)와 같은 테마를 쓰고, iOS 앱이 실제로 다루는 정보만 적었다.
   출시 전에 아래 항목을 실제 운영 정책과 대조해 확정할 것:
-  - 시행일(2026-11-12)
+  - 시행일(2026-11-26)
   - 서버 위치/국외 이전 문구(Firebase, Supabase 리전), 보유 기간
   - 개인정보 보호책임자(성명/연락처)를 따로 명시할지 여부
   - 커뮤니티/프로모션 코드/Google 로그인은 이 문서에 넣지 않았다. 해당 기능을 켜기 전에 내용을 추가해야 한다.
@@ -95,12 +95,13 @@
     <!-- ko -->
     <div id="section-ko" class="content-section active" lang="ko">
         <h1>개인정보 처리방침</h1>
-        <p><strong>시행일: 2026년 11월 12일</strong></p>
+        <p><strong>시행일: 2026년 11월 26일</strong></p>
         <p>'층소일지(자동 층간 소음 측정 기록기)'(이하 '앱')의 iPhone용 앱은 HNH Labs가 운영하며, 사용자의 개인정보를 소중하게 생각하고 관련 법령을 준수합니다. 이 방침은 iOS 앱이 어떤 정보를 어떤 목적으로 다루는지 설명합니다.</p>
         <h2>1. 기기에만 저장되는 정보</h2>
         <ul>
             <li>마이크로 측정한 소리, 녹음 파일, 측정 기록, 메모, 설정은 이 기기에만 저장되며 서버로 전송되지 않습니다.</li>
             <li>마이크는 사용자가 측정하는 동안에만 사용합니다. 기본값에서는 앱이 화면에 있는 동안에만 측정하며, 설정에서 "백그라운드 녹음"을 켜면 앱이 백그라운드에 있거나 화면이 잠겨 있어도 측정을 이어 갑니다. 이때 iOS가 마이크 사용 표시를 보여 줍니다.</li>
+            <li>카메라는 설정 > 실험실에서 "영상 녹화"를 켠 경우에만, 측정하는 동안 앱이 화면에 있을 때 사용합니다. 녹화한 영상(측정 게이지와 그래프 포함)은 이 기기의 앱 폴더에만 저장되며 서버로 전송되지 않습니다. 영상이 다른 사람의 모습이나 대화를 담지 않도록 주의해 주세요.</li>
             <li>녹음 파일은 앱 폴더에 저장되며 파일 앱에서 확인할 수 있습니다. 파일을 어디로 공유할지는 사용자가 결정합니다.</li>
             <li>광고 제거 상품의 구매 여부는 App Store(StoreKit)에서 확인해 이 기기에만 저장합니다.</li>
         </ul>
@@ -115,6 +116,8 @@
         <h2>3. 권한</h2>
         <ul>
             <li><strong>마이크</strong>: 소음 측정에 필수입니다.</li>
+            <li><strong>카메라</strong>(선택): "영상 녹화"를 켠 경우에만 측정 영상을 녹화하는 데 사용합니다.</li>
+            <li><strong>사진 추가</strong>(선택): 사용자가 "사진 앱에 영상 저장"을 고를 때 영상을 사진 앱에 저장하는 데만 사용합니다. 앱은 사진 보관함을 읽지 않습니다.</li>
             <li><strong>알림</strong>(선택): 백그라운드 녹음 중 측정 상태를 알려 주는 용도로만 사용합니다.</li>
             <li><strong>추적(ATT)</strong>(선택): 맞춤형 광고를 위해 요청하며, 허용하지 않아도 앱을 사용할 수 있습니다.</li>
         </ul>
@@ -150,19 +153,20 @@
         <h2>10. 방침의 변경</h2>
         <p>방침이 바뀌면 이 페이지와 시행일을 갱신합니다.</p>
         <h2>변경 이력</h2>
-<ul><li>2026-11-12: 광고 제거 인앱 구매 관련 내용 추가 (기기 저장 정보, 인앱 구매, 제3자 서비스)</li><li>2026-11-05: 운영자 이름을 Haram &amp; Harang에서 HNH Labs로, 문의 이메일을 support@hnh-labs.com으로 변경</li><li>2026-10-13: 이전 버전</li></ul>
+<ul><li>2026-11-26: 카메라·사진 추가 권한 관련 내용 추가 (선택 기능인 영상 녹화, 기기 저장 정보, 권한)</li><li>2026-11-12: 광고 제거 인앱 구매 관련 내용 추가 (기기 저장 정보, 인앱 구매, 제3자 서비스)</li><li>2026-11-05: 운영자 이름을 Haram &amp; Harang에서 HNH Labs로, 문의 이메일을 support@hnh-labs.com으로 변경</li><li>2026-10-13: 이전 버전</li></ul>
         <div class="footer">문의: HNH Labs (support@hnh-labs.com)</div>
     </div>
 
     <!-- en -->
     <div id="section-en" class="content-section" lang="en">
         <h1>Privacy Policy</h1>
-        <p><strong>Effective Date: November 12, 2026</strong></p>
+        <p><strong>Effective Date: November 26, 2026</strong></p>
         <p>The iPhone version of 'Floor Noise Log' (the "App") is operated by HNH Labs. We value your privacy and comply with applicable laws. This policy explains what information the iOS app handles and why.</p>
         <h2>1. Information that stays on your device</h2>
         <ul>
             <li>Sounds captured by the microphone, recordings, measurement history, notes and settings are stored only on your device and are not uploaded.</li>
             <li>The microphone is used only while you measure. By default, measurement happens only while the app is on screen. If you turn on "Background Recording" in Settings, the app can keep measuring while it is in the background or the screen is locked; iOS shows its microphone indicator while this happens.</li>
+            <li>The camera is used only if you turn on "Record video" in Settings > Labs, and only while you measure with the app on screen. Recorded videos (including the measurement gauge and graph) are stored only in the app's folder on this device and are not uploaded. Please take care not to record other people or their conversations.</li>
             <li>Recordings are kept in the app's folder, which you can see in the Files app. You decide where to share them.</li>
             <li>Whether you have purchased the ad removal product is checked with the App Store (StoreKit) and stored only on this device.</li>
         </ul>
@@ -177,6 +181,8 @@
         <h2>3. Permissions</h2>
         <ul>
             <li><strong>Microphone:</strong> required to measure noise.</li>
+            <li><strong>Camera</strong> (optional): used only to record measurement video when "Record video" is on.</li>
+            <li><strong>Add to Photos</strong> (optional): used only to save a video to Photos when you choose "Save video to Photos". The app does not read your photo library.</li>
             <li><strong>Notifications</strong> (optional): used only to show measurement status during background recording.</li>
             <li><strong>Tracking (ATT)</strong> (optional): requested for personalized ads; you can use the app without allowing it.</li>
         </ul>
@@ -212,19 +218,20 @@
         <h2>10. Changes to this policy</h2>
         <p>If this policy changes, we will update this page and the effective date.</p>
         <h2>Revision history</h2>
-<ul><li>2026-11-12: Added information on the in-app purchase to remove ads (on-device data, in-app purchases, third-party services)</li><li>2026-11-05: Operator name changed from Haram &amp; Harang to HNH Labs; contact email changed to support@hnh-labs.com</li><li>2026-10-13: Previous version</li></ul>
+<ul><li>2026-11-26: Added information on the camera and Add to Photos permissions (optional video recording, on-device data, permissions)</li><li>2026-11-12: Added information on the in-app purchase to remove ads (on-device data, in-app purchases, third-party services)</li><li>2026-11-05: Operator name changed from Haram &amp; Harang to HNH Labs; contact email changed to support@hnh-labs.com</li><li>2026-10-13: Previous version</li></ul>
         <div class="footer">Contact: HNH Labs (support@hnh-labs.com)</div>
     </div>
 
     <!-- ja -->
     <div id="section-ja" class="content-section" lang="ja">
         <h1>個人情報保護方針</h1>
-        <p><strong>施行日: 2026年11月12日</strong></p>
+        <p><strong>施行日: 2026年11月26日</strong></p>
         <p>「騒音日記」（以下「アプリ」）のiPhone版は HNH Labs が運営しており、ユーザーの個人情報を大切に考え、関連法令を遵守します。本方針は、iOS版アプリがどのような情報をどのような目的で扱うかを説明します。</p>
         <h2>1. 端末内にのみ保存される情報</h2>
         <ul>
             <li>マイクで取得した音、録音ファイル、測定履歴、メモ、設定は、この端末内にのみ保存され、アップロードされることはありません。</li>
             <li>マイクは、ユーザーが測定している間のみ使用します。初期設定では、アプリが画面に表示されている間のみ測定します。設定で「バックグラウンド録音」をオンにすると、アプリがバックグラウンドにあるときや画面がロックされているときも測定を続けます。その間、iOSがマイク使用中の表示を行います。</li>
+            <li>カメラは、設定 > ラボで「動画録画」をオンにした場合に限り、アプリが画面に表示された状態で測定している間のみ使用します。録画した動画（測定ゲージとグラフを含む）はこの端末のアプリフォルダにのみ保存され、サーバーには送信されません。他の人の姿や会話を録画しないようご注意ください。</li>
             <li>録音ファイルはアプリのフォルダに保存され、「ファイル」アプリで確認できます。共有先はユーザーが決定します。</li>
             <li>広告削除商品の購入有無はApp Store（StoreKit）で確認し、この端末内にのみ保存します。</li>
         </ul>
@@ -239,6 +246,8 @@
         <h2>3. 権限</h2>
         <ul>
             <li><strong>マイク</strong>：騒音測定に必須です。</li>
+            <li><strong>カメラ</strong>（任意）：「動画録画」がオンの場合に、測定動画の録画にのみ使用します。</li>
+            <li><strong>写真への追加</strong>（任意）：「写真に動画を保存」を選んだときに、動画を写真に保存するためにのみ使用します。アプリが写真ライブラリを読み取ることはありません。</li>
             <li><strong>通知</strong>（任意）：バックグラウンド録音中の測定状況を知らせるためにのみ使用します。</li>
             <li><strong>トラッキング（ATT）</strong>（任意）：パーソナライズ広告のために許可を求めます。許可しなくてもアプリを利用できます。</li>
         </ul>
@@ -274,19 +283,20 @@
         <h2>10. 本方針の変更</h2>
         <p>本方針を変更する場合は、このページと施行日を更新します。</p>
         <h2>改定履歴</h2>
-<ul><li>2026-11-12: 広告削除のアプリ内購入に関する内容を追加（端末内の情報、アプリ内購入、第三者サービス）</li><li>2026-11-05: 運営者名を Haram &amp; Harang から HNH Labs に、お問い合わせメールを support@hnh-labs.com に変更</li><li>2026-10-13: 旧版</li></ul>
+<ul><li>2026-11-26: カメラと写真への追加の権限に関する内容を追加（任意機能の動画録画、端末内の情報、権限）</li><li>2026-11-12: 広告削除のアプリ内購入に関する内容を追加（端末内の情報、アプリ内購入、第三者サービス）</li><li>2026-11-05: 運営者名を Haram &amp; Harang から HNH Labs に、お問い合わせメールを support@hnh-labs.com に変更</li><li>2026-10-13: 旧版</li></ul>
         <div class="footer">お問い合わせ: HNH Labs (support@hnh-labs.com)</div>
     </div>
 
     <!-- de -->
     <div id="section-de" class="content-section" lang="de">
         <h1>Datenschutzerklärung</h1>
-        <p><strong>In Kraft seit: 12. November 2026</strong></p>
+        <p><strong>In Kraft seit: 26. November 2026</strong></p>
         <p>Die iPhone-Version von „Lärmprotokoll“ (die „App“) wird von HNH Labs betrieben. Wir schätzen Ihre Privatsphäre und halten uns an die geltenden Gesetze. Diese Erklärung beschreibt, welche Informationen die iOS-App verarbeitet und wozu.</p>
         <h2>1. Daten, die auf Ihrem Gerät bleiben</h2>
         <ul>
             <li>Vom Mikrofon erfasste Geräusche, Aufnahmen, Messverlauf, Notizen und Einstellungen werden nur auf Ihrem Gerät gespeichert und nicht hochgeladen.</li>
             <li>Das Mikrofon wird nur verwendet, während Sie messen. Standardmäßig wird nur gemessen, solange die App auf dem Bildschirm ist. Wenn Sie in den Einstellungen „Hintergrundaufnahme“ aktivieren, kann die App weiter messen, während sie im Hintergrund ist oder der Bildschirm gesperrt ist; iOS zeigt dabei seine Mikrofonanzeige.</li>
+            <li>Die Kamera wird nur verwendet, wenn Sie unter Einstellungen > Labor „Video aufnehmen“ aktivieren, und nur während einer Messung, solange die App auf dem Bildschirm ist. Aufgenommene Videos (einschließlich Messanzeige und Diagramm) werden nur im App-Ordner auf diesem Gerät gespeichert und nicht hochgeladen. Bitte achten Sie darauf, keine anderen Personen oder deren Gespräche aufzunehmen.</li>
             <li>Aufnahmen werden im Ordner der App gespeichert, den Sie in der Dateien-App sehen können. Sie entscheiden, wohin Sie sie teilen.</li>
             <li>Ob Sie das Produkt zum Entfernen der Werbung gekauft haben, wird beim App Store (StoreKit) geprüft und nur auf diesem Gerät gespeichert.</li>
         </ul>
@@ -301,6 +311,8 @@
         <h2>3. Berechtigungen</h2>
         <ul>
             <li><strong>Mikrofon:</strong> erforderlich für die Lärmmessung.</li>
+            <li><strong>Kamera</strong> (optional): wird nur verwendet, um Messvideos aufzunehmen, wenn „Video aufnehmen“ aktiviert ist.</li>
+            <li><strong>Zu Fotos hinzufügen</strong> (optional): wird nur verwendet, um ein Video in Fotos zu sichern, wenn Sie „Video in Fotos sichern“ wählen. Die App liest Ihre Fotomediathek nicht.</li>
             <li><strong>Mitteilungen</strong> (optional): nur, um den Messstatus bei Hintergrundaufnahme anzuzeigen.</li>
             <li><strong>Tracking (ATT)</strong> (optional): für personalisierte Werbung angefragt; Sie können die App auch ohne Erlaubnis nutzen.</li>
         </ul>
@@ -336,19 +348,20 @@
         <h2>10. Änderungen</h2>
         <p>Wenn sich diese Erklärung ändert, aktualisieren wir diese Seite und das Datum des Inkrafttretens.</p>
         <h2>Änderungsverlauf</h2>
-<ul><li>2026-11-12: Angaben zum In-App-Kauf zum Entfernen der Werbung ergänzt (Daten auf dem Gerät, In-App-Käufe, Drittanbieter-Dienste)</li><li>2026-11-05: Name des Betreibers von Haram &amp; Harang in HNH Labs geändert; Kontakt-E-Mail in support@hnh-labs.com geändert</li><li>2026-10-13: Vorherige Fassung</li></ul>
+<ul><li>2026-11-26: Angaben zu den Berechtigungen Kamera und Zu Fotos hinzufügen ergänzt (optionale Videoaufnahme, Daten auf dem Gerät, Berechtigungen)</li><li>2026-11-12: Angaben zum In-App-Kauf zum Entfernen der Werbung ergänzt (Daten auf dem Gerät, In-App-Käufe, Drittanbieter-Dienste)</li><li>2026-11-05: Name des Betreibers von Haram &amp; Harang in HNH Labs geändert; Kontakt-E-Mail in support@hnh-labs.com geändert</li><li>2026-10-13: Vorherige Fassung</li></ul>
         <div class="footer">Kontakt: HNH Labs (support@hnh-labs.com)</div>
     </div>
 
     <!-- fr -->
     <div id="section-fr" class="content-section" lang="fr">
         <h1>Politique de Confidentialité</h1>
-        <p><strong>Date d'effet : 12 novembre 2026</strong></p>
+        <p><strong>Date d'effet : 26 novembre 2026</strong></p>
         <p>La version iPhone de « Journal du Bruit » (l'« App ») est exploitée par HNH Labs. Nous respectons votre vie privée et les lois applicables. Cette politique explique quelles informations l'app iOS traite et pourquoi.</p>
         <h2>1. Données qui restent sur votre appareil</h2>
         <ul>
             <li>Les sons captés par le micro, les enregistrements, l'historique des mesures, les notes et les réglages sont stockés uniquement sur votre appareil et ne sont pas envoyés.</li>
             <li>Le micro n'est utilisé que pendant que vous mesurez. Par défaut, la mesure n'a lieu que lorsque l'app est à l'écran. Si vous activez « Enregistrement en arrière-plan » dans les Réglages, l'app peut continuer à mesurer en arrière-plan ou écran verrouillé ; iOS affiche alors son indicateur d'utilisation du micro.</li>
+            <li>La caméra n’est utilisée que si vous activez « Enregistrer la vidéo » dans Réglages > Laboratoire, et uniquement pendant une mesure lorsque l’app est à l’écran. Les vidéos enregistrées (avec la jauge et le graphique de mesure) sont stockées uniquement dans le dossier de l’app sur cet appareil et ne sont pas envoyées. Veillez à ne pas filmer d’autres personnes ni leurs conversations.</li>
             <li>Les enregistrements sont conservés dans le dossier de l'app, visible dans l'app Fichiers. Vous décidez où les partager.</li>
             <li>L'achat du produit de suppression des publicités est vérifié auprès de l'App Store (StoreKit) et enregistré uniquement sur cet appareil.</li>
         </ul>
@@ -363,6 +376,8 @@
         <h2>3. Autorisations</h2>
         <ul>
             <li><strong>Micro :</strong> nécessaire pour mesurer le bruit.</li>
+            <li><strong>Caméra</strong> (facultatif) : utilisée uniquement pour enregistrer la vidéo de mesure lorsque « Enregistrer la vidéo » est activé.</li>
+            <li><strong>Ajout à Photos</strong> (facultatif) : utilisé uniquement pour enregistrer une vidéo dans Photos lorsque vous choisissez « Enregistrer la vidéo dans Photos ». L’app ne lit pas votre photothèque.</li>
             <li><strong>Notifications</strong> (facultatif) : utilisées uniquement pour afficher l'état de la mesure pendant l'enregistrement en arrière-plan.</li>
             <li><strong>Suivi (ATT)</strong> (facultatif) : demandé pour les publicités personnalisées ; vous pouvez utiliser l'app sans l'autoriser.</li>
         </ul>
@@ -398,19 +413,20 @@
         <h2>10. Modifications</h2>
         <p>Si cette politique change, nous mettrons à jour cette page et la date d'effet.</p>
         <h2>Historique des modifications</h2>
-<ul><li>2026-11-12: Ajout d’informations sur l’achat intégré pour supprimer les publicités (données sur l’appareil, achats intégrés, services tiers)</li><li>2026-11-05: Nom de l’exploitant modifié de Haram &amp; Harang en HNH Labs ; e-mail de contact remplacé par support@hnh-labs.com</li><li>2026-10-13: Version précédente</li></ul>
+<ul><li>2026-11-26 : Ajout d’informations sur les autorisations Caméra et Ajout à Photos (enregistrement vidéo facultatif, données sur l’appareil, autorisations)</li><li>2026-11-12: Ajout d’informations sur l’achat intégré pour supprimer les publicités (données sur l’appareil, achats intégrés, services tiers)</li><li>2026-11-05: Nom de l’exploitant modifié de Haram &amp; Harang en HNH Labs ; e-mail de contact remplacé par support@hnh-labs.com</li><li>2026-10-13: Version précédente</li></ul>
         <div class="footer">Contact : HNH Labs (support@hnh-labs.com)</div>
     </div>
 
     <!-- es -->
     <div id="section-es" class="content-section" lang="es">
         <h1>Política de Privacidad</h1>
-        <p><strong>Fecha de vigencia: 12 de noviembre de 2026</strong></p>
+        <p><strong>Fecha de vigencia: 26 de noviembre de 2026</strong></p>
         <p>La versión para iPhone de «Registro de Ruidos» (la «App») está operada por HNH Labs. Valoramos su privacidad y cumplimos las leyes aplicables. Esta política explica qué información trata la app de iOS y con qué fin.</p>
         <h2>1. Datos que permanecen en su dispositivo</h2>
         <ul>
             <li>Los sonidos captados por el micrófono, las grabaciones, el historial de mediciones, las notas y los ajustes se almacenan solo en su dispositivo y no se suben.</li>
             <li>El micrófono solo se usa mientras usted mide. De forma predeterminada, la medición solo ocurre mientras la app está en pantalla. Si activa «Grabación en segundo plano» en Ajustes, la app puede seguir midiendo en segundo plano o con la pantalla bloqueada; iOS muestra su indicador de uso del micrófono.</li>
+            <li>La cámara solo se usa si activas «Grabar vídeo» en Ajustes > Laboratorio, y solo mientras mides con la app en pantalla. Los vídeos grabados (con el medidor y el gráfico de medición) se guardan solo en la carpeta de la app en este dispositivo y no se suben. Ten cuidado de no grabar a otras personas ni sus conversaciones.</li>
             <li>Las grabaciones se guardan en la carpeta de la app, que puede ver en la app Archivos. Usted decide dónde compartirlas.</li>
             <li>Si ha comprado el producto para quitar anuncios se comprueba con App Store (StoreKit) y se guarda solo en este dispositivo.</li>
         </ul>
@@ -425,6 +441,8 @@
         <h2>3. Permisos</h2>
         <ul>
             <li><strong>Micrófono:</strong> necesario para medir el ruido.</li>
+            <li><strong>Cámara</strong> (opcional): se usa solo para grabar el vídeo de la medición cuando «Grabar vídeo» está activado.</li>
+            <li><strong>Añadir a Fotos</strong> (opcional): se usa solo para guardar un vídeo en Fotos cuando eliges «Guardar vídeo en Fotos». La app no lee tu fototeca.</li>
             <li><strong>Notificaciones</strong> (opcional): se usan solo para mostrar el estado de la medición durante la grabación en segundo plano.</li>
             <li><strong>Seguimiento (ATT)</strong> (opcional): se solicita para anuncios personalizados; puede usar la app sin permitirlo.</li>
         </ul>
@@ -460,19 +478,20 @@
         <h2>10. Cambios en esta política</h2>
         <p>Si esta política cambia, actualizaremos esta página y la fecha de vigencia.</p>
         <h2>Historial de cambios</h2>
-<ul><li>2026-11-12: Se añadió información sobre la compra integrada para quitar anuncios (datos en el dispositivo, compras integradas, servicios de terceros)</li><li>2026-11-05: Nombre del operador cambiado de Haram &amp; Harang a HNH Labs; correo de contacto cambiado a support@hnh-labs.com</li><li>2026-10-13: Versión anterior</li></ul>
+<ul><li>2026-11-26: Se añadió información sobre los permisos de Cámara y Añadir a Fotos (grabación de vídeo opcional, datos en el dispositivo, permisos)</li><li>2026-11-12: Se añadió información sobre la compra integrada para quitar anuncios (datos en el dispositivo, compras integradas, servicios de terceros)</li><li>2026-11-05: Nombre del operador cambiado de Haram &amp; Harang a HNH Labs; correo de contacto cambiado a support@hnh-labs.com</li><li>2026-10-13: Versión anterior</li></ul>
         <div class="footer">Contacto: HNH Labs (support@hnh-labs.com)</div>
     </div>
 
     <!-- pt -->
     <div id="section-pt" class="content-section" lang="pt">
         <h1>Política de Privacidade</h1>
-        <p><strong>Data de vigência: 12 de novembro de 2026</strong></p>
+        <p><strong>Data de vigência: 26 de novembro de 2026</strong></p>
         <p>A versão para iPhone do «Diário de Ruído» (o «App») é operada por HNH Labs. Valorizamos a sua privacidade e cumprimos as leis aplicáveis. Esta política explica quais informações o app para iOS trata e por quê.</p>
         <h2>1. Dados que ficam no seu dispositivo</h2>
         <ul>
             <li>Os sons captados pelo microfone, as gravações, o histórico de medições, as notas e as configurações ficam armazenados somente no seu dispositivo e não são enviados.</li>
             <li>O microfone só é usado enquanto você mede. Por padrão, a medição acontece somente enquanto o app está na tela. Se você ativar «Gravação em segundo plano» em Ajustes, o app pode continuar medindo em segundo plano ou com a tela bloqueada; o iOS mostra o indicador de uso do microfone.</li>
+            <li>A câmera só é usada se você ativar "Gravar vídeo" em Ajustes > Laboratório, e apenas enquanto mede com o app na tela. Os vídeos gravados (com o medidor e o gráfico da medição) ficam salvos apenas na pasta do app neste dispositivo e não são enviados. Tome cuidado para não gravar outras pessoas ou suas conversas.</li>
             <li>As gravações ficam na pasta do app, que você pode ver no app Arquivos. Você decide para onde compartilhá-las.</li>
             <li>A compra do produto para remover anúncios é verificada na App Store (StoreKit) e armazenada apenas neste dispositivo.</li>
         </ul>
@@ -487,6 +506,8 @@
         <h2>3. Permissões</h2>
         <ul>
             <li><strong>Microfone:</strong> necessário para medir o ruído.</li>
+            <li><strong>Câmera</strong> (opcional): usada apenas para gravar o vídeo da medição quando "Gravar vídeo" está ativado.</li>
+            <li><strong>Adicionar a Fotos</strong> (opcional): usado apenas para salvar um vídeo em Fotos quando você escolhe "Salvar vídeo em Fotos". O app não lê sua fototeca.</li>
             <li><strong>Notificações</strong> (opcional): usadas somente para mostrar o status da medição durante a gravação em segundo plano.</li>
             <li><strong>Rastreamento (ATT)</strong> (opcional): solicitado para anúncios personalizados; você pode usar o app sem permitir.</li>
         </ul>
@@ -522,19 +543,20 @@
         <h2>10. Alterações nesta política</h2>
         <p>Se esta política mudar, atualizaremos esta página e a data de vigência.</p>
         <h2>Histórico de alterações</h2>
-<ul><li>2026-11-12: Adicionadas informações sobre a compra no app para remover anúncios (dados no dispositivo, compras no app, serviços de terceiros)</li><li>2026-11-05: Nome do operador alterado de Haram &amp; Harang para HNH Labs; e-mail de contato alterado para support@hnh-labs.com</li><li>2026-10-13: Versão anterior</li></ul>
+<ul><li>2026-11-26: Adicionadas informações sobre as permissões de Câmera e Adicionar a Fotos (gravação de vídeo opcional, dados no dispositivo, permissões)</li><li>2026-11-12: Adicionadas informações sobre a compra no app para remover anúncios (dados no dispositivo, compras no app, serviços de terceiros)</li><li>2026-11-05: Nome do operador alterado de Haram &amp; Harang para HNH Labs; e-mail de contato alterado para support@hnh-labs.com</li><li>2026-10-13: Versão anterior</li></ul>
         <div class="footer">Contato: HNH Labs (support@hnh-labs.com)</div>
     </div>
 
     <!-- it -->
     <div id="section-it" class="content-section" lang="it">
         <h1>Informativa sulla Privacy</h1>
-        <p><strong>Data di entrata in vigore: 12 novembre 2026</strong></p>
+        <p><strong>Data di entrata in vigore: 26 novembre 2026</strong></p>
         <p>La versione per iPhone di «Diario dei Rumori» (l'«App») è gestita da HNH Labs. Rispettiamo la tua privacy e le leggi applicabili. Questa informativa spiega quali informazioni tratta l'app per iOS e perché.</p>
         <h2>1. Dati che restano sul tuo dispositivo</h2>
         <ul>
             <li>I suoni acquisiti dal microfono, le registrazioni, la cronologia delle misurazioni, le note e le impostazioni sono memorizzati solo sul tuo dispositivo e non vengono caricati.</li>
             <li>Il microfono viene usato solo mentre misuri. Per impostazione predefinita, la misurazione avviene solo mentre l'app è sullo schermo. Se attivi «Registrazione in background» nelle Impostazioni, l'app può continuare a misurare in background o con lo schermo bloccato; iOS mostra il proprio indicatore di uso del microfono.</li>
+            <li>La fotocamera viene usata solo se attivi "Registra video" in Impostazioni > Laboratorio, e solo durante una misurazione con l'app sullo schermo. I video registrati (con l'indicatore e il grafico della misurazione) sono salvati solo nella cartella dell'app su questo dispositivo e non vengono caricati. Fai attenzione a non riprendere altre persone o le loro conversazioni.</li>
             <li>Le registrazioni sono conservate nella cartella dell'app, visibile nell'app File. Sei tu a decidere dove condividerle.</li>
             <li>L'acquisto del prodotto per rimuovere la pubblicità viene verificato tramite l'App Store (StoreKit) e salvato solo su questo dispositivo.</li>
         </ul>
@@ -549,6 +571,8 @@
         <h2>3. Autorizzazioni</h2>
         <ul>
             <li><strong>Microfono:</strong> necessario per misurare il rumore.</li>
+            <li><strong>Fotocamera</strong> (facoltativa): usata solo per registrare il video della misurazione quando "Registra video" è attivo.</li>
+            <li><strong>Aggiunta a Foto</strong> (facoltativa): usata solo per salvare un video in Foto quando scegli "Salva video in Foto". L'app non legge la tua libreria foto.</li>
             <li><strong>Notifiche</strong> (facoltative): usate solo per mostrare lo stato della misurazione durante la registrazione in background.</li>
             <li><strong>Tracciamento (ATT)</strong> (facoltativo): richiesto per gli annunci personalizzati; puoi usare l'app senza consentirlo.</li>
         </ul>
@@ -584,19 +608,20 @@
         <h2>10. Modifiche</h2>
         <p>Se questa informativa cambia, aggiorneremo questa pagina e la data di entrata in vigore.</p>
         <h2>Cronologia delle modifiche</h2>
-<ul><li>2026-11-12: Aggiunte informazioni sull'acquisto in-app per rimuovere la pubblicità (dati sul dispositivo, acquisti in-app, servizi di terze parti)</li><li>2026-11-05: Nome del gestore cambiato da Haram &amp; Harang a HNH Labs; e-mail di contatto cambiata in support@hnh-labs.com</li><li>2026-10-13: Versione precedente</li></ul>
+<ul><li>2026-11-26: Aggiunte informazioni sui permessi Fotocamera e Aggiunta a Foto (registrazione video facoltativa, dati sul dispositivo, permessi)</li><li>2026-11-12: Aggiunte informazioni sull'acquisto in-app per rimuovere la pubblicità (dati sul dispositivo, acquisti in-app, servizi di terze parti)</li><li>2026-11-05: Nome del gestore cambiato da Haram &amp; Harang a HNH Labs; e-mail di contatto cambiata in support@hnh-labs.com</li><li>2026-10-13: Versione precedente</li></ul>
         <div class="footer">Contatti: HNH Labs (support@hnh-labs.com)</div>
     </div>
 
     <!-- zh -->
     <div id="section-zh" class="content-section" lang="zh-Hans">
         <h1>隐私政策</h1>
-        <p><strong>生效日期：2026年11月12日</strong></p>
+        <p><strong>生效日期：2026年11月26日</strong></p>
         <p>“楼层噪音日志”（以下简称“应用”）iPhone 版由 HNH Labs 运营。我们重视您的隐私并遵守相关法律。本政策说明 iOS 应用处理哪些信息以及用途。</p>
         <h2>1. 仅保存在您设备上的信息</h2>
         <ul>
             <li>通过麦克风采集的声音、录音文件、测量记录、备注和设置仅保存在您的设备上，不会被上传。</li>
             <li>麦克风仅在您测量期间使用。默认情况下，仅在应用显示在屏幕上时进行测量。如果您在设置中开启“后台录音”，应用在后台或屏幕锁定时也可以继续测量；此时 iOS 会显示麦克风使用指示。</li>
+            <li>仅当你在“设置 > 实验室”中开启“录制视频”时，才会在应用显示于屏幕上进行测量期间使用摄像头。录制的视频（包含测量仪表和图表）仅保存在此设备的应用文件夹中，不会上传。请注意不要拍摄他人或其对话。</li>
             <li>录音文件保存在应用的文件夹中，您可以在“文件”应用中查看。分享到哪里由您决定。</li>
             <li>是否已购买移除广告商品，通过 App Store（StoreKit）确认，并仅保存在本设备上。</li>
         </ul>
@@ -611,6 +636,8 @@
         <h2>3. 权限</h2>
         <ul>
             <li><strong>麦克风：</strong>测量噪音所必需。</li>
+            <li><strong>摄像头</strong>（可选）：仅在开启“录制视频”时用于录制测量视频。</li>
+            <li><strong>添加到照片</strong>（可选）：仅在你选择“将视频存储到照片”时用于将视频存储到照片。应用不会读取你的照片图库。</li>
             <li><strong>通知</strong>（可选）：仅用于在后台录音期间显示测量状态。</li>
             <li><strong>跟踪（ATT）</strong>（可选）：为个性化广告而请求；不允许也可以使用应用。</li>
         </ul>
@@ -646,19 +673,20 @@
         <h2>10. 政策变更</h2>
         <p>如本政策发生变更，我们会更新本页面和生效日期。</p>
         <h2>修订记录</h2>
-<ul><li>2026-11-12: 新增移除广告应用内购买的相关内容（设备上的信息、应用内购买、第三方服务）</li><li>2026-11-05: 运营者名称由 Haram &amp; Harang 变更为 HNH Labs，联系邮箱变更为 support@hnh-labs.com</li><li>2026-10-13: 旧版</li></ul>
+<ul><li>2026-11-26: 新增摄像头和添加到照片权限的相关内容（可选的视频录制、设备上的信息、权限）</li><li>2026-11-12: 新增移除广告应用内购买的相关内容（设备上的信息、应用内购买、第三方服务）</li><li>2026-11-05: 运营者名称由 Haram &amp; Harang 变更为 HNH Labs，联系邮箱变更为 support@hnh-labs.com</li><li>2026-10-13: 旧版</li></ul>
         <div class="footer">联系方式：HNH Labs (support@hnh-labs.com)</div>
     </div>
 
     <!-- hi -->
     <div id="section-hi" class="content-section" lang="hi">
         <h1>गोपनीयता नीति</h1>
-        <p><strong>प्रभावी तिथि: 12 नवंबर 2026</strong></p>
+        <p><strong>प्रभावी तिथि: 26 नवंबर 2026</strong></p>
         <p>“फ्लोर शोर लॉग” (“ऐप”) का iPhone संस्करण HNH Labs द्वारा संचालित है। हम आपकी गोपनीयता को महत्व देते हैं और लागू कानूनों का पालन करते हैं। यह नीति बताती है कि iOS ऐप कौन-सी जानकारी किस उद्देश्य से संभालता है।</p>
         <h2>1. जो जानकारी आपके डिवाइस पर ही रहती है</h2>
         <ul>
             <li>माइक्रोफ़ोन से ली गई आवाज़ें, रिकॉर्डिंग, माप का इतिहास, नोट्स और सेटिंग्स केवल आपके डिवाइस पर सहेजी जाती हैं और अपलोड नहीं की जातीं।</li>
             <li>माइक्रोफ़ोन का उपयोग केवल तभी होता है जब आप माप रहे हों। डिफ़ॉल्ट रूप से माप केवल तब होता है जब ऐप स्क्रीन पर हो। यदि आप सेटिंग्स में “बैकग्राउंड रिकॉर्डिंग” चालू करते हैं, तो ऐप बैकग्राउंड में या स्क्रीन लॉक होने पर भी माप जारी रख सकता है; तब iOS अपना माइक्रोफ़ोन संकेतक दिखाता है।</li>
+            <li>कैमरे का उपयोग केवल तब होता है जब आप सेटिंग्स > प्रयोगशाला में "वीडियो रिकॉर्ड करें" चालू करते हैं, और केवल तब जब आप ऐप को स्क्रीन पर रखकर माप रहे हों। रिकॉर्ड किए गए वीडियो (माप गेज और ग्राफ़ सहित) केवल इस डिवाइस पर ऐप के फ़ोल्डर में सहेजे जाते हैं और अपलोड नहीं किए जाते। कृपया ध्यान रखें कि दूसरे लोग या उनकी बातचीत रिकॉर्ड न हो।</li>
             <li>रिकॉर्डिंग ऐप के फ़ोल्डर में रखी जाती हैं, जिन्हें आप “फ़ाइलें” ऐप में देख सकते हैं। उन्हें कहाँ साझा करना है, यह आप तय करते हैं।</li>
             <li>विज्ञापन हटाने वाला उत्पाद खरीदा गया है या नहीं, यह App Store (StoreKit) से जाँचा जाता है और केवल इसी डिवाइस पर सहेजा जाता है।</li>
         </ul>
@@ -673,6 +701,8 @@
         <h2>3. अनुमतियाँ</h2>
         <ul>
             <li><strong>माइक्रोफ़ोन:</strong> शोर मापने के लिए आवश्यक।</li>
+            <li><strong>कैमरा</strong> (वैकल्पिक): केवल "वीडियो रिकॉर्ड करें" चालू होने पर माप का वीडियो रिकॉर्ड करने के लिए उपयोग होता है।</li>
+            <li><strong>Photos में जोड़ें</strong> (वैकल्पिक): केवल तब उपयोग होता है जब आप "वीडियो को Photos में सहेजें" चुनते हैं। ऐप आपकी फ़ोटो लाइब्रेरी नहीं पढ़ता।</li>
             <li><strong>नोटिफ़िकेशन</strong> (वैकल्पिक): केवल बैकग्राउंड रिकॉर्डिंग के दौरान माप की स्थिति दिखाने के लिए।</li>
             <li><strong>ट्रैकिंग (ATT)</strong> (वैकल्पिक): वैयक्तिकृत विज्ञापनों के लिए माँगी जाती है; अनुमति न देने पर भी आप ऐप का उपयोग कर सकते हैं।</li>
         </ul>
@@ -708,7 +738,7 @@
         <h2>10. नीति में बदलाव</h2>
         <p>यदि यह नीति बदलती है, तो हम इस पेज और प्रभावी तिथि को अपडेट करेंगे।</p>
         <h2>संशोधन इतिहास</h2>
-<ul><li>2026-11-12: विज्ञापन हटाने वाली इन-ऐप खरीदारी से जुड़ी जानकारी जोड़ी गई (डिवाइस पर जानकारी, इन-ऐप खरीदारी, तृतीय-पक्ष सेवाएँ)</li><li>2026-11-05: संचालक का नाम Haram &amp; Harang से बदलकर HNH Labs किया गया; संपर्क ईमेल बदलकर support@hnh-labs.com किया गया</li><li>2026-10-13: पिछला संस्करण</li></ul>
+<ul><li>2026-11-26: कैमरा और Photos में जोड़ें अनुमतियों से जुड़ी जानकारी जोड़ी गई (वैकल्पिक वीडियो रिकॉर्डिंग, डिवाइस पर जानकारी, अनुमतियाँ)</li><li>2026-11-12: विज्ञापन हटाने वाली इन-ऐप खरीदारी से जुड़ी जानकारी जोड़ी गई (डिवाइस पर जानकारी, इन-ऐप खरीदारी, तृतीय-पक्ष सेवाएँ)</li><li>2026-11-05: संचालक का नाम Haram &amp; Harang से बदलकर HNH Labs किया गया; संपर्क ईमेल बदलकर support@hnh-labs.com किया गया</li><li>2026-10-13: पिछला संस्करण</li></ul>
         <div class="footer">संपर्क: HNH Labs (support@hnh-labs.com)</div>
     </div>
 </div>
